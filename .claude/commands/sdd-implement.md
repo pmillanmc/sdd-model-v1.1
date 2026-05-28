@@ -15,3 +15,6 @@ Cuando termines, implementá todas las tareas de tasks.md en orden,
 respetando los principios de constitution.md.
 Usá pnpm como gestor de paquetes salvo que `existing-arch.md` indique otro.
 Empezá directamente, sin pedir confirmación.
+
+
+**Gobernanza de Cierre:** Antes de dar por terminada la implementación, debes generar obligatoriamente el reporte de métricas en la carpeta `metrics/` basándote en la estructura definida en `sdd-metrics.md`.

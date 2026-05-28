@@ -58,3 +58,7 @@ verificación final: lógica + UI
 - No inventés arquitectura que no esté en `plan.md`
 - Si existe `existing-arch.md`, sus restricciones son no negociables salvo decisión registrada en `DECISIONS.md`
 - Si algo del brief es ambiguo, preguntá antes de implementar
+
+
+### Regla de Observabilidad (Telemetría DX)
+**Metrics Mandatory**: Al completar la ejecución de `/sdd-implement` o finalizar una tarea grande, el agente DEBE autoevaluarse ejecutando el comando `/sdd-metrics` (o leyendo `.claude/commands/sdd-metrics.md`) para generar el reporte de retrabajo y ambigüedad.
