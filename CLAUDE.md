@@ -51,3 +51,7 @@ verificación final: lógica + UI
 - Los tests van antes de la implementación (TDD)
 - No inventés arquitectura que no esté en `plan.md`
 - Si algo del brief es ambiguo, preguntá antes de implementar
+
+
+### Regla de Observabilidad (Telemetría DX)
+**Metrics Mandatory**: Al completar la ejecución de `/sdd-implement` o finalizar una tarea grande, el agente DEBE autoevaluarse ejecutando el comando `/sdd-metrics` (o leyendo `.claude/commands/sdd-metrics.md`) para generar el reporte de retrabajo y ambigüedad.

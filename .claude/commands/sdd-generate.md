@@ -18,3 +18,7 @@ Si el contenido no entra en el límite, priorizá claridad sobre completitud
 y avisá qué quedó afuera para que el humano lo revise.
 Empezá directamente, sin pedir confirmación.
 Usá pnpm como instalador de paquetes.
+
+Asegúrate de incluir SIEMPRE una sección de **Measurable Process Outcomes (DX)** en la especificación, con estas dos métricas obligatorias:
+* **DX-001**: El agente debe completar la implementación con menos de [X] ciclos de autocorrección (Rework).
+* **DX-002**: Mantener la densidad de ambigüedad en 0 (sin consultas de aclaración para la IA).
