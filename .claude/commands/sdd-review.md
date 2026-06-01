@@ -1,4 +1,6 @@
-Leé input.md, spec.md y luego revisá el código generado en la carpeta app/.
+Leé input.md, spec.md y luego revisá el código generado.
+La carpeta a revisar es `app/` por defecto.
+Si existe `existing-arch.md` en la raíz, usá el `source_root` declarado allí en su lugar.
 
 ## Parte 1 — Criterios de aceptación (lógica)
 
@@ -14,7 +16,7 @@ Para cada descripción visual o de flujo en input.md (sección "Cómo se ve la i
 o equivalente), verificá:
 
 1. ¿Hay un criterio en spec.md que lo cubra?
-2. ¿Hay código en app/ que lo implemente?
+2. ¿Hay código en el `source_root` que lo implemente?
 
 Si un requisito visual de input.md no tiene criterio en spec.md ni código → es un gap
 que no fue trackeado en ningún artefacto.

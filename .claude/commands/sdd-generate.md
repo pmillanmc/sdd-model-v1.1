@@ -1,12 +1,20 @@
 Leé input.md.
 
-A partir de ese archivo generá estos cuatro archivos en orden:
+Si existe `existing-arch.md` en la raíz, leélo TAMBIÉN. Estás en modo brownfield:
+- El stack, `source_root`, y patrones inquebrantables de `existing-arch.md` son input fijo.
+- `constitution.md` NO puede contradecir `existing-arch.md`; agrega principios sobre lo existente.
+- `plan.md` debe usar el stack real y el `source_root` declarado — no scaffoldear un proyecto nuevo.
+- `tasks.md` empieza en T001 con "validar entorno existente" (ej. `pnpm install`, correr tests existentes), no con scaffold.
+- Marcá explícitamente en cada tarea qué archivos del codebase existente toca y cuáles crea.
+
+A partir de esos archivos generá estos cuatro archivos en orden:
 1. constitution.md — principios MUST/PROHIBITED del proyecto
 2. spec.md — user stories con criterios Given/When/Then, uno por feature de UI
 3. plan.md — stack técnico, estructura de carpetas y lista de componentes a crear
 4. tasks.md — una tarea por componente o feature (T001 = scaffold, T002 = un componente, etc.)
 
-En plan.md incluí el comando exacto para inicializar el proyecto: pnpm create vite@latest app -- --template react-ts
+En modo greenfield (sin `existing-arch.md`), incluí en plan.md el comando exacto de scaffold: pnpm create vite@latest app -- --template react-ts
+En modo brownfield, omití el scaffold y referenciá la estructura de `existing-arch.md`.
 Límites de tamaño (obligatorios):
 - constitution.md: máximo 60 líneas
 - spec.md: máximo 80 líneas

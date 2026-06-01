@@ -1,5 +1,12 @@
 Leé todos los archivos dentro de la carpeta drafts/.
 
+Si existe `existing-arch.md` en la raíz del proyecto, leélo TAMBIÉN antes de empezar.
+En ese caso estás en modo brownfield: el stack y las restricciones técnicas
+de `existing-arch.md` son no negociables y tienen prioridad sobre cualquier
+deseo que aparezca en los borradores. Si un borrador pide algo incompatible
+con `existing-arch.md`, marcalo como AMBIGUO y preguntá al humano cómo resolverlo
+(adaptarse al existente vs. registrar una decisión de refactor con /sdd-log).
+
 Tu objetivo es generar un input.md que esté 100% claro y sin ambigüedad en estas 6 categorías:
 
 1. PROBLEMA — ¿Qué duele hoy? ¿Qué resuelve esta feature?

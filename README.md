@@ -12,6 +12,12 @@ SDD propone reemplazar workflows basados en prompts aislados por un sistema con 
 
 ## El ciclo
 
+### Fase 0 — Discovery (solo brownfield) `🤖 IA | gate 👤 humano`
+Si el proyecto ya tiene código, `/sdd-scan` recorre el repo y genera `existing-arch.md`:
+un documento descriptivo del stack real, `source_root`, patrones inquebrantables y
+restricciones del codebase. Doble confirmación humana antes de guardarlo. Todos los
+comandos posteriores detectan su presencia y entran en modo brownfield automáticamente.
+
 ### Fase 1 — Brief `👤 humano`
 El equipo (PO + Tech Lead + Devs) genera borradores funcionales y técnicos en `drafts/`: notas, wireframes, restricciones, contexto de negocio.
 
@@ -42,6 +48,7 @@ Desde `input.md`, los agentes generan cuatro artefactos operativos:
 
 | Archivo | Rol |
 |---|---|
+| `existing-arch.md` | (solo brownfield) Estado descriptivo del codebase — raíz |
 | `constitution.md` | Principios del proyecto — global, vive en la raíz |
 | `DECISIONS.md` | Registro tipo ADR de cada desvío del brief — global, versionado |
 | `specs/001-[feature]/` | Una carpeta por feature con sus 4 artefactos + checklist |
@@ -53,6 +60,7 @@ Desde `input.md`, los agentes generan cuatro artefactos operativos:
 | Comando | Fase | Qué hace |
 |---|---|---|
 | `/sdd-explain` | Onboarding | Explica el modelo completo y cómo conecta cada parte |
+| `/sdd-scan` | 0 (brownfield) | Lee el código existente y genera `existing-arch.md` |
 | `/sdd-refine` | 2 | Grilling dinámico → `input.md` |
 | `/sdd-generate` | 3 | `input.md` → 4 artefactos |
 | `/sdd-validate` | 3 | Quality gate: brief vs artefactos |
@@ -60,7 +68,7 @@ Desde `input.md`, los agentes generan cuatro artefactos operativos:
 | `/sdd-implement` | 4 | Artefactos → código con TDD |
 | `/sdd-checklist` | 4 | Genera criterios de verificación manual |
 | `/sdd-review` | 4 | Gate final: lógica + UI |
-| `/sdd-health` | Mant. | Auditoría por sprint |
+| `/sdd-health` | Mant. | Auditoría por sprint + drift de `existing-arch.md` |
 
 ---
 

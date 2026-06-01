@@ -56,6 +56,14 @@ Explicá qué pasa con el contexto del agente cuando los artefactos crecen sin c
 ### 7. Cómo empezar en un proyecto nuevo
 Pasos concretos: qué hacer primero, qué archivo leer, qué comando correr.
 
+### 8. Modo brownfield (proyecto con código existente)
+Explicá qué cambia cuando se introduce SDD en un repo que ya tiene código:
+- El primer comando es `/sdd-scan` — genera `existing-arch.md` con el estado real del codebase.
+- `existing-arch.md` es DESCRIPTIVO; `constitution.md` agrega principios encima sin contradecirlo.
+- Todos los comandos detectan automáticamente la existencia de `existing-arch.md` y entran en modo brownfield.
+- `/sdd-implement` trabaja dentro del `source_root` declarado, no crea `app/`.
+- `/sdd-health` detecta drift entre `existing-arch.md` y el HEAD actual del repo.
+
 ---
 
 ## Reglas de esta explicación

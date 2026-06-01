@@ -9,6 +9,15 @@ Los ejemplos usan Claude Code (`/comando`), pero los archivos de comandos son po
 
 ```mermaid
 flowchart TD
+    subgraph F0["FASE 0 — DISCOVERY  🤖 IA + gate 👤 humano (solo brownfield)"]
+        Z1["/sdd-scan\nlee codebase: manifests, configs,\nestructura, CI, README"]
+        Z2{"¿Todo detectado?"}
+        Z3["✅ existing-arch.md\n(doble confirmación humana)\n+ SHA para drift tracking"]
+        Z1 --> Z2
+        Z2 -- "⚠️ ambiguo / ❓ no detectable\npregunta UNA cosa por vez" --> Z1
+        Z2 -- "✅ todo claro" --> Z3
+    end
+
     subgraph F1["FASE 1 — BRIEF  👤 humano (sin comandos)"]
         A1["Kickoff del equipo\nPO + Tech Lead + Devs"]
         A2["📁 drafts/\nPoner acá: notas, wireframes,\nrestricciones, contexto de negocio\n\n⬇ PRIMER COMANDO: /sdd-refine"]
@@ -55,7 +64,9 @@ flowchart TD
     A2 --> B1
     B3 --> C1
     C5 --> D1
+    Z3 -.->|activa modo brownfield| B1
 
+    style F0 fill:#3a2a1e,stroke:#fbbf24,color:#e2e8f0
     style F1 fill:#1e293b,stroke:#64748b,color:#e2e8f0
     style F2 fill:#1e3a2f,stroke:#4ade80,color:#e2e8f0
     style F3 fill:#1e2a3a,stroke:#60a5fa,color:#e2e8f0
@@ -67,6 +78,17 @@ flowchart TD
 ## El ciclo completo
 
 ```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ FASE 0 — DISCOVERY (solo brownfield) [lidera: IA, gate humano]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  /sdd-scan
+  Lee el codebase existente (manifests, configs, estructura)
+  Clasifica: ✅ detectado / ⚠️ ambiguo / ❓ no detectable
+  Grilling humano para resolver ambigüedades
+  Doble confirmación antes de guardar
+  Output: existing-arch.md (raíz, ≤120 líneas, descriptivo)
+  → Activa modo brownfield en todos los comandos siguientes
+
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  FASE 1 — BRIEF                [lidera: humano]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -162,6 +184,7 @@ sdd-model/
     ├── settings.json            ← permisos para Claude Code
     └── commands/
         ├── sdd-explain.md       ← ONBOARDING: explica el modelo completo
+        ├── sdd-scan.md          ← FASE 0: codebase existente → existing-arch.md
         ├── sdd-refine.md        ← FASE 2: grilling → input.md
         ├── sdd-generate.md      ← FASE 3: input.md → 4 artefactos
         ├── sdd-validate.md      ← FASE 3: quality gate
@@ -172,6 +195,7 @@ sdd-model/
         └── sdd-health.md        ← MANTENIMIENTO: auditoría por sprint
 
 ── RUNTIME (se crean al usar el modelo) ───────────────────
+existing-arch.md                 ← FASE 0: solo brownfield, generado por /sdd-scan (≤ 120 líneas)
 constitution.md                  ← global del proyecto (≤ 60 líneas)
 DECISIONS.md                     ← trazabilidad global via /sdd-log
 specs/
@@ -181,7 +205,8 @@ specs/
     ├── plan.md                  ← FASE 3: generado (≤ 50 líneas)
     ├── tasks.md                 ← FASE 3: generado (≤ 40 líneas activas)
     └── checklist.md             ← FASE 4: generado por /sdd-checklist
-app/                             ← FASE 4: generado por /sdd-implement
+app/                             ← FASE 4: greenfield, generado por /sdd-implement
+(en brownfield: el código se genera dentro del source_root de existing-arch.md)
 ```
 
 ---
@@ -190,6 +215,7 @@ app/                             ← FASE 4: generado por /sdd-implement
 
 | Fase | Responsable humano | Responsable IA |
 |---|---|---|
+| **0 — Discovery** (brownfield) | Tech Lead (responder grilling, confirmar) | Claude (`/sdd-scan`) |
 | **1 — Brief** | PO + Tech Lead (kickoff, borradores) | — |
 | **2 — Clarificación** | PO + Tech Lead (responder, confirmar) | Claude (`/sdd-refine`) |
 | **3 — Especificación** | Tech Lead (revisar, resolver gaps, firmar) | Claude (`/sdd-generate`, `/sdd-validate`, `/sdd-log`) |

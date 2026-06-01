@@ -1,10 +1,17 @@
 Leé input.md y luego leé constitution.md, spec.md, plan.md y tasks.md.
+Si existe `existing-arch.md` en la raíz, leélo TAMBIÉN (modo brownfield).
 
 Verificá que los artefactos generados cubren el brief original. Para cada punto del input.md, chequeá:
 
 1. ¿Hay al menos una user story en spec.md que lo cubra?
 2. ¿Hay al menos una tarea en tasks.md que lo implemente?
 3. ¿Hay algún principio en constitution.md que lo proteja si es una restricción?
+
+En modo brownfield, validá ADEMÁS:
+4. ¿`plan.md` usa el `source_root` y el stack declarado en `existing-arch.md`?
+5. ¿`constitution.md` evita contradecir patrones inquebrantables de `existing-arch.md`?
+6. ¿`tasks.md` distingue entre archivos a crear y archivos existentes a modificar?
+Cualquier contradicción frente a `existing-arch.md` es un ❌ y debe registrarse vía /sdd-log si el humano decide ignorarla.
 
 Al terminar, generá un reporte con este formato:
 

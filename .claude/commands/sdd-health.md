@@ -1,9 +1,10 @@
 Leé estos archivos del proyecto:
 - constitution.md
 - DECISIONS.md
+- existing-arch.md (si existe — modo brownfield)
 - Todos los archivos dentro de specs/ (si existe la carpeta)
 - spec.md, plan.md, tasks.md (si están en la raíz)
-- La carpeta app/ para verificar qué está implementado
+- La carpeta de código (`app/` por defecto, o el `source_root` declarado en `existing-arch.md`)
 
 Analizá la salud del modelo y generá un reporte con este formato:
 
@@ -24,6 +25,14 @@ Para cada artefacto, indicá cantidad de líneas y si supera el límite recomend
 ### 🗃️ Contenido para archivar
 - Tareas completadas en tasks.md que deberían moverse a un historial
 - Decisiones en DECISIONS.md que ya fueron absorbidas por constitution.md
+
+### 🧭 Drift de existing-arch.md (solo brownfield)
+Si `existing-arch.md` existe, compará el SHA registrado en su sección "Drift tracking"
+contra el HEAD actual del repo. Reportá:
+- Commits transcurridos desde la última pasada de /sdd-scan
+- Cambios en archivos de manifest (`package.json`, etc.) desde ese SHA
+- Cambios en carpetas top-level desde ese SHA
+Si hay drift significativo, recomendá correr /sdd-scan nuevamente.
 
 ### ✅ Estado general
 [SALUDABLE / REQUIERE ATENCIÓN / CRÍTICO]

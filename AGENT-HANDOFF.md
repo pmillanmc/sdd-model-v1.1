@@ -20,6 +20,7 @@
 ## 2. Las 4 fases + Mantenimiento
 
 ```
+FASE 0 — DISCOVERY      🤖 /sdd-scan (solo brownfield, una vez)
 FASE 1 — BRIEF          👤 humano puro
 FASE 2 — CLARIFICACIÓN  👤↔️🤖 loop hasta claridad 100%
 FASE 3 — ESPECIFICACIÓN 🤖 genera | 👤 valida y firma
@@ -43,6 +44,7 @@ sdd-model/
     ├── settings.json            ← permisos pnpm, sin paths hardcodeados
     └── commands/
         ├── sdd-explain.md
+        ├── sdd-scan.md          ← FASE 0 brownfield
         ├── sdd-refine.md
         ├── sdd-generate.md
         ├── sdd-validate.md
@@ -55,6 +57,7 @@ sdd-model/
 
 **Artefactos de runtime** — se crean al usar el modelo, NO son parte del template:
 ```
+existing-arch.md         ← raíz, solo brownfield, descriptivo (≤ 120 líneas)
 constitution.md          ← raíz del proyecto, global (≤ 60 líneas)
 DECISIONS.md             ← raíz del proyecto, global
 specs/
@@ -64,12 +67,23 @@ specs/
     ├── plan.md          ← (≤ 50 líneas)
     ├── tasks.md         ← (≤ 40 activas)
     └── checklist.md
-app/                     ← código generado
+app/ (greenfield)        ← código generado
+source_root declarado en existing-arch.md (brownfield)
 ```
 
 ---
 
 ## 4. Contratos de comportamiento por comando
+
+### `/sdd-scan` — FASE 0 (solo brownfield)
+- Se corre UNA vez al introducir SDD en un repo que ya tiene código
+- Lee manifests, configs, estructura de carpetas (3 niveles), CI, README
+- Clasifica cada dimensión como DETECTADO / AMBIGUO / NO DETECTABLE
+- Hace grilling humano UNA pregunta por vez para resolver AMBIGUO y NO DETECTABLE
+- Doble confirmación antes de guardar `existing-arch.md` en la raíz
+- Registra el SHA de git contra el que fue generado para drift tracking
+- Límite: ≤ 120 líneas
+- **NUNCA modifica código del proyecto** — es solo lectura + documentación
 
 ### `/sdd-explain` — ONBOARDING
 - Lee `AGENT-HANDOFF.md`, `WORKFLOW.md`, `CLAUDE.md` y `README.md`
@@ -80,6 +94,7 @@ app/                     ← código generado
 
 ### `/sdd-refine` — FASE 2
 - Lee todo lo que haya en `drafts/`
+- Si existe `existing-arch.md`, lo lee también como restricción no negociable
 - Clasifica cada punto del brief como CLARO / AMBIGUO / FALTANTE por categoría (funcional, técnico, UX, restricciones, integraciones)
 - Pregunta UNA SOLA COSA por vez en el chat — nunca una lista de preguntas
 - Loop: sigue preguntando hasta que TODO esté CLARO
@@ -89,14 +104,16 @@ app/                     ← código generado
 
 ### `/sdd-generate` — FASE 3
 - Lee `input.md` (debe existir)
+- Si existe `existing-arch.md`: modo brownfield — `plan.md` usa el `source_root` y stack reales; `tasks.md` no incluye scaffold; `constitution.md` no contradice patrones existentes
+- Si NO existe: modo greenfield — `plan.md` incluye `pnpm create vite@latest app -- --template react-ts`
 - Genera los 4 artefactos en `specs/[N]-[feature]/`
 - Respeta límites: constitution ≤60 líneas, spec ≤80, plan ≤50, tasks ≤40 activas
 - Si no entra en el límite: prioriza claridad y avisa qué quedó afuera — NO excede el límite
-- Usa `pnpm create vite@latest` como comando de scaffold en plan.md
 - Spec incluye un criterio Given/When/Then por user story
 
 ### `/sdd-validate` — FASE 3
 - Compara `input.md` vs los 4 artefactos
+- En brownfield: valida además que `plan.md` use `source_root`/stack de `existing-arch.md` y que `constitution.md` no lo contradiga
 - Reporta cada punto del brief como ✅ / ⚠️ parcial / ❌ gap
 - Si hay ⚠️ o ❌: avisa, para, NO modifica nada
 - Recuerda al humano correr `/sdd-log` después de resolver gaps
@@ -108,10 +125,11 @@ app/                     ← código generado
 
 ### `/sdd-implement` — FASE 4
 - Lee los 4 artefactos de `specs/[feature]/`
+- Si existe `existing-arch.md`: trabaja dentro del `source_root` declarado, usa el gestor de paquetes declarado, respeta patrones inquebrantables, evita duplicar archivos con responsabilidad equivalente
+- Si NO existe: usa `pnpm` y crea `app/`
 - **Empieza directo, sin pedir confirmación**
 - Implementa TODAS las tareas en el orden de `tasks.md`
 - Usa TDD: test primero, luego implementación
-- Usa `pnpm` (nunca npm ni yarn)
 - No inventa arquitectura que no esté en `plan.md`
 
 ### `/sdd-checklist` — FASE 4
@@ -124,13 +142,15 @@ app/                     ← código generado
 ### `/sdd-review` — FASE 4
 - **Pasada 1 — Lógica**: verifica que cada criterio Given/When/Then de `spec.md` tenga test y código correspondiente
 - **Pasada 2 — UI**: lee descripción visual de `input.md` → ¿llegó a criterio en `spec.md`? → ¿llegó al código?
+- Carpeta a revisar: `app/` por defecto, o `source_root` de `existing-arch.md` si existe
 - Sección `🎨 Gaps de UI` para lo que nadie convirtió en criterio formal
 - Si hay PENDIENTE: para y avisa, NO agrega código solo
 - Recuerda `/sdd-log` después de resolver
 
 ### `/sdd-health` — MANTENIMIENTO
 - Detecta: archivos sobredimensionados, principios contradictorios, tasks completadas no archivadas, user stories canceladas o sin código
-- Límites: constitution ≤60, spec ≤80, plan ≤50, tasks ≤40 activas
+- En brownfield: detecta drift entre el SHA registrado en `existing-arch.md` y el HEAD actual (cambios en manifests, top-level folders, commits transcurridos)
+- Límites: constitution ≤60, spec ≤80, plan ≤50, tasks ≤40 activas, existing-arch ≤120
 - **Solo reporta — nunca modifica nada solo**
 - Al final pregunta si archivar tasks completadas; si sí → lo hace y recuerda `/sdd-log`
 
@@ -207,6 +227,20 @@ Solo permisos pnpm (create, install, add, test, dev, build). Sin paths hardcodea
 ```
 
 El modelo lee CLAUDE.md automáticamente al iniciar. No hay configuración adicional.
+
+## 9-bis. Cómo usar este modelo en un proyecto brownfield
+
+```
+1. Copiar sdd-model/ a la raíz del proyecto existente
+2. Instalar Claude Code CLI y pnpm (igual que greenfield)
+3. Abrir Claude Code en la raíz del proyecto
+4. Correr: /sdd-scan  → genera existing-arch.md con doble confirmación humana
+5. Poner borradores de la NUEVA feature en drafts/
+6. Correr: /sdd-refine  → ya entra en modo brownfield automáticamente
+7. Seguir el ciclo normal: /sdd-generate → /sdd-validate → /sdd-implement
+```
+
+La presencia de `existing-arch.md` en la raíz activa el modo brownfield en TODOS los comandos.
 
 ---
 

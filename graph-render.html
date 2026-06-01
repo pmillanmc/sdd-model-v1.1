@@ -70,6 +70,15 @@
 <div class="diagram-wrap">
 <div class="mermaid">
 flowchart TD
+    subgraph F0["FASE 0 — DISCOVERY  🤖 IA + gate 👤 humano (solo brownfield)"]
+        Z1["/sdd-scan\nlee codebase: manifests, configs,\nestructura, CI, README"]
+        Z2{"¿Todo detectado?"}
+        Z3["✅ existing-arch.md\n(doble confirmación humana)\n+ SHA para drift tracking"]
+        Z1 --> Z2
+        Z2 -- "⚠️ ambiguo / ❓ no detectable\npregunta UNA cosa por vez" --> Z1
+        Z2 -- "✅ todo claro" --> Z3
+    end
+
     subgraph F1["FASE 1 — BRIEF  👤 humano (sin comandos)"]
         A1["Kickoff del equipo\nPO + Tech Lead + Devs"]
         A2["📁 drafts/\nPoner acá: notas, wireframes,\nrestricciones, contexto de negocio\n\n⬇ PRIMER COMANDO: /sdd-refine"]
@@ -128,7 +137,9 @@ flowchart TD
     B3 --> C1
     C5 --> D1
     D6 -.->|cada sprint| M1
+    Z3 -.->|activa modo brownfield| B1
 
+    style F0 fill:#3a2a1e,stroke:#fbbf24,color:#e2e8f0
     style F1 fill:#1e293b,stroke:#64748b,color:#e2e8f0
     style F2 fill:#1e3a2f,stroke:#4ade80,color:#e2e8f0
     style F3 fill:#1e2a3a,stroke:#60a5fa,color:#e2e8f0
