@@ -15,3 +15,17 @@ Cuando se invoque este comando, debes crear un archivo en la carpeta `metrics/` 
 **Análisis de Retrabajo**
 - [ ] DX_MET_004 **Causa Raíz**: [Si hubo errores, explica brevemente si fue culpa técnica o por ambigüedad de la Spec].
 - [ ] DX_MET_005 **Resiliencia**: [¿Alcanzaste algún límite de rate-limit o tokens durante la tarea?].
+- [ ] DX_MET_006 **Token Budget Estimado**: Para cada artefacto leído durante la sesión, reportá su tamaño en bytes y la estimación de tokens (bytes ÷ 4). Sumá el total.
+
+  | Artefacto | Bytes | Tokens estimados |
+  |---|---|---|
+  | `existing-arch.md` | — | — |
+  | `input.md` | — | — |
+  | `constitution.md` | — | — |
+  | `spec.md` | — | — |
+  | `plan.md` | — | — |
+  | `tasks.md` | — | — |
+  | archivos de código leídos | — | — |
+  | **TOTAL INPUT estimado** | — | — |
+
+  Nota: este número es el input mínimo garantizado (artefactos SDD). El costo real de sesión puede ser 3–10× mayor por contexto acumulado. La reducción más efectiva es iniciar sesión nueva por fase.
