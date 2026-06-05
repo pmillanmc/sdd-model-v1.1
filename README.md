@@ -52,6 +52,9 @@ Desde `input.md`, los agentes generan cuatro artefactos operativos:
 | `constitution.md` | Principios del proyecto — global, vive en la raíz |
 | `DECISIONS.md` | Registro tipo ADR de cada desvío del brief — global, versionado |
 | `specs/001-[feature]/` | Una carpeta por feature con sus 4 artefactos + checklist |
+<!-- NUEVO [sdd-handoff]: agregado artefacto handoffs/ como destino de snapshots de gate -->
+| `handoffs/` | Snapshots de gate entre fases — versionados, referenciados en `DECISIONS.md` |
+<!-- FIN NUEVO -->
 
 ---
 
@@ -65,6 +68,9 @@ Desde `input.md`, los agentes generan cuatro artefactos operativos:
 | `/sdd-generate` | 3 | `input.md` → 4 artefactos |
 | `/sdd-validate` | 3 | Quality gate: brief vs artefactos |
 | `/sdd-log` | 3/4 | Registra decisiones en `DECISIONS.md` |
+<!-- NUEVO [sdd-handoff]: agregado comando transversal de handoff -->
+| `/sdd-handoff` | Transversal | Comprime el estado de sesión para continuar en otra sesión o agente. Requiere DECISIONS.md al día. |
+<!-- FIN NUEVO -->
 | `/sdd-implement` | 4 | Artefactos → código con TDD |
 | `/sdd-checklist` | 4 | Genera criterios de verificación manual |
 | `/sdd-review` | 4 | Gate final: lógica + UI |
