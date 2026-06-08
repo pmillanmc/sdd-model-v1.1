@@ -6,6 +6,14 @@ Antes de generar cualquier artefacto, determiná el `feature_id` de esta feature
 - Si no existe, proponé el siguiente número disponible y un nombre corto basado en `input.md` (ej. `002-dashboard`).
 - Mostrá el `feature_id` propuesto al usuario y pedí confirmación con una sola línea: "¿El feature_id `[valor]` es correcto?"
 - Usá ese `feature_id` como nombre de carpeta destino para los artefactos (`specs/[feature_id]/`) y en el encabezado de `tasks.md`.
+- Al crear la carpeta, escribiá también `specs/[feature_id]/feature.status.md` con este contenido exacto:
+
+```
+status: OPEN
+feature_id: [valor]
+created: [fecha ISO 8601]
+last_command: sdd-generate
+```
 
 Si existe `existing-arch.md` en la raíz, leélo TAMBIÉN. Estás en modo brownfield:
 - El stack, `source_root`, y patrones inquebrantables de `existing-arch.md` son input fijo.

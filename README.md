@@ -51,7 +51,8 @@ Desde `input.md`, los agentes generan cuatro artefactos operativos:
 | `existing-arch.md` | (solo brownfield) Estado descriptivo del codebase — raíz |
 | `constitution.md` | Principios del proyecto — global, vive en la raíz |
 | `DECISIONS.md` | Registro tipo ADR de cada desvío del brief — global, versionado |
-| `specs/001-[feature]/` | Una carpeta por feature con sus 4 artefactos + checklist |
+| `specs/[feature_id]/` | Una carpeta por feature con sus 4 artefactos + checklist |
+| `specs/[feature_id]/feature.status.md` | Estado del ciclo de vida: `OPEN` (en progreso) o `CLOSED` (aprobada) |
 | `metrics/[feature_id]-metrics.md` | Métricas de esfuerzo y calidad por feature — generado automáticamente |
 | `handoffs/` | Snapshots de gate entre fases — versionados, referenciados en `DECISIONS.md` |
 

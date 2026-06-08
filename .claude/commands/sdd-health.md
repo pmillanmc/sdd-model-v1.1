@@ -34,7 +34,22 @@ contra el HEAD actual del repo. Reportá:
 - Cambios en carpetas top-level desde ese SHA
 Si hay drift significativo, recomendá correr /sdd-scan nuevamente.
 
-### 📊 Resumen de métricas (si existe carpeta `metrics/`)
+### � Estado de features
+
+Buscá todos los archivos `specs/*/feature.status.md` en el proyecto.
+Para cada uno, leé el campo `status`.
+
+Mostrá:
+
+**Features OPEN (en progreso):**
+- [feature_id] — creada: [fecha]
+
+**Features CLOSED (terminadas):**
+- [feature_id] — cerrada: [fecha]
+
+Si no existe ningún `feature.status.md`, indicá: "Sin features registradas. Corré `/sdd-generate` para iniciar una feature."
+
+### �📊 Resumen de métricas (si existe carpeta `metrics/`)
 
 Leé todos los archivos dentro de `metrics/`. Para cada feature encontrada, extraé:
 - `feature_id`

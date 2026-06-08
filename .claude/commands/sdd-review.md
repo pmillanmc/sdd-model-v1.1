@@ -57,3 +57,16 @@ Al terminar el reporte, agregá al archivo `metrics/[feature_id]-metrics.md` el 
 - criterios_sin_implementar: [número de ❌]
 - gaps_ui: [número de gaps de UI]
 ```
+
+**Cierre de feature (solo si resultado es APROBADO):**
+Actualizá `specs/[feature_id]/feature.status.md` con:
+
+```
+status: CLOSED
+feature_id: [valor]
+created: [fecha original, no cambiar]
+closed: [fecha ISO 8601]
+last_command: sdd-review
+```
+
+Si el archivo no existe, creálo con estos campos. Si el resultado es PENDIENTE, no modifiqués el status.
