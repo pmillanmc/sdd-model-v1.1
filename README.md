@@ -52,6 +52,7 @@ Desde `input.md`, los agentes generan cuatro artefactos operativos:
 | `constitution.md` | Principios del proyecto — global, vive en la raíz |
 | `DECISIONS.md` | Registro tipo ADR de cada desvío del brief — global, versionado |
 | `specs/001-[feature]/` | Una carpeta por feature con sus 4 artefactos + checklist |
+| `metrics/[feature_id]-metrics.md` | Métricas de esfuerzo y calidad por feature — generado automáticamente |
 
 ---
 
@@ -62,13 +63,36 @@ Desde `input.md`, los agentes generan cuatro artefactos operativos:
 | `/sdd-explain` | Onboarding | Explica el modelo completo y cómo conecta cada parte |
 | `/sdd-scan` | 0 (brownfield) | Lee el código existente y genera `existing-arch.md` |
 | `/sdd-refine` | 2 | Grilling dinámico → `input.md` |
-| `/sdd-generate` | 3 | `input.md` → 4 artefactos |
+| `/sdd-generate` | 3 | `input.md` → 4 artefactos (confirma `feature_id`) |
 | `/sdd-validate` | 3 | Quality gate: brief vs artefactos |
 | `/sdd-log` | 3/4 | Registra decisiones en `DECISIONS.md` |
 | `/sdd-implement` | 4 | Artefactos → código con TDD |
 | `/sdd-checklist` | 4 | Genera criterios de verificación manual |
 | `/sdd-review` | 4 | Gate final: lógica + UI |
-| `/sdd-health` | Mant. | Auditoría por sprint + drift de `existing-arch.md` |
+| `/sdd-health` | Mant. | Auditoría por sprint + drift de `existing-arch.md` + resumen de métricas |
+| `/sdd-metrics` | Mant. | Reporte de esfuerzo, tokens y rework de la sesión actual |
+| `/sdd-metrics-summary` | Mant. | Tabla agregada de métricas de todas las features del proyecto |
+| `/sdd-test` | QA | Smoke test del modelo sobre un fixture sintético (22 checkpoints) |
+
+---
+
+## Telemetría DX
+
+El modelo captura automáticamente métricas de esfuerzo y calidad en cada fase:
+
+| Fase | Qué se registra |
+|---|---|
+| `/sdd-refine` | Rondas de grilling, categorías faltantes y ambiguas al inicio |
+| `/sdd-validate` | Cobertura inicial del brief, gaps encontrados |
+| `/sdd-implement` | Ciclos de autocorrección, consultas de clarificación, tokens estimados |
+| `/sdd-review` | Resultado final, criterios sin test, gaps de UI |
+
+Todos los datos se acumulan en `metrics/[feature_id]-metrics.md` con `iteration_number` para detectar retrabajo entre sesiones.
+
+**Rework Ratio** por feature:
+$$\text{Rework Ratio} = \frac{\text{autocorrecciones} + \text{entradas DECISIONS.md}}{\text{tareas totales}}$$
+
+Para ver el estado del proyecto de un vistazo: `/sdd-metrics-summary`.
 
 ---
 
