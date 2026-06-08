@@ -52,7 +52,9 @@ sdd-model/
         ├── sdd-implement.md
         ├── sdd-checklist.md
         ├── sdd-review.md
-        └── sdd-health.md
+        ├── sdd-health.md
+        ├── sdd-metrics.md
+        └── sdd-metrics-summary.md
 ```
 
 **Artefactos de runtime** — se crean al usar el modelo, NO son parte del template:
@@ -67,6 +69,8 @@ specs/
     ├── plan.md          ← (≤ 50 líneas)
     ├── tasks.md         ← (≤ 40 activas)
     └── checklist.md
+metrics/
+└── [feature_id]-metrics.md  ← generado por sdd-metrics / sdd-validate
 app/ (greenfield)        ← código generado
 source_root declarado en existing-arch.md (brownfield)
 ```

@@ -47,3 +47,14 @@ Mostrá el contenido al usuario antes de guardarlo y pedí confirmación final.
 - Si el usuario da una respuesta vaga, reformulá la pregunta con un ejemplo concreto.
 - El input.md final tiene que poder ser leído por alguien que no participó del proceso
   y entender exactamente qué construir, cómo y con qué restricciones. Sin placeholders.
+
+**Hook de métricas (obligatorio al finalizar):**
+Cuando input.md quede confirmado y guardado, agregá al archivo `metrics/[feature_id]-metrics.md` (creándolo si no existe) el siguiente bloque:
+
+```
+## Refine — [timestamp]
+- command_origin: sdd-refine
+- rondas_de_preguntas: [número de turnos de grilling hasta llegar a CLARO en todas las categorías]
+- categorias_faltantes: [número de categorías que estaban FALTANTE al inicio]
+- categorias_ambiguas: [número de categorías que estaban AMBIGUO al inicio]
+```

@@ -45,3 +45,15 @@ No agregues tests ni código por tu cuenta. El dev decide cómo resolver cada ga
 Una vez que el dev resuelva los gaps, recordale que corra /sdd-log para registrar la decisión en DECISIONS.md.
 
 Empezá directamente, sin pedir confirmación.
+
+**Hook de métricas (obligatorio al finalizar):**
+Al terminar el reporte, agregá al archivo `metrics/[feature_id]-metrics.md` el siguiente bloque:
+
+```
+## Review — [timestamp]
+- command_origin: sdd-review
+- resultado: [APROBADO / PENDIENTE]
+- criterios_sin_test: [número de ⚠️]
+- criterios_sin_implementar: [número de ❌]
+- gaps_ui: [número de gaps de UI]
+```

@@ -50,6 +50,8 @@ verificación final: lógica + UI
 | `/sdd-checklist` | 4 | Genera criterios de verificación no automatizables |
 | `/sdd-review` | 4 | Gate final: lógica (spec + tests) + UI |
 | `/sdd-health` | Mant. | Auditoría por sprint — detecta deuda documental y drift |
+| `/sdd-metrics` | Mant. | Genera reporte de esfuerzo y tokens de la sesión actual |
+| `/sdd-metrics-summary` | Mant. | Agrega métricas de todas las features y muestra totales del proyecto |
 
 ## Reglas generales
 
@@ -62,3 +64,4 @@ verificación final: lógica + UI
 
 ### Regla de Observabilidad (Telemetría DX)
 **Metrics Mandatory**: Al completar la ejecución de `/sdd-implement` o finalizar una tarea grande, el agente DEBE autoevaluarse ejecutando el comando `/sdd-metrics` (o leyendo `.claude/commands/sdd-metrics.md`) para generar el reporte de retrabajo y ambigüedad.
+Para ver el resumen agregado de todas las features, corré `/sdd-metrics-summary`.
