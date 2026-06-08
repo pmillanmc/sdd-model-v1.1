@@ -35,3 +35,16 @@ Una vez que el humano resuelva los gaps, recordale que corra /sdd-log para regis
 
 Si todo está cubierto, indicá: "Brief cubierto al 100%. Listo para implementar."
 Empezá directamente, sin pedir confirmación.
+
+**Hook de métricas (obligatorio al finalizar):**
+Al terminar el reporte de validación, agregá al archivo `metrics/[feature_id]-metrics.md` (creándolo si no existe) un bloque de cierre:
+
+```
+## Validate — [timestamp]
+- command_origin: sdd-validate
+- gaps_encontrados: [número de ❌ + número de ⚠️]
+- cobertura_inicial: [% cubiertos sobre total de puntos del brief]
+- iteration_number: [mismo criterio que sdd-metrics Paso 0]
+```
+
+Si el archivo de métricas no existe aún, crealo con solo ese bloque. El reporte completo se genera al final de `sdd-implement`.

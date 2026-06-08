@@ -10,6 +10,8 @@ Con esas respuestas, agregá una nueva entrada al final de DECISIONS.md con este
 ---
 ## [FECHA] [título breve de la decisión]
 
+**feature_id:** [nombre de la carpeta en specs/ o "global" si aplica a todo el proyecto]
+**command_origin:** [comando desde el que se detectó el gap, ej. sdd-validate, sdd-review, manual]
 **Gap o motivo:** [respuesta 1]
 **Decisión tomada:** [resumen claro de qué se cambió]
 **Motivo:** [respuesta 2]

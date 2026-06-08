@@ -1,5 +1,12 @@
 Leé input.md.
 
+**Paso previo obligatorio — Confirmar feature_id:**
+Antes de generar cualquier artefacto, determiná el `feature_id` de esta feature:
+- Si existe una carpeta en `specs/`, usá su nombre (ej. `001-login`).
+- Si no existe, proponé el siguiente número disponible y un nombre corto basado en `input.md` (ej. `002-dashboard`).
+- Mostrá el `feature_id` propuesto al usuario y pedí confirmación con una sola línea: "¿El feature_id `[valor]` es correcto?"
+- Usá ese `feature_id` como nombre de carpeta destino para los artefactos (`specs/[feature_id]/`) y en el encabezado de `tasks.md`.
+
 Si existe `existing-arch.md` en la raíz, leélo TAMBIÉN. Estás en modo brownfield:
 - El stack, `source_root`, y patrones inquebrantables de `existing-arch.md` son input fijo.
 - `constitution.md` NO puede contradecir `existing-arch.md`; agrega principios sobre lo existente.

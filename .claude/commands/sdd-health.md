@@ -34,6 +34,24 @@ contra el HEAD actual del repo. Reportá:
 - Cambios en carpetas top-level desde ese SHA
 Si hay drift significativo, recomendá correr /sdd-scan nuevamente.
 
+### 📊 Resumen de métricas (si existe carpeta `metrics/`)
+
+Leé todos los archivos dentro de `metrics/`. Para cada feature encontrada, extraé:
+- `feature_id`
+- Total de `iteration_number` (cuántas veces se ejecutó sdd-implement)
+- Último `DX_MET_006 TOTAL INPUT estimado` (tokens)
+- Último `Rework Ratio estimado`
+- `cobertura_inicial` del bloque Validate (si existe)
+
+Mostrá la tabla:
+
+| feature_id | Iteraciones | Tokens estimados | Rework Ratio | Cobertura inicial |
+|---|---|---|---|---|
+| [valor] | [N] | [N] | [N] | [%] |
+| **TOTAL PROYECTO** | — | [suma tokens] | — | — |
+
+Si no existe la carpeta `metrics/` o está vacía, indicá: "Sin métricas registradas aún."
+
 ### ✅ Estado general
 [SALUDABLE / REQUIERE ATENCIÓN / CRÍTICO]
 Resumen de qué hacer antes del próximo sprint.

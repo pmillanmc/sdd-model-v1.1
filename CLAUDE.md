@@ -19,7 +19,7 @@ El equipo pone borradores en drafts/
 (notas, wireframes, restricciones, contexto)
 
     ↓  PRIMER COMANDO
-   /sdd-refine
+   /sdd-refine   ← o usar el skill `business-clarifier` de Claude (equivalentes, no usar ambos)
         ↓
 input.md (brief pulido)
     ↓  /sdd-generate
@@ -42,7 +42,7 @@ verificación final: lógica + UI
 |---|---|---|
 | `/sdd-explain` | Onboarding | Explica el modelo completo y cómo conecta cada parte |
 | `/sdd-scan` | 0 (brownfield) | Lee el código existente y genera `existing-arch.md` |
-| `/sdd-refine` | 2 | Lee `drafts/` (+ `existing-arch.md`) y genera `input.md` pulido |
+| `/sdd-refine` | 2 | Lee `drafts/` (+ `existing-arch.md`) y genera `input.md` pulido. **Equivalente al skill `business-clarifier` — usar uno u otro, no ambos.** |
 | `/sdd-generate` | 3 | Lee `input.md` y genera los 4 artefactos SDD |
 | `/sdd-validate` | 3 | Verifica que los artefactos cubren el brief |
 | `/sdd-log` | 3/4 | Registra decisiones que desvían el brief en `DECISIONS.md` |
