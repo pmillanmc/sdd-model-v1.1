@@ -166,6 +166,31 @@ flowchart TD
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+<!-- NUEVO [sdd-handoff]: sección transversal agregada al ciclo, igual que /sdd-log -->
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ TRANSVERSAL — disponible en cualquier fase
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  /sdd-handoff [propósito]
+  Comprime el estado de la sesión actual en un documento
+  para que otra sesión o agente pueda continuar el trabajo.
+
+  TIPO OPERATIVO — sesión paralela, prototipo, bug fix fuera de scope.
+  Destino: directorio temporal del OS (/tmp). Desechable.
+
+  TIPO GATE — transición formal entre fases (ej: Fase 3 → Fase 4).
+  Destino: handoffs/ en el repo. Versionado y auditable.
+
+  Regla de trazabilidad (no salteable):
+  DECISIONS.md debe estar al día antes de generar el handoff.
+  Si hay decisiones sin loggear → para y exige /sdd-log primero.
+
+  El handoff no reemplaza a DECISIONS.md.
+  Es un snapshot de navegación, no el registro canónico.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+<!-- FIN NUEVO -->
+
 ---
 
 ## Estructura de archivos
@@ -192,8 +217,13 @@ sdd-model/
         ├── sdd-implement.md     ← FASE 4: artefactos → código
         ├── sdd-checklist.md     ← FASE 4: checklist verificación manual
         ├── sdd-review.md        ← FASE 4: verificación final
-        └── sdd-health.md        ← MANTENIMIENTO: auditoría por sprint
+        ├── sdd-health.md        ← MANTENIMIENTO: auditoría por sprint
+        └── sdd-handoff.md       ← TRANSVERSAL: snapshot de sesión para handoff
+```
+<!-- NUEVO [sdd-handoff]: línea agregada arriba en la lista de comandos -->
+<!-- FIN NUEVO -->
 
+```
 ── RUNTIME (se crean al usar el modelo) ───────────────────
 existing-arch.md                 ← FASE 0: solo brownfield, generado por /sdd-scan (≤ 120 líneas)
 constitution.md                  ← global del proyecto (≤ 60 líneas)
@@ -207,7 +237,10 @@ specs/
     └── checklist.md             ← FASE 4: generado por /sdd-checklist
 app/                             ← FASE 4: greenfield, generado por /sdd-implement
 (en brownfield: el código se genera dentro del source_root de existing-arch.md)
+handoffs/                        ← TRANSVERSAL: snapshots de gate, versionados
 ```
+<!-- NUEVO [sdd-handoff]: línea handoffs/ agregada arriba en runtime -->
+<!-- FIN NUEVO -->
 
 ---
 
@@ -221,6 +254,9 @@ app/                             ← FASE 4: greenfield, generado por /sdd-imple
 | **3 — Especificación** | Tech Lead (revisar, resolver gaps, firmar) | Claude (`/sdd-generate`, `/sdd-validate`, `/sdd-log`) |
 | **4 — Código** | Dev / Tech Lead (completar checklist + review final) | Claude (`/sdd-implement`, `/sdd-checklist`, `/sdd-review`) |
 | **Mantenimiento** | Tech Lead (cada sprint, aprobar archivado) | Claude (`/sdd-health`) |
+<!-- NUEVO [sdd-handoff]: fila transversal agregada -->
+| **Transversal** | Quien detecta el momento de handoff (declarar propósito) | Claude (`/sdd-handoff`) |
+<!-- FIN NUEVO -->
 
 ---
 

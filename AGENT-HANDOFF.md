@@ -26,7 +26,10 @@ FASE 2 — CLARIFICACIÓN  👤↔️🤖 loop hasta claridad 100%
 FASE 3 — ESPECIFICACIÓN 🤖 genera | 👤 valida y firma
 FASE 4 — CÓDIGO         🤖 implementa | 👤 completa checklist + review final
 MANTENIMIENTO           👤 Tech Lead cada sprint | 🤖 solo reporta
+TRANSVERSAL             🤖 /sdd-handoff — disponible en cualquier fase
 ```
+<!-- NUEVO [sdd-handoff]: línea TRANSVERSAL agregada al bloque de fases -->
+<!-- FIN NUEVO -->
 
 ---
 
@@ -54,8 +57,12 @@ sdd-model/
         ├── sdd-review.md
         ├── sdd-health.md
         ├── sdd-metrics.md
-        └── sdd-metrics-summary.md
+        ├── sdd-metrics-summary.md
+        ├── sdd-test.md
+        └── sdd-handoff.md       ← TRANSVERSAL: snapshot de sesión para handoff
 ```
+<!-- NUEVO [sdd-handoff]: línea sdd-handoff.md agregada en el árbol de comandos -->
+<!-- FIN NUEVO -->
 
 **Artefactos de runtime** — se crean al usar el modelo, NO son parte del template:
 ```
@@ -73,7 +80,10 @@ metrics/
 └── [feature_id]-metrics.md  ← generado por sdd-metrics / sdd-validate
 app/ (greenfield)        ← código generado
 source_root declarado en existing-arch.md (brownfield)
+handoffs/                ← snapshots de gate entre fases, versionados
 ```
+<!-- NUEVO [sdd-handoff]: línea handoffs/ agregada en artefactos de runtime -->
+<!-- FIN NUEVO -->
 
 ---
 
@@ -158,6 +168,21 @@ source_root declarado en existing-arch.md (brownfield)
 - **Solo reporta — nunca modifica nada solo**
 - Al final pregunta si archivar tasks completadas; si sí → lo hace y recuerda `/sdd-log`
 
+<!-- NUEVO [sdd-handoff]: contrato de comportamiento agregado, igual que los otros comandos -->
+### `/sdd-handoff` — TRANSVERSAL
+- Recibe un argumento obligatorio: el propósito del handoff. Si no se pasa, pregunta antes de continuar
+- **Paso 1 obligatorio y no salteable**: verifica que `DECISIONS.md` esté al día antes de generar nada. Si hay decisiones sin loggear → para y exige `/sdd-log` primero
+- Detecta automáticamente la fase activa leyendo qué artefactos existen en el proyecto
+- Determina el tipo de handoff según el propósito declarado:
+  - **OPERATIVO**: sesión paralela, prototipo, bug fix fuera de scope → guarda en `/tmp` del OS, desechable
+  - **GATE**: transición formal entre fases → guarda en `handoffs/` del repo, versionado y auditable
+- El documento incluye: fase de origen, estado actual (✅/🔄/🚧), foco de la próxima sesión, decisiones relevantes (por referencia, no duplicadas), comandos sugeridos para la próxima sesión
+- Para handoffs OPERATIVOS con sesión hijo que vuelve al padre: incluye sección obligatoria "Decisiones a loggear al reintegrarse" — la sesión hijo sabe desde el arranque qué debe registrar en `/sdd-log` al volver
+- Redacta cualquier API key, token, contraseña o PII antes de guardar
+- Muestra el documento completo y pide confirmación antes de guardar
+- **No reemplaza `DECISIONS.md`** — es un snapshot de navegación, no el registro canónico
+<!-- FIN NUEVO -->
+
 ---
 
 ## 5. Decisiones de diseño tomadas en sesión (y por qué)
@@ -172,6 +197,10 @@ source_root declarado en existing-arch.md (brownfield)
 | `/sdd-health` solo reporta, nunca modifica | Autorreparación | El mantenimiento requiere decisión humana; la IA no sabe qué archivar |
 | `settings.json` solo con permisos pnpm | Permisos amplios | Principio de mínimo privilegio; paths hardcodeados rompen portabilidad |
 | Claude arranca sin pedir confirmación en `/sdd-implement` | Confirmación inicial | Ya hay gate humano en Fase 3; pedir confirmación de nuevo es ruido |
+<!-- NUEVO [sdd-handoff]: dos decisiones de diseño del comando agregadas -->
+| `/sdd-handoff` verifica trazabilidad antes de generar | Generar directo | Un handoff sin DECISIONS.md al día rompe la gobernanza del modelo |
+| Dos tipos de handoff (OPERATIVO vs GATE) con destinos distintos | Un solo tipo | Los handoffs desechables no deben contaminar el repo; los de gate sí deben ser auditables |
+<!-- FIN NUEVO -->
 
 ---
 
@@ -183,6 +212,10 @@ source_root declarado en existing-arch.md (brownfield)
 - Checklist items: formato `CHK001`
 - Límites de artefactos son **hard limits**, no sugerencias
 - `DECISIONS.md` es el único registro válido de desvíos del brief
+<!-- NUEVO [sdd-handoff]: convención de naming de handoffs agregada -->
+- Naming de handoffs de gate: `handoffs/[YYYYMMDD]-[fase]-[slug-del-proposito].md`
+- Naming de handoffs operativos: `sdd-handoff-[slug-del-proposito]-[YYYYMMDD].md` (en `/tmp`)
+<!-- FIN NUEVO -->
 
 ---
 
@@ -194,7 +227,7 @@ Contexto que Claude Code lee automáticamente al iniciar sesión. Lista los 9 co
 ### `WORKFLOW.md`
 Guía IDE-agnóstica. Contiene:
 - Mermaid flowchart de las 5 fases
-- Diagrama de texto ASCII del ciclo completo
+- Diagrama de texto ASCII del ciclo completo + sección transversal de `/sdd-handoff`
 - Estructura de archivos con límites
 - Tabla de responsables por fase
 
@@ -216,6 +249,9 @@ Solo permisos pnpm (create, install, add, test, dev, build). Sin paths hardcodea
 | Skills repo para Copilot | ❌ Deferred | Skills organizadas por fase del workflow, formato `.md` compatible con Copilot. Mencionado 4+ veces, siempre pospuesto. |
 | Publicar como repo separado | ❌ Pendiente | `sdd-model/` está lista para ser el contenido de un repo standalone. |
 | Mermaid graph 100% sincronizado con comandos | ⚠️ Gap menor | El graph puede tener pequeñas desincronías con el último estado de los comandos. |
+<!-- NUEVO [sdd-handoff]: ítem movido de pendiente a implementado -->
+| `/sdd-handoff` | ✅ Implementado | Comando transversal con gate de trazabilidad, tipos OPERATIVO/GATE y soporte para patrón hijo-padre. Ver `.claude/commands/sdd-handoff.md`. |
+<!-- FIN NUEVO -->
 
 ---
 

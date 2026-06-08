@@ -34,7 +34,12 @@ checklist.md (lo completa el humano)
 verificación final: lógica + UI
     ↓  cada sprint
 /sdd-health → auditoría de artefactos + drift de existing-arch
+
+[TRANSVERSAL — disponible en cualquier momento]
+/sdd-handoff [propósito] → snapshot de sesión para continuar en otro agente o sesión
 ```
+<!-- NUEVO [sdd-handoff]: línea transversal agregada al diagrama del ciclo -->
+<!-- FIN NUEVO -->
 
 ## Comandos disponibles
 
@@ -52,6 +57,7 @@ verificación final: lógica + UI
 | `/sdd-health` | Mant. | Auditoría por sprint — detecta deuda documental y drift |
 | `/sdd-metrics` | Mant. | Genera reporte de esfuerzo y tokens de la sesión actual |
 | `/sdd-metrics-summary` | Mant. | Agrega métricas de todas las features y muestra totales del proyecto |
+| `/sdd-handoff` | Transversal | Comprime el estado de sesión para continuar en otra sesión o agente. Requiere `DECISIONS.md` al día. |
 
 ## Reglas generales
 
