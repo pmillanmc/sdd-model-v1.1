@@ -95,6 +95,15 @@ Todos los datos se acumulan en `metrics/[feature_id]-metrics.md` con `iteration_
 **Rework Ratio** por feature:
 $$\text{Rework Ratio} = \frac{\text{autocorrecciones} + \text{entradas DECISIONS.md}}{\text{tareas totales}}$$
 
+### ¿Cuándo usar cada comando?
+
+| Comando | Nivel | Cuándo usarlo | Output esperado |
+|---|---|---|---|
+| `/sdd-metrics` | Feature / sesión | Al terminar una implementación o una iteración puntual | Detalle completo de la feature actual (DX_MET_001..006, tokens estimados, rework ratio) |
+| `/sdd-metrics-summary` | Proyecto | En sync de equipo, cierre de sprint o reporte para PM/Lead | Tabla agregada de todas las features + totales + señales de alerta |
+
+Regla rápida: si querés entender **qué pasó en una feature**, usá `/sdd-metrics`; si querés entender **cómo va el proyecto completo**, usá `/sdd-metrics-summary`.
+
 Para ver el estado del proyecto de un vistazo: `/sdd-metrics-summary`.
 
 ---
