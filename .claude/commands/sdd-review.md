@@ -1,4 +1,9 @@
 Leé input.md, spec.md y luego revisá el código generado.
+
+**Gate de prerequisitos:** si no existe código en el `source_root` o no hay bloque
+`## Implement`/reporte en `metrics/[feature_id]-metrics.md`, avisá:
+"No hay evidencia de implementación — corré /sdd-implement primero." y PARÁ.
+
 La carpeta a revisar es `app/` por defecto.
 Si existe `existing-arch.md` en la raíz, usá el `source_root` declarado allí en su lugar.
 
@@ -70,3 +75,9 @@ last_command: sdd-review
 ```
 
 Si el archivo no existe, creálo con estos campos. Si el resultado es PENDIENTE, no modifiqués el status.
+
+Además, en `specs/_registry/features.yaml` actualizá la entrada de la feature:
+`status: CLOSED`, `closed: [fecha ISO 8601]`, y completá `decisions` con las
+entradas de DECISIONS.md generadas durante esta feature. Si la feature tocó
+archivos no listados en `graph/domain.yaml`, avisá: "El grafo de dominio quedó
+desactualizado — agregá los archivos nuevos o corré /sdd-scan."

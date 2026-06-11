@@ -1,0 +1,22 @@
+# Sprint 2026-S12 — planificación y gate de cierre
+# Convención: un archivo por sprint en specs/_registry/sprints/
+# El humano define scope; los comandos SDD solo actualizan el estado de cada feature.
+
+sprint: 2026-S12
+start: 2026-06-08
+end: 2026-06-21
+goal: "Consolidar panel de proyectos y establecer gobernanza del modelo SDD"
+
+scope:
+  - feature: 001-panel-proyectos
+    owner: patohed
+    gate_cierre: "sdd-review APROBADO + checklist.md completo"
+
+fuera_de_scope:
+  # features pedidas pero explícitamente pospuestas (con motivo)
+  []
+
+retro:
+  # completar al cierre del sprint (lo hace el humano, /sdd-health ayuda)
+  cerrado: false
+  notas: null

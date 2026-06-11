@@ -52,6 +52,7 @@ verificación final: lógica + UI
 | `/sdd-validate` | 3 | Verifica que los artefactos cubren el brief |
 | `/sdd-log` | 3/4 | Registra decisiones que desvían el brief en `DECISIONS.md` |
 | `/sdd-implement` | 4 | Implementa todas las tareas de `tasks.md` con TDD |
+| `/sdd-fix` | Transversal | Ruta corta para bugs/hotfixes (≤3 archivos, test reproductor obligatorio, chequeo de colisiones) |
 | `/sdd-checklist` | 4 | Genera criterios de verificación no automatizables |
 | `/sdd-review` | 4 | Gate final: lógica (spec + tests) + UI |
 | `/sdd-health` | Mant. | Auditoría por sprint — detecta deuda documental y drift |
@@ -66,6 +67,34 @@ verificación final: lógica + UI
 - No inventés arquitectura que no esté en `plan.md`
 - Si existe `existing-arch.md`, sus restricciones son no negociables salvo decisión registrada en `DECISIONS.md`
 - Si algo del brief es ambiguo, preguntá antes de implementar
+
+## Gobernanza y routing de contexto
+
+- **Registro maestro**: `specs/_registry/features.yaml` indexa toda feature
+  (status, dominio, owner, sprint, archivos que toca, decisiones).
+  `/sdd-generate` registra, `/sdd-review` cierra, `/sdd-health` audita.
+- **Sprints**: un archivo por sprint en `specs/_registry/sprints/` con scope
+  y gate de cierre. El humano define el scope; los comandos no lo modifican.
+- **Grafo de dominio**: `graph/domain.yaml` mapea dominios → entidades,
+  servicios, componentes y rutas exactas de archivos. Lo genera `/sdd-scan`.
+- **Regla de routing (ahorro de tokens)**: ante cualquier tarea, consultá
+  PRIMERO `graph/domain.yaml` para identificar el dominio afectado y leé
+  SOLO los archivos listados en `files`. No escanees el codebase completo
+  salvo que el grafo no exista o no cubra el dominio (en ese caso, avisá).
+
+## Reglas de trabajo en equipo
+
+- **Colisiones**: antes de tocar archivos, intersectá los `touches` de la
+  feature/fix actual con los de toda otra feature `OPEN` de otro owner en
+  `specs/_registry/features.yaml`. Si hay intersección, reportala y esperá
+  decisión humana. Nunca pises trabajo ajeno en silencio.
+- **Gates de prerequisitos**: cada comando verifica que el paso anterior
+  ocurrió (artefactos existen, validación corrió) antes de ejecutar.
+  Saltarse un gate requiere confirmación humana explícita + entrada en
+  `DECISIONS.md` vía /sdd-log.
+- **Bugs chicos van por /sdd-fix**, no por el ciclo completo ni por fuera
+  del modelo. Si un fix crece (>3 archivos, contratos nuevos), se promueve
+  a feature con /sdd-refine.
 
 
 ### Regla de Observabilidad (Telemetría DX)

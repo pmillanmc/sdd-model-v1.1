@@ -1,3 +1,13 @@
+**Gate de prerequisitos (no negociable):**
+Antes de leer nada, verificá en orden:
+1. Existen los 4 artefactos (`constitution.md`, `spec.md`, `plan.md`, `tasks.md`) en `specs/[feature_id]/`.
+   Si falta alguno: "Faltan artefactos — corré /sdd-generate primero." y PARÁ.
+2. Existe el bloque `## Validate` en `metrics/[feature_id]-metrics.md` (evidencia de que /sdd-validate corrió).
+   Si no existe: "No hay evidencia de validación — corré /sdd-validate primero." y PARÁ.
+   El humano puede forzar el salto SOLO con confirmación explícita, y en ese caso registralo con /sdd-log.
+3. La feature figura `OPEN` en `specs/_registry/features.yaml`. Si figura `CLOSED` o no existe, avisá y PARÁ.
+4. **Colisiones (equipo):** intersectá los `touches` de esta feature con los de toda otra feature `OPEN` de otro owner. Si hay intersección, reportá la colisión y preguntá antes de tocar esos archivos.
+
 Leé estos cuatro archivos en orden:
 1. constitution.md
 2. spec.md

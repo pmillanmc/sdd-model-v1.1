@@ -116,8 +116,22 @@ Solo si responde sí, escribilo.
 ## Límite
 `existing-arch.md` debe ser ≤ 120 líneas. Si no entra, priorizá las primeras 8 secciones y dejá las integraciones/deploy en una segunda pasada (avisá al humano).
 
+### Paso 6 — Grafo de dominio (graph/domain.yaml)
+Después de guardar `existing-arch.md`, generá o actualizá `graph/domain.yaml`:
+1. A partir del análisis ya hecho, identificá los **dominios de negocio** del codebase
+   (agrupaciones funcionales: auth, proyectos, pagos, etc. — no carpetas técnicas).
+2. Para cada dominio completá: `description`, `entities`, `services`, `components`,
+   `storage`, `features` (cruzando con `specs/_registry/features.yaml` si existe),
+   `depends_on` y `files` (rutas exactas).
+3. Actualizá `meta.commit` con el SHA actual y `meta.updated` con la fecha.
+4. Mostrá el grafo propuesto al humano y pedí confirmación antes de guardar
+   (misma regla de doble confirmación).
+
+El grafo es la fuente de routing de contexto: los demás comandos lo consultan
+antes de leer código. Mantenelo ≤ 80 líneas por dominio.
+
 ## Salida
 Al terminar:
-1. Confirmá la ruta del archivo guardado
+1. Confirmá la ruta de los archivos guardados (`existing-arch.md` y `graph/domain.yaml`)
 2. Recordá al humano: "A partir de ahora, todos los comandos SDD entran en modo brownfield automáticamente al detectar `existing-arch.md`."
 3. Sugerí: "Si esto representa un cambio frente al brief original, corré `/sdd-log` para registrarlo."
