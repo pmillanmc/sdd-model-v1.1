@@ -67,7 +67,9 @@ function collectStrings(node, acc = []) {
 // ---------- carga del registro ----------
 const REGISTRY = "specs/_registry/features.yaml";
 if (!exists(REGISTRY)) {
-  fail("registro", `No existe ${REGISTRY}. El modelo requiere el registro maestro.`);
+  // El registro lo genera el modelo al correr (/sdd-generate).
+  // Si no existe, el modelo aún no se usó en este repo: nada que auditar.
+  pass("registro", `${REGISTRY} no existe — modelo sin correr, nada que auditar`);
   report();
 }
 const registry = loadYaml(REGISTRY) ?? { features: [] };

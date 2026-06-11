@@ -1,0 +1,20 @@
+# Registro maestro de features — mantenido por los comandos SDD
+# /sdd-generate agrega entradas · /sdd-review cierra · /sdd-health audita
+# `pnpm audit:sdd` verifica la consistencia de este archivo contra specs/, graph/ y metrics/
+#
+# Este archivo arranca vacío: las entradas las genera el modelo al correr.
+#
+# Esquema de cada entrada:
+#   - id: 001-nombre-corto        # = nombre de carpeta en specs/
+#     type: feature               # feature (default) | fix
+#     status: OPEN                # OPEN | CLOSED | BLOCKED
+#     domain: nombre-dominio      # debe existir en graph/domain.yaml
+#     owner: quien-la-trabaja
+#     sprint: 2026-SNN            # archivo en specs/_registry/sprints/ o null
+#     created: YYYY-MM-DD
+#     closed: null                # fecha al cerrar
+#     touches:                    # rutas que crea o modifica (para colisiones)
+#       - src/...
+#     decisions: []               # entradas relacionadas de DECISIONS.md
+
+features: []
