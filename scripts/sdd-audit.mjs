@@ -135,7 +135,7 @@ if (open.length > 1 && !warnings.some((w) => w.check === "colisiones"))
 
 // ---------- CHECK 3: gates (evidencia en metrics/) ----------
 for (const f of features) {
-  const metricsFile = f.type === "fix" ? `metrics/${f.id}-metrics.md` : `metrics/${f.id}-metrics.md`;
+  const metricsFile = `metrics/${f.id}-metrics.md`;
   const hasMetrics = exists(metricsFile);
   const content = hasMetrics ? read(metricsFile) : "";
 
