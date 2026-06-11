@@ -15,8 +15,10 @@ SDD propone reemplazar workflows basados en prompts aislados por un sistema con 
 ### Fase 0 — Discovery (solo brownfield) `🤖 IA | gate 👤 humano`
 Si el proyecto ya tiene código, `/sdd-scan` recorre el repo y genera `existing-arch.md`:
 un documento descriptivo del stack real, `source_root`, patrones inquebrantables y
-restricciones del codebase. Doble confirmación humana antes de guardarlo. Todos los
-comandos posteriores detectan su presencia y entran en modo brownfield automáticamente.
+restricciones del codebase. Además genera `graph/domain.yaml`, el **grafo de dominio**
+que mapea dominios → entidades, servicios, componentes y rutas exactas de archivos.
+Doble confirmación humana antes de guardarlos. Todos los comandos posteriores detectan
+su presencia y entran en modo brownfield automáticamente.
 
 ### Fase 1 — Brief `👤 humano`
 El equipo (PO + Tech Lead + Devs) genera borradores funcionales y técnicos en `drafts/`: notas, wireframes, restricciones, contexto de negocio.
@@ -49,6 +51,9 @@ Desde `input.md`, los agentes generan cuatro artefactos operativos:
 | Archivo | Rol |
 |---|---|
 | `existing-arch.md` | (solo brownfield) Estado descriptivo del codebase — raíz |
+| `graph/domain.yaml` | Grafo de dominio: routing de contexto para ahorrar tokens — generado por `/sdd-scan` |
+| `specs/_registry/features.yaml` | Registro maestro: status, dominio, owner, sprint y archivos que toca cada feature |
+| `specs/_registry/sprints/` | Un archivo por sprint: scope, owners y gate de cierre |
 | `constitution.md` | Principios del proyecto — global, vive en la raíz |
 | `DECISIONS.md` | Registro tipo ADR de cada desvío del brief — global, versionado |
 | `specs/[feature_id]/` | Una carpeta por feature con sus 4 artefactos + checklist |
@@ -63,16 +68,17 @@ Desde `input.md`, los agentes generan cuatro artefactos operativos:
 | Comando | Fase | Qué hace |
 |---|---|---|
 | `/sdd-explain` | Onboarding | Explica el modelo completo y cómo conecta cada parte |
-| `/sdd-scan` | 0 (brownfield) | Lee el código existente y genera `existing-arch.md` |
+| `/sdd-scan` | 0 (brownfield) | Lee el código existente y genera `existing-arch.md` + `graph/domain.yaml` |
 | `/sdd-refine` | 2 | Grilling dinámico → `input.md` |
-| `/sdd-generate` | 3 | `input.md` → 4 artefactos (confirma `feature_id`) |
+| `/sdd-generate` | 3 | `input.md` → 4 artefactos (confirma `feature_id`, registra en `_registry`, chequea colisiones) |
 | `/sdd-validate` | 3 | Quality gate: brief vs artefactos |
 | `/sdd-log` | 3/4 | Registra decisiones en `DECISIONS.md` |
 | `/sdd-handoff` | Transversal | Comprime el estado de sesión para continuar en otra sesión o agente. Requiere DECISIONS.md al día. |
-| `/sdd-implement` | 4 | Artefactos → código con TDD |
+| `/sdd-fix` | Transversal | Ruta corta para bugs/hotfixes: ≤3 archivos, test reproductor obligatorio, chequeo de colisiones |
+| `/sdd-implement` | 4 | Artefactos → código con TDD (gate: requiere validación previa) |
 | `/sdd-checklist` | 4 | Genera criterios de verificación manual |
-| `/sdd-review` | 4 | Gate final: lógica + UI |
-| `/sdd-health` | Mant. | Auditoría por sprint + drift de `existing-arch.md` + resumen de métricas |
+| `/sdd-review` | 4 | Gate final: lógica + UI. Cierra la feature en el registro |
+| `/sdd-health` | Mant. | Auditoría por sprint: drift de `existing-arch.md` y del grafo, consistencia del registro, colisiones entre features OPEN |
 | `/sdd-metrics` | Mant. | Reporte de esfuerzo, tokens y rework de la sesión actual |
 | `/sdd-metrics-summary` | Mant. | Tabla agregada de métricas de todas las features del proyecto |
 | `/sdd-test` | QA | Smoke test del modelo sobre un fixture sintético (22 checkpoints) |
@@ -111,6 +117,25 @@ Para ver el estado del proyecto de un vistazo: `/sdd-metrics-summary`.
 ## Principio de gobernanza
 
 Los agentes no reemplazan decisiones técnicas ni de negocio. En cada gate, la IA avisa, para y espera aprobación humana explícita antes de continuar.
+
+---
+
+## Trabajo en equipo
+
+El modelo está diseñado para equipos con múltiples personas (y agentes) trabajando en paralelo:
+
+- **Registro maestro** (`specs/_registry/features.yaml`): toda feature y fix queda indexado con status, owner, sprint y archivos que toca (`touches`).
+- **Detección de colisiones**: antes de planificar (`/sdd-generate`), implementar (`/sdd-implement`) o fixear (`/sdd-fix`), se intersectan los `touches` con toda otra feature `OPEN` de otro owner. Si hay solapamiento, la IA reporta y espera decisión humana — nunca pisa trabajo ajeno en silencio.
+- **Gates de prerequisitos**: cada comando verifica que el paso anterior ocurrió (artefactos existen, validación corrió) antes de ejecutar. Saltarse un gate requiere confirmación explícita + entrada en `DECISIONS.md`.
+- **Ruta de escape controlada**: los bugs chicos van por `/sdd-fix` (registro + test reproductor + colisiones), no por fuera del modelo. Si un fix crece, se promueve a feature.
+
+---
+
+## Routing de contexto (ahorro de tokens)
+
+Ante cualquier tarea, los agentes consultan PRIMERO `graph/domain.yaml` para identificar
+el dominio afectado y leen SOLO los archivos listados — no escanean el codebase completo.
+El grafo lo genera `/sdd-scan` y `/sdd-health` detecta su drift.
 
 ---
 
