@@ -1,0 +1,11 @@
+{
+  "name": "sdd-model",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "audit:sdd": "node scripts/sdd-audit.mjs"
+  },
+  "devDependencies": {
+    "yaml": "^2.4.0"
+  }
+}

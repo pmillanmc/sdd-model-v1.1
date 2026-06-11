@@ -1,2 +1,7 @@
 # Carpeta de flavor GDE — contiene documentación sensible del proyecto
 GDE/
+
+node_modules/
+dist/
+coverage/
+.claude/settings.local.json

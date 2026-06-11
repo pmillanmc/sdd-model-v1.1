@@ -92,6 +92,10 @@ verificación final: lógica + UI
   ocurrió (artefactos existen, validación corrió) antes de ejecutar.
   Saltarse un gate requiere confirmación humana explícita + entrada en
   `DECISIONS.md` vía /sdd-log.
+- **Audit determinista**: `pnpm audit:sdd` (script `scripts/sdd-audit.mjs`)
+  verifica consistencia del modelo sin IA: registro↔specs, colisiones,
+  gates de cierre, grafo y sprints. Corre en CI en cada PR. Lo que el
+  script ya verifica, los agentes NO lo recalculan — leen su salida.
 - **Bugs chicos van por /sdd-fix**, no por el ciclo completo ni por fuera
   del modelo. Si un fix crece (>3 archivos, contratos nuevos), se promueve
   a feature con /sdd-refine.

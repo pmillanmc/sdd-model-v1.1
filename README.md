@@ -127,6 +127,7 @@ El modelo está diseñado para equipos con múltiples personas (y agentes) traba
 - **Registro maestro** (`specs/_registry/features.yaml`): toda feature y fix queda indexado con status, owner, sprint y archivos que toca (`touches`).
 - **Detección de colisiones**: antes de planificar (`/sdd-generate`), implementar (`/sdd-implement`) o fixear (`/sdd-fix`), se intersectan los `touches` con toda otra feature `OPEN` de otro owner. Si hay solapamiento, la IA reporta y espera decisión humana — nunca pisa trabajo ajeno en silencio.
 - **Gates de prerequisitos**: cada comando verifica que el paso anterior ocurrió (artefactos existen, validación corrió) antes de ejecutar. Saltarse un gate requiere confirmación explícita + entrada en `DECISIONS.md`.
+- **Audit determinista en CI**: `pnpm audit:sdd` verifica con código (sin IA) la consistencia del modelo: registro↔specs, colisiones entre features OPEN, gates de cierre, archivos del grafo y sprints vencidos. Corre como GitHub Action en cada PR — si falla, no se mergea. Es el linter del proceso: el cumplimiento no depende de buena voluntad.
 - **Ruta de escape controlada**: los bugs chicos van por `/sdd-fix` (registro + test reproductor + colisiones), no por fuera del modelo. Si un fix crece, se promueve a feature.
 
 ---

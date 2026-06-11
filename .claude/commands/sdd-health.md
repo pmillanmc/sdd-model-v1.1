@@ -1,3 +1,12 @@
+**Paso 0 — Audit determinista (obligatorio, antes de leer nada):**
+Corré en terminal: `pnpm audit:sdd`
+Ese script ya verifica de forma determinista: consistencia registro↔specs,
+colisiones entre features OPEN, gates de cierre (métricas/review), existencia
+de archivos del grafo y sprints vencidos. NO recalcules nada de eso vos —
+incorporá su salida textual al reporte y dedicate solo a lo que requiere
+juicio (calidad de contenido, contradicciones semánticas, drift de specs).
+Si el script no existe o falla por entorno, avisá y seguí con el análisis manual.
+
 Leé estos archivos del proyecto:
 - constitution.md
 - DECISIONS.md
