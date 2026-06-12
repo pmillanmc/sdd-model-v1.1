@@ -64,6 +64,33 @@ function collectStrings(node, acc = []) {
   return acc;
 }
 
+// ---------- reporte ----------
+function report() {
+  const line = "─".repeat(60);
+  console.log(`\nSDD AUDIT — ${new Date().toISOString().slice(0, 10)}\n${line}`);
+
+  if (passes.length) {
+    console.log("\n✅ OK");
+    for (const p of passes) console.log(`   [${p.check}] ${p.msg}`);
+  }
+  if (warnings.length) {
+    console.log("\n⚠️  WARN (no bloquea, requiere atención)");
+    for (const w of warnings) console.log(`   [${w.check}] ${w.msg}`);
+  }
+  if (failures.length) {
+    console.log("\n❌ FAIL (bloquea)");
+    for (const f of failures) console.log(`   [${f.check}] ${f.msg}`);
+  }
+
+  console.log(`\n${line}`);
+  console.log(
+    `Resultado: ${failures.length} FAIL · ${warnings.length} WARN · ${passes.length} OK — ${
+      failures.length ? "❌ AUDIT FALLIDO" : "✅ AUDIT PASA"
+    }\n`
+  );
+  process.exit(failures.length ? 1 : 0);
+}
+
 // ---------- carga del registro ----------
 const REGISTRY = "specs/_registry/features.yaml";
 if (!exists(REGISTRY)) {
@@ -204,30 +231,3 @@ if (exists(SPRINTS_DIR)) {
 }
 
 report();
-
-// ---------- reporte ----------
-function report() {
-  const line = "─".repeat(60);
-  console.log(`\nSDD AUDIT — ${new Date().toISOString().slice(0, 10)}\n${line}`);
-
-  if (passes.length) {
-    console.log("\n✅ OK");
-    for (const p of passes) console.log(`   [${p.check}] ${p.msg}`);
-  }
-  if (warnings.length) {
-    console.log("\n⚠️  WARN (no bloquea, requiere atención)");
-    for (const w of warnings) console.log(`   [${w.check}] ${w.msg}`);
-  }
-  if (failures.length) {
-    console.log("\n❌ FAIL (bloquea)");
-    for (const f of failures) console.log(`   [${f.check}] ${f.msg}`);
-  }
-
-  console.log(`\n${line}`);
-  console.log(
-    `Resultado: ${failures.length} FAIL · ${warnings.length} WARN · ${passes.length} OK — ${
-      failures.length ? "❌ AUDIT FALLIDO" : "✅ AUDIT PASA"
-    }\n`
-  );
-  process.exit(failures.length ? 1 : 0);
-}
