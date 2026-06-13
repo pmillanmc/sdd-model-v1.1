@@ -69,6 +69,8 @@ Desde `input.md`, los agentes generan cuatro artefactos operativos:
 | `/sdd-validate` | 3 | Quality gate: brief vs artefactos |
 | `/sdd-log` | 3/4 | Registra decisiones en `DECISIONS.md` |
 | `/sdd-handoff` | Transversal | Comprime el estado de sesión para continuar en otra sesión o agente. Requiere DECISIONS.md al día. |
+| `/sdd-compact-guide` | Mant. | Indica si conviene correr `/compact` según la fase SDD actual |
+| `/sdd-context-budget` | Mant. | Audita el peso en tokens del framework SDD antes del trabajo |
 | `/sdd-implement` | 4 | Artefactos → código con TDD |
 | `/sdd-checklist` | 4 | Genera criterios de verificación manual |
 | `/sdd-review` | 4 | Gate final: lógica + UI |

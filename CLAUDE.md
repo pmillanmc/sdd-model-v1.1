@@ -43,21 +43,26 @@ verificación final: lógica + UI
 
 ## Comandos disponibles
 
-| Comando | Fase | Qué hace |
+| Trigger keywords | Comando | Cuándo cargar el .md |
 |---|---|---|
-| `/sdd-explain` | Onboarding | Explica el modelo completo y cómo conecta cada parte |
-| `/sdd-scan` | 0 (brownfield) | Lee el código existente y genera `existing-arch.md` |
-| `/sdd-refine` | 2 | Lee `drafts/` (+ `existing-arch.md`) y genera `input.md` pulido. **Equivalente al skill `business-clarifier` — usar uno u otro, no ambos.** |
-| `/sdd-generate` | 3 | Lee `input.md` y genera los 4 artefactos SDD |
-| `/sdd-validate` | 3 | Verifica que los artefactos cubren el brief |
-| `/sdd-log` | 3/4 | Registra decisiones que desvían el brief en `DECISIONS.md` |
-| `/sdd-implement` | 4 | Implementa todas las tareas de `tasks.md` con TDD |
-| `/sdd-checklist` | 4 | Genera criterios de verificación no automatizables |
-| `/sdd-review` | 4 | Gate final: lógica (spec + tests) + UI |
-| `/sdd-health` | Mant. | Auditoría por sprint — detecta deuda documental y drift |
-| `/sdd-metrics` | Mant. | Genera reporte de esfuerzo y tokens de la sesión actual |
-| `/sdd-metrics-summary` | Mant. | Agrega métricas de todas las features y muestra totales del proyecto |
-| `/sdd-handoff` | Transversal | Comprime el estado de sesión para continuar en otra sesión o agente. Requiere `DECISIONS.md` al día. |
+| explain, qué es, cómo funciona, onboarding | `/sdd-explain` | Primer contacto con el modelo |
+| scan, codebase, código existente, brownfield | `/sdd-scan` | Proyecto con código previo |
+| refine, clarifica, grilling, ambigüedad, brief | `/sdd-refine` | Hay `drafts/` sin pulir |
+| generate, spec, constitution, plan, tasks | `/sdd-generate` | `input.md` listo |
+| validate, gap, cobertura, brief vs spec | `/sdd-validate` | Spec generada, querés verificar |
+| log, decisión, ADR, alternativas | `/sdd-log` | Hay un desvío que registrar |
+| implement, código, TDD, tareas | `/sdd-implement` | `tasks.md` listo |
+| checklist, criterios manuales, UX | `/sdd-checklist` | Implementación cerrada |
+| review, gate final, UI vs spec | `/sdd-review` | Listo para gate final |
+| health, drift, auditoría, sprint | `/sdd-health` | Cierre de sprint o sospechás drift |
+| metrics, tokens, retrabajo | `/sdd-metrics` | Querés ver costo de esta feature |
+| metrics-summary, proyecto, agregado | `/sdd-metrics-summary` | Querés ver costo del proyecto completo |
+| handoff, continuar, próxima sesión, snapshot | `/sdd-handoff` | Cerrás sesión o pasás a otro agente |
+| compact, contexto, fase, transición | `/sdd-compact-guide` | No sabés si conviene compactar ahora |
+| context budget, overhead, peso framework | `/sdd-context-budget` | Querés saber cuánto pesa el framework |
+| test, smoke, fixture | `/sdd-test` | Validás cambios al propio modelo SDD |
+
+Para invocar cualquier comando, el `.md` se carga sólo cuando el trigger aparece en la conversación o el usuario lo invoca explícitamente. Esta tabla es la única que se carga al inicio de sesión.
 
 ## Reglas generales
 
