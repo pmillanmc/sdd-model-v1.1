@@ -93,6 +93,15 @@ Una línea por ítem. Sin narrativa larga.]
 🚧 Bloqueado / pendiente de decisión:
 - [ítem + razón del bloqueo]
 
+## Caminos descartados (intentados sin éxito)
+[Listá cada approach intentado durante esta sesión que NO funcionó.
+Una línea por ítem con razón explícita del fallo.
+Esta sección es OBLIGATORIA: si no hay caminos descartados, escribí "Ninguno."
+NO omitir la sección como sí se puede hacer con secciones opcionales.]
+
+- **[approach intentado]** — falló porque: [razón concreta / error específico]
+- **[approach intentado]** — falló porque: [razón concreta / error específico]
+
 ## Foco de la próxima sesión
 [Qué debe hacer exactamente la próxima sesión o agente.
 Concreto y acotado al propósito declarado.
