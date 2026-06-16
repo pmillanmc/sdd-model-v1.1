@@ -1,5 +1,10 @@
 Leé input.md.
 
+**Gate de prerequisitos (no negociable):**
+- `input.md` debe existir y estar confirmado (generado por /sdd-refine o el skill equivalente).
+- Si no existe: "Falta input.md — corré /sdd-refine primero." y PARÁ.
+- Si existe pero parece borrador crudo (sin secciones, sin confirmación), preguntá antes de seguir.
+
 **Paso previo obligatorio — Confirmar feature_id:**
 Antes de generar cualquier artefacto, determiná el `feature_id` de esta feature:
 - Si existe una carpeta en `specs/`, usá su nombre (ej. `001-login`).
@@ -14,6 +19,38 @@ feature_id: [valor]
 created: [fecha ISO 8601]
 last_command: sdd-generate
 ```
+
+**Registro de gobernanza (obligatorio):**
+Agregá (o actualizá) la entrada de esta feature en `specs/_registry/features.yaml`:
+- `id`, `status: OPEN`, `domain` (consultá `graph/domain.yaml`; si el dominio no existe, proponé uno nuevo y avisá), `owner` (preguntá si no es deducible), `sprint` (el sprint activo en `specs/_registry/sprints/`, o `null`), `created`, `touches` (las rutas que `tasks.md` declara tocar/crear) y `decisions: []`.
+Si `specs/_registry/features.yaml` no existe, creálo con esta feature como primera entrada.
+
+**Chequeo de colisiones (obligatorio en equipo):**
+Al registrar `touches`, intersectalos con los `touches` de toda otra feature `OPEN`
+del registro. Si hay intersección con una feature de OTRO owner:
+```
+⚠️ COLISIÓN: esta feature toca [archivos], también en curso en [feature_id]
+(owner: [nombre], sprint: [sprint]).
+```
+Preguntá al humano cómo proceder (coordinar, secuenciar, o dividir la feature)
+antes de continuar. Registrá la resolución con /sdd-log.
+
+**Actualización del grafo de dominio (obligatorio):**
+Actualizá (o creá) `graph/domain.yaml` con la información de esta feature:
+- Si el archivo no existe, creálo copiando la estructura de `graph/domain.template.yaml` (sin los comentarios de ejemplo) y completá `meta.updated` con la fecha de hoy y `meta.generated_by: sdd-generate`.
+- Identificá el dominio de esta feature (el campo `domain` ya determinado para el registro).
+- Si el dominio ya existe en el grafo, agregá el `feature_id` al array `features` y los `touches` a los arrays de `files` correspondientes (mapeá por tipo: types, services, components, tests, según la extensión o carpeta del archivo).
+- Si el dominio NO existe, creá una entrada nueva con:
+  - `description`: inferida del nombre del dominio
+  - `features`: [[feature_id]]
+  - `files`: mapeá los `touches` a las claves semánticas correctas
+  - `depends_on`: [] (el humano puede completarlo después)
+Esto garantiza el routing de contexto en proyectos greenfield desde la primera feature.
+
+**Routing de contexto (si existe `graph/domain.yaml`):**
+Antes de leer código del proyecto, consultá el grafo para identificar el dominio
+afectado y leé SOLO los archivos listados en su sección `files`. No escanees
+el codebase completo.
 
 Si existe `existing-arch.md` en la raíz, leélo TAMBIÉN. Estás en modo brownfield:
 - El stack, `source_root`, y patrones inquebrantables de `existing-arch.md` son input fijo.

@@ -1,7 +1,18 @@
+**Paso 0 — Audit determinista (obligatorio, antes de leer nada):**
+Corré en terminal: `pnpm audit:sdd`
+Ese script ya verifica de forma determinista: consistencia registro↔specs,
+colisiones entre features OPEN, gates de cierre (métricas/review), existencia
+de archivos del grafo y sprints vencidos. NO recalcules nada de eso vos —
+incorporá su salida textual al reporte y dedicate solo a lo que requiere
+juicio (calidad de contenido, contradicciones semánticas, drift de specs).
+Si el script no existe o falla por entorno, avisá y seguí con el análisis manual.
+
 Leé estos archivos del proyecto:
 - constitution.md
 - DECISIONS.md
 - existing-arch.md (si existe — modo brownfield)
+- graph/domain.yaml (si existe)
+- specs/_registry/features.yaml y specs/_registry/sprints/ (si existen)
 - Todos los archivos dentro de specs/ (si existe la carpeta)
 - spec.md, plan.md, tasks.md (si están en la raíz)
 - La carpeta de código (`app/` por defecto, o el `source_root` declarado en `existing-arch.md`)
@@ -64,6 +75,30 @@ Mostrá:
 - [feature_id] — cerrada: [fecha]
 
 Si no existe ningún `feature.status.md`, indicá: "Sin features registradas. Corré `/sdd-generate` para iniciar una feature."
+
+### 🗂️ Consistencia del registro (specs/_registry/)
+Si existe `specs/_registry/features.yaml`, verificá:
+- Cada `feature.status.md` tiene su entrada en el registro y los status coinciden
+- Cada entrada del registro tiene su carpeta en `specs/` (los fixes `type: fix` están exentos)
+- Features OPEN cuyo sprint ya terminó (comparar contra `specs/_registry/sprints/`)
+- Features sin `owner` o sin `touches`
+Reportá cada inconsistencia como ⚠️.
+
+### 💥 Colisiones entre features OPEN (equipo)
+Intersectá los `touches` de todas las features `OPEN` entre sí.
+Para cada par con archivos en común, reportá:
+```
+⚠️ [feature-A] (owner: X) y [feature-B] (owner: Y) tocan ambas: [archivos]
+```
+Si los owners son distintos, marcalo como prioridad alta — requiere coordinación
+antes de que ambas avancen.
+
+### 🕸️ Drift del grafo de dominio (graph/domain.yaml)
+Si existe `graph/domain.yaml`, verificá:
+- `meta.commit` vs HEAD actual: ¿cuántos commits pasaron?
+- Archivos listados en `files` que ya no existen en el codebase
+- Carpetas/módulos nuevos en el `source_root` que ningún dominio cubre
+Si hay drift, recomendá: "Corré /sdd-scan para regenerar el grafo."
 
 ### �📊 Resumen de métricas (si existe carpeta `metrics/`)
 

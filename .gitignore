@@ -1,2 +1,10 @@
 # Carpeta de flavor GDE — contiene documentación sensible del proyecto
 GDE/
+
+node_modules/
+dist/
+coverage/
+.claude/settings.local.json
+
+# MCP server — vive en su propio repo, no es parte del modelo
+mcp/
