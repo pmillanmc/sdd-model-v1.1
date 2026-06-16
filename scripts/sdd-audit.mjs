@@ -173,7 +173,10 @@ for (const f of features) {
     }
     if (!hasMetrics) {
       fail("gates", `${f.id}: CLOSED sin archivo de métricas (${metricsFile})`);
-    } else if (!/resultado:\s*APROBADO/i.test(content)) {
+    } else if (!/resultado:.*APROBADO/i.test(content)) {
+      // Contrato: sdd-review debe escribir una línea que contenga "resultado:" y "APROBADO"
+      // Ejemplo válido: "- resultado: APROBADO" o "- resultado: ✅ APROBADO"
+      // Ejemplo inválido: "resultado: PENDIENTE" o ausencia del bloque ## Review
       fail("gates", `${f.id}: CLOSED sin evidencia de "resultado: APROBADO" en ${metricsFile}`);
     } else {
       pass("gates", `${f.id}: cierre con review APROBADO verificado`);

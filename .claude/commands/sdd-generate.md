@@ -35,6 +35,18 @@ del registro. Si hay intersección con una feature de OTRO owner:
 Preguntá al humano cómo proceder (coordinar, secuenciar, o dividir la feature)
 antes de continuar. Registrá la resolución con /sdd-log.
 
+**Actualización del grafo de dominio (obligatorio):**
+Actualizá (o creá) `graph/domain.yaml` con la información de esta feature:
+- Si el archivo no existe, creálo copiando la estructura de `graph/domain.template.yaml` (sin los comentarios de ejemplo) y completá `meta.updated` con la fecha de hoy y `meta.generated_by: sdd-generate`.
+- Identificá el dominio de esta feature (el campo `domain` ya determinado para el registro).
+- Si el dominio ya existe en el grafo, agregá el `feature_id` al array `features` y los `touches` a los arrays de `files` correspondientes (mapeá por tipo: types, services, components, tests, según la extensión o carpeta del archivo).
+- Si el dominio NO existe, creá una entrada nueva con:
+  - `description`: inferida del nombre del dominio
+  - `features`: [[feature_id]]
+  - `files`: mapeá los `touches` a las claves semánticas correctas
+  - `depends_on`: [] (el humano puede completarlo después)
+Esto garantiza el routing de contexto en proyectos greenfield desde la primera feature.
+
 **Routing de contexto (si existe `graph/domain.yaml`):**
 Antes de leer código del proyecto, consultá el grafo para identificar el dominio
 afectado y leé SOLO los archivos listados en su sección `files`. No escanees

@@ -62,11 +62,15 @@ Al terminar el reporte, agregá al archivo `metrics/[feature_id]-metrics.md` el 
 ```
 ## Review — [timestamp]
 - command_origin: sdd-review
-- resultado: [APROBADO / PENDIENTE]
+- resultado: APROBADO
 - criterios_sin_test: [número de ⚠️]
 - criterios_sin_implementar: [número de ❌]
 - gaps_ui: [número de gaps de UI]
 ```
+
+> **Contrato con el auditor:** el campo `resultado:` debe contener literalmente `APROBADO` o `PENDIENTE`.
+> El script `pnpm audit:sdd` verifica la presencia de `resultado:.*APROBADO` para certificar el cierre.
+> No uses sinónimos ni emojis como valor principal — el valor debe ser la palabra exacta.
 
 **Cierre de feature (solo si resultado es APROBADO):**
 Actualizá `specs/[feature_id]/feature.status.md` con:
