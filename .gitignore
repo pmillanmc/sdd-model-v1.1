@@ -5,3 +5,6 @@ node_modules/
 dist/
 coverage/
 .claude/settings.local.json
+
+# MCP server — vive en su propio repo, no es parte del modelo
+mcp/

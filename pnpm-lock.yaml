@@ -1,18 +1,24 @@
-lockfileVersion: '6.0'
+lockfileVersion: '9.0'
 
 settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-devDependencies:
-  yaml:
-    specifier: ^2.4.0
-    version: 2.9.0
+importers:
+
+  .:
+    devDependencies:
+      yaml:
+        specifier: ^2.4.0
+        version: 2.9.0
 
 packages:
 
-  /yaml@2.9.0:
+  yaml@2.9.0:
     resolution: {integrity: sha512-2AvhNX3mb8zd6Zy7INTtSpl1F15HW6Wnqj0srWlkKLcpYl/gMIMJiyuGq2KeI2YFxUPjdlB+3Lc10seMLtL4cA==}
     engines: {node: '>= 14.6'}
     hasBin: true
-    dev: true
+
+snapshots:
+
+  yaml@2.9.0: {}
