@@ -1,5 +1,16 @@
 Leé todos los archivos dentro de la carpeta drafts/.
 
+**Si hay archivos `.html` en drafts/:** antes de analizar las 6 categorías, resolvé la cascada CSS completa del HTML. Para cada componente visual relevante extraé los valores efectivos computados (no nombres de clase):
+- Colores: hex o rgb resuelto (siguiendo variables CSS `--var` hasta su valor final)
+- Tipografía: font-family, font-size en px, font-weight, line-height
+- Espaciado: padding/margin en px o rem resueltos
+- Layout: tipo de layout (flex/grid), gaps, alineación
+- Estados: hover, focus, disabled si los hay
+
+Estos valores van a ir explícitamente en la sección UI/FLUJO de `input.md` — nunca como nombres de clase.
+Ejemplo correcto: `"botón primario: fondo #2563EB, texto #FFFFFF, border-radius 6px, padding 8px 16px"`
+Ejemplo incorrecto: `"botón primario: clase btn-primary"`
+
 Si existe `existing-arch.md` en la raíz del proyecto, leélo TAMBIÉN antes de empezar.
 En ese caso estás en modo brownfield: el stack y las restricciones técnicas
 de `existing-arch.md` son no negociables y tienen prioridad sobre cualquier

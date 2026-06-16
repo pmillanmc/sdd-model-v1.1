@@ -23,6 +23,11 @@ o equivalente), verificá:
 1. ¿Hay un criterio en spec.md que lo cubra?
 2. ¿Hay código en el `source_root` que lo implemente?
 
+**Si hay archivos `.html` en `drafts/`:** la verificación visual es más estricta. Para cada componente con estilos, comparás el valor efectivo del HTML original (color hex, px, font-stack) contra el valor implementado en el código. Una clase correcta con una variable mal resuelta es un gap. Chequeá específicamente:
+- Variables CSS: ¿el código usa el valor resuelto o el nombre de variable?
+- Herencia de color/tipografía: ¿el componente hereda bien del padre o rompe la cascada?
+- Estados interactivos (hover, focus, disabled): ¿están implementados si el HTML los tenía?
+
 Si un requisito visual de input.md no tiene criterio en spec.md ni código → es un gap
 que no fue trackeado en ningún artefacto.
 

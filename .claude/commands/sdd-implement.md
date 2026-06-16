@@ -15,6 +15,14 @@ Leé estos cuatro archivos en orden:
 4. tasks.md
 
 Si existe `existing-arch.md` en la raíz, leélo TAMBIÉN antes de tocar código.
+
+**Si hay archivos `.html` en `drafts/` y la feature tiene componentes de UI:** leélos ANTES de implementar cualquier componente visual. Para cada elemento que vayas a implementar, resolvé la cascada CSS completa:
+1. Identificá las variables CSS (`--var`) y resolvé su valor final (no uses el nombre de la variable como valor)
+2. Seguí la herencia: si un color o font-size viene del padre, usá el valor computado
+3. Verificá especificidad: si una clase sobreescribe a otra, usá el valor que realmente gana
+4. Priorizá el valor efectivo del HTML por sobre cualquier descripción textual en spec.md o plan.md que pueda haber quedado imprecisa
+
+Si `input.md` tiene una sección de especificación visual con valores explícitos (colores hex, px, etc.), esos valores son la fuente de verdad definitiva para los estilos.
 En modo brownfield:
 - Trabajá dentro del `source_root` declarado (NO crees una carpeta `app/` nueva).
 - Usá el gestor de paquetes declarado en `existing-arch.md` (puede no ser pnpm).
