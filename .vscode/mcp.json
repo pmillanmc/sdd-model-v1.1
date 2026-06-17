@@ -1,0 +1,16 @@
+{
+  "servers": {
+    "sdd": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["${workspaceFolder}/mcp/dist/index.js"],
+      "env": {
+        "SDD_PROJECT_ROOT": "${workspaceFolder}"
+      }
+    },
+    "atlassian": {
+      "type": "sse",
+      "url": "https://mcp.atlassian.com/v1/mcp"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+# Plantilla del grafo de dominio — /sdd-scan genera graph/domain.yaml con esta estructura.
+# El grafo es la fuente de routing de contexto: ante una tarea, el agente identifica
+# acá el dominio afectado y lee SOLO los archivos listados en `files`.
+
+meta:
+  generated_by: sdd-scan
+  commit: null # SHA del commit contra el que se generó (drift tracking)
+  updated: YYYY-MM-DD
+
+domains: {}
+# Ejemplo de dominio:
+#   auth:
+#     description: "Autenticación y sesiones"
+#     entities: [User, Session]
+#     services: [useAuth, tokenService]
+#     components: [LoginForm, SessionGuard]
+#     storage: localStorage | api | db
+#     features: [001-login]          # ids de specs/_registry/features.yaml
+#     depends_on: []                 # otros dominios
+#     files:                         # rutas exactas — la clave del ahorro de tokens
+#       types: [src/types/auth.ts]
+#       services: [src/services/token.ts]
+#       components: [src/components/auth/]
+#       tests: [src/services/token.test.ts]

@@ -1,0 +1,21 @@
+# Plantilla de sprint — copiá este archivo como specs/_registry/sprints/YYYY-SNN.yaml
+# El humano (PO/Lead) define el scope; los comandos SDD solo leen este archivo.
+
+sprint: YYYY-SNN
+start: YYYY-MM-DD
+end: YYYY-MM-DD
+goal: "objetivo del sprint en una línea"
+
+scope:
+  # - feature: 001-nombre
+  #   owner: nombre
+  #   gate_cierre: "sdd-review APROBADO + checklist.md completo"
+  []
+
+fuera_de_scope:
+  # features pedidas pero explícitamente pospuestas (con motivo)
+  []
+
+retro:
+  cerrado: false
+  notas: null

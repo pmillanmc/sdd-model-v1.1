@@ -53,6 +53,7 @@ Desde `input.md`, los agentes generan cuatro artefactos operativos:
 | `DECISIONS.md` | Registro tipo ADR de cada desvío del brief — global, versionado |
 | `specs/[feature_id]/` | Una carpeta por feature con sus 4 artefactos + checklist |
 | `specs/[feature_id]/feature.status.md` | Estado del ciclo de vida: `OPEN` (en progreso) o `CLOSED` (aprobada) |
+| `specs/[feature_id]/jira-map.yaml` | Mapa de trazabilidad task ↔ ticket Jira — generado por `/sdd-generate` |
 | `metrics/[feature_id]-metrics.md` | Métricas de esfuerzo y calidad por feature — generado automáticamente |
 | `handoffs/` | Snapshots de gate entre fases — versionados, referenciados en `DECISIONS.md` |
 
@@ -65,7 +66,7 @@ Desde `input.md`, los agentes generan cuatro artefactos operativos:
 | `/sdd-explain` | Onboarding | Explica el modelo completo y cómo conecta cada parte |
 | `/sdd-scan` | 0 (brownfield) | Lee el código existente y genera `existing-arch.md` |
 | `/sdd-refine` | 2 | Grilling dinámico → `input.md` |
-| `/sdd-generate` | 3 | `input.md` → 4 artefactos (confirma `feature_id`) |
+| `/sdd-generate` | 3 | `input.md` → 4 artefactos + crea tickets en Jira + genera `jira-map.yaml` |
 | `/sdd-validate` | 3 | Quality gate: brief vs artefactos |
 | `/sdd-log` | 3/4 | Registra decisiones en `DECISIONS.md` |
 | `/sdd-handoff` | Transversal | Comprime el estado de sesión para continuar en otra sesión o agente. Requiere DECISIONS.md al día. |
@@ -78,6 +79,38 @@ Desde `input.md`, los agentes generan cuatro artefactos operativos:
 | `/sdd-metrics` | Mant. | Reporte de esfuerzo, tokens y rework de la sesión actual |
 | `/sdd-metrics-summary` | Mant. | Tabla agregada de métricas de todas las features del proyecto |
 | `/sdd-test` | QA | Smoke test del modelo sobre un fixture sintético (22 checkpoints) |
+| `/sdd-jira-start` | Jira | Conecta un ticket de Jira con una feature SDD y lo mueve a IN PROGRESS |
+| `/sdd-jira-sync` | Jira | Reconcilia `jira-map.yaml` con el estado real de Jira en ambas direcciones |
+| `/sdd-jira-close` | Jira | Cierra la feature en SDD y mueve el ticket principal a FINALIZADO |
+
+---
+
+## Integración con Jira
+
+Los comandos `/sdd-jira-*` conectan el modelo SDD con Jira para mantener trazabilidad completa entre tasks y tickets. Requieren el **Atlassian MCP** activo.
+
+### Ciclo de vida de la integración
+
+```
+/sdd-jira-start [TICKET-KEY]   → vincula ticket de Jira con feature SDD (vínculo grueso: 1 ticket ↔ 1 feature)
+/sdd-generate                  → genera tasks + crea tickets en Jira + genera jira-map.yaml (vínculo fino: 1 ticket ↔ 1 task)
+/sdd-jira-sync                 → reconcilia ambos lados durante el desarrollo (bidireccional, gate humano)
+/sdd-jira-close                → cierra feature en SDD y mueve ticket principal a FINALIZADO
+```
+
+### Configuración del Atlassian MCP por entorno
+
+**Cursor** — el archivo `.vscode/mcp.json` ya incluye ambos servidores (`sdd` + `atlassian`). Cursor los levanta automáticamente al abrir el proyecto. La primera vez pedirá autenticar tu cuenta de Atlassian vía OAuth.
+
+**Claude Code** — el archivo `.claude/settings.json` ya incluye ambos servidores. Para el Atlassian MCP definí estas variables de entorno antes de abrir la sesión:
+```bash
+export ATLASSIAN_SITE_URL=https://tu-org.atlassian.net
+export ATLASSIAN_USER_EMAIL=tu@email.com
+export ATLASSIAN_API_TOKEN=tu-api-token
+```
+Generás el API token en: https://id.atlassian.com/manage-profile/security/api-tokens
+
+**Claude.ai** — conectar manualmente desde la UI: Atlassian desde el conector oficial, mcp-proguide como servidor MCP remoto con la URL de tu instancia.
 
 ---
 
@@ -91,6 +124,7 @@ El modelo captura automáticamente métricas de esfuerzo y calidad en cada fase:
 | `/sdd-validate` | Cobertura inicial del brief, gaps encontrados |
 | `/sdd-implement` | Ciclos de autocorrección, consultas de clarificación, tokens estimados |
 | `/sdd-review` | Resultado final, criterios sin test, gaps de UI |
+| `/sdd-jira-*` | Tickets creados, sincronizados, estados actualizados, duplicados resueltos |
 
 Todos los datos se acumulan en `metrics/[feature_id]-metrics.md` con `iteration_number` para detectar retrabajo entre sesiones.
 
@@ -105,8 +139,6 @@ $$\text{Rework Ratio} = \frac{\text{autocorrecciones} + \text{entradas DECISIONS
 | `/sdd-metrics-summary` | Proyecto | En sync de equipo, cierre de sprint o reporte para PM/Lead | Tabla agregada de todas las features + totales + señales de alerta |
 
 Regla rápida: si querés entender **qué pasó en una feature**, usá `/sdd-metrics`; si querés entender **cómo va el proyecto completo**, usá `/sdd-metrics-summary`.
-
-Para ver el estado del proyecto de un vistazo: `/sdd-metrics-summary`.
 
 ---
 

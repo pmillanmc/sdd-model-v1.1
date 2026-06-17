@@ -8,5 +8,23 @@
       "Bash(pnpm dev *)",
       "Bash(pnpm build *)"
     ]
+  },
+  "mcpServers": {
+    "sdd": {
+      "command": "node",
+      "args": ["${workspaceFolder}/mcp/dist/index.js"],
+      "env": {
+        "SDD_PROJECT_ROOT": "${workspaceFolder}"
+      }
+    },
+    "atlassian": {
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/mcp-server-atlassian"],
+      "env": {
+        "ATLASSIAN_SITE_URL": "${env:ATLASSIAN_SITE_URL}",
+        "ATLASSIAN_USER_EMAIL": "${env:ATLASSIAN_USER_EMAIL}",
+        "ATLASSIAN_API_TOKEN": "${env:ATLASSIAN_API_TOKEN}"
+      }
+    }
   }
 }
