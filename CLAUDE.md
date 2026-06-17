@@ -37,6 +37,7 @@ verificación final: lógica + UI
 
 [INTEGRACIÓN JIRA — requiere Atlassian MCP]
 /sdd-jira-start → trae ticket de Jira, registra feature, mueve a In Progress
+/sdd-jira-sync  → reconcilia jira-map.yaml con Jira durante el desarrollo
 /sdd-jira-close → cierra feature en SDD, mueve ticket a Done + comentario
 
 [TRANSVERSAL — disponible en cualquier momento]
@@ -67,13 +68,14 @@ verificación final: lógica + UI
 | context budget, overhead, peso framework | `/sdd-context-budget` | Querés saber cuánto pesa el framework |
 | test, smoke, fixture | `/sdd-test` | Validás cambios al propio modelo SDD |
 | jira start, próximo ticket, arrancar feature | `/sdd-jira-start` | Arrancás una feature desde Jira |
+| jira sync, sincronizar, reconciliar tickets | `/sdd-jira-sync` | Sincronizás tasks con Jira durante el desarrollo |
 | jira close, cerrar ticket, feature terminada | `/sdd-jira-close` | Cerrás feature y actualizás Jira |
 
 Para invocar cualquier comando, el `.md` se carga sólo cuando el trigger aparece en la conversación o el usuario lo invoca explícitamente. Esta tabla es la única que se carga al inicio de sesión.
 
 ## Configuración de MCPs
 
-Los comandos `/sdd-jira-start` y `/sdd-jira-close` requieren dos servidores MCP activos:
+Los comandos `/sdd-jira-start`, `/sdd-jira-sync` y `/sdd-jira-close` requieren dos servidores MCP activos:
 - **mcp-proguide** — gobernanza SDD local (registry, audit, graph, metrics)
 - **Atlassian MCP** — integración con Jira
 
