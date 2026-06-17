@@ -35,10 +35,15 @@ verificación final: lógica + UI
     ↓  cada sprint
 /sdd-health → auditoría de artefactos + drift de existing-arch
 
+[INTEGRACIÓN JIRA — requiere Atlassian MCP]
+/sdd-jira-start → trae ticket de Jira, registra feature, mueve a In Progress
+/sdd-jira-close → cierra feature en SDD, mueve ticket a Done + comentario
+
 [TRANSVERSAL — disponible en cualquier momento]
 /sdd-handoff [propósito] → snapshot de sesión para continuar en otro agente o sesión
 ```
 <!-- NUEVO [sdd-handoff]: línea transversal agregada al diagrama del ciclo -->
+<!-- NUEVO [sdd-jira]: bloque de integración Jira agregado al diagrama -->
 <!-- FIN NUEVO -->
 
 ## Comandos disponibles
@@ -61,8 +66,39 @@ verificación final: lógica + UI
 | compact, contexto, fase, transición | `/sdd-compact-guide` | No sabés si conviene compactar ahora |
 | context budget, overhead, peso framework | `/sdd-context-budget` | Querés saber cuánto pesa el framework |
 | test, smoke, fixture | `/sdd-test` | Validás cambios al propio modelo SDD |
+| jira start, próximo ticket, arrancar feature | `/sdd-jira-start` | Arrancás una feature desde Jira |
+| jira close, cerrar ticket, feature terminada | `/sdd-jira-close` | Cerrás feature y actualizás Jira |
 
 Para invocar cualquier comando, el `.md` se carga sólo cuando el trigger aparece en la conversación o el usuario lo invoca explícitamente. Esta tabla es la única que se carga al inicio de sesión.
+
+## Configuración de MCPs
+
+Los comandos `/sdd-jira-start` y `/sdd-jira-close` requieren dos servidores MCP activos:
+- **mcp-proguide** — gobernanza SDD local (registry, audit, graph, metrics)
+- **Atlassian MCP** — integración con Jira
+
+La configuración varía según el entorno:
+
+### Cursor
+El archivo `.vscode/mcp.json` ya incluye ambos servidores. Cursor los levanta
+automáticamente al abrir el proyecto. La primera vez te va a pedir autenticar
+tu cuenta de Atlassian — seguí el flujo OAuth que aparece en el panel MCP.
+
+### Claude Code
+El archivo `.claude/settings.json` ya incluye ambos servidores. Para el
+Atlassian MCP necesitás definir estas variables de entorno antes de abrir
+la sesión:
+```bash
+export ATLASSIAN_SITE_URL=https://tu-org.atlassian.net
+export ATLASSIAN_USER_EMAIL=tu@email.com
+export ATLASSIAN_API_TOKEN=tu-api-token
+```
+Generás el API token en: https://id.atlassian.com/manage-profile/security/api-tokens
+
+### Claude.ai
+Los MCPs se conectan manualmente desde la UI de Claude.ai:
+- mcp-proguide: conectar como servidor MCP remoto con la URL de tu instancia
+- Atlassian: conectar desde el conector oficial de Atlassian en la UI
 
 ## Reglas generales
 
