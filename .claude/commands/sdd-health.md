@@ -102,6 +102,25 @@ Mostrá la tabla:
 
 Si no existe la carpeta `metrics/` o está vacía, indicá: "Sin métricas registradas aún."
 
+### 🧠 Auto-memoria de Claude Code CLI (solo si el equipo usa `claude` en terminal)
+
+Este paso aplica únicamente a quienes ejecutan el modelo desde el CLI de Claude Code
+(`claude` en terminal), no desde VS Code Copilot.
+
+Si alguien del equipo usa Claude Code CLI, revisá si existe el directorio de auto-memoria:
+- Mac/Linux: `~/.claude/memories/`
+- Windows: `%USERPROFILE%\.claude\memories\`
+
+Para cada archivo encontrado, chequeá:
+- ¿Alguna entrada contradice `CLAUDE.md`, los comandos SDD o `DECISIONS.md`?
+- ¿Hay entradas sobre el proceso (gates, colisiones, registro) que difieran de lo que
+  definen los comandos? → eliminar, el comando es la fuente de verdad.
+- ¿Hay entradas sobre tecnología o paths que ya no existen en el repo? → eliminar.
+- ¿Hay entradas factuales útiles y estables (ej: `source_root`, `package_manager`)? → mantener.
+
+Reportá cada archivo encontrado y el resultado de la revisión como ✅ limpio / ⚠️ revisar.
+Si el directorio no existe o no hay archivos, indicá: "Sin auto-memoria detectada."
+
 ### ✅ Estado general
 [SALUDABLE / REQUIERE ATENCIÓN / CRÍTICO]
 Resumen de qué hacer antes del próximo sprint.
