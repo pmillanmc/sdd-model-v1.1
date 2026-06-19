@@ -26,15 +26,17 @@ El equipo (PO + Tech Lead + Devs) genera borradores funcionales y técnicos en `
 ### Fase 2 — Clarificación `👤↔️🤖`
 `/sdd-refine` detecta gaps, aclara restricciones y consolida un `input.md` como **fuente única de verdad** del proyecto. Requiere doble confirmación humana antes de cerrar.
 
+Antes del grilling, detecta automáticamente el tipo de feature (dashboard/reporte, formulario, lista, permisos, integración externa) y agrega preguntas específicas de dominio a su análisis — aunque el borrador no las mencione. Ejemplo: si la feature es un dashboard, pregunta sobre dimensión temporal, granularidad y si el estado debe persistir en la URL. Esto evita que decisiones críticas queden sin definir hasta que aparecen durante la implementación.
+
 ### Fase 3 — Especificación `🤖 IA | gate 👤 humano`
 Desde `input.md`, los agentes generan cuatro artefactos operativos:
 
 | Artefacto | Qué es | Límite |
 |---|---|---|
 | `constitution.md` | Principios inmutables del proyecto (MUST / PROHIBITED) | ≤ 60 líneas |
-| `spec.md` | User stories con criterios Given/When/Then verificables | ≤ 80 líneas |
+| `spec.md` | User stories con criterios Given/When/Then verificables + sección obligatoria `## Fuera de scope (v1)` con los ítems rechazados durante el grilling y la razón de rechazo. Es el **contrato negativo** de la feature: lo que el equipo se comprometió a NO construir en v1. `/sdd-implement` no puede implementar nada listado ahí aunque aparezca en drafts o en el contexto. | ≤ 80 líneas |
 | `plan.md` | Stack, arquitectura y estructura de archivos concreta | ≤ 50 líneas |
-| `tasks.md` | Lista TDD ordenada con IDs únicos y marcas de paralelismo | ≤ 40 activas |
+| `tasks.md` | Lista TDD con IDs únicos. Tres reglas de calidad: **(1) slicing vertical** — cada tarea entrega una slice completa y testeable de un user story (backend + UI + integración), no capas tecnológicas separadas; **(2) sin nombres de funciones** — las tareas describen QUÉ construir, no CÓMO, para no volverse stale si la implementación previa cambia; **(3) trazabilidad** — cada tarea referencia el `US-N` de `spec.md` que implementa. | ≤ 40 activas |
 
 `/sdd-validate` verifica que los artefactos cubran el brief. Si hay gaps, **avisa y para** — no modifica nada solo. Cada decisión que desvía el brief queda registrada en `DECISIONS.md` vía `/sdd-log`.
 
