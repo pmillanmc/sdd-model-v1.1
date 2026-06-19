@@ -10,7 +10,7 @@ Antes de leer nada, verificá en orden:
 
 Leé estos cuatro archivos en orden:
 1. constitution.md
-2. spec.md
+2. spec.md — prestá atención especial a la sección `## Fuera de scope (v1)` si existe: ningún ítem listado ahí puede implementarse, aunque aparezca mencionado en `drafts/`, en comentarios del código o en el contexto de la conversación. Si detectás que una tarea de `tasks.md` implementa algo fuera de scope, avisá y pedí confirmación antes de continuar.
 3. plan.md
 4. tasks.md
 

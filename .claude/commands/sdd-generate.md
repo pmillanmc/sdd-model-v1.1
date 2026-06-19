@@ -61,7 +61,7 @@ Si existe `existing-arch.md` en la raíz, leélo TAMBIÉN. Estás en modo brownf
 
 A partir de esos archivos generá estos cuatro archivos en orden:
 1. constitution.md — principios MUST/PROHIBITED del proyecto
-2. spec.md — user stories con criterios Given/When/Then, uno por feature de UI
+2. spec.md — user stories con criterios Given/When/Then, uno por feature de UI, más una sección obligatoria `## Fuera de scope (v1)` con los ítems del campo OUT OF SCOPE de `input.md` (uno por línea, con la razón de rechazo si fue mencionada). Esta sección es el contrato negativo de la feature: lo que el equipo se comprometió a NO construir en v1.
 3. plan.md — stack técnico, estructura de carpetas y lista de componentes a crear
 4. tasks.md — una tarea por componente o feature (T001 = scaffold, T002 = un componente, etc.)
 
