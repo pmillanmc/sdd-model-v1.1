@@ -42,6 +42,7 @@ Verificar:
 - [ ] A3: Generó `test-fixture/input.md` con las 6 secciones completas
 - [ ] A4: Creó (o intentó crear) `metrics/test-fixture-metrics.md` con bloque `## Refine`
 - [ ] A5: El bloque Refine contiene `rondas_de_preguntas`, `categorias_faltantes`, `categorias_ambiguas`
+- [ ] A6: Detectó que la feature es un **formulario** y preguntó al menos una pregunta de dominio específica (validaciones client/server, estados intermedios, o qué pasa si el usuario abandona)
 
 ### Checkpoint B — sdd-generate
 Ejecutá `/sdd-generate` con `test-fixture/input.md` como input.
@@ -52,6 +53,8 @@ Verificar:
 - [ ] B3: Ningún artefacto supera su límite de líneas (60 / 80 / 50 / 40)
 - [ ] B4: spec.md contiene al menos un criterio Given/When/Then
 - [ ] B5: tasks.md contiene el `feature_id` en el encabezado
+- [ ] B6: spec.md contiene la sección `## Fuera de scope (v1)` con al menos un ítem (contrato negativo)
+- [ ] B7: cada tarea con implementación en tasks.md tiene referencia `US-N` o `US: —` al final de la línea
 
 ### Checkpoint C — sdd-validate
 Ejecutá `/sdd-validate` sobre los artefactos generados.
@@ -88,7 +91,7 @@ Al terminar todos los checkpoints, mostrá:
 ```
 ## Smoke Test SDD — [timestamp]
 
-Checkpoints pasados: [N] / 22
+Checkpoints pasados: [N] / 25
 Checkpoints fallidos: [lista de IDs, ej. A4, C2]
 
 Estado: [PASS / FAIL]

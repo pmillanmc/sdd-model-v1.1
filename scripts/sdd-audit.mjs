@@ -233,4 +233,43 @@ if (exists(SPRINTS_DIR)) {
   }
 }
 
+// ---------- CHECK 6: schema de artefactos ----------
+// Verifica que spec.md y tasks.md de cada feature cumplen
+// el esquema mínimo requerido por el modelo (no requiere IA).
+for (const f of features) {
+  if (f.type === "fix") continue;
+  const dir = `specs/${f.id}`;
+  if (!exists(dir)) continue;
+
+  // spec.md: debe tener sección "## Fuera de scope"
+  const specFile = `${dir}/spec.md`;
+  if (exists(specFile)) {
+    const specContent = read(specFile);
+    if (!/^##\s+fuera de scope/im.test(specContent)) {
+      warn(
+        "schema",
+        `${f.id}: spec.md no tiene sección "## Fuera de scope (v1)" — regenerá con /sdd-generate`
+      );
+    } else {
+      pass("schema", `${f.id}: spec.md tiene sección Fuera de scope`);
+    }
+  }
+
+  // tasks.md: cada línea de tarea (T\d+) debe tener referencia US-N o "US: —"
+  const tasksFile = `${dir}/tasks.md`;
+  if (exists(tasksFile)) {
+    const lines = read(tasksFile).split(/\r?\n/);
+    const taskLines = lines.filter((l) => /^\s*[-*]\s+\*{0,2}T\d+/.test(l));
+    const missingUS = taskLines.filter((l) => !/US[-:]\s*[\d—–-]/.test(l));
+    if (missingUS.length) {
+      warn(
+        "schema",
+        `${f.id}: ${missingUS.length} tarea(s) en tasks.md sin referencia US-N — regenerá con /sdd-generate`
+      );
+    } else if (taskLines.length > 0) {
+      pass("schema", `${f.id}: tasks.md tiene trazabilidad US-N en todas las tareas`);
+    }
+  }
+}
+
 report();
