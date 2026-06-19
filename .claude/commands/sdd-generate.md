@@ -63,7 +63,10 @@ A partir de esos archivos generá estos cuatro archivos en orden:
 1. constitution.md — principios MUST/PROHIBITED del proyecto
 2. spec.md — user stories con criterios Given/When/Then, uno por feature de UI, más una sección obligatoria `## Fuera de scope (v1)` con los ítems del campo OUT OF SCOPE de `input.md` (uno por línea, con la razón de rechazo si fue mencionada). Esta sección es el contrato negativo de la feature: lo que el equipo se comprometió a NO construir en v1.
 3. plan.md — stack técnico, estructura de carpetas y lista de componentes a crear
-4. tasks.md — una tarea por componente o feature (T001 = scaffold, T002 = un componente, etc.)
+4. tasks.md — una tarea por componente o feature (T001 = scaffold, T002 = un componente, etc.), siguiendo estas tres reglas:
+   - **Slicing vertical**: cada tarea entrega una slice completa y funcional (backend + UI + integración si aplica) de un user story. No hagas fases horizontales por capa tecnológica (ej: "toda la DB en T001, toda la UI en T002"). Preferí "T002 = user puede ver su revenue con filtro 30d" sobre "T002 = analytics service completo".
+   - **Sin nombres de funciones**: las tareas describen QUÉ construir, no CÓMO. No nombres funciones, métodos ni variables específicas — eso se decide al implementar y se vuelve stale inmediatamente si algo cambia.
+   - **Trazabilidad**: cada tarea referencia el número de user story de `spec.md` que implementa (ej: `US-3`). Si una tarea no corresponde a ningún user story (ej: scaffold, setup), marcala con `US: —`.
 
 En modo greenfield (sin `existing-arch.md`), incluí en plan.md el comando exacto de scaffold: pnpm create vite@latest app -- --template react-ts
 En modo brownfield, omití el scaffold y referenciá la estructura de `existing-arch.md`.
