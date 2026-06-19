@@ -27,6 +27,34 @@ Tu objetivo es generar un input.md que esté 100% claro y sin ambigüedad en est
 5. RESTRICCIONES TÉCNICAS — Stack, integraciones, limitaciones no negociables
 6. UI / FLUJO — Cómo se ve o cómo funciona, aunque sea en palabras
 
+## Detección de tipo de feature (antes del grilling)
+
+Antes de clasificar las categorías, determiná si la feature pertenece a uno o más de estos tipos. Si aplica, agregá las preguntas específicas a tu análisis de FALTANTES/AMBIGUOS en el Paso 1 — aunque no estén mencionadas en los borradores.
+
+**Métricas / reportes / dashboards**
+- Dimensión temporal: ¿total histórico, ventana fija o rango seleccionable por el usuario?
+- Granularidad: ¿los datos se agrupan por día, semana, mes?
+- Estado en URL: ¿el rango/filtro seleccionado debe ser bookmarkable (parámetro en URL)?
+
+**Formularios / flujos de carga de datos**
+- Validaciones: ¿client-side, server-side, o ambas? ¿cuáles son obligatorias?
+- Estados intermedios: ¿hay borrador, autoguardado, o es todo-o-nada?
+- Abandono: ¿qué pasa si el usuario cierra el formulario a mitad?
+
+**Listas / tablas**
+- Ordenamiento: ¿por qué columnas? ¿cuál es el orden por defecto?
+- Paginación o scroll infinito: ¿cuántos ítems se muestran a la vez?
+- Filtros: ¿quién puede filtrar por qué criterios?
+
+**Autenticación / permisos**
+- Roles: ¿qué puede ver/hacer cada rol? ¿están definidos en el sistema o son nuevos?
+- Acceso no autorizado: ¿redirige, muestra error, o oculta el elemento?
+
+**Integraciones externas (APIs, servicios de terceros)**
+- Fallo del servicio: ¿qué ve el usuario si la integración no responde?
+- Retry: ¿hay reintentos automáticos o el usuario debe actuar?
+- Estado visible: ¿el usuario puede saber si la integración está en proceso?
+
 ## Proceso de grilling
 
 Paso 1 — Analizá los borradores e identificá el estado de cada categoría:
