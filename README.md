@@ -233,6 +233,102 @@ Regla de diseño:
 
 ---
 
+## Cómo adoptar el modelo en tu proyecto
+
+### Qué archivos conforman el modelo
+
+Este repo **es** el modelo. No hay un paquete separado que instalar. Lo que se lleva a cada proyecto es:
+
+```
+.claude/
+  commands/         ← los 15 comandos /sdd-* (el workflow completo)
+  skills/
+    VERSION
+    coding-standards/
+      SKILL.md
+      references/   ← guías de implementación, gobernanza y auditoría
+  settings.json
+CLAUDE.md           ← contexto global que el agente carga en cada turno
+scripts/
+  sdd-audit.mjs     ← auditor determinista (CI, sin IA)
+  sync-skills.mjs   ← instalador de skills en ~/.claude/skills/
+package.json        ← scripts: audit:sdd, skills:sync
+.github/
+  workflows/
+    sdd-audit.yml   ← GitHub Action que corre el auditor en cada PR
+graph/
+  domain.template.yaml          ← plantilla del grafo de dominio
+specs/
+  _registry/
+    features.template.yaml      ← plantilla del registro maestro
+    sprints/_template.yaml      ← plantilla de sprint
+drafts/
+  README.md         ← instrucciones para el equipo (dónde poner los borradores)
+metrics/
+  README.md         ← guía de telemetría DX
+```
+
+> Los archivos como `input.md`, `constitution.md`, `spec.md`, `plan.md`, `tasks.md`
+> y carpetas como `specs/001-*/`, `metrics/001-*` son **artefactos generados** por el
+> modelo durante el ciclo de una feature — no pertenecen al modelo en sí.
+
+---
+
+### Pasos para llevar el modelo a un proyecto nuevo
+
+#### Opción A — Clonar como base
+
+```bash
+git clone https://github.com/patohed/sdd-model.git mi-proyecto
+cd mi-proyecto
+rm -rf .git                     # desvincularlo del repo del modelo
+git init && git remote add origin <tu-repo>
+pnpm install
+pnpm skills:sync                # instala coding-standards en ~/.claude/skills
+```
+
+#### Opción B — Copiar solo los archivos del modelo
+
+Copiá las carpetas listadas arriba a la raíz de tu proyecto existente.
+Si el proyecto ya tiene `package.json`, mergeá los scripts y devDependencies manualmente.
+
+```bash
+pnpm install
+pnpm skills:sync
+```
+
+#### Opción C — Agregar como submódulo (equipos grandes)
+
+```bash
+git submodule add https://github.com/patohed/sdd-model.git .sdd
+# Agregar los scripts a tu package.json raíz apuntando a .sdd/scripts/
+```
+
+---
+
+### Verificar que todo funciona
+
+```bash
+pnpm audit:sdd          # debe terminar sin FAILs (solo WARNs en repo vacío)
+pnpm skills:sync:dry    # previsualizá qué skills se instalan sin aplicar
+```
+
+En Claude Code, escribí `/sdd-explain` para ver el modelo completo en contexto.
+
+---
+
+### Estructura esperada al arrancar una feature nueva
+
+```
+drafts/          ← el equipo pone acá sus notas y borradores
+/sdd-refine      ← primer comando: genera input.md desde los drafts
+/sdd-generate    ← genera constitution.md, spec.md, plan.md, tasks.md
+/sdd-validate    ← quality gate antes de implementar
+/sdd-implement   ← implementación TDD
+```
+
+---
+
 ## Requisitos
 
 - [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code)
