@@ -10,6 +10,67 @@ SDD propone reemplazar workflows basados en prompts aislados por un sistema con 
 
 ---
 
+## Primeros pasos — Instalación en tu proyecto
+
+### 1. Qué archivos copiar
+
+El modelo SDD vive en este repo. Para usarlo en tu proyecto, copiá estos archivos y carpetas en la raíz del repo donde vas a desarrollar:
+
+| Archivo / carpeta | Qué es | Obligatorio |
+|---|---|---|
+| `.claude/commands/` | Todos los comandos del modelo | ✅ Sí |
+| `.claude/settings.json` | Configuración de permisos y MCPs para Claude Code | ✅ Sí |
+| `.vscode/mcp.json` | Configuración de MCPs para Cursor | ✅ Sí |
+| `mcp/` | Servidor mcp-proguide (gobernanza SDD local) | ✅ Sí |
+| `CLAUDE.md` | Contexto del modelo — se carga automáticamente | ✅ Sí |
+| `graph/domain.template.yaml` | Template del grafo de dominio | Recomendado |
+| `specs/_registry/features.template.yaml` | Template del registro de features | Recomendado |
+| `scripts/sdd-audit.mjs` | Script de auditoría automática | Recomendado |
+| `.github/workflows/sdd-audit.yml` | Workflow CI para auditoría | Opcional |
+
+### 2. Orden de ejecución — primera vez
+
+Una vez copiados los archivos, seguí este orden:
+
+```
+1. /sdd-setup
+   Configura el entorno, los MCPs y las credenciales de Atlassian.
+   Guía paso a paso — no requiere conocimiento técnico previo.
+   Solo se corre una vez por proyecto.
+        ↓
+2. /sdd-explain  (opcional)
+   Si es tu primer contacto con el modelo, este comando te explica
+   cómo funciona todo antes de arrancar.
+        ↓
+3. /sdd-scan  (solo si el proyecto ya tiene código)
+   Lee el codebase existente y genera existing-arch.md.
+   Salteá este paso si es un proyecto nuevo.
+        ↓
+4. Poné tus borradores en drafts/
+   Notas, wireframes, restricciones, contexto de negocio.
+        ↓
+5. /sdd-jira-start [TICKET-KEY]  (si usás integración Jira)
+   Vinculá el primer ticket con una feature SDD.
+   O arrancá directamente con /sdd-refine si no usás Jira.
+        ↓
+6. Flujo SDD normal:
+   /sdd-refine → /sdd-generate → /sdd-validate → /sdd-implement → /sdd-review
+```
+
+### 3. Compilar mcp-proguide
+
+Después de copiar la carpeta `mcp/`, compilá el servidor:
+
+```bash
+cd mcp
+pnpm install
+pnpm build
+```
+
+> Si corrés `/sdd-setup`, este paso se hace automáticamente.
+
+---
+
 ## El ciclo
 
 ### Fase 0 — Discovery (solo brownfield) `🤖 IA | gate 👤 humano`
@@ -63,6 +124,7 @@ Desde `input.md`, los agentes generan cuatro artefactos operativos:
 
 | Comando | Fase | Qué hace |
 |---|---|---|
+| `/sdd-setup` | Setup | Configura entorno, MCPs y credenciales — guiado paso a paso |
 | `/sdd-explain` | Onboarding | Explica el modelo completo y cómo conecta cada parte |
 | `/sdd-scan` | 0 (brownfield) | Lee el código existente y genera `existing-arch.md` |
 | `/sdd-refine` | 2 | Grilling dinámico → `input.md` |
@@ -99,6 +161,8 @@ Los comandos `/sdd-jira-*` conectan el modelo SDD con Jira para mantener trazabi
 ```
 
 ### Configuración del Atlassian MCP por entorno
+
+> Si es tu primera vez, corré `/sdd-setup` — te guía por todo esto automáticamente.
 
 **Cursor** — el archivo `.vscode/mcp.json` ya incluye ambos servidores (`sdd` + `atlassian`). Cursor los levanta automáticamente al abrir el proyecto. La primera vez pedirá autenticar tu cuenta de Atlassian vía OAuth.
 
