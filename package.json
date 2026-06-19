@@ -3,7 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "audit:sdd": "node scripts/sdd-audit.mjs"
+    "audit:sdd": "node scripts/sdd-audit.mjs",
+    "skills:sync": "node scripts/sync-skills.mjs",
+    "skills:sync:dry": "node scripts/sync-skills.mjs --dry-run"
   },
   "devDependencies": {
     "yaml": "^2.4.0"

@@ -155,6 +155,82 @@ Los archivos en `.claude/commands/` son instrucciones en texto plano. Funcionan 
 
 ---
 
+## Skills
+
+### ¿Qué es un skill?
+
+Un skill es un archivo `SKILL.md` (o carpeta con ese archivo) que el agente carga **bajo demanda**, solo cuando la tarea lo requiere. A diferencia de `CLAUDE.md` que se carga en cada turno, un skill no infla el contexto a menos que sea relevante.
+
+Estructura de un skill en este repo:
+
+```
+.claude/skills/
+  VERSION                          ← versión del pack
+  coding-standards/
+    SKILL.md                       ← punto de entrada: descripción (routing) + índice
+    references/
+      sdd-lifecycle.md             ← flujo y comandos SDD
+      team-governance.md           ← registro, colisiones, trabajo en equipo
+      implementation-review.md     ← reglas de implementación y review
+      deterministic-audit.md       ← contrato con el auditor
+```
+
+El campo `description` del frontmatter de `SKILL.md` es lo que el agente usa para decidir **cuándo activarlo automáticamente**. Las referencias se cargan solo si la tarea las necesita (progressive disclosure).
+
+---
+
+### Skill incluido: `coding-standards`
+
+**Para qué sirve:** steering del agente cuando implementa, revisa o toma decisiones de proceso. Orienta al LLM hacia las convenciones y restricciones del modelo SDD sin duplicar lo que ya valida el auditor.
+
+**Cuándo se activa:** al implementar código, hacer code review, resolver colisiones o dudas de convenciones.
+
+**Qué hace y qué NO hace:**
+
+| Hace | No hace |
+|---|---|
+| Guía contexto con progressive disclosure | Reemplazar comandos SDD |
+| Apuntar a la fuente de verdad correcta | Inventar reglas nuevas |
+| Recordar qué es determinista vs. qué requiere juicio | Ejecutar checks del auditor |
+
+**Cómo encaja en el modelo completo:**
+
+```
+CLAUDE.md         → políticas globales mínimas (siempre en contexto)
+     ↓ apunta a
+coding-standards  → steering de convenciones (carga bajo demanda)
+     ↓ apunta a
+references/       → detalle específico por área (progressive disclosure)
+
+comandos SDD      → orquestación del flujo (refine, generate, implement...)
+pnpm audit:sdd    → enforcement determinista (CI, sin IA)
+```
+
+---
+
+### Distribución al equipo
+
+El pack está versionado en `.claude/skills/VERSION`. Para instalar o actualizar en la máquina local:
+
+```bash
+pnpm skills:sync        # instala/actualiza en ~/.claude/skills
+pnpm skills:sync:dry    # previsualiza sin aplicar cambios
+```
+
+Esto copia `.claude/skills/*` a `~/.claude/skills/` (Windows: `%USERPROFILE%\.claude\skills`), donde Claude y otros agentes los encuentran automáticamente.
+
+**Flujo de rollout para equipo:**
+1. Se actualiza el skill en el repo (commit + bump de `VERSION`)
+2. Cada dev ejecuta `pnpm skills:sync` desde el repo del modelo
+3. Todos quedan homogéneos en la misma versión
+
+Regla de diseño:
+- El skill **guía** (contexto, convenciones)
+- Los comandos SDD **orquestan** (flujo, gates)
+- `pnpm audit:sdd` + CI **verifican** (enforcement determinista)
+
+---
+
 ## Requisitos
 
 - [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code)

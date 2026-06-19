@@ -68,6 +68,12 @@ verificación final: lógica + UI
 - Si existe `existing-arch.md`, sus restricciones son no negociables salvo decisión registrada en `DECISIONS.md`
 - Si algo del brief es ambiguo, preguntá antes de implementar
 
+## Steering skill
+
+- Skill recomendado: `.claude/skills/coding-standards/SKILL.md`
+- Usalo para implementación/review y dudas de convenciones con progressive disclosure.
+- El skill NO reemplaza comandos SDD ni `pnpm audit:sdd`.
+
 ## Gobernanza y routing de contexto
 
 - **Registro maestro**: `specs/_registry/features.yaml` indexa toda feature
