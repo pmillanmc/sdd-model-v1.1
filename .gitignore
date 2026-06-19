@@ -8,3 +8,6 @@ coverage/
 
 # MCP server â€” vive en su propio repo, no es parte del modelo
 mcp/
+
+# Credenciales locales — nunca commitear
+.env
