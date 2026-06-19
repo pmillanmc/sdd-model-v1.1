@@ -9,6 +9,9 @@ pasando por artefactos intermedios que guían la implementación.
 ## Ciclo de trabajo
 
 ```
+[SETUP — primera vez en el proyecto]
+/sdd-setup → configura entorno, MCPs y credenciales guiado paso a paso
+
 [FASE 0 — SOLO BROWNFIELD]
 Si el repo ya tiene código: corré /sdd-scan UNA vez
     ↓
@@ -45,12 +48,14 @@ verificación final: lógica + UI
 ```
 <!-- NUEVO [sdd-handoff]: línea transversal agregada al diagrama del ciclo -->
 <!-- NUEVO [sdd-jira]: bloque de integración Jira agregado al diagrama -->
+<!-- NUEVO [sdd-setup]: bloque de setup agregado al diagrama -->
 <!-- FIN NUEVO -->
 
 ## Comandos disponibles
 
 | Trigger keywords | Comando | Cuándo cargar el .md |
 |---|---|---|
+| setup, configurar, primera vez, instalar, mcp | `/sdd-setup` | Primera vez en el proyecto o entorno sin configurar |
 | explain, qué es, cómo funciona, onboarding | `/sdd-explain` | Primer contacto con el modelo |
 | scan, codebase, código existente, brownfield | `/sdd-scan` | Proyecto con código previo |
 | refine, clarifica, grilling, ambigüedad, brief | `/sdd-refine` | Hay `drafts/` sin pulir |
@@ -78,6 +83,8 @@ Para invocar cualquier comando, el `.md` se carga sólo cuando el trigger aparec
 Los comandos `/sdd-jira-start`, `/sdd-jira-sync` y `/sdd-jira-close` requieren dos servidores MCP activos:
 - **mcp-proguide** — gobernanza SDD local (registry, audit, graph, metrics)
 - **Atlassian MCP** — integración con Jira
+
+Si es tu primera vez configurando el entorno, corré `/sdd-setup` — te guía paso a paso.
 
 La configuración varía según el entorno:
 
