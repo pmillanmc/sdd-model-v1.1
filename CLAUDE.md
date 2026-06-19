@@ -37,28 +37,33 @@ verificación final: lógica + UI
 
 [TRANSVERSAL — disponible en cualquier momento]
 /sdd-handoff [propósito] → snapshot de sesión para continuar en otro agente o sesión
+/sdd-compact-guide → ¿conviene compactar ahora? tabla de decisión por fase
+/sdd-context-budget → auditoría del peso en tokens del framework
 ```
-<!-- NUEVO [sdd-handoff]: línea transversal agregada al diagrama del ciclo -->
-<!-- FIN NUEVO -->
 
 ## Comandos disponibles
 
-| Comando | Fase | Qué hace |
+Cargá el `.md` del comando solo cuando el trigger aparezca en la conversación o el usuario lo invoque explícitamente.
+
+| Trigger keywords | Comando | Cuándo cargar el .md |
 |---|---|---|
-| `/sdd-explain` | Onboarding | Explica el modelo completo y cómo conecta cada parte |
-| `/sdd-scan` | 0 (brownfield) | Lee el código existente y genera `existing-arch.md` |
-| `/sdd-refine` | 2 | Lee `drafts/` (+ `existing-arch.md`) y genera `input.md` pulido. **Equivalente al skill `business-clarifier` — usar uno u otro, no ambos.** |
-| `/sdd-generate` | 3 | Lee `input.md` y genera los 4 artefactos SDD |
-| `/sdd-validate` | 3 | Verifica que los artefactos cubren el brief |
-| `/sdd-log` | 3/4 | Registra decisiones que desvían el brief en `DECISIONS.md` |
-| `/sdd-implement` | 4 | Implementa todas las tareas de `tasks.md` con TDD |
-| `/sdd-fix` | Transversal | Ruta corta para bugs/hotfixes (≤3 archivos, test reproductor obligatorio, chequeo de colisiones) |
-| `/sdd-checklist` | 4 | Genera criterios de verificación no automatizables |
-| `/sdd-review` | 4 | Gate final: lógica (spec + tests) + UI |
-| `/sdd-health` | Mant. | Auditoría por sprint — detecta deuda documental y drift |
-| `/sdd-metrics` | Mant. | Genera reporte de esfuerzo y tokens de la sesión actual |
-| `/sdd-metrics-summary` | Mant. | Agrega métricas de todas las features y muestra totales del proyecto |
-| `/sdd-handoff` | Transversal | Comprime el estado de sesión para continuar en otra sesión o agente. Requiere `DECISIONS.md` al día. |
+| explain, qué es, cómo funciona, onboarding | `/sdd-explain` | Primer contacto con el modelo |
+| scan, codebase, código existente, brownfield | `/sdd-scan` | Proyecto con código previo |
+| refine, clarifica, grilling, ambigüedad, brief | `/sdd-refine` | Hay `drafts/` sin pulir |
+| generate, spec, constitution, plan, tasks | `/sdd-generate` | `input.md` listo |
+| validate, gap, cobertura, brief vs spec | `/sdd-validate` | Spec generada, querés verificar |
+| log, decisión, ADR, alternativas | `/sdd-log` | Hay un desvío que registrar |
+| implement, código, TDD, tareas | `/sdd-implement` | `tasks.md` listo |
+| fix, bug, hotfix | `/sdd-fix` | Bug puntual (≤3 archivos) |
+| checklist, criterios manuales, UX | `/sdd-checklist` | Implementación cerrada |
+| review, gate final, UI vs spec | `/sdd-review` | Listo para gate final |
+| health, drift, auditoría, sprint | `/sdd-health` | Cierre de sprint o sospechás drift |
+| metrics, tokens, retrabajo | `/sdd-metrics` | Querés ver costo de esta feature |
+| metrics-summary, proyecto, agregado | `/sdd-metrics-summary` | Querés ver costo del proyecto completo |
+| handoff, continuar, próxima sesión, snapshot | `/sdd-handoff` | Cerrás sesión o pasás a otro agente |
+| compact, contexto, fase, transición | `/sdd-compact-guide` | No sabés si conviene compactar ahora |
+| context budget, overhead, peso framework | `/sdd-context-budget` | Querés saber cuánto pesa el framework |
+| test, smoke, fixture | `/sdd-test` | Validás cambios al propio modelo SDD |
 
 ## Reglas generales
 

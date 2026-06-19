@@ -33,6 +33,22 @@ Para cada artefacto, indicá cantidad de líneas y si supera el límite recomend
 - User stories en spec.md cuyo código ya no existe o fue reemplazado en app/
 - Tareas en tasks.md marcadas como pendientes pero ya implementadas en app/
 
+### 📋 Índice de DECISIONS.md
+
+Leé el header de `DECISIONS.md`. Si NO existe una tabla `| ID | Título | Status | Fecha | Feature |` al tope del archivo, generala automáticamente listando todas las entradas presentes.
+
+Si la tabla existe, verificá sincronización:
+- Todas las entradas del cuerpo del archivo aparecen en la tabla.
+- Los status reflejan el estado actual (las `superseded by` apuntan a una entrada existente).
+- Las fechas en la tabla coinciden con las fechas de las entradas.
+
+Reportá:
+- Entradas en la tabla: N
+- Entradas en el cuerpo del archivo: N
+- Estado de sincronización: OK / DESINCRONIZADO
+
+Si está desincronizado, preguntale al usuario si querés regenerar el bloque de tabla del header. NO regeneres sin confirmación.
+
 ### 🗃️ Contenido para archivar
 - Tareas completadas en tasks.md que deberían moverse a un historial
 - Decisiones en DECISIONS.md que ya fueron absorbidas por constitution.md
