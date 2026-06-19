@@ -9,6 +9,9 @@ pasando por artefactos intermedios que guían la implementación.
 ## Ciclo de trabajo
 
 ```
+[SETUP — primera vez en el proyecto]
+/sdd-setup → configura entorno, MCPs y credenciales guiado paso a paso
+
 [FASE 0 — SOLO BROWNFIELD]
 Si el repo ya tiene código: corré /sdd-scan UNA vez
     ↓
@@ -35,6 +38,11 @@ verificación final: lógica + UI
     ↓  cada sprint
 /sdd-health → auditoría de artefactos + drift de existing-arch
 
+[INTEGRACIÓN JIRA — requiere Atlassian MCP]
+/sdd-jira-start → trae ticket de Jira, registra feature, mueve a In Progress
+/sdd-jira-sync  → reconcilia jira-map.yaml con Jira durante el desarrollo
+/sdd-jira-close → cierra feature en SDD, mueve ticket a Done + comentario
+
 [TRANSVERSAL — disponible en cualquier momento]
 /sdd-handoff [propósito] → snapshot de sesión para continuar en otro agente o sesión
 /sdd-compact-guide → ¿conviene compactar ahora? tabla de decisión por fase
@@ -43,10 +51,16 @@ verificación final: lógica + UI
 
 ## Comandos disponibles
 
+<!-- DECISIÓN DE DISEÑO: se usa trigger-table con lazy loading en lugar de tabla simple.
+     Motivo: esta etapa prioriza onboarding y adopción de devs no técnicos — el agente
+     sugiere comandos proactivamente sin que el dev los conozca de memoria.
+     Cuando se paralelice con agentes, evaluar switch a tabla simple (más eficiente en tokens). -->
+
 Cargá el `.md` del comando solo cuando el trigger aparezca en la conversación o el usuario lo invoque explícitamente.
 
 | Trigger keywords | Comando | Cuándo cargar el .md |
 |---|---|---|
+| setup, configurar, primera vez, instalar, mcp | `/sdd-setup` | Primera vez en el proyecto o entorno sin configurar |
 | explain, qué es, cómo funciona, onboarding | `/sdd-explain` | Primer contacto con el modelo |
 | scan, codebase, código existente, brownfield | `/sdd-scan` | Proyecto con código previo |
 | refine, clarifica, grilling, ambigüedad, brief | `/sdd-refine` | Hay `drafts/` sin pulir |
@@ -64,6 +78,9 @@ Cargá el `.md` del comando solo cuando el trigger aparezca en la conversación 
 | compact, contexto, fase, transición | `/sdd-compact-guide` | No sabés si conviene compactar ahora |
 | context budget, overhead, peso framework | `/sdd-context-budget` | Querés saber cuánto pesa el framework |
 | test, smoke, fixture | `/sdd-test` | Validás cambios al propio modelo SDD |
+| jira start, arrancar feature, ticket | `/sdd-jira-start` | Arrancás una feature desde Jira |
+| jira sync, sincronizar, reconciliar tickets | `/sdd-jira-sync` | Sincronizás tasks con Jira durante el desarrollo |
+| jira close, cerrar ticket, feature terminada | `/sdd-jira-close` | Cerrás feature y actualizás Jira |
 
 ## Reglas generales
 
@@ -111,6 +128,35 @@ Cargá el `.md` del comando solo cuando el trigger aparezca en la conversación 
   del modelo. Si un fix crece (>3 archivos, contratos nuevos), se promueve
   a feature con /sdd-refine.
 
+## Configuración de MCPs
+
+Los comandos `/sdd-jira-start`, `/sdd-jira-sync` y `/sdd-jira-close` requieren dos servidores MCP activos:
+- **mcp-proguide** — gobernanza SDD local (registry, audit, graph, metrics)
+- **Atlassian MCP** — integración con Jira
+
+Si es tu primera vez configurando el entorno, corré `/sdd-setup` — te guía paso a paso.
+
+La configuración varía según el entorno:
+
+### Cursor
+El archivo `.vscode/mcp.json` ya incluye ambos servidores. Cursor los levanta
+automáticamente al abrir el proyecto. La primera vez te va a pedir autenticar
+tu cuenta de Atlassian — seguí el flujo OAuth que aparece en el panel MCP.
+
+### Claude Code
+El archivo `.claude/settings.json` ya incluye ambos servidores. Las credenciales
+van en `.env` en la raíz del proyecto (nunca en el repo):
+```
+ATLASSIAN_SITE_URL=https://tu-org.atlassian.net
+ATLASSIAN_USER_EMAIL=tu@email.com
+ATLASSIAN_API_TOKEN=tu-api-token
+```
+Generás el API token en: https://id.atlassian.com/manage-profile/security/api-tokens
+
+### Claude.ai
+Los MCPs se conectan manualmente desde la UI de Claude.ai:
+- mcp-proguide: conectar como servidor MCP remoto con la URL de tu instancia
+- Atlassian: conectar desde el conector oficial de Atlassian en la UI
 
 ### Regla de Observabilidad (Telemetría DX)
 **Metrics Mandatory**: Al completar la ejecución de `/sdd-implement` o finalizar una tarea grande, el agente DEBE autoevaluarse ejecutando el comando `/sdd-metrics` (o leyendo `.claude/commands/sdd-metrics.md`) para generar el reporte de retrabajo y ambigüedad.
