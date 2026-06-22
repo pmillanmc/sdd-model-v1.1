@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SDD Model — Grafo interactivo</title>
+  <script src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0f1117;
+      color: #e2e8f0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    header {
+      padding: 14px 24px;
+      background: #1e293b;
+      border-bottom: 1px solid #334155;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    header h1 { font-size: 1rem; font-weight: 700; color: #f8fafc; }
+    header p  { font-size: 0.75rem; color: #94a3b8; }
+
+    .badge {
+      margin-left: auto;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      background: #0f172a;
+      color: #7dd3fc;
+      border: 1px solid #1d4ed8;
+      white-space: nowrap;
+    }
+
+    .hint {
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      background: #1e293b;
+      color: #64748b;
+      border: 1px solid #334155;
+      white-space: nowrap;
+    }
+
+    .workspace {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    #network {
+      flex: 1;
+      background: #0f1117;
+    }
+
+    #sidebar {
+      width: 320px;
+      flex-shrink: 0;
+      background: #1e293b;
+      border-left: 1px solid #334155;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .sidebar-empty {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: #475569;
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 32px;
+    }
+
+    .sidebar-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+      display: none;
+    }
+
+    .sidebar-content.active { display: block; }
+
+    .node-type {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    .type-human    { background: #1e3a5f; color: #7dd3fc; }
+    .type-ai       { background: #14532d; color: #86efac; }
+    .type-artifact { background: #3b1f5e; color: #d8b4fe; }
+    .type-gate     { background: #7f1d1d; color: #fca5a5; }
+    .type-trans    { background: #292524; color: #a8a29e; }
+    .type-ci       { background: #1e1b4b; color: #a5b4fc; }
+
+    .node-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #f8fafc;
+      margin-bottom: 6px;
+      font-family: "SF Mono", Consolas, monospace;
+    }
+
+    .node-phase {
+      font-size: 0.72rem;
+      color: #64748b;
+      margin-bottom: 14px;
+    }
+
+    .node-desc {
+      font-size: 0.83rem;
+      color: #cbd5e1;
+      line-height: 1.65;
+      margin-bottom: 18px;
+    }
+
+    .node-section { margin-bottom: 14px; }
+
+    .node-section h4 {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #475569;
+      margin-bottom: 7px;
+    }
+
+    .node-section ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .node-section li {
+      font-size: 0.79rem;
+      color: #94a3b8;
+      padding: 5px 10px;
+      background: #0f172a;
+      border-radius: 5px;
+      border-left: 2px solid #334155;
+      line-height: 1.4;
+    }
+
+    .node-section li strong {
+      color: #e2e8f0;
+      font-family: "SF Mono", Consolas, monospace;
+      font-size: 0.74rem;
+    }
+
+    .legend {
+      padding: 10px 16px;
+      border-top: 1px solid #1e293b;
+      background: #0f1117;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.68rem;
+      color: #64748b;
+    }
+
+    .dot { width: 8px; height: 8px; border-radius: 50%; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>SDD Model — Grafo interactivo</h1>
+    <p>Spec-Driven Development · ciclo completo</p>
+  </div>
+  <span class="hint">🖱 Clic en un nodo para ver detalles</span>
+  <span class="hint">Scroll para zoom · Arrastrar para mover</span>
+  <span class="badge">v1.2 — 2026-06</span>
+</header>
+
+<div class="workspace">
+  <div id="network"></div>
+  <div id="sidebar">
+    <div class="sidebar-empty" id="empty-state">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.3">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <span>Tocá cualquier nodo del grafo para ver qué hace y cómo encaja en el modelo.</span>
+    </div>
+    <div class="sidebar-content" id="detail-panel">
+      <span class="node-type" id="detail-type"></span>
+      <div class="node-title" id="detail-title"></div>
+      <div class="node-phase" id="detail-phase"></div>
+      <div class="node-desc" id="detail-desc"></div>
+      <div id="detail-extra"></div>
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><span class="dot" style="background:#3b82f6"></span>Humano</div>
+  <div class="legend-item"><span class="dot" style="background:#22c55e"></span>Agente IA</div>
+  <div class="legend-item"><span class="dot" style="background:#a855f7"></span>Artefacto</div>
+  <div class="legend-item"><span class="dot" style="background:#ef4444"></span>Gate</div>
+  <div class="legend-item"><span class="dot" style="background:#78716c"></span>Transversal</div>
+  <div class="legend-item"><span class="dot" style="background:#6366f1"></span>CI determinista</div>
+</div>
+
+<script>
+const NODE_INFO = {
+  DOCS:    {type:'human',    typeLabel:'Humano',         phase:'Entrada al modelo',            title:'📄 Docs funcionales', desc:'PDFs, documentos Word o notas con los requerimientos funcionales del negocio. Son el punto de partida del modelo. Se procesan en una sesión separada para extraer un resumen en Markdown que va a drafts/.', sections:[{h:'Recomendación',items:['Extraer en sesión separada — no gastar tokens antes del grilling','Formato de salida: Markdown con las 6 categorías que busca /sdd-refine']}]},
+  DRAFTS:  {type:'human',    typeLabel:'Humano',         phase:'Fase 1 — Brief',               title:'📁 drafts/', desc:'Carpeta donde el equipo deposita borradores: notas, wireframes, restricciones técnicas, contexto de negocio. Es la única entrada al grilling de /sdd-refine.', sections:[{h:'Reglas',items:['No hay formato obligatorio — cualquier .md sirve','Subcarpetas por feature: indicarle a /sdd-refine cuál leer','Archivos .html: /sdd-refine resuelve la cascada CSS antes de analizar']}]},
+  SCAN:    {type:'ai',       typeLabel:'Agente IA',      phase:'Fase 0 — solo brownfield',     title:'/sdd-scan', desc:'Se corre UNA sola vez cuando el proyecto ya tiene código. Lee el codebase, detecta stack real, patrones inquebrantables y restricciones. Requiere doble confirmación humana.', sections:[{h:'Genera',items:['existing-arch.md — estado descriptivo del codebase','graph/domain.yaml — grafo de dominios para routing']},{h:'Regla',items:['Si no existe existing-arch.md → modo greenfield, saltar este comando']}]},
+  ARCH:    {type:'artifact', typeLabel:'Artefacto',      phase:'Fase 0 — brownfield',          title:'existing-arch.md', desc:'Documento descriptivo del estado real del codebase. Captura stack, source_root, patrones inquebrantables y restricciones. Todos los comandos posteriores lo detectan y entran en modo brownfield.', sections:[{h:'Contiene',items:['Stack + versiones + gestor de paquetes','source_root — carpeta raíz del código','Patrones inquebrantables — convenciones que no se rompen','SHA del commit base para detectar drift']},{h:'Límite',items:['≤ 120 líneas']}]},
+  GRAPH:   {type:'artifact', typeLabel:'Artefacto',      phase:'Routing de contexto',          title:'graph/domain.yaml', desc:'Grafo de dominios de negocio que mapea cada dominio a sus archivos exactos. Los comandos lo consultan ANTES de leer código para cargar solo los archivos relevantes, ahorrando tokens.', sections:[{h:'Estructura',items:['domain → description, entities, services, components, files','features — qué features pertenecen al dominio','depends_on — dependencias entre dominios']},{h:'Lo genera',items:['/sdd-scan (brownfield) · /sdd-generate (greenfield, primera feature)']}]},
+  REFINE:  {type:'ai',       typeLabel:'Agente IA',      phase:'Fase 2 — Clarificación',       title:'/sdd-refine', desc:'Proceso de grilling Socrático que lee drafts/ y hace preguntas hasta que las 6 categorías estén 100% claras. Detecta el tipo de feature y agrega preguntas de dominio específicas aunque no estén en los borradores.', sections:[{h:'6 categorías que valida',items:['PROBLEMA — qué duele hoy','USUARIO — quién lo usa y qué necesita','DONE CRITERIA — qué tiene que ser verdad para estar terminado','OUT OF SCOPE — qué queda explícitamente afuera de v1','RESTRICCIONES TÉCNICAS — stack, integraciones, limitaciones','UI / FLUJO — cómo se ve o funciona']},{h:'Detección de tipo de feature',items:['Dashboard → dimensión temporal, granularidad, URL bookmarkable','Formulario → validaciones, estados intermedios, abandono','Lista/tabla → ordenamiento, paginación, filtros','Permisos → roles, acceso no autorizado','Integración → fallo, retry, estado visible']}]},
+  INPUT:   {type:'artifact', typeLabel:'Artefacto',      phase:'Fase 2 — Salida',              title:'input.md', desc:'Fuente única de verdad del proyecto. Consolidación de borradores + respuestas del grilling. Las 6 categorías completas, sin ambigüedad. Es el único input de /sdd-generate.', sections:[{h:'Regla',items:['Debe poder ser leído por alguien que no participó y entender exactamente qué construir','Sin placeholders, sin "a definir"']}]},
+  GEN:     {type:'ai',       typeLabel:'Agente IA',      phase:'Fase 3 — Especificación',      title:'/sdd-generate', desc:'Lee input.md y genera los 4 artefactos en una sola corrida. También registra la feature en el registro maestro, detecta colisiones con otras features OPEN y actualiza el grafo de dominio.', sections:[{h:'Genera los 4 artefactos',items:['constitution.md — principios MUST / PROHIBITED','spec.md — user stories + Fuera de scope v1','plan.md — stack + arquitectura','tasks.md — tracer bullets + US-N']},{h:'Gobernanza automática',items:['Registra en specs/_registry/features.yaml','Cruza touches con otras features OPEN (colisiones)','Crea feature.status.md con status: OPEN']}]},
+  CONST:   {type:'artifact', typeLabel:'Artefacto',      phase:'Fase 3 — Artefacto',           title:'constitution.md', desc:'Principios inmutables del proyecto. Define qué DEBE ser verdad siempre (MUST) y qué nunca se puede hacer (PROHIBITED). Todos los comandos de implementación lo respetan como restricción no negociable.', sections:[{h:'Formato',items:['## MUST — lo que siempre tiene que ser verdad','## PROHIBITED — lo que nunca se puede hacer']},{h:'Límite',items:['≤ 60 líneas']}]},
+  SPEC:    {type:'artifact', typeLabel:'Artefacto',      phase:'Fase 3 — Artefacto',           title:'spec.md', desc:'User stories con criterios Given/When/Then verificables. Incluye la sección obligatoria "## Fuera de scope (v1)" — el contrato negativo de la feature. /sdd-implement no puede implementar nada listado ahí.', sections:[{h:'Secciones',items:['User stories: US-N con Given / When / Then','## Fuera de scope (v1) — ítems rechazados + razón de rechazo']},{h:'Límite',items:['≤ 80 líneas']}]},
+  PLAN:    {type:'artifact', typeLabel:'Artefacto',      phase:'Fase 3 — Artefacto',           title:'plan.md', desc:'Stack técnico, estructura de carpetas y lista de componentes a crear. En modo greenfield incluye el comando exacto de scaffold. En modo brownfield referencia la estructura de existing-arch.md.', sections:[{h:'Límite',items:['≤ 50 líneas']}]},
+  TASKS:   {type:'artifact', typeLabel:'Artefacto',      phase:'Fase 3 — Artefacto',           title:'tasks.md', desc:'Lista de tareas TDD con IDs únicos. Usa tracer bullets: cada tarea cruza todas las capas (backend + UI + integración) para un user story completo. No capas tecnológicas separadas.', sections:[{h:'Tres reglas de calidad',items:['Tracer bullets — cada tarea funciona de punta a punta','Sin nombres de funciones — describe QUÉ, no CÓMO','Trazabilidad — cada tarea tiene US-N o US: —']},{h:'Límite',items:['≤ 40 líneas activas']}]},
+  VAL:     {type:'ai',       typeLabel:'Agente IA',      phase:'Fase 3 — Validación',          title:'/sdd-validate', desc:'Verifica que los 4 artefactos cubran el brief de input.md. Si detecta gaps, avisa y para — no modifica nada. Cada decisión que desvía el brief debe registrarse en DECISIONS.md vía /sdd-log.', sections:[{h:'Output',items:['Reporte: ✅ Cubierto / ⚠️ Parcial / ❌ Sin cobertura','Bloque ## Validate en metrics con cobertura_inicial y gaps_encontrados']}]},
+  LOG:     {type:'ai',       typeLabel:'Agente IA',      phase:'Transversal — decisiones',     title:'/sdd-log', desc:'Registra en DECISIONS.md cada desvío del brief, decisión de arquitectura o alternativa descartada. Es el ADR (Architecture Decision Record) del modelo.', sections:[{h:'Cuándo usarlo',items:['Al validar y aceptar un gap','Cuando la implementación se aparta de la spec','Al resolver una colisión entre features']}]},
+  DEC:     {type:'artifact', typeLabel:'Artefacto',      phase:'Global — registro',            title:'DECISIONS.md', desc:'Registro tipo ADR de cada desvío del brief. Es el historial de por qué las cosas son como son. /sdd-handoff verifica que esté al día antes de generar un snapshot.', sections:[{h:'Regla',items:['Siempre versionado en el repo','/sdd-health lo incluye en el reporte de sprint']}]},
+  IMPL:    {type:'ai',       typeLabel:'Agente IA',      phase:'Fase 4 — Código',              title:'/sdd-implement', desc:'Ejecuta las tareas de tasks.md en orden con TDD. Lee los 4 artefactos al inicio de cada sesión para saber exactamente dónde está. Respeta la sección Fuera de scope de spec.md.', sections:[{h:'Gate de prerequisitos',items:['Los 4 artefactos deben existir','Bloque ## Validate en metrics (evidencia de validación)','Feature con status OPEN en features.yaml','Sin colisiones con otras features OPEN de otro owner']},{h:'Modo brownfield',items:['Trabaja dentro del source_root declarado','Respeta patrones de existing-arch.md']}]},
+  CHKL:   {type:'human',    typeLabel:'Humano',         phase:'Fase 4 — Verificación manual', title:'/sdd-checklist', desc:'Genera criterios de verificación no automatizables que el equipo humano completa manualmente: UX, accesibilidad, seguridad, reglas de negocio que no se pueden testear con código.', sections:[]},
+  REV:     {type:'gate',     typeLabel:'Gate',           phase:'Fase 4 — Gate final',          title:'/sdd-review', desc:'Gate final obligatorio en dos pasadas: lógica (spec + tests) y UI (input.md → spec → código). Al aprobar escribe "resultado: APROBADO" en metrics y cierra la feature en el registro.', sections:[{h:'Condición de cierre',items:['Escribe resultado: APROBADO en metrics','Actualiza feature.status.md a CLOSED','Actualiza features.yaml a CLOSED','pnpm audit:sdd verifica esta evidencia en CI']}]},
+  STATUS:  {type:'artifact', typeLabel:'Artefacto',      phase:'Lifecycle de feature',         title:'feature.status.md', desc:'Registra el estado del ciclo de vida: OPEN (en progreso) o CLOSED (aprobada). /sdd-generate lo crea. /sdd-review lo cierra.', sections:[{h:'Campos',items:['status: OPEN | CLOSED','feature_id','created: fecha ISO 8601','last_command: último comando que lo modificó']}]},
+  REGISTRY:{type:'artifact', typeLabel:'Artefacto',      phase:'Gobernanza global',            title:'specs/_registry/features.yaml', desc:'Registro maestro de todas las features y fixes. Indexa status, dominio, owner, sprint y archivos que toca cada feature (touches). Fuente de verdad para colisiones y audit.', sections:[{h:'Campos por feature',items:['id, type (feature|fix), status (OPEN|CLOSED)','owner, sprint, created, closed','touches — archivos exactos que modifica','decisions — entradas en DECISIONS.md']}]},
+  METRICS: {type:'artifact', typeLabel:'Artefacto',      phase:'Telemetría DX',                title:'metrics/[feature]-metrics.md', desc:'Acumula métricas de esfuerzo y calidad por feature. Permite calcular el Rework Ratio y detectar features problemáticas. Se genera automáticamente en cada fase.', sections:[{h:'Qué registra por fase',items:['Refine: rondas de grilling, categorías faltantes/ambiguas','Validate: cobertura inicial, gaps encontrados','Implement: ciclos de autocorrección, tokens estimados','Review: resultado final, gaps de UI']}]},
+  HEALTH:  {type:'ai',       typeLabel:'Agente IA',      phase:'Mantenimiento — cada sprint',  title:'/sdd-health', desc:'Auditoría de sprint. Corre pnpm audit:sdd primero (determinista) y luego analiza lo que requiere juicio: calidad, drift semántico, colisiones, auto-memoria de CLI users.', sections:[{h:'Reporta',items:['Tamaño de artefactos vs. límites','Artefactos desactualizados o contradictorios','Estado de features y colisiones entre OPEN','Drift de existing-arch.md y graph/domain.yaml','Auto-memoria CLI (si aplica)','Métricas agregadas de todas las features']}]},
+  AUDIT:   {type:'ci',       typeLabel:'CI determinista', phase:'CI — cada PR',                title:'pnpm audit:sdd', desc:'Script Node.js sin IA que verifica la consistencia del modelo en 6 checks. Corre como GitHub Action en cada PR. Si falla, el PR no se puede mergear.', sections:[{h:'6 checks deterministas',items:['CHECK 1: registro↔specs — status consistente, carpetas existen','CHECK 2: colisiones entre features OPEN de distinto owner','CHECK 3: gates — CLOSED con evidencia de APROBADO','CHECK 4: grafo vs filesystem — archivos del grafo existen','CHECK 5: sprints — OPEN con sprint vencido','CHECK 6: schema — spec.md con Fuera de scope, tasks.md con US-N']}]},
+  CI_OK:   {type:'ci',       typeLabel:'CI',             phase:'CI — resultado',               title:'✅ PR aprobado', desc:'El audit pasó todos los checks. El PR puede mergearse. El modelo está en estado consistente.', sections:[]},
+  CI_FAIL: {type:'ci',       typeLabel:'CI',             phase:'CI — resultado',               title:'❌ PR bloqueado', desc:'El audit detectó al menos un FAIL. El PR no puede mergearse hasta resolver las inconsistencias. Los WARNs no bloquean — solo los FAILs.', sections:[]},
+  FIX:     {type:'trans',    typeLabel:'Transversal',    phase:'Ruta corta para bugs',         title:'/sdd-fix', desc:'Ruta liviana para bugs y hotfixes que no justifican el ciclo completo. Mantiene gobernanza mínima: registro, colisiones, TDD con test reproductor obligatorio.', sections:[{h:'Elegibilidad',items:['Toca ≤ 3 archivos de producción','Sin entidades, rutas ni dependencias nuevas','Sin cambios a contratos públicos (APIs, tipos exportados)']},{h:'Si excede los límites',items:['El fix se promueve a feature → ciclo completo con /sdd-refine']}]},
+  HANDOFF: {type:'trans',    typeLabel:'Transversal',    phase:'Continuidad entre sesiones',   title:'/sdd-handoff', desc:'Genera un snapshot del estado de sesión para continuar en otro chat o pasar trabajo a otro dev. Verifica que DECISIONS.md esté al día. Incluye sección obligatoria de "Caminos descartados".', sections:[{h:'Dos tipos',items:['OPERATIVO — trabajo acotado, sesión paralela, prototipos','GATE — transición formal entre fases']},{h:'Secciones del documento',items:['Estado: completado / en curso / bloqueado','Caminos descartados (obligatorio — approaches fallidos)','Foco de la próxima sesión y comandos sugeridos']}]},
+  MET:     {type:'trans',    typeLabel:'Transversal',    phase:'Observabilidad',               title:'/sdd-metrics + /sdd-metrics-summary', desc:'/sdd-metrics reporta el esfuerzo de la feature actual (tokens, rework, iteraciones). /sdd-metrics-summary genera la tabla agregada de todas las features del proyecto.', sections:[{h:'Rework Ratio',items:['(autocorrecciones + entradas DECISIONS.md) / tareas totales','Señal de alerta: ratio > 0.3 → spec ambigua o scope creep']}]},
+  COMPACT: {type:'trans',    typeLabel:'Transversal',    phase:'Gestión de contexto',          title:'/sdd-compact-guide', desc:'Tabla de decisión que indica en qué transiciones del ciclo conviene usar /compact. Detecta la fase activa y da recomendación específica. No ejecuta /compact — solo guía.', sections:[{h:'Regla general',items:['Sí: entre refine→generate, validate→implement (contexto ya en artefactos)','No: en medio de implement o review (perderías contexto activo del código)']}]},
+  BUDGET:  {type:'trans',    typeLabel:'Transversal',    phase:'Gestión de contexto',          title:'/sdd-context-budget', desc:'Auditoría del peso en tokens del framework SDD. Clasifica qué se carga siempre, qué bajo referencia, y qué condicionalmente. Termómetro antes de implementar.', sections:[{h:'Buckets',items:['Always-loaded: CLAUDE.md, existing-arch.md','Loaded-by-reference: comandos .claude/commands/','Conditionally-loaded: specs/[feature]/ artefactos activos']}]},
+};
+
+const nodes = new vis.DataSet([
+  {id:'DOCS',     label:'📄 Docs\nfuncionales',      group:'human',    level:0 },
+  {id:'DRAFTS',   label:'📁 drafts/',                group:'human',    level:1 },
+  {id:'SCAN',     label:'/sdd-scan',                 group:'ai',       level:1 },
+  {id:'ARCH',     label:'existing-arch.md',          group:'artifact', level:2 },
+  {id:'GRAPH',    label:'graph/domain.yaml',         group:'artifact', level:2 },
+  {id:'COMPACT',  label:'/sdd-compact-guide',        group:'trans',    level:2 },
+  {id:'REFINE',   label:'/sdd-refine',               group:'ai',       level:3 },
+  {id:'BUDGET',   label:'/sdd-context-budget',       group:'trans',    level:3 },
+  {id:'INPUT',    label:'input.md',                  group:'artifact', level:4 },
+  {id:'GEN',      label:'/sdd-generate',             group:'ai',       level:5 },
+  {id:'CONST',    label:'constitution.md',           group:'artifact', level:6 },
+  {id:'SPEC',     label:'spec.md',                   group:'artifact', level:6 },
+  {id:'PLAN',     label:'plan.md',                   group:'artifact', level:6 },
+  {id:'TASKS',    label:'tasks.md',                  group:'artifact', level:6 },
+  {id:'VAL',      label:'/sdd-validate',             group:'ai',       level:7 },
+  {id:'FIX',      label:'/sdd-fix',                  group:'trans',    level:7 },
+  {id:'LOG',      label:'/sdd-log',                  group:'ai',       level:8 },
+  {id:'DEC',      label:'DECISIONS.md',              group:'artifact', level:8 },
+  {id:'IMPL',     label:'/sdd-implement',            group:'ai',       level:9 },
+  {id:'CHKL',     label:'/sdd-checklist',            group:'human',    level:10},
+  {id:'HANDOFF',  label:'/sdd-handoff',              group:'trans',    level:10},
+  {id:'REV',      label:'/sdd-review',               group:'gate',     level:11},
+  {id:'MET',      label:'/sdd-metrics',              group:'trans',    level:11},
+  {id:'STATUS',   label:'feature.status.md',         group:'artifact', level:12},
+  {id:'REGISTRY', label:'specs/_registry/\nfeatures.yaml', group:'artifact', level:12},
+  {id:'METRICS',  label:'metrics/',                  group:'artifact', level:12},
+  {id:'AUDIT',    label:'pnpm audit:sdd',            group:'ci',       level:13},
+  {id:'HEALTH',   label:'/sdd-health',               group:'ai',       level:13},
+  {id:'CI_OK',    label:'✅ PR aprobado',             group:'ci',       level:14},
+  {id:'CI_FAIL',  label:'❌ PR bloqueado',            group:'ci',       level:14},
+]);
+
+const edges = new vis.DataSet([
+  {from:'DOCS',    to:'DRAFTS',   label:'extracción\nsesión separada', dashes:true},
+  {from:'DRAFTS',  to:'SCAN',     dashes:true},
+  {from:'SCAN',    to:'ARCH'},
+  {from:'SCAN',    to:'GRAPH'},
+  {from:'ARCH',    to:'REFINE',   label:'brownfield', dashes:true},
+  {from:'GRAPH',   to:'GEN',      label:'routing', dashes:true},
+  {from:'GRAPH',   to:'IMPL',     label:'routing', dashes:true},
+  {from:'DRAFTS',  to:'REFINE'},
+  {from:'REFINE',  to:'INPUT'},
+  {from:'INPUT',   to:'GEN'},
+  {from:'GEN',     to:'CONST'},
+  {from:'GEN',     to:'SPEC'},
+  {from:'GEN',     to:'PLAN'},
+  {from:'GEN',     to:'TASKS'},
+  {from:'SPEC',    to:'VAL'},
+  {from:'TASKS',   to:'VAL'},
+  {from:'VAL',     to:'LOG',      label:'gap'},
+  {from:'LOG',     to:'DEC'},
+  {from:'VAL',     to:'IMPL',     label:'OK'},
+  {from:'IMPL',    to:'CHKL'},
+  {from:'CHKL',    to:'REV'},
+  {from:'REV',     to:'STATUS'},
+  {from:'REV',     to:'REGISTRY'},
+  {from:'REV',     to:'METRICS'},
+  {from:'REGISTRY',to:'AUDIT'},
+  {from:'AUDIT',   to:'CI_OK',    label:'PASS'},
+  {from:'AUDIT',   to:'CI_FAIL',  label:'FAIL'},
+  {from:'HEALTH',  to:'DEC',      dashes:true},
+  {from:'FIX',     to:'REGISTRY', dashes:true},
+  {from:'HANDOFF', to:'DEC',      dashes:true},
+]);
+
+const groupColors = {
+  human:    {bg:'#1e3a5f', border:'#3b82f6', font:'#bfdbfe'},
+  ai:       {bg:'#14532d', border:'#22c55e', font:'#bbf7d0'},
+  artifact: {bg:'#3b1f5e', border:'#a855f7', font:'#e9d5ff'},
+  gate:     {bg:'#7f1d1d', border:'#ef4444', font:'#fecaca'},
+  trans:    {bg:'#1c1917', border:'#78716c', font:'#d6d3d1'},
+  ci:       {bg:'#1e1b4b', border:'#6366f1', font:'#c7d2fe'},
+};
+
+const options = {
+  groups: Object.fromEntries(Object.entries(groupColors).map(([k,v]) => [k, {
+    color: {background:v.bg, border:v.border, highlight:{background:v.bg, border:'#f8fafc'}},
+    font:  {color:v.font, size:11, face:'"SF Mono", Consolas, monospace'},
+    shape: 'box', borderWidth:1.5, borderWidthSelected:2.5, margin:8,
+  }])),
+  layout: {
+    hierarchical: {
+      direction:'UD', sortMethod:'directed',
+      levelSeparation:75, nodeSpacing:130, treeSpacing:160,
+      blockShifting:true, edgeMinimization:true, parentCentralization:true,
+    }
+  },
+  edges: {
+    color:  {color:'#334155', highlight:'#94a3b8'},
+    font:   {color:'#475569', size:9, face:'system-ui', align:'middle'},
+    arrows: {to:{enabled:true, scaleFactor:0.55}},
+    smooth: {type:'cubicBezier', forceDirection:'vertical', roundness:0.4},
+    width:  1.2,
+  },
+  interaction: {hover:true, tooltipDelay:0, navigationButtons:false, keyboard:false},
+  physics: {enabled:false},
+};
+
+const network = new vis.Network(
+  document.getElementById('network'),
+  {nodes, edges},
+  options
+);
+
+const typeClassMap = {human:'type-human', ai:'type-ai', artifact:'type-artifact', gate:'type-gate', trans:'type-trans', ci:'type-ci'};
+
+function showDetail(nodeId) {
+  const info = NODE_INFO[nodeId];
+  if (!info) return;
+  document.getElementById('empty-state').style.display = 'none';
+  const panel = document.getElementById('detail-panel');
+  panel.classList.add('active');
+  document.getElementById('detail-type').className  = 'node-type ' + (typeClassMap[info.type] || '');
+  document.getElementById('detail-type').textContent = info.typeLabel;
+  document.getElementById('detail-title').textContent = info.title;
+  document.getElementById('detail-phase').textContent = info.phase;
+  document.getElementById('detail-desc').textContent  = info.desc;
+  const extra = document.getElementById('detail-extra');
+  extra.innerHTML = '';
+  (info.sections || []).forEach(sec => {
+    const div = document.createElement('div');
+    div.className = 'node-section';
+    div.innerHTML = `<h4>${sec.h}</h4><ul>${sec.items.map(i =>
+      `<li>${i.replace(/`([^`]+)`/g,'<strong>$1</strong>')}</li>`
+    ).join('')}</ul>`;
+    extra.appendChild(div);
+  });
+}
+
+network.on('click', p => { if (p.nodes.length) showDetail(p.nodes[0]); });
+network.on('hoverNode', () => { document.getElementById('network').style.cursor = 'pointer'; });
+network.on('blurNode',  () => { document.getElementById('network').style.cursor = 'default'; });
+</script>
+</body>
+</html>
