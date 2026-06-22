@@ -189,6 +189,22 @@
     }
 
     .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    .toggle-btn {
+      padding: 5px 13px;
+      border-radius: 6px;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: #94a3b8;
+      font-size: 0.72rem;
+      font-family: inherit;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .toggle-btn:hover { border-color: #d97706; color: #fde68a; }
+    .toggle-btn.off    { background: #451a03; border-color: #d97706; color: #fde68a; }
   </style>
 </head>
 <body>
@@ -200,6 +216,7 @@
   </div>
   <span class="hint">🖱 Clic en un nodo para ver detalles</span>
   <span class="hint">Scroll para zoom · Arrastrar para mover</span>
+  <button id="toggle-bf" class="toggle-btn" onclick="toggleBrownfield()">Ocultar brownfield</button>
   <span class="badge">v1.2 — 2026-06</span>
 </header>
 
@@ -414,6 +431,29 @@ function showDetail(nodeId) {
 network.on('click', p => { if (p.nodes.length) showDetail(p.nodes[0]); });
 network.on('hoverNode', () => { document.getElementById('network').style.cursor = 'pointer'; });
 network.on('blurNode',  () => { document.getElementById('network').style.cursor = 'default'; });
+
+// ── Toggle brownfield ──────────────────────────────────────────────────────
+const BF_NODES = ['SCAN', 'ARCH'];
+function getBfEdgeIds() {
+  return edges.get({
+    filter: e =>
+      (e.from === 'DRAFTS' && e.to   === 'SCAN')   ||
+      (e.from === 'SCAN'   && e.to   === 'ARCH')   ||
+      (e.from === 'SCAN'   && e.to   === 'GRAPH')  ||
+      (e.from === 'ARCH'   && e.to   === 'REFINE')
+  }).map(e => e.id);
+}
+
+let bfVisible = true;
+function toggleBrownfield() {
+  bfVisible = !bfVisible;
+  const hidden = !bfVisible;
+  nodes.update(BF_NODES.map(id => ({id, hidden})));
+  edges.update(getBfEdgeIds().map(id => ({id, hidden})));
+  const btn = document.getElementById('toggle-bf');
+  btn.textContent = bfVisible ? 'Ocultar brownfield' : 'Mostrar brownfield';
+  btn.classList.toggle('off', !bfVisible);
+}
 </script>
 </body>
 </html>
