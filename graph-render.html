@@ -113,6 +113,7 @@
     .type-gate     { background: #7f1d1d; color: #fca5a5; }
     .type-trans    { background: #292524; color: #a8a29e; }
     .type-ci       { background: #1e1b4b; color: #a5b4fc; }
+    .type-brownfield { background: #451a03; color: #fde68a; }
 
     .node-title {
       font-size: 1.05rem;
@@ -228,14 +229,17 @@
   <div class="legend-item"><span class="dot" style="background:#ef4444"></span>Gate</div>
   <div class="legend-item"><span class="dot" style="background:#78716c"></span>Transversal</div>
   <div class="legend-item"><span class="dot" style="background:#6366f1"></span>CI determinista</div>
+  <div class="legend-item"><span class="dot" style="background:#d97706"></span>Solo brownfield</div>
+  <div class="legend-item"><span style="display:inline-block;width:20px;height:2px;background:#22c55e;margin-right:5px"></span>Greenfield</div>
+  <div class="legend-item"><span style="display:inline-block;width:20px;height:2px;background:#d97706;margin-right:5px"></span>Brownfield</div>
 </div>
 
 <script>
 const NODE_INFO = {
   DOCS:    {type:'human',    typeLabel:'Humano',         phase:'Entrada al modelo',            title:'📄 Docs funcionales', desc:'PDFs, documentos Word o notas con los requerimientos funcionales del negocio. Son el punto de partida del modelo. Se procesan en una sesión separada para extraer un resumen en Markdown que va a drafts/.', sections:[{h:'Recomendación',items:['Extraer en sesión separada — no gastar tokens antes del grilling','Formato de salida: Markdown con las 6 categorías que busca /sdd-refine']}]},
   DRAFTS:  {type:'human',    typeLabel:'Humano',         phase:'Fase 1 — Brief',               title:'📁 drafts/', desc:'Carpeta donde el equipo deposita borradores: notas, wireframes, restricciones técnicas, contexto de negocio. Es la única entrada al grilling de /sdd-refine.', sections:[{h:'Reglas',items:['No hay formato obligatorio — cualquier .md sirve','Subcarpetas por feature: indicarle a /sdd-refine cuál leer','Archivos .html: /sdd-refine resuelve la cascada CSS antes de analizar']}]},
-  SCAN:    {type:'ai',       typeLabel:'Agente IA',      phase:'Fase 0 — solo brownfield',     title:'/sdd-scan', desc:'Se corre UNA sola vez cuando el proyecto ya tiene código. Lee el codebase, detecta stack real, patrones inquebrantables y restricciones. Requiere doble confirmación humana.', sections:[{h:'Genera',items:['existing-arch.md — estado descriptivo del codebase','graph/domain.yaml — grafo de dominios para routing']},{h:'Regla',items:['Si no existe existing-arch.md → modo greenfield, saltar este comando']}]},
-  ARCH:    {type:'artifact', typeLabel:'Artefacto',      phase:'Fase 0 — brownfield',          title:'existing-arch.md', desc:'Documento descriptivo del estado real del codebase. Captura stack, source_root, patrones inquebrantables y restricciones. Todos los comandos posteriores lo detectan y entran en modo brownfield.', sections:[{h:'Contiene',items:['Stack + versiones + gestor de paquetes','source_root — carpeta raíz del código','Patrones inquebrantables — convenciones que no se rompen','SHA del commit base para detectar drift']},{h:'Límite',items:['≤ 120 líneas']}]},
+  SCAN:    {type:'brownfield', typeLabel:'Solo brownfield', phase:'Fase 0 — solo brownfield',     title:'/sdd-scan', desc:'Se corre UNA sola vez cuando el proyecto ya tiene código. Lee el codebase, detecta stack real, patrones inquebrantables y restricciones. Requiere doble confirmación humana.', sections:[{h:'Genera',items:['existing-arch.md — estado descriptivo del codebase','graph/domain.yaml — grafo de dominios para routing']},{h:'Regla',items:['Si no existe existing-arch.md → modo greenfield, saltar este comando']}]},
+  ARCH:    {type:'brownfield', typeLabel:'Solo brownfield', phase:'Fase 0 — brownfield',          title:'existing-arch.md', desc:'Documento descriptivo del estado real del codebase. Captura stack, source_root, patrones inquebrantables y restricciones. Todos los comandos posteriores lo detectan y entran en modo brownfield.', sections:[{h:'Contiene',items:['Stack + versiones + gestor de paquetes','source_root — carpeta raíz del código','Patrones inquebrantables — convenciones que no se rompen','SHA del commit base para detectar drift']},{h:'Límite',items:['≤ 120 líneas']}]},
   GRAPH:   {type:'artifact', typeLabel:'Artefacto',      phase:'Routing de contexto',          title:'graph/domain.yaml', desc:'Grafo de dominios de negocio que mapea cada dominio a sus archivos exactos. Los comandos lo consultan ANTES de leer código para cargar solo los archivos relevantes, ahorrando tokens.', sections:[{h:'Estructura',items:['domain → description, entities, services, components, files','features — qué features pertenecen al dominio','depends_on — dependencias entre dominios']},{h:'Lo genera',items:['/sdd-scan (brownfield) · /sdd-generate (greenfield, primera feature)']}]},
   REFINE:  {type:'ai',       typeLabel:'Agente IA',      phase:'Fase 2 — Clarificación',       title:'/sdd-refine', desc:'Proceso de grilling Socrático que lee drafts/ y hace preguntas hasta que las 6 categorías estén 100% claras. Detecta el tipo de feature y agrega preguntas de dominio específicas aunque no estén en los borradores.', sections:[{h:'6 categorías que valida',items:['PROBLEMA — qué duele hoy','USUARIO — quién lo usa y qué necesita','DONE CRITERIA — qué tiene que ser verdad para estar terminado','OUT OF SCOPE — qué queda explícitamente afuera de v1','RESTRICCIONES TÉCNICAS — stack, integraciones, limitaciones','UI / FLUJO — cómo se ve o funciona']},{h:'Detección de tipo de feature',items:['Dashboard → dimensión temporal, granularidad, URL bookmarkable','Formulario → validaciones, estados intermedios, abandono','Lista/tabla → ordenamiento, paginación, filtros','Permisos → roles, acceso no autorizado','Integración → fallo, retry, estado visible']}]},
   INPUT:   {type:'artifact', typeLabel:'Artefacto',      phase:'Fase 2 — Salida',              title:'input.md', desc:'Fuente única de verdad del proyecto. Consolidación de borradores + respuestas del grilling. Las 6 categorías completas, sin ambigüedad. Es el único input de /sdd-generate.', sections:[{h:'Regla',items:['Debe poder ser leído por alguien que no participó y entender exactamente qué construir','Sin placeholders, sin "a definir"']}]},
@@ -267,8 +271,8 @@ const NODE_INFO = {
 const nodes = new vis.DataSet([
   {id:'DOCS',     label:'📄 Docs\nfuncionales',      group:'human',    level:0 },
   {id:'DRAFTS',   label:'📁 drafts/',                group:'human',    level:1 },
-  {id:'SCAN',     label:'/sdd-scan',                 group:'ai',       level:1 },
-  {id:'ARCH',     label:'existing-arch.md',          group:'artifact', level:2 },
+  {id:'SCAN',     label:'/sdd-scan',                 group:'brownfield', level:1 },
+  {id:'ARCH',     label:'existing-arch.md',          group:'brownfield', level:2 },
   {id:'GRAPH',    label:'graph/domain.yaml',         group:'artifact', level:2 },
   {id:'COMPACT',  label:'/sdd-compact-guide',        group:'trans',    level:2 },
   {id:'REFINE',   label:'/sdd-refine',               group:'ai',       level:3 },
@@ -299,13 +303,13 @@ const nodes = new vis.DataSet([
 
 const edges = new vis.DataSet([
   {from:'DOCS',    to:'DRAFTS',   label:'extracción\nsesión separada', dashes:true},
-  {from:'DRAFTS',  to:'SCAN',     dashes:true},
-  {from:'SCAN',    to:'ARCH'},
-  {from:'SCAN',    to:'GRAPH'},
-  {from:'ARCH',    to:'REFINE',   label:'brownfield', dashes:true},
+  {from:'DRAFTS',  to:'SCAN',     dashes:true, color:{color:'#d97706', highlight:'#fbbf24', hover:'#fbbf24'}, font:{color:'#d97706'}},
+  {from:'SCAN',    to:'ARCH',     color:{color:'#d97706', highlight:'#fbbf24', hover:'#fbbf24'}},
+  {from:'SCAN',    to:'GRAPH',    color:{color:'#d97706', highlight:'#fbbf24', hover:'#fbbf24'}},
+  {from:'ARCH',    to:'REFINE',   label:'↳ brownfield', dashes:true, color:{color:'#d97706', highlight:'#fbbf24', hover:'#fbbf24'}, font:{color:'#b45309'}},
   {from:'GRAPH',   to:'GEN',      label:'routing', dashes:true},
   {from:'GRAPH',   to:'IMPL',     label:'routing', dashes:true},
-  {from:'DRAFTS',  to:'REFINE'},
+  {from:'DRAFTS',  to:'REFINE',   label:'↳ greenfield', color:{color:'#22c55e', highlight:'#4ade80', hover:'#4ade80'}, font:{color:'#16a34a'}},
   {from:'REFINE',  to:'INPUT'},
   {from:'INPUT',   to:'GEN'},
   {from:'GEN',     to:'CONST'},
@@ -331,19 +335,32 @@ const edges = new vis.DataSet([
 ]);
 
 const groupColors = {
-  human:    {bg:'#1e3a5f', border:'#3b82f6', font:'#bfdbfe'},
-  ai:       {bg:'#14532d', border:'#22c55e', font:'#bbf7d0'},
-  artifact: {bg:'#3b1f5e', border:'#a855f7', font:'#e9d5ff'},
-  gate:     {bg:'#7f1d1d', border:'#ef4444', font:'#fecaca'},
-  trans:    {bg:'#1c1917', border:'#78716c', font:'#d6d3d1'},
-  ci:       {bg:'#1e1b4b', border:'#6366f1', font:'#c7d2fe'},
+  human:       {bg:'#1e3a5f', bgHover:'#243d6b', border:'#3b82f6', borderHover:'#60a5fa', font:'#bfdbfe'},
+  ai:          {bg:'#14532d', bgHover:'#1a6437', border:'#22c55e', borderHover:'#4ade80', font:'#bbf7d0'},
+  artifact:    {bg:'#3b1f5e', bgHover:'#4a2878', border:'#a855f7', borderHover:'#c084fc', font:'#e9d5ff'},
+  gate:        {bg:'#7f1d1d', bgHover:'#991f1f', border:'#ef4444', borderHover:'#f87171', font:'#fecaca'},
+  trans:       {bg:'#1c1917', bgHover:'#2c2825', border:'#78716c', borderHover:'#a8a29e', font:'#d6d3d1'},
+  ci:          {bg:'#1e1b4b', bgHover:'#272060', border:'#6366f1', borderHover:'#818cf8', font:'#c7d2fe'},
+  brownfield:  {bg:'#451a03', bgHover:'#5c2405', border:'#d97706', borderHover:'#fbbf24', font:'#fde68a'},
 };
 
 const options = {
   groups: Object.fromEntries(Object.entries(groupColors).map(([k,v]) => [k, {
-    color: {background:v.bg, border:v.border, highlight:{background:v.bg, border:'#f8fafc'}},
+    color: {
+      background: v.bg,
+      border:     v.border,
+      highlight:  {background: v.bg,      border: '#f8fafc'},
+      hover:      {background: v.bgHover, border: v.borderHover},
+    },
     font:  {color:v.font, size:11, face:'"SF Mono", Consolas, monospace'},
     shape: 'box', borderWidth:1.5, borderWidthSelected:2.5, margin:8,
+    chosen: {
+      node: (vals, _id, selected, hovering) => {
+        if (hovering)  { vals.borderWidth = 2.2; vals.shadowColor = 'rgba(255,255,255,0.08)'; vals.shadowSize = 14; vals.shadowX = 0; vals.shadowY = 0; }
+        if (selected)  { vals.borderWidth = 2.8; vals.shadowColor = 'rgba(255,255,255,0.18)'; vals.shadowSize = 20; vals.shadowX = 0; vals.shadowY = 0; }
+      },
+      label: (vals) => { /* mantener color de fuente inalterado */ }
+    },
   }])),
   layout: {
     hierarchical: {
@@ -369,7 +386,7 @@ const network = new vis.Network(
   options
 );
 
-const typeClassMap = {human:'type-human', ai:'type-ai', artifact:'type-artifact', gate:'type-gate', trans:'type-trans', ci:'type-ci'};
+const typeClassMap = {human:'type-human', ai:'type-ai', artifact:'type-artifact', gate:'type-gate', trans:'type-trans', ci:'type-ci', brownfield:'type-brownfield'};
 
 function showDetail(nodeId) {
   const info = NODE_INFO[nodeId];
