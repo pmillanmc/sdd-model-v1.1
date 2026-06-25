@@ -41,7 +41,7 @@ Desde `input.md`, los agentes generan cuatro artefactos operativos:
 `/sdd-validate` verifica que los artefactos cubran el brief. Si hay gaps, **avisa y para** — no modifica nada solo. Cada decisión que desvía el brief queda registrada en `DECISIONS.md` vía `/sdd-log`.
 
 ### Fase 4 — Código `🤖 IA | gate 👤 humano`
-`/sdd-implement` ejecuta las tareas en orden con TDD usando `pnpm`. `/sdd-checklist` genera los criterios no automatizables (UX, accesibilidad, seguridad, negocio) que el equipo humano completa. `/sdd-review` hace el gate final en dos pasadas: lógica (spec + tests) y UI (input.md → spec → código).
+`/sdd-implement` ejecuta las tareas en orden con un **loop TDD explícito por tarea**: Red → Green → Refactor. El paso de refactor verifica duplicación, nombres que no reflejan su intención y abstracciones prematuras antes de pasar a la siguiente tarea. `/sdd-checklist` genera los criterios no automatizables (UX, accesibilidad, seguridad, negocio) que el equipo humano completa. `/sdd-review` hace el gate final en tres pasadas: lógica (spec + tests), UI (input.md → spec → código) y **calidad estructural** (duplicación, nombres engañosos, abstracciones prematuras acumuladas en toda la feature).
 
 ### Mantenimiento — cada sprint `👤 Tech Lead`
 `/sdd-health` audita todos los artefactos activos: detecta archivos sobredimensionados, principios contradictorios, tasks completadas no archivadas y user stories sin código. Solo reporta — nunca modifica solo.
@@ -96,7 +96,7 @@ El modelo captura automáticamente métricas de esfuerzo y calidad en cada fase:
 | `/sdd-refine` | Rondas de grilling, categorías faltantes y ambiguas al inicio |
 | `/sdd-validate` | Cobertura inicial del brief, gaps encontrados |
 | `/sdd-implement` | Ciclos de autocorrección, consultas de clarificación, tokens estimados |
-| `/sdd-review` | Resultado final, criterios sin test, gaps de UI |
+| `/sdd-review` | Resultado final, criterios sin test, gaps de UI, issues de calidad estructural (`structural_issues`) |
 
 Todos los datos se acumulan en `metrics/[feature_id]-metrics.md` con `iteration_number` para detectar retrabajo entre sesiones.
 
