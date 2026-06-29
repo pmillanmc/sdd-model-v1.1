@@ -139,9 +139,17 @@ Si es tu primera vez configurando el entorno, corré `/sdd-setup` — te guía p
 La configuración varía según el entorno:
 
 ### Cursor
-El archivo `.vscode/mcp.json` ya incluye ambos servidores. Cursor los levanta
-automáticamente al abrir el proyecto. La primera vez te va a pedir autenticar
-tu cuenta de Atlassian — seguí el flujo OAuth que aparece en el panel MCP.
+El archivo `.cursor/mcp.json` (creado por `/sdd-setup`) incluye ambos servidores.
+Cursor los detecta al abrir el proyecto, pero NO los activa automáticamente.
+
+Después del setup tenés que entrar a Cursor Settings → solapa "Tools" →
+solapa de tu workspace → sección "Workspace MCP Servers":
+- atlassian: si dice "Needs authentication", clic en "Connect" para iniciar
+  el flujo OAuth.
+- sdd: activá el toggle si está apagado.
+
+Recomendado: en la sección "Authentication", activá "Wait for MCP Authentication"
+para que el popup de OAuth no se cierre solo a los 30 segundos.
 
 ### Claude Code
 El archivo `.claude/settings.json` ya incluye ambos servidores. Las credenciales
@@ -161,3 +169,93 @@ Los MCPs se conectan manualmente desde la UI de Claude.ai:
 ### Regla de Observabilidad (Telemetría DX)
 **Metrics Mandatory**: Al completar la ejecución de `/sdd-implement` o finalizar una tarea grande, el agente DEBE autoevaluarse ejecutando el comando `/sdd-metrics` (o leyendo `.claude/commands/sdd-metrics.md`) para generar el reporte de retrabajo y ambigüedad.
 Para ver el resumen agregado de todas las features, corré `/sdd-metrics-summary`.
+
+### Regla de Resiliencia (Fallback MCP → REST)
+
+**Fallback Mandatory**: cuando un comando SDD necesite hablar con Jira, el MCP de Atlassian es el camino default y mandatorio. Si el MCP falla, el agente puede caer a la REST API de Jira, pero SOLO con trazabilidad obligatoria vía `/sdd-log`.
+
+Flujo cuando el MCP falla:
+
+1. Clasificá el error con uno de estos códigos:
+   - `MCP_UNAUTHENTICATED` — el server existe pero no tiene sesión OAuth viva.
+   - `MCP_UNREACHABLE` — no se pudo contactar al server (timeout, DNS, red).
+   - `MCP_FORBIDDEN` — el server respondió pero rechazó la operación (scopes, permisos).
+   - `MCP_DISABLED` — el server está apagado en la UI del IDE.
+   - `MCP_OTHER` — cualquier otro error. Pegá el mensaje original.
+
+2. Antes de caer a REST, avisá al humano y pedile autorización:
+   ```
+   El MCP de Atlassian falló (código: [CÓDIGO_DEL_PASO_1]).
+
+   Para mantener trazabilidad voy a invocar /sdd-log antes de continuar
+   vía REST. Te va a pedir tu nombre o rol. ¿Procedo?
+   ```
+
+3. Si el humano confirma, invocá `/sdd-log` y pre-rellená las primeras 5 respuestas (el humano solo aporta la 6, "decidido por"):
+
+   - **¿Qué cambió?** → `"Fallback MCP → REST en [/comando-sdd] por falla del MCP de Atlassian (código: [CÓDIGO])."`
+   - **¿Qué alternativas consideraste?** → `"Abortar la operación y pedir al usuario que resuelva el MCP antes de continuar."`
+   - **¿Por qué descartaste cada alternativa?** → `"Bloquearía al usuario sin necesidad: la operación es válida y REST cumple el mismo contrato con trazabilidad explícita."`
+   - **¿Por qué tomaste esa decisión?** → `"El MCP es default mandatorio pero REST es fallback aceptado del modelo cuando hay registro. Ver CLAUDE.md → Regla de Resiliencia."`
+   - **¿Qué artefactos modificaste?** → `"Ninguno — fallback de infraestructura, no de artefactos SDD."`
+   - **¿Quién tomó la decisión?** → respuesta del humano.
+
+4. Una vez que `/sdd-log` confirme la entrada en `DECISIONS.md`, ejecutá la operación vía REST API de Jira con basic auth (`ATLASSIAN_USER_EMAIL` + `ATLASSIAN_API_TOKEN` del `.env`).
+
+**Sin `/sdd-log` no hay fallback.** Si por cualquier razón `/sdd-log` falla o el humano no responde, abortá la operación y reportá el problema. No completes el trabajo vía REST sin registro.
+
+**Excepción documentada:** la validación de token vía REST `/myself` que ocurre dentro de `/sdd-setup` NO se registra como fallback. Es uso legítimo de REST por diseño del setup — en ese momento el MCP todavía no está disponible.
+
+## Troubleshooting MCP de Atlassian
+
+Cuando el MCP de Atlassian falle (o el usuario reporte que comandos `/sdd-jira-*` no funcionan), guiá al usuario para diagnosticar antes de cualquier fallback. Mostrá solo la guía del IDE que esté usando.
+
+### Cursor
+
+```
+Verificá los servers MCP en Cursor:
+
+  1. Cursor Settings (Ctrl+Shift+J o ícono ⚙) → solapa "Tools" →
+     solapa de tu workspace.
+
+  2. Sección "Workspace MCP Servers":
+     • atlassian: si dice "Needs authentication", clic en "Connect".
+       Si dice "Disabled", prendé el toggle.
+     • sdd: el toggle debe estar en verde.
+
+  3. (Recomendado) En la sección "Authentication", activá
+     "Wait for MCP Authentication". Sin esto, el popup de OAuth
+     se cierra solo a los 30 segundos.
+```
+
+### VS Code
+
+```
+Verificá los servers MCP en VS Code:
+
+  1. Ctrl+Shift+P → "MCP: List Servers" → seleccioná atlassian →
+     "Enable" o "Restart" según corresponda.
+
+  2. Si "MCP: List Servers" no existe, abrí Extensions view
+     (Ctrl+Shift+X) → sección "MCP SERVERS - INSTALLED" → clic
+     derecho sobre atlassian → habilitalo.
+
+  3. Para ver logs: clic derecho sobre el server → "Show Output".
+
+  (Comandos exactos pueden variar entre versiones de VS Code.)
+```
+
+### Claude Code
+
+```
+Verificá los servers MCP en Claude Code:
+
+  1. claude mcp list           # debería mostrar atlassian y sdd
+  2. claude mcp authenticate atlassian   # si no está autenticado
+  3. claude mcp restart atlassian        # si está con error
+
+  Si algún comando no existe en tu versión: claude mcp --help
+
+  (Sintaxis aproximada — los comandos exactos pueden variar entre
+   versiones de Claude Code.)
+```
