@@ -240,8 +240,9 @@ Inmediatamente después de escribir `.env`, ejecutá:
 # Credencial vía config temporal de curl — nunca en argv (visible en `ps`)
 # ni en archivos world-readable de /tmp.
 CURL_CFG=$(mktemp) && chmod 600 "$CURL_CFG"
+RESP_FILE=$(mktemp) && chmod 600 "$RESP_FILE"
 printf 'user = "%s:%s"\n' "$ATLASSIAN_USER_EMAIL" "$ATLASSIAN_API_TOKEN" > "$CURL_CFG"
-HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+HTTP_CODE=$(curl -s -o "$RESP_FILE" -w "%{http_code}" \
   --config "$CURL_CFG" \
   -H "Accept: application/json" \
   "$ATLASSIAN_SITE_URL/rest/api/3/myself")
@@ -255,19 +256,18 @@ En Windows/PowerShell:
 $pair  = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes("$env:ATLASSIAN_USER_EMAIL`:$env:ATLASSIAN_API_TOKEN"))
 try {
   $r = Invoke-WebRequest -Uri "$env:ATLASSIAN_SITE_URL/rest/api/3/myself" -Headers @{ Authorization = "Basic $pair"; Accept = "application/json" } -UseBasicParsing
-  $r.StatusCode
+  $r.StatusCode; $r.Content
 } catch { $_.Exception.Response.StatusCode.value__ }
 ```
 
 Clasificá por código de respuesta:
 
-- **200** → `✅ Token válido — acceso a Jira confirmado.`
+- **200** → leé el campo `emailAddress` de `$RESP_FILE` (o del body PowerShell) y mostrá: `✅ Token válido — acceso a Jira confirmado como [emailFromResponse].`
 - **401** → `❌ El token no es válido o el email no coincide. Revisá los 3 valores y volvé a correr este comando.`
 - **403** → `⚠️ El token es válido pero le faltan permisos. Creá uno nuevo con read:jira-work + write:jira-work activados.`
 - **Timeout / DNS / sin respuesta** → `⚠️ No puedo contactar a Jira. Verificá ATLASSIAN_SITE_URL y tu conectividad.`
 
 Si falla, ofrecé reintentar o seguir marcando token como "no validado". Si el usuario decide seguir, anotá esa decisión para mencionarla en el resumen final.
-
 **Nota de diseño:** esta validación usa REST por necesidad — el MCP de Atlassian recién se autentica después de que el usuario active el server en la UI del IDE, lo cual ocurre más adelante en este mismo flujo. No registres esta llamada como "fallback" en `DECISIONS.md`: es uso legítimo de REST documentado en el propio diseño del comando.
 
 ---
