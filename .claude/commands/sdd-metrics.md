@@ -11,12 +11,24 @@ Antes de escribir el reporte:
 3. El `command_origin` es el comando que disparó este reporte (ej. `sdd-implement`, `sdd-validate`, `manual`).
 
 ### Paso 0.5 — Detección de entorno (solo afecta a DX_MET_006)
-Determinar el agente activo. Señal primaria: la variable de entorno `CLAUDECODE`
-(la fija Claude Code; confirmar en la primera corrida con `echo $CLAUDECODE`).
-Señal secundaria: existencia de `~/.claude/projects/`.
-- Si es **Claude Code** → DX_MET_006 usa la **Variante A (ccusage, tokens reales)**.
-- Si NO (Cursor u otro IDE que solo carga el `.md` como contexto y no ejecuta bash)
-  → DX_MET_006 usa la **Variante B (bytes÷4, vigente)**.
+La variante depende de QUÉ AGENTE hace la llamada a la API, no de qué editor se usa.
+Lo que habilita la Variante A es que ejecute Claude Code, porque es quien escribe los
+logs JSONL que ccusage lee. El editor que lo hospede es irrelevante.
+
+Señal primaria: la variable de entorno `CLAUDECODE` (la fija Claude Code cuando es él
+quien corre; confirmar con `echo $CLAUDECODE`). Señal secundaria: `~/.claude/projects/`
+con logs de esta sesión.
+
+- Agente = **Claude Code** → **Variante A (ccusage, tokens reales)**, sin importar el
+  editor. Claude Code dentro de Cursor ES Variante A (verificado 2026-07-06: escribe
+  JSONL y dispara el hook igual que standalone; la extensión de IDE puede fallar sin
+  afectar la captura).
+- Agente = **nativo del IDE** (p. ej. Composer/Chat de Cursor, que rutea por sus
+  servidores sin escribir logs de usage) o entorno que solo carga el `.md` sin ejecutar
+  Claude Code → **Variante B (bytes÷4, vigente)**.
+
+Regla: NO decidir por identidad del IDE (`IDE: Cursor` en el status NO implica Variante
+B). Decidir por `CLAUDECODE` / presencia de logs de Claude Code de esta sesión.
 
 **El resto del reporte (DX_MET_001–005, Rework Ratio, estructura, contexto) es idéntico en ambos entornos.**
 
@@ -62,7 +74,11 @@ Creá (o actualizá si ya existe) el archivo `metrics/[feature_id]-metrics.md` c
      - `projectPath` = el de este proyecto. Ojo: ccusage transforma la ruta a un
        slug reemplazando separadores por `-` (ej. `C:\Users\...\expense-splitter`
        → `C--Users-FacundoFernandez-Desktop-Proyectos-expense-splitter`). Derivar el
-       slug esperado desde `CLAUDE_PROJECT_DIR` y matchear contra `projectPath`.
+       slug esperado desde el `cwd` de la última línea del hook en
+       `metrics/sessions.jsonl` (NO desde `CLAUDE_PROJECT_DIR`, que no está seteada en
+       el entorno de Claude Code — verificado 2026-07-06, devuelve vacío). Ese `cwd`
+       viene como ruta Windows (`C:\...\proyecto`); la transformación al slug es
+       `C:\` → `C--` y cada `\` restante → `-`. Matchear ese slug contra `projectPath`.
      El filtro por `sessionId` ya basta, pero `ccusage claude session` devuelve TODAS
      tus sesiones de Claude Code (de cualquier proyecto y fecha); el segundo filtro
      evita cualquier chance de tomar una sesión ajena. NO usar el bloque `totals` del
