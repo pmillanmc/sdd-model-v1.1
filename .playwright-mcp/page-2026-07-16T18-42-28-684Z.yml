@@ -1,0 +1,1620 @@
+- generic [active] [ref=e1]:
+  - navigation "Main" [ref=e3]:
+    - text: Ctrl K
+    - generic [ref=e5]:
+      - link [ref=e8] [cursor=pointer]:
+        - /url: /
+        - img "Kiro" [ref=e48]
+      - generic [ref=e49]:
+        - button "Search across all Kiro content (Ctrl+K)" [ref=e53] [cursor=pointer]:
+          - generic [ref=e54]: Ctrl K
+        - button "Main Navigation" [ref=e58] [cursor=pointer]
+  - main [ref=e61]:
+    - generic [ref=e62]:
+      - generic [ref=e66]:
+        - paragraph [ref=e68]: A year of turning ideas into reality
+        - generic [ref=e69]:
+          - link "One-year recap" [ref=e70] [cursor=pointer]:
+            - /url: /blog/one-year/
+          - button "🎉 Party mode" [ref=e72] [cursor=pointer]
+          - link "Limited-time merch" [ref=e74] [cursor=pointer]:
+            - /url: https://shop.kiro.dev/products?s%5Bf%5D%5Bc%5D%5B%5D=%2FShop%2FIn-stock+%28s%29
+      - generic [ref=e76]:
+        - generic [ref=e80]:
+          - generic [ref=e82]:
+            - img "Databricks AI Dev Kit" [ref=e85]
+            - generic [ref=e87]:
+              - generic [ref=e88]:
+                - generic [ref=e89]:
+                  - generic [ref=e90]: "{"
+                  - generic [ref=e91]: Power of the day
+                  - generic [ref=e92]: "}"
+                - paragraph [ref=e93]: Databricks AI Dev Kit
+              - link "Add Databricks AI Dev Kit power to Kiro" [ref=e95] [cursor=pointer]:
+                - /url: /launch/powers/add/?name=databricks
+                - generic [ref=e96]: Add to Kiro
+          - generic [ref=e101]:
+            - generic [ref=e102]:
+              - generic [ref=e103]:
+                - generic [ref=e104]: "{"
+                - generic [ref=e105]: Daily challenge
+                - generic [ref=e106]: "}"
+              - paragraph [ref=e107]: Build one app with one sentence
+            - link "Start" [ref=e109] [cursor=pointer]:
+              - /url: /birthday/
+        - generic [ref=e112]:
+          - generic [ref=e113]:
+            - heading "Move beyond AI coding to agentic engineering" [level=1] [ref=e115]
+            - paragraph [ref=e117]: "Kiro helps developers and teams do their best work: turn prompts into executable specs, validate code correctness to find bugs unit tests miss, and build across large codebases with parallel agents that learn from every session."
+            - generic [ref=e118]:
+              - button "Download IDE for Windows (x64)" [ref=e120] [cursor=pointer]:
+                - generic [ref=e121]:
+                  - img "Windows logo" [ref=e123]
+                  - generic [ref=e126]: Download IDE
+              - link "Download CLI for Windows" [ref=e133] [cursor=pointer]:
+                - /url: https://desktop-release.q.us-east-1.amazonaws.com/latest/kiro-cli-x86_64-pc-windows-msvc.msi
+                - generic [ref=e134]:
+                  - img "Windows logo" [ref=e136]
+                  - text: Download CLI
+              - button "Watch IDE Demo" [ref=e143] [cursor=pointer]
+          - complementary [ref=e147]:
+            - heading "What’s New" [level=2] [ref=e150]
+            - generic [ref=e151]:
+              - link "ChatGPT models now available" [ref=e152] [cursor=pointer]:
+                - /url: /blog/gpt-5-6/
+              - link "Birthday week" [ref=e153] [cursor=pointer]:
+                - /url: /blog/birthday-2026/
+              - link "Cap overages, add-on credits" [ref=e154] [cursor=pointer]:
+                - /url: /blog/cap-prepay-overage/
+              - link "Claude Sonnet 5" [ref=e155] [cursor=pointer]:
+                - /url: /blog/sonnet-5/
+        - region "Interface showcase" [ref=e157]:
+          - generic [ref=e159]:
+            - button "Show IDE interface" [ref=e160] [cursor=pointer]:
+              - generic [ref=e162]:
+                - generic "Kiro demo showing the creation of a spec" [ref=e163]
+                - button "Pause video" [ref=e164]
+              - link "IDE" [ref=e169]:
+                - /url: /ide/
+            - button "Show Web interface" [expanded] [ref=e173] [cursor=pointer]:
+              - img "Kiro in the browser interface" [ref=e175]
+              - link "Web" [ref=e177]:
+                - /url: /web/
+            - button "Show CLI interface" [ref=e181] [cursor=pointer]:
+              - region "terminal showing Kiro logo and prompt" [ref=e184]:
+                - generic [ref=e185]: "Terminal session ⢀⣴⣶⣶⣦⡀⠀⠀⠀⠀⢀⣴⣶⣦⣄⡀ ⢀⣴⣶⣶⣦⡀ ⢀⣴⣶⣶⣶⣶⣶⣶⣶⣶⣶⣦⣄⡀ ⢀⣠⣴⣶⣶⣶⣶⣶⣦⣄⡀ ⢰⣿⠋⠁⠈⠙⣿⡆⠀⢀⣾⡿⠁ ⠈⢻⡆ ⢰⣿⠋⠁⠈⠙⣿⡆ ⢰⣿⠋⠁ ⠈⠙⠻⣦ ⣴⡿⠟⠋⠁ ⠈⠙⠻⢿⣦ ⢸⣿⠀⠀⠀⠀⣿⣇⣴⡿⠋⠀⠀ ⢀⣼⠇ ⢸⣿⠀⠀⠀⠀⣿⡇ ⢸⣿⠀⠀⠀⢠⣤⣤⣤⣤⣄ ⣿⡆ ⣼⡟⠀⠀⠀ ⣀⣀⣀ ⢻⣧ ⢸⣿⠀⠀⠀⠀⣿⡿⠋⠀⠀ ⢀⣾⡿⠁ ⢸⣿⠀⠀⠀⠀⣿⡇ ⢸⣿⠀⠀⠀⢸⣿⠉⠉⠉⣿⡇ ⣿⡇ ⣼⡟⠀⠀ ⣰⡿⠟⠛⠻⢿⣆⠀⠀ ⢻⣧ ⢸⣿⠀⠀⠀⠀⠙⠁⠀⠀ ⢀⣼⡟⠁ ⢸⣿⠀⠀⠀⠀⣿⡇ ⢸⣿⠀⠀⠀⢸⣿⣶⣶⡶⠋⠀ ⣿⠇ ⢰⣿⠀⠀⠀⢰⣿⠀⠀⠀ ⣿⡆⠀⠀ ⣿⡆ ⢸⣿⠀⠀⠀⠀⠀⠀⠀⠀ ⠹⣷⡀ ⢸⣿⠀⠀⠀⠀⣿⡇⠀⢸⣿⠀⠀⠀⠀⠀⠀⠀⠀ ⣠⣼⠟ ⢸⣿⠀⠀ ⢸⣿⠀⠀⠀⠀ ⣿⡇⠀⠀ ⣿⡇ ⢸⣿⠀⠀⠀⠀⠀⣠⡀⠀⠀ ⠹⣷⡄ ⢸⣿⠀⠀⠀⠀⣿⡇⠀⢸⣿⠀⠀⠀⠀⣤⣄ ⠀⠀⠹⣿⡅ ⠸⣿⠀⠀ ⠸⣿⠀⠀⠀⠀ ⣿⠇⠀ ⣿⠇ ⢸⣿⠀⠀⠀⠀⣾⡟⣷⡀⠀⠀ ⠘⣿⣆ ⢸⣿⠀⠀⠀⠀⣿⡇ ⢸⣿⠀⠀⠀⠀⣿⡟⣷⡀⠀⠀ ⠘⣿⣆ ⢻⣧⠀⠀ ⠹⣷⣦⣤⣤⣾⠏⠀⠀⠀⣼⡟ ⢸⣿⠀⠀⠀⠀⣿⡇⠹⣷⡀ ⠀⠈⢻⡇ ⢸⣿⠀⠀⠀⠀⣿⡇ ⢸⣿⠀⠀⠀⠀⣿⡇⠹⣷⡀ ⠀⠈⢻⡇ ⢻⣧⠀⠀⠀ ⠉⠉⠉ ⣼⡟ ⠸⣿⣄⡀⢀⣠⣿⠇⠀⠙⣷⡀ ⢀⣼⠇ ⣿⣄⡀⢀⣠⣿⠇ ⣿⣄⡀⢀⣠⣿⠇⠀⠙⣷⡀ ⢀⣼⠇ ⠻⣷⣦⣄⡀ ⢀⣠⣴⣾⠟ ⠈⠻⠿⠿⠟⠁⠀⠀⠀⠈⠻⠿⠿⠟⠁ ⠈⠻⠿⠿⠟⠁ ⠈⠻⠿⠿⠟⠁⠀⠀⠀⠈⠻⠿⠿⠟⠁ ⠀⠀⠈⠙⠻⠿⠿⠿⠿⠟⠋⠁ Welcome to the new Kiro CLI UX! Use /feedback to share your thoughts. Prefer the classic experience? Relaunch with kiro-cli --classic. ● Initializing... ──────────────────────────────────────────────────────────────────────────────── /private/tmp/demos ask a question, or describe a task ↵ ctrl+g: agent monitor ● Initializing... ──────────────────────────────────────────────────────────────────────────────── /agent Select or list available agents /chat Load a previous session or start a new one /clear Clear conversation history /code Code intelligence workspace management /compact Compact conversation history /context Manage context files or show token usage /copy Copy last response to clipboard /editor Open $EDITOR to compose a prompt (+15 more) /paste Paste image from clipboard /plan Switch to Plan agent for breaking down ideas into implementa... /prompts Select or list available prompts /agent Select or list available agents /chat Load a previous session or start a new one /clear Clear conversation history /code Code intelligence workspace management /compact Compact conversation history /context Manage context files or show token usage /copy Copy last response to clipboard /editor Open $EDITOR to compose a prompt (+15 more) /agent Select or list available agents /chat Load a previous session or start a new one /clear Clear conversation history /code Code intelligence workspace management /compact Compact conversation history /context Manage context files or show token usage /copy Copy last response to clipboard /editor Open $EDITOR to compose a prompt (+15 more) /paste Paste image from clipboard /plan Switch to Plan agent for breaking down ideas into implementa... /prompts Select or list available prompts /plan Switch to Plan agent for breaking down ideas into implementatio... ask a question, or describe a task ↵ ctrl+g: agent monitor ──────────────────────────────────────────────────────────────────────────────── ● Transform any idea into fully working code. What do you want to build today? ● Agent changed to kiro_planner ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ──────────────────────────────────────────────────────────────────────────────── Build a Rust CLI tool called crabbymark that renders a markdown file to GitHub-styled HTML with syntax highlighting and opens it in the default browser. Use clap (derive) for CLI parsing, pulldown-cmark for markdown parsing (with tables, strikethrough, tasklists, footnotes), and syntect for syntax highlighting by intercepting code block events and re-injecting highlighted HTML. Use InspiredGitHub theme for light (default) and base16-ocean.dark for dark (--dark flag). All CSS should be inline/embedded in the HTML using GitHub's color palettes. With --pdf, use headless_chrome (with fetch feature) to generate a PDF via print_to_pdf() in the same directory as the input file. Use the open crate for browser opening (fall back to printing the file path on headless systems), tempfile for temp files, and anyhow for errors. Include --version and --help support, a README with usage examples and a note about Chrome/Chromium being needed for PDF, and a .gitignore covering /target, *.pdf, and *.html. ⠀ Thinking... ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: Let me understand what you're asking for: You want a Rust CLI tool called crabbymark that converts ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: crabbymark that converts Markdown files to GitHub-styled HTML with syntax highlighting, can ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: highlighting, can open the result in a browser, and optionally export to PDF via ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: via headless Chrome. Before I create ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: Before I create the implementation plan, let me explore the current workspace and do ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ⢀⣴⣶⣶⣦⡀⠀⠀⠀⠀⢀⣴⣶⣦⣄⡀ ⢀⣴⣶⣶⣦⡀ ⢀⣴⣶⣶⣶⣶⣶⣶⣶⣶⣶⣦⣄⡀ ⢀⣠⣴⣶⣶⣶⣶⣶⣦⣄⡀ ⢰⣿⠋⠁⠈⠙⣿⡆⠀⢀⣾⡿⠁ ⠈⢻⡆ ⢰⣿⠋⠁⠈⠙⣿⡆ ⢰⣿⠋⠁ ⠈⠙⠻⣦ ⣴⡿⠟⠋⠁ ⠈⠙⠻⢿⣦ ⢸⣿⠀⠀⠀⠀⣿⣇⣴⡿⠋⠀⠀ ⢀⣼⠇ ⢸⣿⠀⠀⠀⠀⣿⡇ ⢸⣿⠀⠀⠀⢠⣤⣤⣤⣤⣄ ⣿⡆ ⣼⡟⠀⠀⠀ ⣀⣀⣀ ⢻⣧ ⢸⣿⠀⠀⠀⠀⣿⡿⠋⠀⠀ ⢀⣾⡿⠁ ⢸⣿⠀⠀⠀⠀⣿⡇ ⢸⣿⠀⠀⠀⢸⣿⠉⠉⠉⣿⡇ ⣿⡇ ⣼⡟⠀⠀ ⣰⡿⠟⠛⠻⢿⣆⠀⠀ ⢻⣧ ⢸⣿⠀⠀⠀⠀⠙⠁⠀⠀ ⢀⣼⡟⠁ ⢸⣿⠀⠀⠀⠀⣿⡇ ⢸⣿⠀⠀⠀⢸⣿⣶⣶⡶⠋⠀ ⣿⠇ ⢰⣿⠀⠀⠀⢰⣿⠀⠀⠀ ⣿⡆⠀⠀ ⣿⡆ ⢸⣿⠀⠀⠀⠀⠀⠀⠀⠀ ⠹⣷⡀ ⢸⣿⠀⠀⠀⠀⣿⡇⠀⢸⣿⠀⠀⠀⠀⠀⠀⠀⠀ ⣠⣼⠟ ⢸⣿⠀⠀ ⢸⣿⠀⠀⠀⠀ ⣿⡇⠀⠀ ⣿⡇ ⢸⣿⠀⠀⠀⠀⠀⣠⡀⠀⠀ ⠹⣷⡄ ⢸⣿⠀⠀⠀⠀⣿⡇⠀⢸⣿⠀⠀⠀⠀⣤⣄ ⠀⠀⠹⣿⡅ ⠸⣿⠀⠀ ⠸⣿⠀⠀⠀⠀ ⣿⠇⠀ ⣿⠇ ⢸⣿⠀⠀⠀⠀⣾⡟⣷⡀⠀⠀ ⠘⣿⣆ ⢸⣿⠀⠀⠀⠀⣿⡇ ⢸⣿⠀⠀⠀⠀⣿⡟⣷⡀⠀⠀ ⠘⣿⣆ ⢻⣧⠀⠀ ⠹⣷⣦⣤⣤⣾⠏⠀⠀⠀⣼⡟ ⢸⣿⠀⠀⠀⠀⣿⡇⠹⣷⡀ ⠀⠈⢻⡇ ⢸⣿⠀⠀⠀⠀⣿⡇ ⢸⣿⠀⠀⠀⠀⣿⡇⠹⣷⡀ ⠀⠈⢻⡇ ⢻⣧⠀⠀⠀ ⠉⠉⠉ ⣼⡟ ⠸⣿⣄⡀⢀⣠⣿⠇⠀⠙⣷⡀ ⢀⣼⠇ ⣿⣄⡀⢀⣠⣿⠇ ⣿⣄⡀⢀⣠⣿⠇⠀⠙⣷⡀ ⢀⣼⠇ ⠻⣷⣦⣄⡀ ⢀⣠⣴⣾⠟ ⠈⠻⠿⠿⠟⠁⠀⠀⠀⠈⠻⠿⠿⠟⠁ ⠈⠻⠿⠿⠟⠁ ⠈⠻⠿⠿⠟⠁⠀⠀⠀⠈⠻⠿⠿⠟⠁ ⠀⠀⠈⠙⠻⠿⠿⠿⠿⠟⠋⠁ Welcome to the new Kiro CLI UX! Use /feedback to share your thoughts. Prefer the classic experience? Relaunch with kiro-cli --classic. ──────────────────────────────────────────────────────────────────────────────── ● Transform any idea into fully working code. What do you want to build today? ──────────────────────────────────────────────────────────────────────────────── Build a Rust CLI tool called crabbymark that renders a markdown file to GitHub-styled HTML with syntax highlighting and opens it in the default browser. Use clap (derive) for CLI parsing, pulldown-cmark for markdown parsing (with tables, strikethrough, tasklists, footnotes), and syntect for syntax highlighting by intercepting code block events and re-injecting highlighted HTML. Use InspiredGitHub theme for light (default) and base16-ocean.dark for dark (--dark flag). All CSS should be inline/embedded in the HTML using GitHub's color palettes. With --pdf, use headless_chrome (with fetch feature) to generate a PDF via print_to_pdf() in the same directory as the input file. Use the open crate for browser opening (fall back to printing the file path on headless systems), tempfile for temp files, and anyhow for errors. Include --version and --help support, a README with usage examples and a note about Chrome/Chromium being needed for PDF, and a .gitignore covering /target, *.pdf, and *.html. Let me understand what you're asking for: You want a Rust CLI tool called crabbymark that converts Markdown files to GitHub-styled HTML with syntax highlighting, can open the result in a browser, and optionally export to PDF via headless Chrome. Before I create the implementation plan, let me explore the current workspace and do some research. ◔ Ls ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: Let me understand what you're asking for: You want a Rust CLI tool called crabbymark that converts Markdown files to GitHub-styled HTML with syntax highlighting, can open the result in a browser, and optionally export to PDF via headless Chrome. Before I create the implementation plan, let me explore the current workspace and do some research. ◔ Ls ◔ WebSearch the web ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ● Ls . ↓ WebSearch \"pulldown-cmark rust code block events CodeBlockKind syntax highlighting intercept\" ──────────────────────────────────────────────────────────────────────────────── web_search requires approval ❯ Yes, single permission Trust, always allow in this session ──────────────────────────────────────────────────────────────────────────────── ESC to close | Tab to edit Yes, single permission ◔ WebSearch \"pulldown-cmark rust code block events CodeBlockKind syntax highlighting intercept\" ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: agent monitor ● WebSearch \"pulldown-cmark rust code block events CodeBlockKind syntax highlighting intercept\" ⠀ Thinking... ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ● Ls . ● WebSearch \"pulldown-cmark rust code block events CodeBlockKind syntax highlighting intercept\" ● WebSearch \"pulldown-cmark rust code block events CodeBlockKind syntax highlighting intercept\" ◕ WebFetch web content ◔ WebSearch the web ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ↓ WebFetch bandarra.me/posts/Rust-Markdown-Syntax-Highlighting-A-Pra... ╰ search_terms=CodeBlockKind Event intercept syntect highlighted HTML ◕ WebSearch \"headless_chrome rust crate print_to_pdf fetch feature cargo\" ──────────────────────────────────────────────────────────────────────────────── web_fetch requires approval ❯ Yes, single permission Trust, always allow in this session ──────────────────────────────────────────────────────────────────────────────── ESC to close | Tab to edit Yes, single permission ◔ WebFetch bandarra.me/posts/Rust-Markdown-Syntax-Highlighting-A-Pra... ╰ search_terms=CodeBlockKind Event intercept syntect highlighted HTML ◑ WebSearch \"headless_chrome rust crate print_to_pdf fetch feature cargo\" ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: agent monitor ◑ WebFetch bandarra.me/posts/Rust-Markdown-Syntax-Highlighting-A-Pra... ╰ search_terms=CodeBlockKind Event intercept syntect highlighted HTML ● WebFetch bandarra.me/posts/Rust-Markdown-Syntax-Highlighting-A-Pra... ╰ search_terms=CodeBlockKind Event intercept syntect highlighted HTML 14.8k chars ● WebSearch \"headless_chrome rust crate print_to_pdf fetch feature cargo\" ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ● WebSearch \"headless_chrome rust crate print_to_pdf fetch feature cargo\" ⠀ Thinking... ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ● WebFetch bandarra.me/posts/Rust-Markdown-Syntax-Highlighting-A-Pra... ╰ search_terms=CodeBlockKind Event intercept syntect highlighted HTML 14.8k chars ● WebSearch \"headless_chrome rust crate print_to_pdf fetch feature cargo\" ◑ WebSearch the web ◔ WebSearch the web ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ◕ WebSearch the web ● WebSearch the web ◑ WebSearch \"headless_chrome rust Tab print_to_pdf navigate_to \"file://\" ◔ WebSearch \"syntect rust \"InspiredGitHub\" theme ThemeSet load_defaults available themes\" ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ● WebSearch \"syntect rust \"InspiredGitHub\" theme ThemeSet load_defaults available themes\" ⠀ Thinking... ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ● WebSearch \"headless_chrome rust Tab print_to_pdf navigate_to \"file://\" example\" ● WebSearch \"syntect rust \"InspiredGitHub\" theme ThemeSet load_defaults available themes\" ◔ WebFetch web content ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ● WebSearch \"syntect rust \"InspiredGitHub\" theme ThemeSet load_defaults available themes\" ◔ WebFetch web content ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ◔ WebFetch web content ◔ WebFetch docs.rs/syntect/latest/syntect/highlighting/struct.ThemeS... ╰ search_terms=InspiredGitHub base16-ocean ThemeSet load_defaults themes ◔ WebFetch web content ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ◔ WebFetch docs.rs/headless_chrome/latest/headless_chrome/struct.Tab... ╰ search_terms=print_to_pdf navigate_to Tab fetch feature ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ● WebFetch docs.rs/syntect/latest/syntect/highlighting/struct.ThemeS... ╰ search_terms=InspiredGitHub base16-ocean ThemeSet load_defaults themes 14.2k chars ◕ WebFetch docs.rs/headless_chrome/latest/headless_chrome/struct.Tab... ╰ search_terms=print_to_pdf navigate_to Tab fetch feature ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ● WebFetch docs.rs/headless_chrome/latest/headless_chrome/struct.Tab... ╰ search_terms=print_to_pdf navigate_to Tab fetch feature Tool execution failed ⠀ Thinking... ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ● WebFetch docs.rs/syntect/latest/syntect/highlighting/struct.ThemeS... ╰ search_terms=InspiredGitHub base16-ocean ThemeSet load_defaults themes 14.2k chars ● WebFetch docs.rs/headless_chrome/latest/headless_chrome/struct.Tab... ╰ search_terms=print_to_pdf navigate_to Tab fetch feature Tool execution failed Good — ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: Good — I've confirmed both InspiredGitHub and base16-ocean.dark are in syntect's default ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ● WebFetch docs.rs/headless_chrome/latest/headless_chrome/struct.Tab... ╰ search_terms=print_to_pdf navigate_to Tab fetch feature Tool execution failed Good — I've confirmed both InspiredGitHub and base16-ocean.dark are in syntect's default theme set. Let me check the headless_chrome API more ◔ WebFetch web content ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ◑ WebFetch www.lib.rs/crates/headless_chrome ╰ search_terms=print_to_pdf navigate_to Tab Browser fetch ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ● WebFetch www.lib.rs/crates/headless_chrome ╰ search_terms=print_to_pdf navigate_to Tab Browser fetch 10.8k chars ⠀ Thinking... ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: Good — I've confirmed both InspiredGitHub and base16-ocean.dark are in syntect's default theme set. Let me check the headless_chrome API more closely. ● WebFetch www.lib.rs/crates/headless_chrome ╰ search_terms=print_to_pdf navigate_to Tab Browser fetch 10.8k chars I now have ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: I now have a solid understanding of all the crates and APIs involved. I have a few clarifying questions before ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: few clarifying questions before building the plan: ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: [1]: For the HTML output, should the tool always write to a temp file and open the ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: the browser, or should it also support writing to a named output file (e.g., `--output result ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: --output result.html)? - a ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - a. Temp file only (always opens browser, no persistent HTML file) - b. Temp ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - b. Temp file by default, but support --output <path> to write a persistent HTML ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: HTML file - c. Other ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: agent monitor [2]: When ` ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: [2]: When --pdf is used, should the tool also open the browser with the HTML, or should it only ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: or should it only generate the PDF (no browser)? - a. PDF only — ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - b. Both — generate ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - b. Both — generate PDF and also open the HTML in the browser - c. Other ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: agent monitor [3]: For error handling when ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: [3]: For error handling when Chrome/Chromium isn't found with --pdf, what behavior do ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: behavior do you want? - a. Print a ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - a. Print a clear error message pointing the user to install Chrome/Chromium and exit ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: and exit with a non-zero code - b. Attempt ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - b. Attempt to auto-download Chromium via the fetch feature (which headless_chrome supports) - c. Both ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: [plan] kiro_planner · claude-opus-4.6 /private/tmp/demos - c. Both — try auto-download first, fall back to a helpful error message ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private/tmp/demos ⢀⣴⣶⣶⣦⡀⠀⠀⠀⠀⢀⣴⣶⣦⣄⡀ ⢀⣴⣶⣶⣦⡀ ⢀⣴⣶⣶⣶⣶⣶⣶⣶⣶⣶⣦⣄⡀ ⢀⣠⣴⣶⣶⣶⣶⣶⣦⣄⡀ ⢰⣿⠋⠁⠈⠙⣿⡆⠀⢀⣾⡿⠁ ⠈⢻⡆ ⢰⣿⠋⠁⠈⠙⣿⡆ ⢰⣿⠋⠁ ⠈⠙⠻⣦ ⣴⡿⠟⠋⠁ ⠈⠙⠻⢿⣦ ⢸⣿⠀⠀⠀⠀⣿⣇⣴⡿⠋⠀⠀ ⢀⣼⠇ ⢸⣿⠀⠀⠀⠀⣿⡇ ⢸⣿⠀⠀⠀⢠⣤⣤⣤⣤⣄ ⣿⡆ ⣼⡟⠀⠀⠀ ⣀⣀⣀ ⢻⣧ ⢸⣿⠀⠀⠀⠀⣿⡿⠋⠀⠀ ⢀⣾⡿⠁ ⢸⣿⠀⠀⠀⠀⣿⡇ ⢸⣿⠀⠀⠀⢸⣿⠉⠉⠉⣿⡇ ⣿⡇ ⣼⡟⠀⠀ ⣰⡿⠟⠛⠻⢿⣆⠀⠀ ⢻⣧ ⢸⣿⠀⠀⠀⠀⠙⠁⠀⠀ ⢀⣼⡟⠁ ⢸⣿⠀⠀⠀⠀⣿⡇ ⢸⣿⠀⠀⠀⢸⣿⣶⣶⡶⠋⠀ ⣿⠇ ⢰⣿⠀⠀⠀⢰⣿⠀⠀⠀ ⣿⡆⠀⠀ ⣿⡆ ⢸⣿⠀⠀⠀⠀⠀⠀⠀⠀ ⠹⣷⡀ ⢸⣿⠀⠀⠀⠀⣿⡇⠀⢸⣿⠀⠀⠀⠀⠀⠀⠀⠀ ⣠⣼⠟ ⢸⣿⠀⠀ ⢸⣿⠀⠀⠀⠀ ⣿⡇⠀⠀ ⣿⡇ ⢸⣿⠀⠀⠀⠀⠀⣠⡀⠀⠀ ⠹⣷⡄ ⢸⣿⠀⠀⠀⠀⣿⡇⠀⢸⣿⠀⠀⠀⠀⣤⣄ ⠀⠀⠹⣿⡅ ⠸⣿⠀⠀ ⠸⣿⠀⠀⠀⠀ ⣿⠇⠀ ⣿⠇ ⢸⣿⠀⠀⠀⠀⣾⡟⣷⡀⠀⠀ ⠘⣿⣆ ⢸⣿⠀⠀⠀⠀⣿⡇ ⢸⣿⠀⠀⠀⠀⣿⡟⣷⡀⠀⠀ ⠘⣿⣆ ⢻⣧⠀⠀ ⠹⣷⣦⣤⣤⣾⠏⠀⠀⠀⣼⡟ ⢸⣿⠀⠀⠀⠀⣿⡇⠹⣷⡀ ⠀⠈⢻⡇ ⢸⣿⠀⠀⠀⠀⣿⡇ ⢸⣿⠀⠀⠀⠀⣿⡇⠹⣷⡀ ⠀⠈⢻⡇ ⢻⣧⠀⠀⠀ ⠉⠉⠉ ⣼⡟ ⠸⣿⣄⡀⢀⣠⣿⠇⠀⠙⣷⡀ ⢀⣼⠇ ⣿⣄⡀⢀⣠⣿⠇ ⣿⣄⡀⢀⣠⣿⠇⠀⠙⣷⡀ ⢀⣼⠇ ⠻⣷⣦⣄⡀ ⢀⣠⣴⣾⠟ ⠈⠻⠿⠿⠟⠁⠀⠀⠀⠈⠻⠿⠿⠟⠁ ⠈⠻⠿⠿⠟⠁ ⠈⠻⠿⠿⠟⠁⠀⠀⠀⠈⠻⠿⠿⠟⠁ ⠀⠀⠈⠙⠻⠿⠿⠿⠿⠟⠋⠁ Welcome to the new Kiro CLI UX! Use /feedback to share your thoughts. Prefer the classic experience? Relaunch with kiro-cli --classic. ──────────────────────────────────────────────────────────────────────────────── ● Transform any idea into fully working code. What do you want to build today? ──────────────────────────────────────────────────────────────────────────────── Build a Rust CLI tool called crabbymark that renders a markdown file to GitHub-styled HTML with syntax highlighting and opens it in the default browser. Use clap (derive) for CLI parsing, pulldown-cmark for markdown parsing (with tables, strikethrough, tasklists, footnotes), and syntect for syntax highlighting by intercepting code block events and re-injecting highlighted HTML. Use InspiredGitHub theme for light (default) and base16-ocean.dark for dark (--dark flag). All CSS should be inline/embedded in the HTML using GitHub's color palettes. With --pdf, use headless_chrome (with fetch feature) to generate a PDF via print_to_pdf() in the same directory as the input file. Use the open crate for browser opening (fall back to printing the file path on headless systems), tempfile for temp files, and anyhow for errors. Include --version and --help support, a README with usage examples and a note about Chrome/Chromium being needed for PDF, and a .gitignore covering /target, *.pdf, and *.html. Let me understand what you're asking for: You want a Rust CLI tool called crabbymark that converts Markdown files to GitHub-styled HTML with syntax highlighting, can open the result in a browser, and optionally export to PDF via headless Chrome. Before I create the implementation plan, let me explore the current workspace and do some research. ● Ls . ● WebSearch \"pulldown-cmark rust code block events CodeBlockKind syntax highlighting intercept\" ● WebFetch bandarra.me/posts/Rust-Markdown-Syntax-Highlighting-A-Pra... ╰ search_terms=CodeBlockKind Event intercept syntect highlighted HTML 14.8k chars ● WebSearch \"headless_chrome rust crate print_to_pdf fetch feature cargo\" ● WebSearch \"headless_chrome rust Tab print_to_pdf navigate_to \"file://\" example\" ● WebSearch \"syntect rust \"InspiredGitHub\" theme ThemeSet load_defaults available themes\" ● WebFetch docs.rs/syntect/latest/syntect/highlighting/struct.ThemeS... ╰ search_terms=InspiredGitHub base16-ocean ThemeSet load_defaults themes 14.2k chars ● WebFetch docs.rs/headless_chrome/latest/headless_chrome/struct.Tab... ╰ search_terms=print_to_pdf navigate_to Tab fetch feature Tool execution failed Good — I've confirmed both InspiredGitHub and base16-ocean.dark are in syntect's default theme set. Let me check the headless_chrome API more closely. ● WebFetch www.lib.rs/crates/headless_chrome ╰ search_terms=print_to_pdf navigate_to Tab Browser fetch 10.8k chars I now have a solid understanding of all the crates and APIs involved. I have a few clarifying questions before building the plan: [1]: For the HTML output, should the tool always write to a temp file and open the browser, or should it also support writing to a named output file (e.g., --output result.html)? - a. Temp file only (always opens browser, no persistent HTML file) - b. Temp file by default, but support --output <path> to write a persistent HTML file - c. Other [2]: When --pdf is used, should the tool also open the browser with the HTML, or should it only generate the PDF (no browser)? - a. PDF only — skip browser opening - b. Both — generate PDF and also open the HTML in the browser - c. Other [3]: For error handling when Chrome/Chromium isn't found with --pdf, what behavior do you want? - a. Print a clear error message pointing the user to install Chrome/Chromium and exit with a non-zero code - b. Attempt to auto-download Chromium via the fetch feature (which headless_chrome supports) - c. Both — try auto-download first, fall back to a helpful error message ──────────────────────────────────────────────────────────────────────────────── 1; a. 2; b. 3; b ⠀ Thinking... ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: Got it. So to summarize: - Temp file only for ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Temp file only for HTML (always opens browser, no persistent file) - `--pdf ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - --pdf generates the PDF and also opens the HTML in the browser - Auto ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Auto-download Chromium via fetch feature, fall back to a helpful error if that also ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: that also fails Let me now do ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: Let me now do a bit more research to nail down the GitHub CSS styling and the headless_chrome PDF ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: 1; a. 2; b. 3; b Got it. So to summarize: - Temp file only for HTML (always opens browser, no persistent file) - --pdf generates the PDF and also opens the HTML in the browser - Auto-download Chromium via fetch feature, fall back to a helpful error if that also fails Let me now do a bit more research to nail down the GitHub CSS styling and the headless_chrome PDF API details before building the plan. ◔ WebSearch the web ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: Got it. So to summarize: - Temp file only for HTML (always opens browser, no persistent file) - --pdf generates the PDF and also opens the HTML in the browser - Auto-download Chromium via fetch feature, fall back to a helpful error if that also fails Let me now do a bit more research to nail down the GitHub CSS styling and the headless_chrome PDF API details before building the plan. ◑ WebSearch the web ◔ WebSearch the web ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ◔ WebSearch the web ◔ WebSearch \"GitHub markdown CSS color palette body background font-family inline style 2024\" ◕ WebSearch the web ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ◑ WebSearch \"GitHub markdown CSS color palette body background font-family inline style 2024\" ◑ WebSearch \"GitHub markdown CSS color palette body background font-family inline style 2024\" ◕ WebSearch \"GitHub markdown CSS color palette body background font-family inline style 2024\" ● WebSearch \"GitHub markdown CSS color palette body background font-family inline style 2024\" ● WebSearch \"GitHub markdown CSS color palette body background font-family inline style 2024\" ◔ WebSearch \"GitHub markdown CSS color palette body background font-family inline style 2024\" ◔ WebSearch \"GitHub markdown CSS color palette body background font-family inline style 2024\" ◑ WebSearch \"GitHub markdown CSS color palette body background font-family inline style 2024\" ● WebSearch \"headless_chrome rust print_to_pdf PrintToPdfOptions example code\" ⠀ Thinking... ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ● WebSearch \"GitHub markdown CSS color palette body background font-family inline style 2024\" ● WebSearch \"headless_chrome rust print_to_pdf PrintToPdfOptions example code\" ● WebFetch web content ◔ WebFetch web content ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ◕ WebFetch web content ◑ WebFetch web content ◑ WebFetch github.com/ilaborie/html2pdf/blob/main/src/main.rs ╰ search_terms=print_to_pdf navigate_to file Tab Browser ◕ WebFetch github.com/sindresorhus/github-markdown-css ╰ search_terms=markdown-body color background font-family table code blockquote dark light, mode=truncated ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ◕ WebFetch github.com/ilaborie/html2pdf/blob/main/src/main.rs ╰ search_terms=print_to_pdf navigate_to file Tab Browser ◕ WebFetch github.com/ilaborie/html2pdf/blob/main/src/main.rs ╰ search_terms=print_to_pdf navigate_to file Tab Browser ● WebFetch github.com/ilaborie/html2pdf/blob/main/src/main.rs ╰ search_terms=print_to_pdf navigate_to file Tab Browser ● WebFetch github.com/ilaborie/html2pdf/blob/main/src/main.rs ╰ search_terms=print_to_pdf navigate_to file Tab Browser ● WebFetch github.com/ilaborie/html2pdf/blob/main/src/main.rs ╰ search_terms=print_to_pdf navigate_to file Tab Browser ◔ WebFetch github.com/ilaborie/html2pdf/blob/main/src/main.rs ╰ search_terms=print_to_pdf navigate_to file Tab Browser ◑ WebFetch github.com/ilaborie/html2pdf/blob/main/src/main.rs ╰ search_terms=print_to_pdf navigate_to file Tab Browser ● WebFetch github.com/ilaborie/html2pdf/blob/main/src/main.rs ╰ search_terms=print_to_pdf navigate_to file Tab Browser 5.2k chars ◕ WebFetch github.com/sindresorhus/github-markdown-css ╰ search_terms=markdown-body color background font-family table code blockquote dark light, mode=truncated ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ● WebFetch github.com/sindresorhus/github-markdown-css ╰ search_terms=markdown-body color background font-family table code blockquote dark light, mode=truncated 8.1k chars ⠀ Thinking... ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ● WebFetch github.com/ilaborie/html2pdf/blob/main/src/main.rs ╰ search_terms=print_to_pdf navigate_to file Tab Browser 5.2k chars ● WebFetch github.com/sindresorhus/github-markdown-css ╰ search_terms=markdown-body color background font-family table code blockquote dark light, mode=truncated 8.1k chars ◔ WebFetch github.com/ilaborie/html2pdf/blob/main/src/lib.rs ╰ search_terms=print_to_pdf navigate_to Browser Tab file:// ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ● WebFetch github.com/ilaborie/html2pdf/blob/main/src/lib.rs ╰ search_terms=print_to_pdf navigate_to Browser Tab file:// 8.5k chars ⠀ Thinking... ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ● WebFetch github.com/sindresorhus/github-markdown-css ╰ search_terms=markdown-body color background font-family table code blockquote dark light, mode=truncated 8.1k chars ● WebFetch github.com/ilaborie/html2pdf/blob/main/src/lib.rs ╰ search_terms=print_to_pdf navigate_to Browser Tab file:// 8.5k chars I now have all the research ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: I now have all the research I need. Here's the full implementation plan: ────────────────────────────────────────────────────────────────────────────── ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: agent monitor Implementation Plan — ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: Implementation Plan — crabbymark Problem Statement: ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: agent monitor Build a ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: Build a Rust CLI tool that converts a Markdown file to GitHub-styled HTML with syntax-highlighted code blocks, opens it in the default browser, and optionally exports to PDF via headless Chrome. Requirements: - CLI parsing via clap (derive) with positional FILE arg, ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - CLI parsing via clap (derive) with positional FILE arg, --dark flag, --pdf flag, `--version ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: flag, --version, --help - Markdown ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Markdown parsing via pulldown-cmark with extensions: tables, strikethrough, tasklists, footnotes ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Syntax highlighting via synt ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Syntax highlighting via syntect by intercepting CodeBlock events and re-injecting highlighted HTML ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Light theme ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Light theme (default): InspiredGitHub syntect theme + GitHub light CSS palette - Dark theme (` ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Dark theme (--dark): base16-ocean.dark syntect theme + GitHub dark CSS palette - All CSS ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - All CSS embedded/inline in the generated HTML (no external stylesheets) - Browser ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Browser opening via open crate; fall back to printing the file path on headless systems ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Temp file via ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Temp file via tempfile for the HTML (no persistent HTML output) - ` ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - --pdf: use headless_chrome with fetch feature to auto-download Chromium, call print_to_pdf(), ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: call print_to_pdf(), write PDF to same directory as input file (e.g., call print_to_pdf(), write PDF to same directory as input file (e.g., input.md → input.pdf ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: → input.pdf). Also open HTML in browser. - Error handling via ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Error handling via anyhow - README ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - .gitignore covering ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - .gitignore covering /target, *.pdf, *.html Background: - ` ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - syntect::highlighting::ThemeSet::load_defaults() includes both InspiredGitHub and base16-ocean.dark ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: InspiredGitHub and base16-ocean.dark keys - pull ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - pulldown-cmark emits Event::Start(Tag::CodeBlock(CodeBlockKind::Fenced(lang))) → ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: Event::Start(Tag::CodeBlock(CodeBlockKind::Fenced(lang))) → Event::Text(code) → `Event::End(Tag ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: → Event::End(TagEnd::CodeBlock) — we intercept this sequence, run the text through ` ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: through syntect::html::highlighted_html_for_string(), and re-inject as Event::Html ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - headless_chrome with `features ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - headless_chrome with features = [\"fetch\"] auto-downloads a known-good Chromium binary. ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: Chromium binary. The PDF flow is: Browser::new() → browser.new_tab() → `tab.navigate_to(\" ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: tab.navigate_to(\"file://...\") → tab.wait_until_navigated() → `tab.printtopdf(Some ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: tab.print_to_pdf(Some(options)) → fs::write() - `temp ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - tempfile::Builder::new().suffix(\".html\").tempfile() gives us a named temp file we ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: file we can write HTML to and pass to both open::that() and headless Chrome Proposed ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: Proposed Solution: ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: flowchart TD ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: A[CLI ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: A[CLI: parse args via clap] --> B[Read markdown file] B --> C[ ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: B --> C[Parse MD with pulldown-cmark + extensions] C --> D[ ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: C --> D[Intercept CodeBlock events] ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: D --> E[Highlight via syntect] E --> F ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: E --> F[Reassemble events → push_html] F --> G[Wrap ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: F --> G[Wrap in full HTML doc with embedded GitHub CSS] G --> H[ ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: G --> H[Write to tempfile] H --> I{-- ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: H --> I{--pdf flag?} I -->|Yes ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: I -->|Yes| J[headless_chrome: navigate to file:// → print_to_pdf] ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: J --> K[Write PDF next to input file] K --> L[Open HTML in browser] ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: I -->|No| L ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: L --> M[Fallback: print path if open fails] Single- ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: Single-binary architecture in src/main.rs — no need for a lib crate given the scope ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: scope. Key modules of logic: 1. CLI ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: 1. CLI struct (clap derive) 2. Markdown→HTML rendering ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: 2. Markdown→HTML rendering (pulldown-cmark + syntect interception) 3. HTML document ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: 3. HTML document assembly (embedded CSS, theme-aware) 4. PDF generation (headless_chrome) ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: 5. Browser opening (open crate + ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: 5. Browser opening (open crate + fallback) Task ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: Task Breakdown: Task ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: Task 1: Project scaffolding and CLI parsing ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Objective: Create the Cargo project and implement CLI argument parsing - Implementation guidance ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Implementation guidance: - ` ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - cargo init --name crabbymark - Add ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Add all dependencies to Cargo.toml: clap (with derive feature), pulldown-cmark (with `si ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: pulldown-cmark (with simd off, extensions enabled), syntect, headless_chrome (with fetch feature), `open ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: (with fetch feature), open, tempfile, anyhow - Define ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Define a #[derive(Parser)] struct Cli with: positional file: PathBuf, `#[arg(long)] ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: #[arg(long)] dark: bool, #[arg(long)] pdf: bool, plus `#[command(version, about)] ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: #[arg(long)] dark: bool, #[arg(long)] pdf: bool, plus #[command(version, about)] - In main(), ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - In main(), parse args, validate the file exists and has .md/.markdown extension, return ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Create `. ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Create .gitignore with /target, *.pdf, *.html - Test ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Test requirements: Run cargo build, verify --help and --version output, verify error ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: verify error on missing file - Demo ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Demo: crabbymark --help prints usage, crabbymark --version prints version, `crabbymark non ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: crabbymark nonexistent.md prints a clear error Task 2: Markdown parsing with ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: Task 2: Markdown parsing with syntax highlighting - Objective: ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Objective: Implement the core markdown-to-HTML-body conversion with syntax-highlighted code blocks - Implementation guidance: ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Create a function ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Initialize pull ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Initialize pulldown-cmark Parser with `Options::ENABLE_TABLES | - Initialize pulldown-cmark Parser with `Options::ENABLETABLES | ENABLESTRIKETHROUGH | ENABLE_TASKLISTS | ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Initialize pulldown-cmark Parser with Options::ENABLE_TABLES | ENABLE_STRIKETHROUGH | ENABLE_TASKLISTS | ENABLE_FOOTNOTES - Use filter_map on the parser iterator to intercept the code block event sequence: ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - On `Event::Start(Tag::Code ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - On Event::Start(Tag::CodeBlock(CodeBlockKind::Fenced(lang))): store the language, ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: language, set a flag, return None - On `Event:: ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - On Event::Text(t) while inside code block: accumulate text, return None - On `Event:: ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - On Event::End(TagEnd::CodeBlock): run accumulated code through `highlighted ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: highlighted_html_for_string() with the appropriate syntect theme (InspiredGitHub for ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: (InspiredGitHub for light, base16-ocean.dark for dark), return `Some(Event::Html( ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: Some(Event::Html(...)) ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Pass all ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: agent monitor - Pass all other events through unchanged - Feed ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Feed the filtered iterator to pulldown_cmark::html::push_html() - Handle ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Handle unknown languages gracefully by falling back to find_syntax_plain_text() - Test requirements: Create ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Test requirements: Create a test .md file with a fenced Rust code block, verify the ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: verify the output contains <pre style= (syntect inline styles) and no raw `<code ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: <code class=\"language-rust\"> wrapper - Demo: Call ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Demo: Call render_markdown() with sample markdown containing code, tables, strikethrough, tasklists ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: strikethrough, tasklists — inspect the HTML body string Task 3: HTML document ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: Task 3: HTML document assembly with embedded GitHub CSS - Objective: Wrap ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Objective: Wrap the rendered markdown body in a complete HTML document with embedded GitHub-styled ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: embedded GitHub-styled CSS - Implementation guidance: - Create a function `fn wrap ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Create a function fn wrap_html(body: &str, dark: bool) -> String - Build a ` ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Build a <style> block with GitHub's markdown CSS color palette, covering: - Light: ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Light: body { background: #fff; color: #1f2328; }, .markdown-body with `font ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", ..., `max-width: ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", ..., max-width: 980px, margin: 0 auto, padding: 45px - Dark: `body { background: #0d1117; color: #e6edf3; ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Dark: body { background: #0d1117; color: #e6edf3; } - Style rules ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Style rules for: headings, links, <table> (borders, striped rows), `<block ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: <blockquote>, <code> (inline), <pre> (code blocks), <hr>, task list checkboxes, `<img ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - ` ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - @media print rules for clean PDF output (no extra margins from Chrome) - Output ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Output: `<!DOCTYPE html><html><head><meta charset=\"utf-8\"><style>...</style></head><body class ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Output: <!DOCTYPE html><html><head><meta charset=\"utf-8\"><style>...</style></head><body class=\"markdown-body\">BODY</body></html> ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Test requirements: Verify the output ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: agent monitor - Test requirements: Verify the output is valid HTML with the style block present, and ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: present, and that dark: true produces dark background colors - Demo: Generate ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Demo: Generate a complete HTML string, save to a file manually, open in browser — ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: browser — it should look like GitHub's markdown rendering Task 4: Temp ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: Task 4: Temp file creation and browser opening - Objective: Write ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Objective: Write the HTML to a temp file and open it in the default browser - Implementation guidance: ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Use `tempfile::Builder::new(). ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: agent monitor - Use tempfile::Builder::new().prefix(\"crabbymark-\").suffix(\".html\").tempfile() to create a named temp file - Write the full ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Write the full HTML document to it - Use `open::that( ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Use open::that(temp_file.path()) to open in the default browser - If ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - If open::that() returns an error, fall back to printing the file path to stdout ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: stdout so the user can open it manually - Keep ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Keep the temp file handle alive (don't drop it before the browser has time to read it) — use a short ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: to read it) — use a short thread::sleep or persist() the temp file - Test requirements: Verify ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Test requirements: Verify the temp file is created with .html suffix and contains valid HTML content ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Demo: `crabbymark sample ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Demo: crabbymark sample.md opens the rendered markdown in the default browser with GitHub ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: browser with GitHub light styling; crabbymark --dark sample.md opens with dark styling Task 5: ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: Task 5: PDF generation via headless Chrome - Objective ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Objective: Implement the --pdf flag to generate a PDF using headless_chrome - Implementation guidance: - Create ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Create a function `fn generatepdf(htmlpath: &Path, output_path: &Path) -> ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Create a function fn generate_pdf(html_path: &Path, output_path: &Path) -> anyhow::Result<()> ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Compute the output ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: agent monitor - Compute the output PDF path: same directory as input file, same stem, .pdf extension - Use `Browser ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Use Browser::new(LaunchOptions::default()) — the fetch feature will auto-download ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: auto-download Chromium if not found - ` ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - `browser.newtab()?.navigateto(&format!(\"file://{}\", htmlpath.display()))?.waituntil_navigated()? ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - browser.new_tab()?.navigate_to(&format!(\"file://{}\", html_path.display()))?.wait_until_navigated()? - Call `tab ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Call tab.print_to_pdf(None) (default options are fine for standard A4 output ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: output) - `fs::write(output_path, ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - fs::write(output_path, pdf_bytes)? - Wrap ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Wrap the entire flow in error handling: if Chrome/Chromium can't be found or downloaded ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: or downloaded, print a helpful message suggesting manual installation ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - When --pdf is used, still ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: agent monitor - When --pdf is used, still also open the HTML in the browser (per requirements ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: requirements) - Test requirements: Verify that the ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Test requirements: Verify that the PDF file is created at the expected path and ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Demo: crabbymark --pdf sample.md generates ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Demo: crabbymark --pdf sample.md generates sample.pdf in the same directory as sample.md ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: as sample.md and also opens the HTML in the browser Task 6: Wire ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: Task 6: Wire everything together in main and add README - Objective: Connect ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Objective: Connect all components in main() and add project documentation - Implementation guidance: ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - In main(): 1. Parse CLI args ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: 2. Read the markdown file to a ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: agent monitor 2. Read the markdown file to a string 3. Call render_markdown() with the ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: 3. Call render_markdown() with the file content and dark flag ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: 4. Call wrap_html() with the body and dark flag 5. Write to a temp file (use persist() so it survives long enough) 6. If --pdf, call generate_pdf() with the temp file path and computed ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: 6. If --pdf, call generate_pdf() with the temp file path and computed PDF output path 7. Open the HTML in the browser (with ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: 7. Open the HTML in the browser (with fallback) ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Create README.md with: - Project description - Installation: ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Installation: cargo install --path . - Usage examples: ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Usage examples: basic, --dark, --pdf, --help, --version - Note about Chrome/Chromium requirement for ` ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Note about Chrome/Chromium requirement for --pdf (auto-downloads via fetch feature, ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: fetch feature, but manual install may be needed on some systems) - Supported ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Supported markdown extensions (tables, strikethrough, tasklists, footnotes) ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Test requirements: End-to-end manual test with ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: agent monitor - Test requirements: End-to-end manual test with a sample markdown file covering all features ( ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: covering all features (code blocks in multiple languages, tables, task lists, strikethrough, footnotes) - Demo: Full end-to-end workflow — ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: - Demo: Full end-to-end workflow — crabbymark README.md opens beautiful GitHub-styled HTML; crabbymark --dark --pdf README.md generates a PDF and opens dark ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: opens dark-themed HTML ────────────────────────────────────────────────────────────────────────────── Does this plan look ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 3% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: ▸ Credits: 1.82 • Time: 1m 21s ──────────────────────────────────────────────────────────────────────────────── [plan] kiro_planner · claude-opus-4.6 · ◔ 4% /private /tmp/dem ask a question, or describe a task ↵ · exit plan mode: shift+tab ctrl+g: agent monitor"
+                - generic [ref=e186]:
+                  - generic [ref=e188]:
+                    - paragraph [ref=e195]: Terminal — 80×24
+                    - generic [ref=e198]:
+                      - generic [ref=e199]:
+                        - generic [ref=e200]: W
+                        - generic [ref=e201]: e
+                        - generic [ref=e202]: l
+                        - generic [ref=e203]: c
+                        - generic [ref=e204]: o
+                        - generic [ref=e205]: m
+                        - generic [ref=e206]: e
+                        - generic [ref=e207]: t
+                        - generic [ref=e208]: o
+                        - generic [ref=e209]: t
+                        - generic [ref=e210]: h
+                        - generic [ref=e211]: e
+                        - generic [ref=e212]: "n"
+                        - generic [ref=e213]: e
+                        - generic [ref=e214]: w
+                        - generic [ref=e215]: K
+                        - generic [ref=e216]: i
+                        - generic [ref=e217]: r
+                        - generic [ref=e218]: o
+                        - generic [ref=e219]: C
+                        - generic [ref=e220]: L
+                        - generic [ref=e221]: I
+                        - generic [ref=e222]: U
+                        - generic [ref=e223]: X
+                        - generic [ref=e224]: "!"
+                        - generic [ref=e225]: U
+                        - generic [ref=e226]: s
+                        - generic [ref=e227]: e
+                        - generic [ref=e228]: /
+                        - generic [ref=e229]: f
+                        - generic [ref=e230]: e
+                        - generic [ref=e231]: e
+                        - generic [ref=e232]: d
+                        - generic [ref=e233]: b
+                        - generic [ref=e234]: a
+                        - generic [ref=e235]: c
+                        - generic [ref=e236]: k
+                        - generic [ref=e237]: t
+                        - generic [ref=e238]: o
+                        - generic [ref=e239]: s
+                        - generic [ref=e240]: h
+                        - generic [ref=e241]: a
+                        - generic [ref=e242]: r
+                        - generic [ref=e243]: e
+                        - generic [ref=e244]: "y"
+                        - generic [ref=e245]: o
+                        - generic [ref=e246]: u
+                        - generic [ref=e247]: r
+                        - generic [ref=e248]: t
+                        - generic [ref=e249]: h
+                        - generic [ref=e250]: o
+                        - generic [ref=e251]: u
+                        - generic [ref=e252]: g
+                        - generic [ref=e253]: h
+                        - generic [ref=e254]: t
+                        - generic [ref=e255]: s
+                        - generic [ref=e256]: .
+                      - generic [ref=e257]:
+                        - generic [ref=e258]: P
+                        - generic [ref=e259]: r
+                        - generic [ref=e260]: e
+                        - generic [ref=e261]: f
+                        - generic [ref=e262]: e
+                        - generic [ref=e263]: r
+                        - generic [ref=e264]: t
+                        - generic [ref=e265]: h
+                        - generic [ref=e266]: e
+                        - generic [ref=e267]: c
+                        - generic [ref=e268]: l
+                        - generic [ref=e269]: a
+                        - generic [ref=e270]: s
+                        - generic [ref=e271]: s
+                        - generic [ref=e272]: i
+                        - generic [ref=e273]: c
+                        - generic [ref=e274]: e
+                        - generic [ref=e275]: x
+                        - generic [ref=e276]: p
+                        - generic [ref=e277]: e
+                        - generic [ref=e278]: r
+                        - generic [ref=e279]: i
+                        - generic [ref=e280]: e
+                        - generic [ref=e281]: "n"
+                        - generic [ref=e282]: c
+                        - generic [ref=e283]: e
+                        - generic [ref=e284]: "?"
+                        - generic [ref=e285]: R
+                        - generic [ref=e286]: e
+                        - generic [ref=e287]: l
+                        - generic [ref=e288]: a
+                        - generic [ref=e289]: u
+                        - generic [ref=e290]: "n"
+                        - generic [ref=e291]: c
+                        - generic [ref=e292]: h
+                        - generic [ref=e293]: w
+                        - generic [ref=e294]: i
+                        - generic [ref=e295]: t
+                        - generic [ref=e296]: h
+                        - generic [ref=e297]: k
+                        - generic [ref=e298]: i
+                        - generic [ref=e299]: r
+                        - generic [ref=e300]: o
+                        - generic [ref=e301]: "-"
+                        - generic [ref=e302]: c
+                        - generic [ref=e303]: l
+                        - generic [ref=e304]: i
+                        - generic [ref=e305]: "-"
+                        - generic [ref=e306]: "-"
+                        - generic [ref=e307]: c
+                        - generic [ref=e308]: l
+                        - generic [ref=e309]: a
+                        - generic [ref=e310]: s
+                        - generic [ref=e311]: s
+                        - generic [ref=e312]: i
+                        - generic [ref=e313]: c
+                        - generic [ref=e314]: .
+                      - generic [ref=e316]:
+                        - generic [ref=e317]: ⢀
+                        - generic [ref=e318]: ⣴
+                        - generic [ref=e319]: ⣶
+                        - generic [ref=e320]: ⣶
+                        - generic [ref=e321]: ⣦
+                        - generic [ref=e322]: ⡀
+                        - generic [ref=e323]: ⠀
+                        - generic [ref=e324]: ⠀
+                        - generic [ref=e325]: ⠀
+                        - generic [ref=e326]: ⠀
+                        - generic [ref=e327]: ⢀
+                        - generic [ref=e328]: ⣴
+                        - generic [ref=e329]: ⣶
+                        - generic [ref=e330]: ⣦
+                        - generic [ref=e331]: ⣄
+                        - generic [ref=e332]: ⡀
+                        - generic [ref=e333]: ⢀
+                        - generic [ref=e334]: ⣴
+                        - generic [ref=e335]: ⣶
+                        - generic [ref=e336]: ⣶
+                        - generic [ref=e337]: ⣦
+                        - generic [ref=e338]: ⡀
+                        - generic [ref=e339]: ⢀
+                        - generic [ref=e340]: ⣴
+                        - generic [ref=e341]: ⣶
+                        - generic [ref=e342]: ⣶
+                        - generic [ref=e343]: ⣶
+                        - generic [ref=e344]: ⣶
+                        - generic [ref=e345]: ⣶
+                        - generic [ref=e346]: ⣶
+                        - generic [ref=e347]: ⣶
+                        - generic [ref=e348]: ⣶
+                        - generic [ref=e349]: ⣶
+                        - generic [ref=e350]: ⣦
+                        - generic [ref=e351]: ⣄
+                        - generic [ref=e352]: ⡀
+                        - generic [ref=e353]: ⢀
+                        - generic [ref=e354]: ⣠
+                        - generic [ref=e355]: ⣴
+                        - generic [ref=e356]: ⣶
+                        - generic [ref=e357]: ⣶
+                        - generic [ref=e358]: ⣶
+                        - generic [ref=e359]: ⣶
+                        - generic [ref=e360]: ⣶
+                        - generic [ref=e361]: ⣦
+                        - generic [ref=e362]: ⣄
+                        - generic [ref=e363]: ⡀
+                      - generic [ref=e364]:
+                        - generic [ref=e365]: ⢰
+                        - generic [ref=e366]: ⣿
+                        - generic [ref=e367]: ⠋
+                        - generic [ref=e368]: ⠁
+                        - generic [ref=e369]: ⠈
+                        - generic [ref=e370]: ⠙
+                        - generic [ref=e371]: ⣿
+                        - generic [ref=e372]: ⡆
+                        - generic [ref=e373]: ⠀
+                        - generic [ref=e374]: ⢀
+                        - generic [ref=e375]: ⣾
+                        - generic [ref=e376]: ⡿
+                        - generic [ref=e377]: ⠁
+                        - generic [ref=e378]: ⠈
+                        - generic [ref=e379]: ⢻
+                        - generic [ref=e380]: ⡆
+                        - generic [ref=e381]: ⢰
+                        - generic [ref=e382]: ⣿
+                        - generic [ref=e383]: ⠋
+                        - generic [ref=e384]: ⠁
+                        - generic [ref=e385]: ⠈
+                        - generic [ref=e386]: ⠙
+                        - generic [ref=e387]: ⣿
+                        - generic [ref=e388]: ⡆
+                        - generic [ref=e389]: ⢰
+                        - generic [ref=e390]: ⣿
+                        - generic [ref=e391]: ⠋
+                        - generic [ref=e392]: ⠁
+                        - generic [ref=e393]: ⠈
+                        - generic [ref=e394]: ⠙
+                        - generic [ref=e395]: ⠻
+                        - generic [ref=e396]: ⣦
+                        - generic [ref=e397]: ⣴
+                        - generic [ref=e398]: ⡿
+                        - generic [ref=e399]: ⠟
+                        - generic [ref=e400]: ⠋
+                        - generic [ref=e401]: ⠁
+                        - generic [ref=e402]: ⠈
+                        - generic [ref=e403]: ⠙
+                        - generic [ref=e404]: ⠻
+                        - generic [ref=e405]: ⢿
+                        - generic [ref=e406]: ⣦
+                      - generic [ref=e407]:
+                        - generic [ref=e408]: ⢸
+                        - generic [ref=e409]: ⣿
+                        - generic [ref=e410]: ⠀
+                        - generic [ref=e411]: ⠀
+                        - generic [ref=e412]: ⠀
+                        - generic [ref=e413]: ⠀
+                        - generic [ref=e414]: ⣿
+                        - generic [ref=e415]: ⣇
+                        - generic [ref=e416]: ⣴
+                        - generic [ref=e417]: ⡿
+                        - generic [ref=e418]: ⠋
+                        - generic [ref=e419]: ⠀
+                        - generic [ref=e420]: ⠀
+                        - generic [ref=e421]: ⢀
+                        - generic [ref=e422]: ⣼
+                        - generic [ref=e423]: ⠇
+                        - generic [ref=e424]: ⢸
+                        - generic [ref=e425]: ⣿
+                        - generic [ref=e426]: ⠀
+                        - generic [ref=e427]: ⠀
+                        - generic [ref=e428]: ⠀
+                        - generic [ref=e429]: ⠀
+                        - generic [ref=e430]: ⣿
+                        - generic [ref=e431]: ⡇
+                        - generic [ref=e432]: ⢸
+                        - generic [ref=e433]: ⣿
+                        - generic [ref=e434]: ⠀
+                        - generic [ref=e435]: ⠀
+                        - generic [ref=e436]: ⠀
+                        - generic [ref=e437]: ⢠
+                        - generic [ref=e438]: ⣤
+                        - generic [ref=e439]: ⣤
+                        - generic [ref=e440]: ⣤
+                        - generic [ref=e441]: ⣤
+                        - generic [ref=e442]: ⣄
+                        - generic [ref=e443]: ⣿
+                        - generic [ref=e444]: ⡆
+                        - generic [ref=e445]: ⣼
+                        - generic [ref=e446]: ⡟
+                        - generic [ref=e447]: ⠀
+                        - generic [ref=e448]: ⠀
+                        - generic [ref=e449]: ⠀
+                        - generic [ref=e450]: ⣀
+                        - generic [ref=e451]: ⣀
+                        - generic [ref=e452]: ⣀
+                        - generic [ref=e453]: ⢻
+                        - generic [ref=e454]: ⣧
+                      - generic [ref=e455]:
+                        - generic [ref=e456]: ⢸
+                        - generic [ref=e457]: ⣿
+                        - generic [ref=e458]: ⠀
+                        - generic [ref=e459]: ⠀
+                        - generic [ref=e460]: ⠀
+                        - generic [ref=e461]: ⠀
+                        - generic [ref=e462]: ⣿
+                        - generic [ref=e463]: ⡿
+                        - generic [ref=e464]: ⠋
+                        - generic [ref=e465]: ⠀
+                        - generic [ref=e466]: ⠀
+                        - generic [ref=e467]: ⢀
+                        - generic [ref=e468]: ⣾
+                        - generic [ref=e469]: ⡿
+                        - generic [ref=e470]: ⠁
+                        - generic [ref=e471]: ⢸
+                        - generic [ref=e472]: ⣿
+                        - generic [ref=e473]: ⠀
+                        - generic [ref=e474]: ⠀
+                        - generic [ref=e475]: ⠀
+                        - generic [ref=e476]: ⠀
+                        - generic [ref=e477]: ⣿
+                        - generic [ref=e478]: ⡇
+                        - generic [ref=e479]: ⢸
+                        - generic [ref=e480]: ⣿
+                        - generic [ref=e481]: ⠀
+                        - generic [ref=e482]: ⠀
+                        - generic [ref=e483]: ⠀
+                        - generic [ref=e484]: ⢸
+                        - generic [ref=e485]: ⣿
+                        - generic [ref=e486]: ⠉
+                        - generic [ref=e487]: ⠉
+                        - generic [ref=e488]: ⠉
+                        - generic [ref=e489]: ⣿
+                        - generic [ref=e490]: ⡇
+                        - generic [ref=e491]: ⣿
+                        - generic [ref=e492]: ⡇
+                        - generic [ref=e493]: ⣼
+                        - generic [ref=e494]: ⡟
+                        - generic [ref=e495]: ⠀
+                        - generic [ref=e496]: ⠀
+                        - generic [ref=e497]: ⣰
+                        - generic [ref=e498]: ⡿
+                        - generic [ref=e499]: ⠟
+                        - generic [ref=e500]: ⠛
+                        - generic [ref=e501]: ⠻
+                        - generic [ref=e502]: ⢿
+                        - generic [ref=e503]: ⣆
+                        - generic [ref=e504]: ⠀
+                        - generic [ref=e505]: ⠀
+                        - generic [ref=e506]: ⢻
+                        - generic [ref=e507]: ⣧
+                      - generic [ref=e508]:
+                        - generic [ref=e509]: ⢸
+                        - generic [ref=e510]: ⣿
+                        - generic [ref=e511]: ⠀
+                        - generic [ref=e512]: ⠀
+                        - generic [ref=e513]: ⠀
+                        - generic [ref=e514]: ⠀
+                        - generic [ref=e515]: ⠙
+                        - generic [ref=e516]: ⠁
+                        - generic [ref=e517]: ⠀
+                        - generic [ref=e518]: ⠀
+                        - generic [ref=e519]: ⢀
+                        - generic [ref=e520]: ⣼
+                        - generic [ref=e521]: ⡟
+                        - generic [ref=e522]: ⠁
+                        - generic [ref=e523]: ⢸
+                        - generic [ref=e524]: ⣿
+                        - generic [ref=e525]: ⠀
+                        - generic [ref=e526]: ⠀
+                        - generic [ref=e527]: ⠀
+                        - generic [ref=e528]: ⠀
+                        - generic [ref=e529]: ⣿
+                        - generic [ref=e530]: ⡇
+                        - generic [ref=e531]: ⢸
+                        - generic [ref=e532]: ⣿
+                        - generic [ref=e533]: ⠀
+                        - generic [ref=e534]: ⠀
+                        - generic [ref=e535]: ⠀
+                        - generic [ref=e536]: ⢸
+                        - generic [ref=e537]: ⣿
+                        - generic [ref=e538]: ⣶
+                        - generic [ref=e539]: ⣶
+                        - generic [ref=e540]: ⡶
+                        - generic [ref=e541]: ⠋
+                        - generic [ref=e542]: ⠀
+                        - generic [ref=e543]: ⣿
+                        - generic [ref=e544]: ⠇
+                        - generic [ref=e545]: ⢰
+                        - generic [ref=e546]: ⣿
+                        - generic [ref=e547]: ⠀
+                        - generic [ref=e548]: ⠀
+                        - generic [ref=e549]: ⠀
+                        - generic [ref=e550]: ⢰
+                        - generic [ref=e551]: ⣿
+                        - generic [ref=e552]: ⠀
+                        - generic [ref=e553]: ⠀
+                        - generic [ref=e554]: ⠀
+                        - generic [ref=e555]: ⣿
+                        - generic [ref=e556]: ⡆
+                        - generic [ref=e557]: ⠀
+                        - generic [ref=e558]: ⠀
+                        - generic [ref=e559]: ⣿
+                        - generic [ref=e560]: ⡆
+                      - generic [ref=e561]:
+                        - generic [ref=e562]: ⢸
+                        - generic [ref=e563]: ⣿
+                        - generic [ref=e564]: ⠀
+                        - generic [ref=e565]: ⠀
+                        - generic [ref=e566]: ⠀
+                        - generic [ref=e567]: ⠀
+                        - generic [ref=e568]: ⠀
+                        - generic [ref=e569]: ⠀
+                        - generic [ref=e570]: ⠀
+                        - generic [ref=e571]: ⠀
+                        - generic [ref=e572]: ⠹
+                        - generic [ref=e573]: ⣷
+                        - generic [ref=e574]: ⡀
+                        - generic [ref=e575]: ⢸
+                        - generic [ref=e576]: ⣿
+                        - generic [ref=e577]: ⠀
+                        - generic [ref=e578]: ⠀
+                        - generic [ref=e579]: ⠀
+                        - generic [ref=e580]: ⠀
+                        - generic [ref=e581]: ⣿
+                        - generic [ref=e582]: ⡇
+                        - generic [ref=e583]: ⠀
+                        - generic [ref=e584]: ⢸
+                        - generic [ref=e585]: ⣿
+                        - generic [ref=e586]: ⠀
+                        - generic [ref=e587]: ⠀
+                        - generic [ref=e588]: ⠀
+                        - generic [ref=e589]: ⠀
+                        - generic [ref=e590]: ⠀
+                        - generic [ref=e591]: ⠀
+                        - generic [ref=e592]: ⠀
+                        - generic [ref=e593]: ⠀
+                        - generic [ref=e594]: ⣠
+                        - generic [ref=e595]: ⣼
+                        - generic [ref=e596]: ⠟
+                        - generic [ref=e597]: ⢸
+                        - generic [ref=e598]: ⣿
+                        - generic [ref=e599]: ⠀
+                        - generic [ref=e600]: ⠀
+                        - generic [ref=e601]: ⢸
+                        - generic [ref=e602]: ⣿
+                        - generic [ref=e603]: ⠀
+                        - generic [ref=e604]: ⠀
+                        - generic [ref=e605]: ⠀
+                        - generic [ref=e606]: ⠀
+                        - generic [ref=e607]: ⣿
+                        - generic [ref=e608]: ⡇
+                        - generic [ref=e609]: ⠀
+                        - generic [ref=e610]: ⠀
+                        - generic [ref=e611]: ⣿
+                        - generic [ref=e612]: ⡇
+                      - generic [ref=e613]:
+                        - generic [ref=e614]: ⢸
+                        - generic [ref=e615]: ⣿
+                        - generic [ref=e616]: ⠀
+                        - generic [ref=e617]: ⠀
+                        - generic [ref=e618]: ⠀
+                        - generic [ref=e619]: ⠀
+                        - generic [ref=e620]: ⠀
+                        - generic [ref=e621]: ⣠
+                        - generic [ref=e622]: ⡀
+                        - generic [ref=e623]: ⠀
+                        - generic [ref=e624]: ⠀
+                        - generic [ref=e625]: ⠹
+                        - generic [ref=e626]: ⣷
+                        - generic [ref=e627]: ⡄
+                        - generic [ref=e628]: ⢸
+                        - generic [ref=e629]: ⣿
+                        - generic [ref=e630]: ⠀
+                        - generic [ref=e631]: ⠀
+                        - generic [ref=e632]: ⠀
+                        - generic [ref=e633]: ⠀
+                        - generic [ref=e634]: ⣿
+                        - generic [ref=e635]: ⡇
+                        - generic [ref=e636]: ⠀
+                        - generic [ref=e637]: ⢸
+                        - generic [ref=e638]: ⣿
+                        - generic [ref=e639]: ⠀
+                        - generic [ref=e640]: ⠀
+                        - generic [ref=e641]: ⠀
+                        - generic [ref=e642]: ⠀
+                        - generic [ref=e643]: ⣤
+                        - generic [ref=e644]: ⣄
+                        - generic [ref=e645]: ⠀
+                        - generic [ref=e646]: ⠀
+                        - generic [ref=e647]: ⠹
+                        - generic [ref=e648]: ⣿
+                        - generic [ref=e649]: ⡅
+                        - generic [ref=e650]: ⠸
+                        - generic [ref=e651]: ⣿
+                        - generic [ref=e652]: ⠀
+                        - generic [ref=e653]: ⠀
+                        - generic [ref=e654]: ⠸
+                        - generic [ref=e655]: ⣿
+                        - generic [ref=e656]: ⠀
+                        - generic [ref=e657]: ⠀
+                        - generic [ref=e658]: ⠀
+                        - generic [ref=e659]: ⠀
+                        - generic [ref=e660]: ⣿
+                        - generic [ref=e661]: ⠇
+                        - generic [ref=e662]: ⠀
+                        - generic [ref=e663]: ⣿
+                        - generic [ref=e664]: ⠇
+                      - generic [ref=e665]:
+                        - generic [ref=e666]: ⢸
+                        - generic [ref=e667]: ⣿
+                        - generic [ref=e668]: ⠀
+                        - generic [ref=e669]: ⠀
+                        - generic [ref=e670]: ⠀
+                        - generic [ref=e671]: ⠀
+                        - generic [ref=e672]: ⣾
+                        - generic [ref=e673]: ⡟
+                        - generic [ref=e674]: ⣷
+                        - generic [ref=e675]: ⡀
+                        - generic [ref=e676]: ⠀
+                        - generic [ref=e677]: ⠀
+                        - generic [ref=e678]: ⠘
+                        - generic [ref=e679]: ⣿
+                        - generic [ref=e680]: ⣆
+                        - generic [ref=e681]: ⢸
+                        - generic [ref=e682]: ⣿
+                        - generic [ref=e683]: ⠀
+                        - generic [ref=e684]: ⠀
+                        - generic [ref=e685]: ⠀
+                        - generic [ref=e686]: ⠀
+                        - generic [ref=e687]: ⣿
+                        - generic [ref=e688]: ⡇
+                        - generic [ref=e689]: ⢸
+                        - generic [ref=e690]: ⣿
+                        - generic [ref=e691]: ⠀
+                        - generic [ref=e692]: ⠀
+                        - generic [ref=e693]: ⠀
+                        - generic [ref=e694]: ⠀
+                        - generic [ref=e695]: ⣿
+                        - generic [ref=e696]: ⡟
+                        - generic [ref=e697]: ⣷
+                        - generic [ref=e698]: ⡀
+                        - generic [ref=e699]: ⠀
+                        - generic [ref=e700]: ⠀
+                        - generic [ref=e701]: ⠘
+                        - generic [ref=e702]: ⣿
+                        - generic [ref=e703]: ⣆
+                        - generic [ref=e704]: ⢻
+                        - generic [ref=e705]: ⣧
+                        - generic [ref=e706]: ⠀
+                        - generic [ref=e707]: ⠀
+                        - generic [ref=e708]: ⠹
+                        - generic [ref=e709]: ⣷
+                        - generic [ref=e710]: ⣦
+                        - generic [ref=e711]: ⣤
+                        - generic [ref=e712]: ⣤
+                        - generic [ref=e713]: ⣾
+                        - generic [ref=e714]: ⠏
+                        - generic [ref=e715]: ⠀
+                        - generic [ref=e716]: ⠀
+                        - generic [ref=e717]: ⠀
+                        - generic [ref=e718]: ⣼
+                        - generic [ref=e719]: ⡟
+                      - generic [ref=e720]:
+                        - generic [ref=e721]: ⢸
+                        - generic [ref=e722]: ⣿
+                        - generic [ref=e723]: ⠀
+                        - generic [ref=e724]: ⠀
+                        - generic [ref=e725]: ⠀
+                        - generic [ref=e726]: ⠀
+                        - generic [ref=e727]: ⣿
+                        - generic [ref=e728]: ⡇
+                        - generic [ref=e729]: ⠹
+                        - generic [ref=e730]: ⣷
+                        - generic [ref=e731]: ⡀
+                        - generic [ref=e732]: ⠀
+                        - generic [ref=e733]: ⠈
+                        - generic [ref=e734]: ⢻
+                        - generic [ref=e735]: ⡇
+                        - generic [ref=e736]: ⢸
+                        - generic [ref=e737]: ⣿
+                        - generic [ref=e738]: ⠀
+                        - generic [ref=e739]: ⠀
+                        - generic [ref=e740]: ⠀
+                        - generic [ref=e741]: ⠀
+                        - generic [ref=e742]: ⣿
+                        - generic [ref=e743]: ⡇
+                        - generic [ref=e744]: ⢸
+                        - generic [ref=e745]: ⣿
+                        - generic [ref=e746]: ⠀
+                        - generic [ref=e747]: ⠀
+                        - generic [ref=e748]: ⠀
+                        - generic [ref=e749]: ⠀
+                        - generic [ref=e750]: ⣿
+                        - generic [ref=e751]: ⡇
+                        - generic [ref=e752]: ⠹
+                        - generic [ref=e753]: ⣷
+                        - generic [ref=e754]: ⡀
+                        - generic [ref=e755]: ⠀
+                        - generic [ref=e756]: ⠈
+                        - generic [ref=e757]: ⢻
+                        - generic [ref=e758]: ⡇
+                        - generic [ref=e759]: ⢻
+                        - generic [ref=e760]: ⣧
+                        - generic [ref=e761]: ⠀
+                        - generic [ref=e762]: ⠀
+                        - generic [ref=e763]: ⠀
+                        - generic [ref=e764]: ⠉
+                        - generic [ref=e765]: ⠉
+                        - generic [ref=e766]: ⠉
+                        - generic [ref=e767]: ⣼
+                        - generic [ref=e768]: ⡟
+                      - generic [ref=e769]:
+                        - generic [ref=e770]: ⠸
+                        - generic [ref=e771]: ⣿
+                        - generic [ref=e772]: ⣄
+                        - generic [ref=e773]: ⡀
+                        - generic [ref=e774]: ⢀
+                        - generic [ref=e775]: ⣠
+                        - generic [ref=e776]: ⣿
+                        - generic [ref=e777]: ⠇
+                        - generic [ref=e778]: ⠀
+                        - generic [ref=e779]: ⠙
+                        - generic [ref=e780]: ⣷
+                        - generic [ref=e781]: ⡀
+                        - generic [ref=e782]: ⢀
+                        - generic [ref=e783]: ⣼
+                        - generic [ref=e784]: ⠇
+                        - generic [ref=e785]: ⠸
+                        - generic [ref=e786]: ⣿
+                        - generic [ref=e787]: ⣄
+                        - generic [ref=e788]: ⡀
+                        - generic [ref=e789]: ⢀
+                        - generic [ref=e790]: ⣠
+                        - generic [ref=e791]: ⣿
+                        - generic [ref=e792]: ⠇
+                        - generic [ref=e793]: ⠸
+                        - generic [ref=e794]: ⣿
+                        - generic [ref=e795]: ⣄
+                        - generic [ref=e796]: ⡀
+                        - generic [ref=e797]: ⢀
+                        - generic [ref=e798]: ⣠
+                        - generic [ref=e799]: ⣿
+                        - generic [ref=e800]: ⠇
+                        - generic [ref=e801]: ⠀
+                        - generic [ref=e802]: ⠙
+                        - generic [ref=e803]: ⣷
+                        - generic [ref=e804]: ⡀
+                        - generic [ref=e805]: ⢀
+                        - generic [ref=e806]: ⣼
+                        - generic [ref=e807]: ⠇
+                        - generic [ref=e808]: ⠻
+                        - generic [ref=e809]: ⣷
+                        - generic [ref=e810]: ⣦
+                        - generic [ref=e811]: ⣄
+                        - generic [ref=e812]: ⡀
+                        - generic [ref=e813]: ⢀
+                        - generic [ref=e814]: ⣠
+                        - generic [ref=e815]: ⣴
+                        - generic [ref=e816]: ⣾
+                        - generic [ref=e817]: ⠟
+                      - generic [ref=e818]:
+                        - generic [ref=e819]: ⠈
+                        - generic [ref=e820]: ⠻
+                        - generic [ref=e821]: ⠿
+                        - generic [ref=e822]: ⠿
+                        - generic [ref=e823]: ⠟
+                        - generic [ref=e824]: ⠁
+                        - generic [ref=e825]: ⠀
+                        - generic [ref=e826]: ⠀
+                        - generic [ref=e827]: ⠀
+                        - generic [ref=e828]: ⠈
+                        - generic [ref=e829]: ⠻
+                        - generic [ref=e830]: ⠿
+                        - generic [ref=e831]: ⠿
+                        - generic [ref=e832]: ⠟
+                        - generic [ref=e833]: ⠁
+                        - generic [ref=e834]: ⠈
+                        - generic [ref=e835]: ⠻
+                        - generic [ref=e836]: ⠿
+                        - generic [ref=e837]: ⠿
+                        - generic [ref=e838]: ⠟
+                        - generic [ref=e839]: ⠁
+                        - generic [ref=e840]: ⠈
+                        - generic [ref=e841]: ⠻
+                        - generic [ref=e842]: ⠿
+                        - generic [ref=e843]: ⠿
+                        - generic [ref=e844]: ⠟
+                        - generic [ref=e845]: ⠁
+                        - generic [ref=e846]: ⠀
+                        - generic [ref=e847]: ⠀
+                        - generic [ref=e848]: ⠀
+                        - generic [ref=e849]: ⠈
+                        - generic [ref=e850]: ⠻
+                        - generic [ref=e851]: ⠿
+                        - generic [ref=e852]: ⠿
+                        - generic [ref=e853]: ⠟
+                        - generic [ref=e854]: ⠁
+                        - generic [ref=e855]: ⠀
+                        - generic [ref=e856]: ⠀
+                        - generic [ref=e857]: ⠈
+                        - generic [ref=e858]: ⠙
+                        - generic [ref=e859]: ⠻
+                        - generic [ref=e860]: ⠿
+                        - generic [ref=e861]: ⠿
+                        - generic [ref=e862]: ⠿
+                        - generic [ref=e863]: ⠿
+                        - generic [ref=e864]: ⠟
+                        - generic [ref=e865]: ⠋
+                        - generic [ref=e866]: ⠁
+                      - generic [ref=e868]:
+                        - generic [ref=e869]: W
+                        - generic [ref=e870]: e
+                        - generic [ref=e871]: l
+                        - generic [ref=e872]: c
+                        - generic [ref=e873]: o
+                        - generic [ref=e874]: m
+                        - generic [ref=e875]: e
+                        - generic [ref=e876]: t
+                        - generic [ref=e877]: o
+                        - generic [ref=e878]: t
+                        - generic [ref=e879]: h
+                        - generic [ref=e880]: e
+                        - generic [ref=e881]: "n"
+                        - generic [ref=e882]: e
+                        - generic [ref=e883]: w
+                        - generic [ref=e884]: K
+                        - generic [ref=e885]: i
+                        - generic [ref=e886]: r
+                        - generic [ref=e887]: o
+                        - generic [ref=e888]: C
+                        - generic [ref=e889]: L
+                        - generic [ref=e890]: I
+                        - generic [ref=e891]: U
+                        - generic [ref=e892]: X
+                        - generic [ref=e893]: "!"
+                        - generic [ref=e894]: U
+                        - generic [ref=e895]: s
+                        - generic [ref=e896]: e
+                        - generic [ref=e897]: /
+                        - generic [ref=e898]: f
+                        - generic [ref=e899]: e
+                        - generic [ref=e900]: e
+                        - generic [ref=e901]: d
+                        - generic [ref=e902]: b
+                        - generic [ref=e903]: a
+                        - generic [ref=e904]: c
+                        - generic [ref=e905]: k
+                        - generic [ref=e906]: t
+                        - generic [ref=e907]: o
+                        - generic [ref=e908]: s
+                        - generic [ref=e909]: h
+                        - generic [ref=e910]: a
+                        - generic [ref=e911]: r
+                        - generic [ref=e912]: e
+                        - generic [ref=e913]: "y"
+                        - generic [ref=e914]: o
+                        - generic [ref=e915]: u
+                        - generic [ref=e916]: r
+                        - generic [ref=e917]: t
+                        - generic [ref=e918]: h
+                        - generic [ref=e919]: o
+                        - generic [ref=e920]: u
+                        - generic [ref=e921]: g
+                        - generic [ref=e922]: h
+                        - generic [ref=e923]: t
+                        - generic [ref=e924]: s
+                        - generic [ref=e925]: .
+                      - generic [ref=e926]:
+                        - generic [ref=e927]: P
+                        - generic [ref=e928]: r
+                        - generic [ref=e929]: e
+                        - generic [ref=e930]: f
+                        - generic [ref=e931]: e
+                        - generic [ref=e932]: r
+                        - generic [ref=e933]: t
+                        - generic [ref=e934]: h
+                        - generic [ref=e935]: e
+                        - generic [ref=e936]: c
+                        - generic [ref=e937]: l
+                        - generic [ref=e938]: a
+                        - generic [ref=e939]: s
+                        - generic [ref=e940]: s
+                        - generic [ref=e941]: i
+                        - generic [ref=e942]: c
+                        - generic [ref=e943]: e
+                        - generic [ref=e944]: x
+                        - generic [ref=e945]: p
+                        - generic [ref=e946]: e
+                        - generic [ref=e947]: r
+                        - generic [ref=e948]: i
+                        - generic [ref=e949]: e
+                        - generic [ref=e950]: "n"
+                        - generic [ref=e951]: c
+                        - generic [ref=e952]: e
+                        - generic [ref=e953]: "?"
+                        - generic [ref=e954]: R
+                        - generic [ref=e955]: e
+                        - generic [ref=e956]: l
+                        - generic [ref=e957]: a
+                        - generic [ref=e958]: u
+                        - generic [ref=e959]: "n"
+                        - generic [ref=e960]: c
+                        - generic [ref=e961]: h
+                        - generic [ref=e962]: w
+                        - generic [ref=e963]: i
+                        - generic [ref=e964]: t
+                        - generic [ref=e965]: h
+                        - generic [ref=e966]: k
+                        - generic [ref=e967]: i
+                        - generic [ref=e968]: r
+                        - generic [ref=e969]: o
+                        - generic [ref=e970]: "-"
+                        - generic [ref=e971]: c
+                        - generic [ref=e972]: l
+                        - generic [ref=e973]: i
+                        - generic [ref=e974]: "-"
+                        - generic [ref=e975]: "-"
+                        - generic [ref=e976]: c
+                        - generic [ref=e977]: l
+                        - generic [ref=e978]: a
+                        - generic [ref=e979]: s
+                        - generic [ref=e980]: s
+                        - generic [ref=e981]: i
+                        - generic [ref=e982]: c
+                        - generic [ref=e983]: .
+                      - generic [ref=e986]:
+                        - generic [ref=e987]: ─
+                        - generic [ref=e988]: ─
+                        - generic [ref=e989]: ─
+                        - generic [ref=e990]: ─
+                        - generic [ref=e991]: ─
+                        - generic [ref=e992]: ─
+                        - generic [ref=e993]: ─
+                        - generic [ref=e994]: ─
+                        - generic [ref=e995]: ─
+                        - generic [ref=e996]: ─
+                        - generic [ref=e997]: ─
+                        - generic [ref=e998]: ─
+                        - generic [ref=e999]: ─
+                        - generic [ref=e1000]: ─
+                        - generic [ref=e1001]: ─
+                        - generic [ref=e1002]: ─
+                        - generic [ref=e1003]: ─
+                        - generic [ref=e1004]: ─
+                        - generic [ref=e1005]: ─
+                        - generic [ref=e1006]: ─
+                        - generic [ref=e1007]: ─
+                        - generic [ref=e1008]: ─
+                        - generic [ref=e1009]: ─
+                        - generic [ref=e1010]: ─
+                        - generic [ref=e1011]: ─
+                        - generic [ref=e1012]: ─
+                        - generic [ref=e1013]: ─
+                        - generic [ref=e1014]: ─
+                        - generic [ref=e1015]: ─
+                        - generic [ref=e1016]: ─
+                        - generic [ref=e1017]: ─
+                        - generic [ref=e1018]: ─
+                        - generic [ref=e1019]: ─
+                        - generic [ref=e1020]: ─
+                        - generic [ref=e1021]: ─
+                        - generic [ref=e1022]: ─
+                        - generic [ref=e1023]: ─
+                        - generic [ref=e1024]: ─
+                        - generic [ref=e1025]: ─
+                        - generic [ref=e1026]: ─
+                        - generic [ref=e1027]: ─
+                        - generic [ref=e1028]: ─
+                        - generic [ref=e1029]: ─
+                        - generic [ref=e1030]: ─
+                        - generic [ref=e1031]: ─
+                        - generic [ref=e1032]: ─
+                        - generic [ref=e1033]: ─
+                        - generic [ref=e1034]: ─
+                        - generic [ref=e1035]: ─
+                        - generic [ref=e1036]: ─
+                        - generic [ref=e1037]: ─
+                        - generic [ref=e1038]: ─
+                        - generic [ref=e1039]: ─
+                        - generic [ref=e1040]: ─
+                        - generic [ref=e1041]: ─
+                        - generic [ref=e1042]: ─
+                        - generic [ref=e1043]: ─
+                        - generic [ref=e1044]: ─
+                        - generic [ref=e1045]: ─
+                        - generic [ref=e1046]: ─
+                        - generic [ref=e1047]: ─
+                        - generic [ref=e1048]: ─
+                        - generic [ref=e1049]: ─
+                        - generic [ref=e1050]: ─
+                        - generic [ref=e1051]: ─
+                        - generic [ref=e1052]: ─
+                        - generic [ref=e1053]: ─
+                        - generic [ref=e1054]: ─
+                        - generic [ref=e1055]: ─
+                        - generic [ref=e1056]: ─
+                        - generic [ref=e1057]: ─
+                        - generic [ref=e1058]: ─
+                        - generic [ref=e1059]: ─
+                        - generic [ref=e1060]: ─
+                        - generic [ref=e1061]: ─
+                        - generic [ref=e1062]: ─
+                        - generic [ref=e1063]: ─
+                        - generic [ref=e1064]: ─
+                        - generic [ref=e1065]: ─
+                        - generic [ref=e1066]: ─
+                      - generic [ref=e1067]:
+                        - generic [ref=e1068]: o
+                        - generic [ref=e1069]: x
+                        - generic [ref=e1070]: i
+                        - generic [ref=e1071]: d
+                        - generic [ref=e1072]: e
+                        - generic [ref=e1073]: ·
+                        - generic [ref=e1074]: c
+                        - generic [ref=e1075]: l
+                        - generic [ref=e1076]: a
+                        - generic [ref=e1077]: u
+                        - generic [ref=e1078]: d
+                        - generic [ref=e1079]: e
+                        - generic [ref=e1080]: "-"
+                        - generic [ref=e1081]: o
+                        - generic [ref=e1082]: p
+                        - generic [ref=e1083]: u
+                        - generic [ref=e1084]: s
+                        - generic [ref=e1085]: "-"
+                        - generic [ref=e1086]: "4"
+                        - generic [ref=e1087]: .
+                        - generic [ref=e1088]: "6"
+                        - generic [ref=e1089]: /
+                        - generic [ref=e1090]: p
+                        - generic [ref=e1091]: r
+                        - generic [ref=e1092]: i
+                        - generic [ref=e1093]: v
+                        - generic [ref=e1094]: a
+                        - generic [ref=e1095]: t
+                        - generic [ref=e1096]: e
+                        - generic [ref=e1097]: /
+                        - generic [ref=e1098]: t
+                        - generic [ref=e1099]: m
+                        - generic [ref=e1100]: p
+                        - generic [ref=e1101]: /
+                        - generic [ref=e1102]: d
+                        - generic [ref=e1103]: e
+                        - generic [ref=e1104]: m
+                        - generic [ref=e1105]: o
+                        - generic [ref=e1106]: s
+                      - generic [ref=e1108]:
+                        - generic [ref=e1109]: a
+                        - generic [ref=e1110]: s
+                        - generic [ref=e1111]: k
+                        - generic [ref=e1112]: a
+                        - generic [ref=e1113]: q
+                        - generic [ref=e1114]: u
+                        - generic [ref=e1115]: e
+                        - generic [ref=e1116]: s
+                        - generic [ref=e1117]: t
+                        - generic [ref=e1118]: i
+                        - generic [ref=e1119]: o
+                        - generic [ref=e1120]: "n"
+                        - generic [ref=e1121]: ","
+                        - generic [ref=e1122]: o
+                        - generic [ref=e1123]: r
+                        - generic [ref=e1124]: d
+                        - generic [ref=e1125]: e
+                        - generic [ref=e1126]: s
+                        - generic [ref=e1127]: c
+                        - generic [ref=e1128]: r
+                        - generic [ref=e1129]: i
+                        - generic [ref=e1130]: b
+                        - generic [ref=e1131]: e
+                        - generic [ref=e1132]: a
+                        - generic [ref=e1133]: t
+                        - generic [ref=e1134]: a
+                        - generic [ref=e1135]: s
+                        - generic [ref=e1136]: k
+                        - generic [ref=e1137]: ↵
+                        - generic [ref=e1138]: c
+                        - generic [ref=e1139]: t
+                        - generic [ref=e1140]: r
+                        - generic [ref=e1141]: l
+                        - generic [ref=e1142]: +
+                        - generic [ref=e1143]: g
+                        - generic [ref=e1144]: ":"
+                        - generic [ref=e1145]: a
+                        - generic [ref=e1146]: g
+                        - generic [ref=e1147]: e
+                        - generic [ref=e1148]: "n"
+                        - generic [ref=e1149]: t
+                        - generic [ref=e1150]: m
+                        - generic [ref=e1151]: o
+                        - generic [ref=e1152]: "n"
+                        - generic [ref=e1153]: i
+                        - generic [ref=e1154]: t
+                        - generic [ref=e1155]: o
+                        - generic [ref=e1156]: r
+                  - button "Pause playback" [ref=e1159]
+              - link "CLI" [ref=e1164]:
+                - /url: /cli/
+            - button "Show Mobile interface" [ref=e1168] [cursor=pointer]:
+              - img "Kiro iOS interface" [ref=e1170]
+              - link "Mobile" [ref=e1172]:
+                - /url: /mobile/
+        - generic [ref=e1178]:
+          - generic [ref=e1179]:
+            - img "A task management interface showing a hierarchical checklist for setting up a TypeScript/Bun project. Task 1 covers project initialization—creating package.json (with playwright, fast-check), tsconfig.json, bunfig.toml, and a src/ directory structure. Task 2 covers implementing a CLI entry point (src/index.ts) that reads a target URL from Bun.argv, validates it, and reads an API_KEY environment variable. All tasks are unchecked with a Run all tasks button at top-right." [ref=e1182]
+            - generic [ref=e1183]:
+              - heading "Bring structure to AI coding with spec-driven development" [level=3] [ref=e1184]
+              - paragraph [ref=e1186]:
+                - text: Kiro turns your prompts into
+                - link "requirements, architectural designs, and sequenced tasks" [ref=e1187] [cursor=pointer]:
+                  - /url: /docs/specs/
+                - text: ", then implements them with"
+                - link "parallel agents" [ref=e1188] [cursor=pointer]:
+                  - /url: /docs/chat/subagents/
+                - text: .
+                - link "Property-based tests" [ref=e1189] [cursor=pointer]:
+                  - /url: /docs/specs/correctness/
+                - text: catch the edge cases that pass unit tests but break in production. With spec-driven development, you ship maintainable code that matches what you specified.
+          - generic [ref=e1190]:
+            - 'img "Kiro spec card titled Property 2: Ticket uniqueness. Description reads: For any sequence of parking operations, all generated ticket IDs should be unique. Validates Requirement 1.2. Implementation task: 3.2 Write property test for ticket uniqueness." [ref=e1193]'
+            - generic [ref=e1194]:
+              - heading "Check correctness to catch issues missed by unit tests" [level=3] [ref=e1195]
+              - paragraph [ref=e1197]:
+                - text: “All tests passed” doesn’t mean the code matches your intent. Before writing code, Kiro checks your
+                - link "requirements" [ref=e1198] [cursor=pointer]:
+                  - /url: /docs/specs/feature-specs/
+                - text: for contradictions and gaps using automated reasoning techniques. Then it checks behavior with
+                - link "property-based tests" [ref=e1199] [cursor=pointer]:
+                  - /url: /docs/specs/correctness/
+                - text: (like fuzz testing) which assert rules that must hold across all inputs instead of checking a few examples.
+          - generic [ref=e1200]:
+            - img "Logos of Figma, Postman, Datadog, Miro, Stripe, Supabase, ElevenLabs, Google Firebase - GitHub, GitLab, CI/CD" [ref=e1203]
+            - generic [ref=e1204]:
+              - heading "Alongside you from plan to PR" [level=3] [ref=e1205]
+              - paragraph [ref=e1207]:
+                - text: Plan with
+                - link "specs" [ref=e1208] [cursor=pointer]:
+                  - /url: /docs/specs/
+                - text: . Implement with
+                - link "parallel agents" [ref=e1209] [cursor=pointer]:
+                  - /url: /docs/chat/subagents/
+                - text: ", on your local machine or in the cloud. Catch bugs with"
+                - link "property-based tests" [ref=e1210] [cursor=pointer]:
+                  - /url: /docs/specs/correctness/
+                - text: ", or pull context from tools like"
+                - link "Figma" [ref=e1211] [cursor=pointer]:
+                  - /url: /powers/#figma
+                - text: or
+                - link "Terraform" [ref=e1212] [cursor=pointer]:
+                  - /url: /powers/#terraform
+                - text: . Run the
+                - link "headless CLI in CI/CD" [ref=e1213] [cursor=pointer]:
+                  - /url: /docs/cli/headless/
+                - text: to review PRs and fix bugs without opening an editor.
+          - generic [ref=e1214]:
+            - 'img "Kiro model selector dropdown showing available AI models with credit multipliers: Auto at 1x, Claude Opus 4.8, 4.7, 4.6, and 4.5 at 2.2x, Claude Sonnet 4.6, 4.5, and 4 at 1.3x, Claude Haiku 4.5 at 0.4x, Deepseek v3.2 at 0.25x, and MiniMax M2.5 at 0.25x. Claude Opus 4.8 is selected with an xHigh quality designation and an Edit button. The Autopilot toggle is enabled at the bottom of the input field." [ref=e1217]'
+            - generic [ref=e1218]:
+              - heading "Powered by your favorite models" [level=3] [ref=e1219]
+              - paragraph [ref=e1221]:
+                - text: "Choose the best model for every task: Anthropic Claude, open-weight models, or"
+                - link "Auto" [ref=e1222] [cursor=pointer]:
+                  - /url: /docs/models/#auto-recommended
+                - text: ", which picks the best model for the task based on complexity, factoring in model quality, latency, and cost."
+              - link "Learn about models" [ref=e1223] [cursor=pointer]:
+                - /url: /docs/models/
+        - generic [ref=e1228]:
+          - heading "Built for the way you work" [level=2] [ref=e1232]
+          - generic [ref=e1233]:
+            - generic [ref=e1234]:
+              - heading "Built on open standards" [level=3] [ref=e1240]
+              - paragraph [ref=e1242]:
+                - text: The Kiro agent is compatible with
+                - link "Agent Client Protocol (ACP)" [ref=e1243] [cursor=pointer]:
+                  - /url: /docs/cli/acp/
+                - text: so you can bring it to your favorite tools. It supports AGENTS.md,
+                - link "Skills.md" [ref=e1244] [cursor=pointer]:
+                  - /url: /docs/skills/
+                - text: ", and"
+                - link "MCP" [ref=e1245] [cursor=pointer]:
+                  - /url: /docs/mcp/
+                - text: . The Kiro IDE supports
+                - link "Open VSX extensions" [ref=e1246] [cursor=pointer]:
+                  - /url: /docs/editor/extension-registry/
+                - text: ", themes, and"
+                - link "VS Code settings" [ref=e1247] [cursor=pointer]:
+                  - /url: /docs/guides/migrating-from-vscode/
+                - text: .
+                - link "Kiro CLI" [ref=e1248] [cursor=pointer]:
+                  - /url: /cli/
+                - text: works with bash, zsh, fish, and
+                - link "over 500 popular CLIs" [ref=e1249] [cursor=pointer]:
+                  - /url: /docs/cli/autocomplete/
+                - text: .
+            - generic [ref=e1250]:
+              - heading "Enterprise-ready" [level=3] [ref=e1259]
+              - paragraph [ref=e1261]:
+                - text: Built and operated by AWS, Kiro benefits from the same
+                - link "security, reliability, and privacy" [ref=e1262] [cursor=pointer]:
+                  - /url: /docs/privacy-and-security/
+                - text: standards and controls trusted by millions of customers. Kiro offers
+                - link "IAM and SSO authentication" [ref=e1263] [cursor=pointer]:
+                  - /url: /docs/enterprise/identity-provider/
+                - text: ", usage dashboards, cost management controls, IP indemnity,"
+                - link "governance" [ref=e1264] [cursor=pointer]:
+                  - /url: /docs/enterprise/governance/
+                - text: ", and administration controls you’d expect from an enterprise-grade product."
+              - link "Kiro for enterprise" [ref=e1266] [cursor=pointer]:
+                - /url: /enterprise/
+            - generic [ref=e1270]:
+              - heading "Predictable pricing" [level=3] [ref=e1277]
+              - paragraph [ref=e1279]:
+                - text: Kiro offers a
+                - link "credit-based" [ref=e1280] [cursor=pointer]:
+                  - /url: /pricing/#what-is-a-credit
+                - text: pricing model with no daily or weekly rate limits and pre-paid overages, so you can code without breaking your flow or getting a surprise bill.
+              - link "View pricing" [ref=e1282] [cursor=pointer]:
+                - /url: /pricing/
+        - generic [ref=e1287]:
+          - heading "Trusted by engineers worldwide" [level=2] [ref=e1289]
+          - generic [ref=e1290]:
+            - generic [ref=e1293]:
+              - generic [ref=e1295]:
+                - paragraph [ref=e1296]: As a startup co-founder and CTO, time is the most important resource. Kiro justifies the use of my time for developing our business critical assets in-house.
+                - generic [ref=e1297]:
+                  - img "Rolf Koski avatar" [ref=e1299]
+                  - generic [ref=e1300]:
+                    - paragraph [ref=e1301]: Rolf Koski
+                    - paragraph [ref=e1302]: CTO & Co-Founder
+              - generic [ref=e1303]:
+                - paragraph [ref=e1304]: In my role designing AWS Cloud and AI solutions with Terraform and Python, spec-driven development with Kiro has brought code relevancy and quality to a whole new level. We’ve accelerated feature development dramatically, reducing time to customer value from weeks to days. We are excited to welcome Kiro as our newest team member.
+                - generic [ref=e1305]:
+                  - img "Håkon Eriksen Drange avatar" [ref=e1307]
+                  - generic [ref=e1308]:
+                    - paragraph [ref=e1309]: Håkon Eriksen Drange
+                    - paragraph [ref=e1310]: Principal Cloud Architect
+              - generic [ref=e1311]:
+                - paragraph [ref=e1312]: Kiro is a strong ally for startups. It naturally turns overlooked docs and specs into robust assets, making growth smoother and future scaling more effective.
+                - generic [ref=e1313]:
+                  - img "Kento Ikeda avatar" [ref=e1315]
+                  - generic [ref=e1316]:
+                    - paragraph [ref=e1317]: Kento Ikeda
+                    - paragraph [ref=e1318]: Founder & Engineer
+              - generic [ref=e1319]:
+                - paragraph [ref=e1320]: I use Kiro for everything - drafting new Terraform modules, tweaking container setups, even writing down random AI ideas at 2 am. But more than anything, it supports how I learn. I’m endlessly curious, and Kiro helps me stay in that learning loop—tinkering, breaking things, fixing them, and then allowing me to share what I learn back with the community.
+                - generic [ref=e1321]:
+                  - img "Adit Modi avatar" [ref=e1323]
+                  - generic [ref=e1324]:
+                    - paragraph [ref=e1325]: Adit Modi
+                    - paragraph [ref=e1326]: Solution Architect
+              - generic [ref=e1327]:
+                - paragraph [ref=e1328]: I’ve been blown away by Kiro’s capabilities. The agentic experience is really transformative. From the multimodal inputs that understand context to the complete lifecycle control within the IDE, it feels like I’m working with a senior developer.
+                - link [ref=e1330] [cursor=pointer]:
+                  - /url: http://dev.to/vivek-aws
+                  - img "Vivek Velso avatar" [ref=e1332]
+                  - generic [ref=e1333]:
+                    - paragraph [ref=e1334]: Vivek Velso
+                    - paragraph [ref=e1335]: Cloud Engineering Lead
+              - generic [ref=e1336]:
+                - paragraph [ref=e1337]: Most tools are great at generating code, but Kiro gives structure to the chaos before you write a single line.
+                - link [ref=e1339] [cursor=pointer]:
+                  - /url: https://medium.com/abdifarah076
+                  - img "Farah Abdirahman avatar" [ref=e1341]
+                  - generic [ref=e1342]:
+                    - paragraph [ref=e1343]: Farah Abdirahman
+                    - paragraph [ref=e1344]: Cloud & AI Engineer
+              - generic [ref=e1345]:
+                - paragraph [ref=e1346]: In roughly two days, I built a secure file sharing application from scratch. By simply sharing my requirements with Kiro, I was able to create a fully secure application that incorporates encryption and various security coding practices—no additional prompts needed.
+                - link [ref=e1348] [cursor=pointer]:
+                  - /url: https://github.com/igorsasovets
+                  - img "Ihor Sasovets avatar" [ref=e1350]
+                  - generic [ref=e1351]:
+                    - paragraph [ref=e1352]: Ihor Sasovets
+                    - paragraph [ref=e1353]: Lead Security Engineer
+              - generic [ref=e1354]:
+                - paragraph [ref=e1355]: I often forget to add unit tests, or update documentation when pushing changes, but with Kiro I can create a hook and it will automatically run those tasks in the background for me, never having to think twice.
+                - link [ref=e1357] [cursor=pointer]:
+                  - /url: https://github.com/dashapetr
+                  - img "Darya Petrashka avatar" [ref=e1359]
+                  - generic [ref=e1360]:
+                    - paragraph [ref=e1361]: Darya Petrashka
+                    - paragraph [ref=e1362]: Senior Data Scientist
+              - generic [ref=e1363]:
+                - paragraph [ref=e1364]: As an open source developer, I typically don’t build games, but last night I was able to create one using Kiro. I didn’t have to think too hard about implementation since Kiro handled the logic and enabled me to write code quickly and accurately.
+                - link [ref=e1366] [cursor=pointer]:
+                  - /url: https://github.com/walmsles
+                  - img "Michael Walmsley avatar" [ref=e1368]
+                  - generic [ref=e1369]:
+                    - paragraph [ref=e1370]: Michael Walmsley
+                    - paragraph [ref=e1371]: Serverless Application Architect
+              - generic [ref=e1372]:
+                - paragraph [ref=e1373]: Kiro lowers the barrier to entry, whether that be, you don’t even know how to code, you’re new to coding, or you’re like me and you’re just learning a new tech stack. If something doesn’t make sense to you, or you feel like you are asking a silly question, ask Kiro anyway!
+                - link [ref=e1375] [cursor=pointer]:
+                  - /url: https://github.com/deeheber
+                  - img "Danielle Heberling avatar" [ref=e1377]
+                  - generic [ref=e1378]:
+                    - paragraph [ref=e1379]: Danielle Heberling
+                    - paragraph [ref=e1380]: Founding Infrastructure Engineer
+              - generic [ref=e1381]:
+                - paragraph [ref=e1382]: Kiro comes equipped with all the best practices that I would put in my specs, and builds me the application I want, faster.
+                - link [ref=e1384] [cursor=pointer]:
+                  - /url: https://github.com/blakeromano
+                  - img "Blake Romano avatar" [ref=e1386]
+                  - generic [ref=e1387]:
+                    - paragraph [ref=e1388]: Blake Romano
+                    - paragraph [ref=e1389]: Senior Software Engineer
+              - generic [ref=e1390]:
+                - paragraph [ref=e1391]: Thanks to Kiro’s spec-driven development, I was able to go from concept to working prototype in a single weekend.
+                - link [ref=e1393] [cursor=pointer]:
+                  - /url: https://github.com/IamFlowZ
+                  - img "Dakota Lewallen avatar" [ref=e1395]
+                  - generic [ref=e1396]:
+                    - paragraph [ref=e1397]: Dakota Lewallen
+                    - paragraph [ref=e1398]: Software Engineer
+              - generic [ref=e1399]:
+                - paragraph [ref=e1400]: In just four lines into a spec, Kiro was able to write user stories like a product manager and capture so many details that I didn’t even need to mention, saving me several days of work.
+                - link [ref=e1402] [cursor=pointer]:
+                  - /url: https://github.com/Sathyvs
+                  - img "Sathiesh Veera avatar" [ref=e1404]
+                  - generic [ref=e1405]:
+                    - paragraph [ref=e1406]: Sathiesh Veera
+                    - paragraph [ref=e1407]: Principal Software Engineer
+              - generic [ref=e1408]:
+                - paragraph [ref=e1409]: Kiro isn’t just speeding up my work – it’s making me write better code, think more systematically about architecture, and deliver higher quality results while automated workflows happen seamlessly in the background.
+                - link [ref=e1411] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/in/anujtyagi1/
+                  - img "Anuj Tyagi avatar" [ref=e1413]
+                  - generic [ref=e1414]:
+                    - paragraph [ref=e1415]: Anuj Tyagi
+                    - paragraph [ref=e1416]: Developer
+              - generic [ref=e1417]:
+                - paragraph [ref=e1418]: Kiro is just more than code. Aside from just listening to prompts and doing things, it can actually work on tasks based on predefined triggers, making the development experience more efficient.
+                - link [ref=e1420] [cursor=pointer]:
+                  - /url: https://blog.sreekeshiyer.com/
+                  - img "Sreekesh Iyer avatar" [ref=e1422]
+                  - generic [ref=e1423]:
+                    - paragraph [ref=e1424]: Sreekesh Iyer
+                    - paragraph [ref=e1425]: Software Engineer
+              - generic [ref=e1426]:
+                - paragraph [ref=e1427]: As a startup co-founder and CTO, time is the most important resource. Kiro justifies the use of my time for developing our business critical assets in-house.
+                - generic [ref=e1428]:
+                  - img "Rolf Koski avatar" [ref=e1430]
+                  - generic [ref=e1431]:
+                    - paragraph [ref=e1432]: Rolf Koski
+                    - paragraph [ref=e1433]: CTO & Co-Founder
+              - generic [ref=e1434]:
+                - paragraph [ref=e1435]: In my role designing AWS Cloud and AI solutions with Terraform and Python, spec-driven development with Kiro has brought code relevancy and quality to a whole new level. We’ve accelerated feature development dramatically, reducing time to customer value from weeks to days. We are excited to welcome Kiro as our newest team member.
+                - generic [ref=e1436]:
+                  - img "Håkon Eriksen Drange avatar" [ref=e1438]
+                  - generic [ref=e1439]:
+                    - paragraph [ref=e1440]: Håkon Eriksen Drange
+                    - paragraph [ref=e1441]: Principal Cloud Architect
+              - generic [ref=e1442]:
+                - paragraph [ref=e1443]: Kiro is a strong ally for startups. It naturally turns overlooked docs and specs into robust assets, making growth smoother and future scaling more effective.
+                - generic [ref=e1444]:
+                  - img "Kento Ikeda avatar" [ref=e1446]
+                  - generic [ref=e1447]:
+                    - paragraph [ref=e1448]: Kento Ikeda
+                    - paragraph [ref=e1449]: Founder & Engineer
+              - generic [ref=e1450]:
+                - paragraph [ref=e1451]: I use Kiro for everything - drafting new Terraform modules, tweaking container setups, even writing down random AI ideas at 2 am. But more than anything, it supports how I learn. I’m endlessly curious, and Kiro helps me stay in that learning loop—tinkering, breaking things, fixing them, and then allowing me to share what I learn back with the community.
+                - generic [ref=e1452]:
+                  - img "Adit Modi avatar" [ref=e1454]
+                  - generic [ref=e1455]:
+                    - paragraph [ref=e1456]: Adit Modi
+                    - paragraph [ref=e1457]: Solution Architect
+              - generic [ref=e1458]:
+                - paragraph [ref=e1459]: I’ve been blown away by Kiro’s capabilities. The agentic experience is really transformative. From the multimodal inputs that understand context to the complete lifecycle control within the IDE, it feels like I’m working with a senior developer.
+                - link [ref=e1461] [cursor=pointer]:
+                  - /url: http://dev.to/vivek-aws
+                  - img "Vivek Velso avatar" [ref=e1463]
+                  - generic [ref=e1464]:
+                    - paragraph [ref=e1465]: Vivek Velso
+                    - paragraph [ref=e1466]: Cloud Engineering Lead
+              - generic [ref=e1467]:
+                - paragraph [ref=e1468]: Most tools are great at generating code, but Kiro gives structure to the chaos before you write a single line.
+                - link [ref=e1470] [cursor=pointer]:
+                  - /url: https://medium.com/abdifarah076
+                  - img "Farah Abdirahman avatar" [ref=e1472]
+                  - generic [ref=e1473]:
+                    - paragraph [ref=e1474]: Farah Abdirahman
+                    - paragraph [ref=e1475]: Cloud & AI Engineer
+              - generic [ref=e1476]:
+                - paragraph [ref=e1477]: In roughly two days, I built a secure file sharing application from scratch. By simply sharing my requirements with Kiro, I was able to create a fully secure application that incorporates encryption and various security coding practices—no additional prompts needed.
+                - link [ref=e1479] [cursor=pointer]:
+                  - /url: https://github.com/igorsasovets
+                  - img "Ihor Sasovets avatar" [ref=e1481]
+                  - generic [ref=e1482]:
+                    - paragraph [ref=e1483]: Ihor Sasovets
+                    - paragraph [ref=e1484]: Lead Security Engineer
+              - generic [ref=e1485]:
+                - paragraph [ref=e1486]: I often forget to add unit tests, or update documentation when pushing changes, but with Kiro I can create a hook and it will automatically run those tasks in the background for me, never having to think twice.
+                - link [ref=e1488] [cursor=pointer]:
+                  - /url: https://github.com/dashapetr
+                  - img "Darya Petrashka avatar" [ref=e1490]
+                  - generic [ref=e1491]:
+                    - paragraph [ref=e1492]: Darya Petrashka
+                    - paragraph [ref=e1493]: Senior Data Scientist
+              - generic [ref=e1494]:
+                - paragraph [ref=e1495]: As an open source developer, I typically don’t build games, but last night I was able to create one using Kiro. I didn’t have to think too hard about implementation since Kiro handled the logic and enabled me to write code quickly and accurately.
+                - link [ref=e1497] [cursor=pointer]:
+                  - /url: https://github.com/walmsles
+                  - img "Michael Walmsley avatar" [ref=e1499]
+                  - generic [ref=e1500]:
+                    - paragraph [ref=e1501]: Michael Walmsley
+                    - paragraph [ref=e1502]: Serverless Application Architect
+              - generic [ref=e1503]:
+                - paragraph [ref=e1504]: Kiro lowers the barrier to entry, whether that be, you don’t even know how to code, you’re new to coding, or you’re like me and you’re just learning a new tech stack. If something doesn’t make sense to you, or you feel like you are asking a silly question, ask Kiro anyway!
+                - link [ref=e1506] [cursor=pointer]:
+                  - /url: https://github.com/deeheber
+                  - img "Danielle Heberling avatar" [ref=e1508]
+                  - generic [ref=e1509]:
+                    - paragraph [ref=e1510]: Danielle Heberling
+                    - paragraph [ref=e1511]: Founding Infrastructure Engineer
+              - generic [ref=e1512]:
+                - paragraph [ref=e1513]: Kiro comes equipped with all the best practices that I would put in my specs, and builds me the application I want, faster.
+                - link [ref=e1515] [cursor=pointer]:
+                  - /url: https://github.com/blakeromano
+                  - img "Blake Romano avatar" [ref=e1517]
+                  - generic [ref=e1518]:
+                    - paragraph [ref=e1519]: Blake Romano
+                    - paragraph [ref=e1520]: Senior Software Engineer
+              - generic [ref=e1521]:
+                - paragraph [ref=e1522]: Thanks to Kiro’s spec-driven development, I was able to go from concept to working prototype in a single weekend.
+                - link [ref=e1524] [cursor=pointer]:
+                  - /url: https://github.com/IamFlowZ
+                  - img "Dakota Lewallen avatar" [ref=e1526]
+                  - generic [ref=e1527]:
+                    - paragraph [ref=e1528]: Dakota Lewallen
+                    - paragraph [ref=e1529]: Software Engineer
+              - generic [ref=e1530]:
+                - paragraph [ref=e1531]: In just four lines into a spec, Kiro was able to write user stories like a product manager and capture so many details that I didn’t even need to mention, saving me several days of work.
+                - link [ref=e1533] [cursor=pointer]:
+                  - /url: https://github.com/Sathyvs
+                  - img "Sathiesh Veera avatar" [ref=e1535]
+                  - generic [ref=e1536]:
+                    - paragraph [ref=e1537]: Sathiesh Veera
+                    - paragraph [ref=e1538]: Principal Software Engineer
+              - generic [ref=e1539]:
+                - paragraph [ref=e1540]: Kiro isn’t just speeding up my work – it’s making me write better code, think more systematically about architecture, and deliver higher quality results while automated workflows happen seamlessly in the background.
+                - link [ref=e1542] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/in/anujtyagi1/
+                  - img "Anuj Tyagi avatar" [ref=e1544]
+                  - generic [ref=e1545]:
+                    - paragraph [ref=e1546]: Anuj Tyagi
+                    - paragraph [ref=e1547]: Developer
+              - generic [ref=e1548]:
+                - paragraph [ref=e1549]: Kiro is just more than code. Aside from just listening to prompts and doing things, it can actually work on tasks based on predefined triggers, making the development experience more efficient.
+                - link [ref=e1551] [cursor=pointer]:
+                  - /url: https://blog.sreekeshiyer.com/
+                  - img "Sreekesh Iyer avatar" [ref=e1553]
+                  - generic [ref=e1554]:
+                    - paragraph [ref=e1555]: Sreekesh Iyer
+                    - paragraph [ref=e1556]: Software Engineer
+            - button "Pause auto-scroll" [ref=e1558] [cursor=pointer]
+        - generic [ref=e1564]:
+          - heading "Get started fast with quick guides" [level=2] [ref=e1566]
+          - generic [ref=e1568]:
+            - 'link "Loading image... Learn by playing: create a video game Learn by playing: create a video game In this guide, you will learn how to use Kiro by completing tasks in the codebase for a sample video game called Spirit of Kiro." [ref=e1569] [cursor=pointer]':
+              - /url: /docs/guides/learn-by-playing/
+              - generic [ref=e1571]:
+                - generic [ref=e1572]: Loading image...
+                - 'img "Learn by playing: create a video game" [ref=e1574]'
+              - generic [ref=e1575]:
+                - 'heading "Learn by playing: create a video game" [level=3] [ref=e1576]'
+                - paragraph [ref=e1577]: In this guide, you will learn how to use Kiro by completing tasks in the codebase for a sample video game called Spirit of Kiro.
+            - generic [ref=e1578]:
+              - link "Blog Does your code match your spec?" [ref=e1579] [cursor=pointer]:
+                - /url: https://kiro.dev/blog/property-based-testing/
+                - generic [ref=e1580]:
+                  - generic [ref=e1581]:
+                    - generic [ref=e1582]: "{"
+                    - generic [ref=e1583]: Blog
+                    - generic [ref=e1584]: "}"
+                  - heading "Does your code match your spec?" [level=3] [ref=e1585]
+              - link "Guide Your first project" [ref=e1594] [cursor=pointer]:
+                - /url: /docs/getting-started/first-project/
+                - generic [ref=e1595]:
+                  - generic [ref=e1596]:
+                    - generic [ref=e1597]: "{"
+                    - generic [ref=e1598]: Guide
+                    - generic [ref=e1599]: "}"
+                  - heading "Your first project" [level=3] [ref=e1600]
+        - generic [ref=e1610]:
+          - heading "Common questions" [level=2] [ref=e1611]
+          - generic [ref=e1613]:
+            - generic [ref=e1614]:
+              - heading [level=3] [ref=e1615]:
+                - button "What is Kiro?" [ref=e1616] [cursor=pointer]
+              - generic [ref=e1622]:
+                - heading [level=3] [ref=e1623]: What is Kiro?
+                - generic [ref=e1624]: Kiro is an agentic AI with an [IDE](/docs/), [CLI](/docs/cli/), and [web interface](/docs/web/) that helps you go from prototype to production. From simple to complex tasks, Kiro works alongside you to turn prompts into detailed specs, then into working code, docs, and tests—so what you build is exactly what you want and ready to share with your team. Kiro’s agents help you solve challenging problems and automate tasks like generating documentation and unit tests.
+            - generic [ref=e1625]:
+              - heading [level=3] [ref=e1626]:
+                - button "What is spec-driven development? How is it different from vibe coding?" [ref=e1627] [cursor=pointer]
+              - generic [ref=e1633]:
+                - heading [level=3] [ref=e1634]: What is spec-driven development? How is it different from vibe coding?
+                - generic [ref=e1635]: "Developing with specs keeps the fun of vibe coding, but fixes some of its limitations: vibe coding can require too much guidance on complex tasks or when building on top of large codebases, and it can misinterpret context. When implementing a task with vibe coding, it’s difficult to keep track of all the decisions that were made along the way, and document them for your team. By using specs, Kiro works alongside you to define requirements, system design, and tasks to be implemented before writing any code. This approach explicitly documents the reasoning and implementation decisions, so Kiro can implement more complex tasks in fewer shots."
+            - generic [ref=e1636]:
+              - heading [level=3] [ref=e1637]:
+                - button "How can I get started with Kiro?" [ref=e1638] [cursor=pointer]
+              - generic [ref=e1644]:
+                - heading [level=3] [ref=e1645]: How can I get started with Kiro?
+                - generic [ref=e1646]: Kiro works as an agent in the [IDE](/docs/), with a [CLI](/docs/cli/), or in a [web browser](/docs/web/). [Download](/downloads/) the installer for your operating system, or [sign in](https://app.kiro.dev/agent) to use it with a paid account on the web, and log in with GitHub, Google, AWS Builder ID, or AWS IAM Identity Center. You do not need an AWS account to use Kiro. For more, see [documentation](/docs).
+            - generic [ref=e1647]:
+              - heading [level=3] [ref=e1648]:
+                - button "What programming languages does Kiro support?" [ref=e1649] [cursor=pointer]
+              - generic [ref=e1655]:
+                - heading [level=3] [ref=e1656]: What programming languages does Kiro support?
+                - generic [ref=e1657]: Kiro supports a variety of programming languages that developers use in their day to day work. This list includes, but is not limited to Python, Java, JavaScript, TypeScript, C#, Go, Rust, PHP, Ruby, Kotlin, C, C++, shell scripting, SQL, Scala, JSON, YAML, and HCL.
+            - generic [ref=e1658]:
+              - heading [level=3] [ref=e1659]:
+                - button "Can I import settings from my existing IDE?" [ref=e1660] [cursor=pointer]
+              - generic [ref=e1666]:
+                - heading [level=3] [ref=e1667]: Can I import settings from my existing IDE?
+                - generic [ref=e1668]: Kiro is based on Code OSS, so you can [import your VS Code settings, themes, and Open VSX compatible plugins](/docs/guides/migrating-from-vscode/) in the Kiro onboarding flow.
+            - generic [ref=e1669]:
+              - heading [level=3] [ref=e1670]:
+                - button "How is Kiro on the web different from Kiro IDE and CLI?" [ref=e1671] [cursor=pointer]
+              - generic [ref=e1677]:
+                - heading [level=3] [ref=e1678]: How is Kiro on the web different from Kiro IDE and CLI?
+                - generic [ref=e1679]: Kiro IDE is for active, local development with real-time agent collaboration. Kiro CLI is for terminal-based workflows, custom agents, and deployment pipelines. [Kiro on the web](/docs/web/) is for delegating and steering from the browser, with sessions that run in isolated cloud [sandboxes](/docs/web/sandbox/), keep going when you close your laptop, and coordinate changes across [GitHub](/docs/web/github/) and [GitLab](/docs/web/gitlab/) repos in a single session. All three modes ([autonomous](/docs/web/autonomous-mode/), [spec](/docs/web/specs/), and default) are available together in Kiro on the web. Autonomous mode and [cloud automations](/docs/web/automations/) are only available in Kiro on the web today. Use whichever Kiro interface fits the work; they work best together. [Steering files](/docs/web/steering/) and learnings carry across all three so context builds no matter where you work.
+            - generic [ref=e1680]:
+              - heading [level=3] [ref=e1681]:
+                - button "What is an AI agent?" [ref=e1682] [cursor=pointer]
+              - generic [ref=e1688]:
+                - heading [level=3] [ref=e1689]: What is an AI agent?
+                - generic [ref=e1690]: An agent is an AI system that can plan and execute multi-step tasks with some degree of autonomy. Unlike simple chatbots that respond to individual prompts, agents can break down complex tasks, make decisions about how to proceed, and take actions to accomplish goals.
+          - link "Browse all FAQs" [ref=e1692] [cursor=pointer]:
+            - /url: /faq/
+        - img [ref=e1695]:
+          - generic [ref=e1698]:
+            - generic [ref=e1699]:
+              - heading "Build something real in minutes" [level=2] [ref=e1700]
+              - paragraph [ref=e1701]: Get started for free
+            - generic [ref=e1703]:
+              - button "Download IDE for Windows (x64)" [ref=e1704] [cursor=pointer]:
+                - generic [ref=e1705]:
+                  - img "Windows logo" [ref=e1707]
+                  - generic [ref=e1710]: Download IDE
+              - link "Download CLI for Windows" [ref=e1716] [cursor=pointer]:
+                - /url: https://desktop-release.q.us-east-1.amazonaws.com/latest/kiro-cli-x86_64-pc-windows-msvc.msi
+                - generic [ref=e1717]:
+                  - img "Windows logo" [ref=e1719]
+                  - text: Download CLI
+  - contentinfo [ref=e1745]:
+    - generic [ref=e1747]:
+      - img "Kiro" [ref=e1751]
+      - navigation "Footer Navigation" [ref=e1752]:
+        - generic [ref=e1753]:
+          - heading "Product" [level=2] [ref=e1754]
+          - list [ref=e1755]:
+            - listitem [ref=e1756]:
+              - link "About Kiro" [ref=e1757] [cursor=pointer]:
+                - /url: /about/
+            - listitem [ref=e1758]:
+              - link "IDE" [ref=e1759] [cursor=pointer]:
+                - /url: /ide/
+            - listitem [ref=e1760]:
+              - link "CLI" [ref=e1761] [cursor=pointer]:
+                - /url: /cli/
+            - listitem [ref=e1762]:
+              - link "Web" [ref=e1763] [cursor=pointer]:
+                - /url: /web/
+            - listitem [ref=e1764]:
+              - link "Mobile" [ref=e1765] [cursor=pointer]:
+                - /url: /mobile/
+            - listitem [ref=e1766]:
+              - link "Pricing" [ref=e1767] [cursor=pointer]:
+                - /url: /pricing/
+            - listitem [ref=e1768]:
+              - link "Downloads" [ref=e1769] [cursor=pointer]:
+                - /url: /downloads/
+        - generic [ref=e1770]:
+          - heading "For" [level=2] [ref=e1771]
+          - list [ref=e1772]:
+            - listitem [ref=e1773]:
+              - link "Enterprise" [ref=e1774] [cursor=pointer]:
+                - /url: /enterprise/
+            - listitem [ref=e1775]:
+              - link "Startups" [ref=e1776] [cursor=pointer]:
+                - /url: /startups/
+            - listitem [ref=e1777]:
+              - link "Students" [ref=e1778] [cursor=pointer]:
+                - /url: /students/
+        - generic [ref=e1779]:
+          - heading "Community" [level=2] [ref=e1780]
+          - list [ref=e1781]:
+            - listitem [ref=e1782]:
+              - link "Overview" [ref=e1783] [cursor=pointer]:
+                - /url: /community/
+            - listitem [ref=e1784]:
+              - link "Ambassadors" [ref=e1785] [cursor=pointer]:
+                - /url: /ambassadors/
+            - listitem [ref=e1786]:
+              - link "Discord" [ref=e1787] [cursor=pointer]:
+                - /url: /discord/
+            - listitem [ref=e1788]:
+              - link "Events" [ref=e1789] [cursor=pointer]:
+                - /url: /events/
+            - listitem [ref=e1790]:
+              - link "Powers" [ref=e1791] [cursor=pointer]:
+                - /url: /powers/
+            - listitem [ref=e1792]:
+              - link "Shop" [ref=e1793] [cursor=pointer]:
+                - /url: https://shop.kiro.dev
+            - listitem [ref=e1794]:
+              - link "Showcase" [ref=e1795] [cursor=pointer]:
+                - /url: /showcase/
+        - generic [ref=e1796]:
+          - heading "Resources" [level=2] [ref=e1797]
+          - list [ref=e1798]:
+            - listitem [ref=e1799]:
+              - link "Docs" [ref=e1800] [cursor=pointer]:
+                - /url: /docs/
+            - listitem [ref=e1801]:
+              - link "Blog" [ref=e1802] [cursor=pointer]:
+                - /url: /blog/
+            - listitem [ref=e1803]:
+              - link "Changelog" [ref=e1804] [cursor=pointer]:
+                - /url: /changelog/
+            - listitem [ref=e1805]:
+              - link "FAQs" [ref=e1806] [cursor=pointer]:
+                - /url: /faq/
+            - listitem [ref=e1807]:
+              - link "Report a bug" [ref=e1808] [cursor=pointer]:
+                - /url: https://github.com/kirodotdev/Kiro/issues/new/choose
+            - listitem [ref=e1809]:
+              - link "Suggest an idea" [ref=e1810] [cursor=pointer]:
+                - /url: https://github.com/kirodotdev/Kiro/issues/new?template=feature_request.yml
+            - listitem [ref=e1811]:
+              - link "Billing support" [ref=e1812] [cursor=pointer]:
+                - /url: https://app.kiro.dev/settings/account
+        - generic [ref=e1813]:
+          - heading "Social" [level=2] [ref=e1814]
+          - list "Social" [ref=e1815]:
+            - listitem [ref=e1816]:
+              - link "Join our Discord community" [ref=e1817] [cursor=pointer]:
+                - /url: https://discord.gg/kirodotdev
+            - listitem [ref=e1820]:
+              - link "Follow us on LinkedIn" [ref=e1821] [cursor=pointer]:
+                - /url: https://www.linkedin.com/showcase/kirodotdev
+            - listitem [ref=e1824]:
+              - link "Follow us on X" [ref=e1825] [cursor=pointer]:
+                - /url: https://x.com/kirodotdev
+            - listitem [ref=e1828]:
+              - link "Follow us on Instagram" [ref=e1829] [cursor=pointer]:
+                - /url: https://www.instagram.com/kirodotdev
+            - listitem [ref=e1832]:
+              - link "Follow us on YouTube" [ref=e1833] [cursor=pointer]:
+                - /url: https://www.youtube.com/@kirodotdev
+            - listitem [ref=e1836]:
+              - link "Follow us on Bluesky" [ref=e1837] [cursor=pointer]:
+                - /url: https://bsky.app/profile/kiro.dev
+            - listitem [ref=e1841]:
+              - link "Follow us on Twitch" [ref=e1842] [cursor=pointer]:
+                - /url: https://www.twitch.tv/kirodotdev
+    - generic [ref=e1847]:
+      - link "AWS Amazon" [ref=e1849] [cursor=pointer]:
+        - /url: https://aws.amazon.com
+      - generic [ref=e1853]:
+        - link "Site Terms" [ref=e1854] [cursor=pointer]:
+          - /url: https://aws.amazon.com/terms/
+        - link "License" [ref=e1855] [cursor=pointer]:
+          - /url: /license/
+        - link "Responsible AI Policy" [ref=e1856] [cursor=pointer]:
+          - /url: https://aws.amazon.com/ai/responsible-ai/policy/
+        - link "Legal" [ref=e1857] [cursor=pointer]:
+          - /url: https://aws.amazon.com/legal/
+        - link "Privacy Policy" [ref=e1858] [cursor=pointer]:
+          - /url: https://aws.amazon.com/privacy/
+        - link "Cookie Preferences" [ref=e1859] [cursor=pointer]:
+          - /url: "#"
+  - alert [ref=e1860]

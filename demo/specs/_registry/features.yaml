@@ -1,0 +1,121 @@
+features:
+  - id: "001-multi-tenant-auth"
+    title: "Sistema de autenticación multi-tenant"
+    domain: auth
+    owner: juan
+    sprint: 2026-Q3
+    status: OPEN
+    type: feature
+    touches:
+      - src/auth/**
+      - src/middleware/tenant.ts
+    decisions: []
+    
+  - id: "002-billing-dashboard"
+    title: "Dashboard de facturación por tenant"
+    domain: billing
+    owner: maria
+    sprint: 2026-Q3
+    status: OPEN
+    type: feature
+    touches:
+      - src/billing/**
+      - src/ui/dashboard/**
+    decisions: []
+    
+  - id: "003-user-permissions"
+    title: "Sistema de permisos granulares"
+    domain: auth
+    owner: juan
+    sprint: 2026-Q3
+    status: BLOCKED
+    type: feature
+    touches:
+      - src/auth/permissions.ts
+      - src/middleware/rbac.ts
+    decisions:
+      - "DEC-001: Bloqueado esperando decisión de arquitectura sobre RBAC vs ABAC"
+    
+  - id: "004-reports-export"
+    title: "Exportación de reportes a CSV/PDF"
+    domain: reports
+    owner: carlos
+    sprint: 2026-Q4
+    status: OPEN
+    type: feature
+    touches:
+      - src/reports/export.ts
+      - src/workers/pdf-generator.ts
+    decisions: []
+    
+  - id: "005-tenant-isolation-fix"
+    title: "Fix: Leak de datos entre tenants en queries"
+    domain: auth
+    owner: maria
+    sprint: 2026-Q3
+    status: CLOSED
+    type: fix
+    touches:
+      - src/db/queries/**
+    decisions:
+      - "DEC-002: Se agregó tenant_id a todas las queries de proyectos"
+    
+  - id: "006-analytics-dashboard"
+    title: "Dashboard de analytics en tiempo real"
+    domain: dashboard
+    owner: patricio
+    sprint: 2026-Q4
+    status: OPEN
+    type: feature
+    touches:
+      - src/analytics/**
+      - src/ui/charts/**
+    decisions: []
+    
+  - id: "007-api-rate-limiting"
+    title: "Rate limiting por tenant y endpoint"
+    domain: api
+    owner: juan
+    sprint: 2026-Q3
+    status: CLOSED
+    type: feature
+    touches:
+      - src/middleware/rate-limit.ts
+      - src/cache/redis.ts
+    decisions: []
+    
+  - id: "008-subdomain-routing"
+    title: "Routing dinámico por subdomain"
+    domain: infra
+    owner: maria
+    sprint: 2026-Q4
+    status: OPEN
+    type: feature
+    touches:
+      - src/server/router.ts
+      - nginx.conf
+    decisions: []
+    
+  - id: "009-audit-logs"
+    title: "Sistema de auditoría cross-tenant"
+    domain: compliance
+    owner: carlos
+    sprint: 2026-Q4
+    status: OPEN
+    type: feature
+    touches:
+      - src/audit/**
+      - src/db/migrations/add-audit-log.sql
+    decisions: []
+    
+  - id: "010-email-templates"
+    title: "Templates de email personalizables por tenant"
+    domain: notifications
+    owner: juan
+    sprint: 2026-Q3
+    status: CLOSED
+    type: feature
+    touches:
+      - src/notifications/email/**
+      - templates/**
+    decisions: []

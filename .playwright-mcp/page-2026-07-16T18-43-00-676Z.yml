@@ -1,0 +1,515 @@
+- generic [active] [ref=f3e1]:
+  - navigation "Main" [ref=f3e3]:
+    - text: Ctrl K
+    - generic [ref=f3e5]:
+      - link [ref=f3e8] [cursor=pointer]:
+        - /url: /
+        - img "Kiro" [ref=f3e48]
+      - generic [ref=f3e49]:
+        - button "Search across all Kiro content (Ctrl+K)" [ref=f3e53] [cursor=pointer]:
+          - generic [ref=f3e54]: Ctrl K
+        - button "Main Navigation" [ref=f3e58] [cursor=pointer]
+  - main [ref=f3e61]:
+    - generic [ref=f3e62]:
+      - complementary [ref=f3e63]:
+        - generic [ref=f3e66]:
+          - navigation "Documentation product" [ref=f3e67]:
+            - generic [ref=f3e68]:
+              - link "IDE" [ref=f3e69] [cursor=pointer]:
+                - /url: /docs/
+              - link "CLI" [ref=f3e70] [cursor=pointer]:
+                - /url: /docs/cli/
+              - link "Web" [ref=f3e71] [cursor=pointer]:
+                - /url: /docs/web/
+          - generic [ref=f3e73]:
+            - generic [ref=f3e75]:
+              - link "Get started" [ref=f3e76] [cursor=pointer]:
+                - /url: /docs/
+              - button "Expand Get started" [ref=f3e77] [cursor=pointer]
+            - link "What's new in IDE 1.0" [ref=f3e80] [cursor=pointer]:
+              - /url: /docs/whats-new-1-0/
+            - link "Models" [ref=f3e81] [cursor=pointer]:
+              - /url: /docs/models/
+            - generic [ref=f3e83]:
+              - link "Editor" [ref=f3e84] [cursor=pointer]:
+                - /url: /docs/editor/interface/
+              - button "Expand Editor" [ref=f3e85] [cursor=pointer]
+            - generic [ref=f3e88]:
+              - generic [ref=f3e89]:
+                - link "Specs" [ref=f3e90] [cursor=pointer]:
+                  - /url: /docs/specs/
+                - button "Collapse Specs" [expanded] [ref=f3e91] [cursor=pointer]
+              - generic [ref=f3e95]:
+                - generic [ref=f3e98]:
+                  - link "Feature Specs" [ref=f3e99] [cursor=pointer]:
+                    - /url: /docs/specs/feature-specs/
+                  - button "Expand Feature Specs" [ref=f3e100] [cursor=pointer]
+                - link "Bugfix Specs" [ref=f3e104] [cursor=pointer]:
+                  - /url: /docs/specs/bugfix-specs/
+                - link "Quick Plan" [ref=f3e106] [cursor=pointer]:
+                  - /url: /docs/specs/quick-plan/
+                - link "Analyze Requirements" [ref=f3e108] [cursor=pointer]:
+                  - /url: /docs/specs/analyze-requirements/
+                - link "Correctness" [ref=f3e110] [cursor=pointer]:
+                  - /url: /docs/specs/correctness/
+                - link "Best practices" [ref=f3e112] [cursor=pointer]:
+                  - /url: /docs/specs/best-practices/
+            - generic [ref=f3e114]:
+              - link "Chat" [ref=f3e115] [cursor=pointer]:
+                - /url: /docs/chat/
+              - button "Expand Chat" [ref=f3e116] [cursor=pointer]
+            - generic [ref=f3e120]:
+              - link "Powers" [ref=f3e121] [cursor=pointer]:
+                - /url: /docs/powers/
+              - button "Expand Powers" [ref=f3e122] [cursor=pointer]
+            - generic [ref=f3e126]:
+              - link "Hooks" [ref=f3e127] [cursor=pointer]:
+                - /url: /docs/hooks/
+              - button "Expand Hooks" [ref=f3e128] [cursor=pointer]
+            - generic [ref=f3e132]:
+              - link "Custom agents" [ref=f3e133] [cursor=pointer]:
+                - /url: /docs/custom-agents/
+              - button "Expand Custom agents" [ref=f3e134] [cursor=pointer]
+            - link "Steering" [ref=f3e137] [cursor=pointer]:
+              - /url: /docs/steering/
+            - link "Agent Skills" [ref=f3e138] [cursor=pointer]:
+              - /url: /docs/skills/
+            - generic [ref=f3e140]:
+              - link "MCP" [ref=f3e141] [cursor=pointer]:
+                - /url: /docs/mcp/
+              - button "Expand MCP" [ref=f3e142] [cursor=pointer]
+            - generic [ref=f3e146]:
+              - link "Guides" [ref=f3e147] [cursor=pointer]:
+                - /url: /docs/guides/
+              - button "Expand Guides" [ref=f3e148] [cursor=pointer]
+            - link "Migrating from Q Developer" [ref=f3e151] [cursor=pointer]:
+              - /url: /docs/migrating-from-q-developer/
+            - generic [ref=f3e153]:
+              - link "Billing for individuals" [ref=f3e154] [cursor=pointer]:
+                - /url: /docs/billing/
+              - button "Expand Billing for individuals" [ref=f3e155] [cursor=pointer]
+            - generic [ref=f3e159]:
+              - link "Enterprise" [ref=f3e160] [cursor=pointer]:
+                - /url: /docs/enterprise/concepts/
+              - button "Expand Enterprise" [ref=f3e161] [cursor=pointer]
+            - link "Troubleshooting" [ref=f3e164] [cursor=pointer]:
+              - /url: /docs/troubleshooting/
+            - generic [ref=f3e166]:
+              - link "Experimental" [ref=f3e167] [cursor=pointer]:
+                - /url: /docs/experimental/
+              - button "Expand Experimental" [ref=f3e168] [cursor=pointer]
+            - generic [ref=f3e172]:
+              - link "Privacy and security" [ref=f3e173] [cursor=pointer]:
+                - /url: /docs/privacy-and-security/
+              - button "Expand Privacy and security" [ref=f3e174] [cursor=pointer]
+      - generic [ref=f3e179]:
+        - generic [ref=f3e180]:
+          - navigation "breadcrumb" [ref=f3e183]:
+            - list [ref=f3e184]:
+              - listitem [ref=f3e185]:
+                - link "Docs" [ref=f3e186] [cursor=pointer]:
+                  - /url: /docs
+              - listitem [ref=f3e187]
+              - listitem [ref=f3e190]:
+                - link "IDE" [ref=f3e191] [cursor=pointer]:
+                  - /url: /docs
+              - listitem [ref=f3e192]
+              - listitem [ref=f3e195]:
+                - link "Specs" [disabled] [ref=f3e196]
+          - heading "Specs" [level=1] [ref=f3e199]
+          - generic [ref=f3e200]:
+            - generic [ref=f3e201]:
+              - generic [ref=f3e202]:
+                - heading "What are specs?" [level=2] [ref=f3e203]
+                - link "Copy link to What are specs section" [ref=f3e204] [cursor=pointer]:
+                  - /url: "#what-are-specs"
+              - paragraph [ref=f3e209]: Specs or specifications are structured artifacts that formalize the development process for features and bug fixes in your application. They provide a systematic approach to transform high-level ideas into detailed implementation plans with clear tracking and accountability.
+              - paragraph [ref=f3e210]: "With Kiro's specs, you can:"
+              - list [ref=f3e211]:
+                - listitem [ref=f3e212]:
+                  - strong [ref=f3e213]: Break down requirements
+                  - text: into user stories with acceptance criteria
+                - listitem [ref=f3e214]:
+                  - strong [ref=f3e215]: Build design docs
+                  - text: with sequence diagrams and architecture plans
+                - listitem [ref=f3e216]:
+                  - strong [ref=f3e217]: Track implementation progress
+                  - text: across discrete tasks
+                - listitem [ref=f3e218]:
+                  - strong [ref=f3e219]: Collaborate effectively
+                  - text: between product and engineering teams
+              - generic [ref=f3e220]:
+                - heading "Core Structure" [level=2] [ref=f3e221]
+                - link "Copy link to Core structure section" [ref=f3e222] [cursor=pointer]:
+                  - /url: "#core-structure"
+              - paragraph [ref=f3e227]: "Every spec generates three key files that form the foundation of your specification:"
+              - list [ref=f3e228]:
+                - listitem [ref=f3e229]:
+                  - strong [ref=f3e230]: requirements.md
+                  - text: (or
+                  - strong [ref=f3e231]: bugfix.md
+                  - text: ) - Captures user stories, acceptance criteria, or bug analysis in structured notation
+                - listitem [ref=f3e232]:
+                  - strong [ref=f3e233]: design.md
+                  - text: "- Documents technical architecture, sequence diagrams, and implementation considerations"
+                - listitem [ref=f3e234]:
+                  - strong [ref=f3e235]: tasks.md
+                  - text: "- Provides a detailed implementation plan with discrete, trackable tasks"
+              - figure "Mermaid diagram" [ref=f3e236]:
+                - img [ref=f3e237]:
+                  - generic [ref=f3e247]:
+                    - paragraph [ref=f3e254]: Idea for feature 'foo'
+                    - paragraph [ref=f3e261]: Open spec session in chat
+                    - paragraph [ref=f3e268]: Click '+' in spec pane
+                    - paragraph [ref=f3e275]: .kiro/specs/foo
+                    - paragraph [ref=f3e282]: requirements.md / bugfix.md
+                    - paragraph [ref=f3e289]: design.md
+                    - paragraph [ref=f3e296]: tasks.md
+              - generic [ref=f3e297]:
+                - heading "Three-Phase Workflow" [level=2] [ref=f3e298]
+                - link "Copy link to Three phase workflow section" [ref=f3e299] [cursor=pointer]:
+                  - /url: "#three-phase-workflow"
+              - paragraph [ref=f3e304]: "All specs follow a three-phase workflow that transforms your idea into executable implementation:"
+              - paragraph [ref=f3e305]:
+                - strong [ref=f3e306]: Requirements or Bug Analysis
+                - text: "- Define what needs to be built or fixed"
+              - list [ref=f3e307]:
+                - listitem [ref=f3e308]:
+                  - text: "Feature Specs: User stories and acceptance criteria in"
+                  - code [ref=f3e309]: requirements.md
+                - listitem [ref=f3e310]:
+                  - text: "Bugfix Specs: Bug analysis with current/expected/unchanged behavior in"
+                  - code [ref=f3e311]: bugfix.md
+              - paragraph [ref=f3e312]:
+                - strong [ref=f3e313]: Design
+                - text: "- Create technical architecture and implementation approach in"
+                - code [ref=f3e314]: design.md
+              - list [ref=f3e315]:
+                - listitem [ref=f3e316]: System architecture and component design
+                - listitem [ref=f3e317]: Sequence diagrams and data flow
+                - listitem [ref=f3e318]: Error handling and testing strategy
+              - paragraph [ref=f3e319]:
+                - strong [ref=f3e320]: Tasks
+                - text: "- Generate discrete, executable implementation tasks in"
+                - code [ref=f3e321]: tasks.md
+              - list [ref=f3e322]:
+                - listitem [ref=f3e323]: Trackable tasks with clear outcomes
+                - listitem [ref=f3e324]: Real-time status updates as you implement
+                - listitem [ref=f3e325]: Run tasks individually or all at once
+              - generic [ref=f3e326]:
+                - heading "Task Execution" [level=2] [ref=f3e327]
+                - link "Copy link to Task execution section" [ref=f3e328] [cursor=pointer]:
+                  - /url: "#task-execution"
+              - paragraph [ref=f3e333]:
+                - text: Kiro provides a task execution interface for
+                - code [ref=f3e334]: tasks.md
+                - text: files that displays real-time status updates. Tasks are updated as in-progress or completed, allowing you to efficiently track implementation progress and maintain an up-to-date view of your development status.
+              - generic [ref=f3e335]:
+                - generic "Task execution in Kiro specs" [ref=f3e336]
+                - button "Play video" [ref=f3e337] [cursor=pointer]
+              - generic [ref=f3e340]:
+                - heading "Running tasks in parallel" [level=3] [ref=f3e341]
+                - link "Copy link to Running tasks in parallel section" [ref=f3e342] [cursor=pointer]:
+                  - /url: "#running-tasks-in-parallel"
+              - paragraph [ref=f3e347]:
+                - text: When you click
+                - strong [ref=f3e348]: Run all Tasks
+                - text: on a spec, Kiro analyzes your task list, figures out which tasks depend on each other, and runs independent tasks concurrently. For most feature specs, this cuts execution time significantly without any setup.
+              - paragraph [ref=f3e349]:
+                - text: Kiro builds a
+                - strong [ref=f3e350]: dependency graph
+                - text: of the tasks in your
+                - code [ref=f3e351]: tasks.md
+                - text: and groups independent tasks into
+                - strong [ref=f3e352]: waves
+                - text: ":"
+              - list [ref=f3e353]:
+                - listitem [ref=f3e354]:
+                  - strong [ref=f3e355]: Wave 1
+                  - text: — all tasks with no dependencies. These run concurrently.
+                - listitem [ref=f3e356]:
+                  - strong [ref=f3e357]: Wave 2
+                  - text: — all tasks whose dependencies were satisfied by Wave 1. These run concurrently.
+                - listitem [ref=f3e358]:
+                  - strong [ref=f3e359]: Wave N
+                  - text: — continues until all tasks are complete.
+              - paragraph [ref=f3e360]: Waves execute sequentially; tasks within a wave execute concurrently.
+              - generic [ref=f3e361]:
+                - heading "Types of Specs" [level=2] [ref=f3e362]
+                - link "Copy link to Types of specs section" [ref=f3e363] [cursor=pointer]:
+                  - /url: "#types-of-specs"
+              - paragraph [ref=f3e368]: "Kiro supports two types of specs to match your development needs:"
+              - generic [ref=f3e369]:
+                - heading "Feature Specs" [level=3] [ref=f3e370]
+                - link "Copy link to Feature specs section" [ref=f3e371] [cursor=pointer]:
+                  - /url: "#feature-specs"
+              - paragraph [ref=f3e376]:
+                - text: "For building new features and capabilities in your application. Feature Specs guide you through requirements gathering, technical design, and implementation planning with two workflow variants: Requirements-First and Design-First. For well-understood features, you can also use"
+                - link "Quick Plan" [ref=f3e377] [cursor=pointer]:
+                  - /url: /docs/specs/quick-plan
+                - text: to auto-generate all three artifacts without approval gates.
+              - paragraph [ref=f3e378]:
+                - link "Learn more about Feature Specs →" [ref=f3e379] [cursor=pointer]:
+                  - /url: /docs/specs/feature-specs
+              - generic [ref=f3e380]:
+                - heading "Bugfix Specs" [level=3] [ref=f3e381]
+                - link "Copy link to Bugfix specs section" [ref=f3e382] [cursor=pointer]:
+                  - /url: "#bugfix-specs"
+              - paragraph [ref=f3e387]: For systematically diagnosing and fixing bugs with surgical precision while preventing regressions. Bugfix Specs help you identify root causes, design fixes, and validate that nothing else breaks.
+              - paragraph [ref=f3e388]:
+                - link "Learn more about Bugfix Specs →" [ref=f3e389] [cursor=pointer]:
+                  - /url: /docs/specs/bugfix-specs
+              - generic [ref=f3e390]:
+                - heading "Getting Started" [level=2] [ref=f3e391]
+                - link "Copy link to Getting started section" [ref=f3e392] [cursor=pointer]:
+                  - /url: "#getting-started"
+              - paragraph [ref=f3e397]: "Ready to create your first Spec? Here's how:"
+              - list [ref=f3e398]:
+                - listitem [ref=f3e399]:
+                  - text: From the Kiro pane, click the
+                  - code [ref=f3e400]: +
+                  - text: button under
+                  - strong [ref=f3e401]: Specs
+                  - text: . Alternatively, choose
+                  - strong [ref=f3e402]: Spec
+                  - text: from the chat pane.
+                - listitem [ref=f3e403]:
+                  - text: Kiro will ask if you are developing a Feature or fixing a Bug
+                  - list [ref=f3e404]:
+                    - listitem [ref=f3e405]:
+                      - text: "If you choose Feature, describe your feature and choose your workflow:"
+                      - strong [ref=f3e406]: Requirements-First
+                      - text: or
+                      - strong [ref=f3e407]: Design-First
+                    - listitem [ref=f3e408]: If you choose Bug, describe your bug
+                - listitem [ref=f3e409]: Follow the workflow through each phase to implementation
+              - generic [ref=f3e410]:
+                - generic "Creating a specification in Kiro" [ref=f3e411]
+                - button "Play video" [ref=f3e412] [cursor=pointer]
+              - generic [ref=f3e415]:
+                - heading "When to Use Specs vs Vibe" [level=2] [ref=f3e416]
+                - link "Copy link to When to use specs vs vibe section" [ref=f3e417] [cursor=pointer]:
+                  - /url: "#when-to-use-specs-vs-vibe"
+              - paragraph [ref=f3e422]:
+                - strong [ref=f3e423]: "Use Specs when:"
+              - list [ref=f3e424]:
+                - listitem [ref=f3e425]: Building complex features requiring structured planning
+                - listitem [ref=f3e426]: Fixing bugs where regressions are costly
+                - listitem [ref=f3e427]: You need documentation for team collaboration
+                - listitem [ref=f3e428]: Requirements or design need iteration
+              - paragraph [ref=f3e429]:
+                - strong [ref=f3e430]: "Use Vibe when:"
+              - list [ref=f3e431]:
+                - listitem [ref=f3e432]: Quick exploratory coding
+                - listitem [ref=f3e433]: Prototyping without clear goals
+              - generic [ref=f3e434]:
+                - heading "Learn more" [level=2] [ref=f3e435]
+                - link "Copy link to Learn more section" [ref=f3e436] [cursor=pointer]:
+                  - /url: "#learn-more"
+              - paragraph [ref=f3e441]: "Dive deeper into Kiro's Spec system with these guides:"
+              - generic [ref=f3e442]:
+                - link "Feature Specs Build new features with structured workflows." [ref=f3e444] [cursor=pointer]:
+                  - /url: /docs/specs/feature-specs/
+                  - generic [ref=f3e446]:
+                    - generic [ref=f3e447]: Feature Specs
+                    - generic [ref=f3e448]: Build new features with structured workflows.
+                - link "Quick Plan Generate requirements, design, and tasks in one pass without approval gates." [ref=f3e454] [cursor=pointer]:
+                  - /url: /docs/specs/quick-plan/
+                  - generic [ref=f3e456]:
+                    - generic [ref=f3e457]: Quick Plan
+                    - generic [ref=f3e458]: Generate requirements, design, and tasks in one pass without approval gates.
+                - link "Analyze Requirements Catch inconsistencies, ambiguities, and gaps in your requirements before design." [ref=f3e464] [cursor=pointer]:
+                  - /url: /docs/specs/analyze-requirements/
+                  - generic [ref=f3e466]:
+                    - generic [ref=f3e467]: Analyze Requirements
+                    - generic [ref=f3e468]: Catch inconsistencies, ambiguities, and gaps in your requirements before design.
+                - link "Bugfix Specs Fix bugs surgically while preventing regressions." [ref=f3e474] [cursor=pointer]:
+                  - /url: /docs/specs/bugfix-specs/
+                  - generic [ref=f3e476]:
+                    - generic [ref=f3e477]: Bugfix Specs
+                    - generic [ref=f3e478]: Fix bugs surgically while preventing regressions.
+                - link "Best Practices FAQs on best practices when working with specs." [ref=f3e484] [cursor=pointer]:
+                  - /url: /docs/specs/best-practices/
+                  - generic [ref=f3e486]:
+                    - generic [ref=f3e487]: Best Practices
+                    - generic [ref=f3e488]: FAQs on best practices when working with specs.
+            - generic [ref=f3e493]: "Page updated: June 25, 2026"
+            - generic [ref=f3e497]:
+              - 'link "Previous: Extension registry" [ref=f3e499] [cursor=pointer]':
+                - /url: /docs/editor/extension-registry/
+                - generic [ref=f3e502]: Extension registry
+              - 'link "Next: Feature Specs" [ref=f3e504] [cursor=pointer]':
+                - /url: /docs/specs/feature-specs/
+                - generic [ref=f3e505]: Feature Specs
+        - complementary [ref=f3e508]:
+          - generic [ref=f3e510]:
+            - button "Copy page as Markdown" [ref=f3e511] [cursor=pointer]:
+              - generic [ref=f3e515]: Copy page
+            - button "More page actions" [ref=f3e516] [cursor=pointer]
+          - generic [ref=f3e519]:
+            - generic [ref=f3e520]: On this page
+            - navigation [ref=f3e527]:
+              - list [ref=f3e530]:
+                - listitem [ref=f3e531]:
+                  - link "What are specs?" [ref=f3e532] [cursor=pointer]:
+                    - /url: "#what-are-specs"
+                - listitem [ref=f3e534]:
+                  - link "Core Structure" [ref=f3e535] [cursor=pointer]:
+                    - /url: "#core-structure"
+                - listitem [ref=f3e537]:
+                  - link "Three-Phase Workflow" [ref=f3e538] [cursor=pointer]:
+                    - /url: "#three-phase-workflow"
+                - listitem [ref=f3e540]:
+                  - link "Task Execution" [ref=f3e541] [cursor=pointer]:
+                    - /url: "#task-execution"
+                - listitem [ref=f3e543]:
+                  - link "Running tasks in parallel" [ref=f3e544] [cursor=pointer]:
+                    - /url: "#running-tasks-in-parallel"
+                - listitem [ref=f3e546]:
+                  - link "Types of Specs" [ref=f3e547] [cursor=pointer]:
+                    - /url: "#types-of-specs"
+                - listitem [ref=f3e549]:
+                  - link "Feature Specs" [ref=f3e550] [cursor=pointer]:
+                    - /url: "#feature-specs"
+                - listitem [ref=f3e552]:
+                  - link "Bugfix Specs" [ref=f3e553] [cursor=pointer]:
+                    - /url: "#bugfix-specs"
+                - listitem [ref=f3e555]:
+                  - link "Getting Started" [ref=f3e556] [cursor=pointer]:
+                    - /url: "#getting-started"
+                - listitem [ref=f3e558]:
+                  - link "When to Use Specs vs Vibe" [ref=f3e559] [cursor=pointer]:
+                    - /url: "#when-to-use-specs-vs-vibe"
+                - listitem [ref=f3e561]:
+                  - link "Learn more" [ref=f3e562] [cursor=pointer]:
+                    - /url: "#learn-more"
+    - separator [ref=f3e564]
+  - contentinfo [ref=f3e565]:
+    - generic [ref=f3e567]:
+      - img "Kiro" [ref=f3e571]
+      - navigation "Footer Navigation" [ref=f3e572]:
+        - generic [ref=f3e573]:
+          - heading "Product" [level=2] [ref=f3e574]
+          - list [ref=f3e575]:
+            - listitem [ref=f3e576]:
+              - link "About Kiro" [ref=f3e577] [cursor=pointer]:
+                - /url: /about/
+            - listitem [ref=f3e578]:
+              - link "IDE" [ref=f3e579] [cursor=pointer]:
+                - /url: /ide/
+            - listitem [ref=f3e580]:
+              - link "CLI" [ref=f3e581] [cursor=pointer]:
+                - /url: /cli/
+            - listitem [ref=f3e582]:
+              - link "Web" [ref=f3e583] [cursor=pointer]:
+                - /url: /web/
+            - listitem [ref=f3e584]:
+              - link "Mobile" [ref=f3e585] [cursor=pointer]:
+                - /url: /mobile/
+            - listitem [ref=f3e586]:
+              - link "Pricing" [ref=f3e587] [cursor=pointer]:
+                - /url: /pricing/
+            - listitem [ref=f3e588]:
+              - link "Downloads" [ref=f3e589] [cursor=pointer]:
+                - /url: /downloads/
+        - generic [ref=f3e590]:
+          - heading "For" [level=2] [ref=f3e591]
+          - list [ref=f3e592]:
+            - listitem [ref=f3e593]:
+              - link "Enterprise" [ref=f3e594] [cursor=pointer]:
+                - /url: /enterprise/
+            - listitem [ref=f3e595]:
+              - link "Startups" [ref=f3e596] [cursor=pointer]:
+                - /url: /startups/
+            - listitem [ref=f3e597]:
+              - link "Students" [ref=f3e598] [cursor=pointer]:
+                - /url: /students/
+        - generic [ref=f3e599]:
+          - heading "Community" [level=2] [ref=f3e600]
+          - list [ref=f3e601]:
+            - listitem [ref=f3e602]:
+              - link "Overview" [ref=f3e603] [cursor=pointer]:
+                - /url: /community/
+            - listitem [ref=f3e604]:
+              - link "Ambassadors" [ref=f3e605] [cursor=pointer]:
+                - /url: /ambassadors/
+            - listitem [ref=f3e606]:
+              - link "Discord" [ref=f3e607] [cursor=pointer]:
+                - /url: /discord/
+            - listitem [ref=f3e608]:
+              - link "Events" [ref=f3e609] [cursor=pointer]:
+                - /url: /events/
+            - listitem [ref=f3e610]:
+              - link "Powers" [ref=f3e611] [cursor=pointer]:
+                - /url: /powers/
+            - listitem [ref=f3e612]:
+              - link "Shop" [ref=f3e613] [cursor=pointer]:
+                - /url: https://shop.kiro.dev
+            - listitem [ref=f3e614]:
+              - link "Showcase" [ref=f3e615] [cursor=pointer]:
+                - /url: /showcase/
+        - generic [ref=f3e616]:
+          - heading "Resources" [level=2] [ref=f3e617]
+          - list [ref=f3e618]:
+            - listitem [ref=f3e619]:
+              - link "Docs" [ref=f3e620] [cursor=pointer]:
+                - /url: /docs/
+            - listitem [ref=f3e621]:
+              - link "Blog" [ref=f3e622] [cursor=pointer]:
+                - /url: /blog/
+            - listitem [ref=f3e623]:
+              - link "Changelog" [ref=f3e624] [cursor=pointer]:
+                - /url: /changelog/
+            - listitem [ref=f3e625]:
+              - link "FAQs" [ref=f3e626] [cursor=pointer]:
+                - /url: /faq/
+            - listitem [ref=f3e627]:
+              - link "Report a bug" [ref=f3e628] [cursor=pointer]:
+                - /url: https://github.com/kirodotdev/Kiro/issues/new/choose
+            - listitem [ref=f3e629]:
+              - link "Suggest an idea" [ref=f3e630] [cursor=pointer]:
+                - /url: https://github.com/kirodotdev/Kiro/issues/new?template=feature_request.yml
+            - listitem [ref=f3e631]:
+              - link "Billing support" [ref=f3e632] [cursor=pointer]:
+                - /url: https://app.kiro.dev/settings/account
+        - generic [ref=f3e633]:
+          - heading "Social" [level=2] [ref=f3e634]
+          - list "Social" [ref=f3e635]:
+            - listitem [ref=f3e636]:
+              - link "Join our Discord community" [ref=f3e637] [cursor=pointer]:
+                - /url: https://discord.gg/kirodotdev
+            - listitem [ref=f3e640]:
+              - link "Follow us on LinkedIn" [ref=f3e641] [cursor=pointer]:
+                - /url: https://www.linkedin.com/showcase/kirodotdev
+            - listitem [ref=f3e644]:
+              - link "Follow us on X" [ref=f3e645] [cursor=pointer]:
+                - /url: https://x.com/kirodotdev
+            - listitem [ref=f3e648]:
+              - link "Follow us on Instagram" [ref=f3e649] [cursor=pointer]:
+                - /url: https://www.instagram.com/kirodotdev
+            - listitem [ref=f3e652]:
+              - link "Follow us on YouTube" [ref=f3e653] [cursor=pointer]:
+                - /url: https://www.youtube.com/@kirodotdev
+            - listitem [ref=f3e656]:
+              - link "Follow us on Bluesky" [ref=f3e657] [cursor=pointer]:
+                - /url: https://bsky.app/profile/kiro.dev
+            - listitem [ref=f3e661]:
+              - link "Follow us on Twitch" [ref=f3e662] [cursor=pointer]:
+                - /url: https://www.twitch.tv/kirodotdev
+    - generic [ref=f3e667]:
+      - link "AWS Amazon" [ref=f3e669] [cursor=pointer]:
+        - /url: https://aws.amazon.com
+      - generic [ref=f3e673]:
+        - link "Site Terms" [ref=f3e674] [cursor=pointer]:
+          - /url: https://aws.amazon.com/terms/
+        - link "License" [ref=f3e675] [cursor=pointer]:
+          - /url: /license/
+        - link "Responsible AI Policy" [ref=f3e676] [cursor=pointer]:
+          - /url: https://aws.amazon.com/ai/responsible-ai/policy/
+        - link "Legal" [ref=f3e677] [cursor=pointer]:
+          - /url: https://aws.amazon.com/legal/
+        - link "Privacy Policy" [ref=f3e678] [cursor=pointer]:
+          - /url: https://aws.amazon.com/privacy/
+        - link "Cookie Preferences" [ref=f3e679] [cursor=pointer]:
+          - /url: "#"
+  - alert [ref=f3e680]

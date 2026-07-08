@@ -1,0 +1,152 @@
+- generic [ref=f5e2]:
+  - generic [ref=f5e3]:
+    - generic [ref=f5e4]: Evaluación · Julio 2026 · Uso interno
+    - generic [ref=f5e5]: SDD Model vs Kiro
+    - generic [ref=f5e6]: Comparativa para decisión de adopción empresarial
+  - generic [ref=f5e7]:
+    - generic [ref=f5e8]: Resumen ejecutivo
+    - text: "Las herramientas de asistencia con inteligencia artificial para equipos de desarrollo han madurado al punto en que la pregunta ya no es si usar IA, sino con qué metodología hacerlo de forma consistente y auditable. Este documento compara dos enfoques:"
+    - strong [ref=f5e9]: Kiro
+    - text: ", un producto comercial de Amazon Web Services, y"
+    - strong [ref=f5e10]: SDD Model
+    - text: ", un framework propietario de proceso. Ambos resuelven el mismo problema desde capas distintas. El documento presenta criterios, riesgos y opciones para una decisión informada."
+  - heading "1. El problema que resuelven" [level=2] [ref=f5e11]
+  - paragraph [ref=f5e12]: "Los equipos que incorporan IA a su flujo de desarrollo enfrentan un problema recurrente: el código se produce con mayor velocidad, pero sin trazabilidad, sin proceso auditable y con alta dependencia de la calidad del criterio individual de cada desarrollador. El resultado es software difícil de auditar, inconsistente entre proyectos y costoso de mantener."
+  - paragraph [ref=f5e13]:
+    - text: "Tanto Kiro como SDD Model proponen una solución estructural: formalizar el ciclo de desarrollo con artefactos intermedios —requerimientos, diseño, tareas— que guían a la IA y quedan como evidencia permanente del proceso. La diferencia central está en"
+    - emphasis [ref=f5e14]: cómo
+    - text: lo hacen, para qué perfil de equipo y a qué costo organizacional.
+  - heading "2. Qué es cada uno" [level=2] [ref=f5e15]
+  - heading "Kiro" [level=3] [ref=f5e16]
+  - paragraph [ref=f5e17]: "Kiro es un entorno de desarrollo integrado (IDE) desarrollado por Amazon Web Services, disponible desde mediados de 2025. Funciona como una extensión del editor de código y guía al desarrollador a través de tres fases: definición de requerimientos, diseño técnico e implementación de tareas. La interfaz incluye botones, flujos visuales y seguimiento de estado en tiempo real. Requiere suscripción mensual de créditos de AWS y procesa los artefactos en infraestructura cloud de Amazon."
+  - heading "SDD Model" [level=3] [ref=f5e18]
+  - paragraph [ref=f5e19]: "SDD Model (Spec-Driven Development) es un framework de proceso: un conjunto de convenciones, artefactos y comandos que se integra sobre cualquier herramienta de IA existente. No es un producto de un tercero — es una metodología que la organización posee, versiona y adapta. El ciclo cubre ocho fases, desde el relevamiento inicial hasta la auditoría post-sprint. Incluye un auditor automático que verifica el cumplimiento del proceso en el pipeline de integración continua sin utilizar IA — lo que lo hace determinista y reproducible."
+  - heading "3. Diferencias clave" [level=2] [ref=f5e20]
+  - paragraph [ref=f5e21]: "Cinco criterios relevantes para una decisión ejecutiva:"
+  - table [ref=f5e22]:
+    - rowgroup [ref=f5e23]:
+      - row [ref=f5e24]:
+        - columnheader "Criterio" [ref=f5e25]
+        - columnheader "Kiro" [ref=f5e26]
+        - columnheader "SDD Model" [ref=f5e27]
+    - rowgroup [ref=f5e28]:
+      - row [ref=f5e29]:
+        - cell "Modelo de costo" [ref=f5e30]
+        - 'cell "Suscripción mensual en créditos AWS. Los créditos no acumulan entre meses. El costo por proyecto es difícil de predecir: el sistema rutea automáticamente entre modelos de IA de distintos precios." [ref=f5e31]'
+        - cell "Consume los tokens de la suscripción de IA que el equipo ya tiene. Sin capa intermedia, sin costo adicional de plataforma. Incluye herramientas propias para medir y controlar el consumo por feature." [ref=f5e32]
+      - row [ref=f5e33]:
+        - cell "Dependencia de proveedor" [ref=f5e34]
+        - cell "Alta. El IDE, los modelos de IA, el backend y el modelo de créditos son todos de AWS. Migrar a otra herramienta implica abandonar el flujo de trabajo completo." [ref=f5e35]
+        - cell "Ninguna. Los artefactos son archivos de texto versionados en el repositorio de la empresa. La metodología funciona con cualquier herramienta de IA y no requiere ningún vendor específico." [ref=f5e36]
+      - row [ref=f5e37]:
+        - cell "Trazabilidad y auditoría" [ref=f5e38]
+        - cell "El flujo genera artefactos de diseño y lista de tareas con seguimiento en tiempo real. No incluye auditor de proceso automatizado ni verificación en el pipeline CI/CD." [ref=f5e39]
+        - cell "Cada requerimiento se vincula a tareas, y cada tarea a tickets. Un auditor determinista — sin IA — verifica el proceso antes de cada integración de código. Si el proceso no se cumplió, el pipeline falla." [ref=f5e40]
+      - row [ref=f5e41]:
+        - cell "Velocidad de adopción" [ref=f5e42]
+        - cell "Alta. La interfaz guía al desarrollador con botones y flujos visuales. Curva de aprendizaje baja, especialmente para equipos sin disciplina de proceso previa." [ref=f5e43]
+        - cell "Gradual. Requiere que el equipo internalice una metodología de ocho fases. La curva inicial es más alta, pero el control que otorga es proporcionalmente mayor." [ref=f5e44]
+      - row [ref=f5e45]:
+        - cell "Soberanía de los datos" [ref=f5e46]
+        - cell "El código y los artefactos de diseño se procesan en servidores de AWS. Para proyectos con restricciones de confidencialidad o regulatorias, esto puede requerir análisis legal adicional." [ref=f5e47]
+        - cell "El procesamiento ocurre en la cuenta de IA que el equipo ya usa y controla. Los artefactos viven exclusivamente en el repositorio de la empresa." [ref=f5e48]
+  - heading "4. Riesgos por opción" [level=2] [ref=f5e49]
+  - generic [ref=f5e50]:
+    - generic [ref=f5e51]:
+      - heading "Kiro — riesgos" [level=4] [ref=f5e52]
+      - list [ref=f5e53]:
+        - listitem [ref=f5e54]: Dependencia total de AWS para el flujo de trabajo de desarrollo.
+        - listitem [ref=f5e55]: Costo mensual recurrente no acumulable — los créditos no usados se pierden.
+        - listitem [ref=f5e56]: El "modo supervisado" es un flujo de revisión de código, no un control de cumplimiento — la documentación oficial lo aclara explícitamente.
+        - listitem [ref=f5e57]: Sin auditor de proceso integrable en el pipeline CI/CD.
+      - generic [ref=f5e58]:
+        - strong [ref=f5e59]: "A favor:"
+        - text: madurez de producto, soporte AWS, interfaz pulida, ejecución paralela de tareas.
+    - generic [ref=f5e60]:
+      - heading "SDD Model — riesgos" [level=4] [ref=f5e61]
+      - list [ref=f5e62]:
+        - listitem [ref=f5e63]: Desarrollado por un autor principal — el conocimiento está concentrado en una persona.
+        - listitem [ref=f5e64]: No hay soporte de terceros ni comunidad externa.
+        - listitem [ref=f5e65]: La firma digital de aprobaciones (en diseño) aún no está en producción — brecha relevante para contextos de alta exigencia regulatoria.
+        - listitem [ref=f5e66]: Mayor inversión inicial en capacitación de equipos.
+      - generic [ref=f5e67]:
+        - strong [ref=f5e68]: "A favor:"
+        - text: trazabilidad auditable, control total del proceso, sin dependencia de plataforma, menor costo operativo a largo plazo.
+  - heading "5. Tres caminos posibles" [level=2] [ref=f5e69]
+  - generic [ref=f5e70]:
+    - generic [ref=f5e71]: Opción A
+    - generic [ref=f5e73]:
+      - generic [ref=f5e74]: Adoptar Kiro
+      - generic [ref=f5e75]: Apropiado cuando la prioridad es adopción rápida con bajo costo de capacitación y el equipo puede operar con dependencia de AWS. Requiere evaluar la confidencialidad de los datos procesados en la nube y aceptar la imprevisibilidad del modelo de créditos.
+  - generic [ref=f5e76]:
+    - generic [ref=f5e78]:
+      - text: Opción B
+      - generic [ref=f5e79]: recomendada
+    - generic [ref=f5e80]:
+      - generic [ref=f5e81]: Adoptar SDD Model
+      - generic [ref=f5e82]: Apropiado cuando la prioridad es trazabilidad auditable, control del proceso y ausencia de dependencia de plataforma. Requiere inversión en capacitación inicial y un plan de mitigación del riesgo de concentración de conocimiento en el equipo.
+  - generic [ref=f5e83]:
+    - generic [ref=f5e84]: Opción C
+    - generic [ref=f5e86]:
+      - generic [ref=f5e87]: Combinar ambos
+      - generic [ref=f5e88]: Kiro como interfaz de desarrollo (velocidad, UX, paralelismo de tareas) y SDD Model como capa de gobernanza (auditoría, trazabilidad, registro de decisiones). Viable si se define con precisión cuál es el artefacto autoritativo y se valida que la integración no genere doble mantenimiento mediante un piloto de prueba.
+  - heading "6. Tabla resumen" [level=2] [ref=f5e89]
+  - table [ref=f5e90]:
+    - rowgroup [ref=f5e91]:
+      - row [ref=f5e92]:
+        - columnheader "Dimensión" [ref=f5e93]
+        - columnheader "Kiro" [ref=f5e94]
+        - columnheader "SDD Model" [ref=f5e95]
+    - rowgroup [ref=f5e96]:
+      - row [ref=f5e97]:
+        - cell "Tipo de producto" [ref=f5e98]
+        - cell "IDE comercial (AWS)" [ref=f5e99]
+        - cell "Framework propietario" [ref=f5e100]
+      - row [ref=f5e101]:
+        - cell "Costo fijo mensual" [ref=f5e102]
+        - cell "Sí — créditos AWS sin acumulación" [ref=f5e103]
+        - cell "No — consume suscripción existente" [ref=f5e104]
+      - row [ref=f5e105]:
+        - cell "Dependencia de proveedor" [ref=f5e106]
+        - cell "Alta (AWS)" [ref=f5e107]
+        - cell "Ninguna" [ref=f5e108]
+      - row [ref=f5e109]:
+        - cell "Auditoría en CI/CD" [ref=f5e110]
+        - cell "No" [ref=f5e111]
+        - cell "Sí — auditor sin IA, exit code 0/1" [ref=f5e112]
+      - row [ref=f5e113]:
+        - cell "Trazabilidad req → código" [ref=f5e114]
+        - cell "Narrativa (artefactos markdown)" [ref=f5e115]
+        - cell "Estructural + verificada por código" [ref=f5e116]
+      - row [ref=f5e117]:
+        - cell "Soberanía de datos" [ref=f5e118]
+        - cell "AWS cloud (fuera de la empresa)" [ref=f5e119]
+        - cell "Repositorio propio de la empresa" [ref=f5e120]
+      - row [ref=f5e121]:
+        - cell "Curva de adopción" [ref=f5e122]
+        - cell "Baja" [ref=f5e123]
+        - cell "Media — mayor control a cambio" [ref=f5e124]
+      - row [ref=f5e125]:
+        - cell "Integración con Jira" [ref=f5e126]
+        - cell "Sí" [ref=f5e127]
+        - cell "Sí — vía MCP + registro auditable" [ref=f5e128]
+      - row [ref=f5e129]:
+        - cell "Soporte externo" [ref=f5e130]
+        - cell "AWS (SLA comercial)" [ref=f5e131]
+        - cell "Sin soporte de terceros" [ref=f5e132]
+      - row [ref=f5e133]:
+        - cell "Riesgo de concentración" [ref=f5e134]
+        - cell "Proveedor único (AWS)" [ref=f5e135]
+        - cell "Autor principal único" [ref=f5e136]
+  - heading "Síntesis" [level=2] [ref=f5e137]
+  - paragraph [ref=f5e138]:
+    - text: Kiro y SDD Model no son equivalentes — operan en capas distintas. Kiro optimiza la
+    - strong [ref=f5e139]: velocidad y la experiencia
+    - text: del desarrollador; SDD Model garantiza que el proceso sea
+    - strong [ref=f5e140]: auditable y reproducible
+    - text: . No son necesariamente excluyentes.
+  - paragraph [ref=f5e141]: "La pregunta estratégica es: ¿qué dimensión es no negociable para esta empresa? Si la respuesta es velocidad de adopción y experiencia de usuario, Kiro lidera. Si la respuesta es trazabilidad auditable, control soberano del proceso y ausencia de lock-in de plataforma, SDD Model lidera."
+  - paragraph [ref=f5e142]: En contextos donde ambas dimensiones importan, la Opción C (combinación) es viable, pero requiere trabajo de integración inicial y claridad sobre cuál artefacto es la fuente de verdad del proceso.
+  - generic [ref=f5e143]:
+    - generic [ref=f5e144]: SDD Model vs Kiro — Evaluación ejecutiva
+    - generic [ref=f5e145]: Julio 2026 · Uso interno

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDD Model vs Kiro — Evaluación ejecutiva</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Georgia:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #e8e8e8;
+    font-family: 'Georgia', Georgia, serif;
+    font-size: 11pt;
+    color: #1a1a1a;
+    line-height: 1.65;
+  }
+
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 32px auto;
+    background: #ffffff;
+    padding: 28mm 26mm 28mm 30mm;
+    box-shadow: 0 2px 24px rgba(0,0,0,0.18);
+  }
+
+  @media print {
+    body { background: white; }
+    .page { margin: 0; box-shadow: none; padding: 20mm 20mm 20mm 25mm; }
+    @page { size: A4; margin: 0; }
+  }
+
+  /* ── HEADER ── */
+  .doc-header {
+    border-bottom: 2px solid #1a1a1a;
+    padding-bottom: 14px;
+    margin-bottom: 28px;
+  }
+  .doc-meta {
+    font-family: 'Inter', sans-serif;
+    font-size: 8pt;
+    color: #666;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .doc-title {
+    font-size: 20pt;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #0a0a0a;
+  }
+  .doc-subtitle {
+    font-size: 11pt;
+    color: #555;
+    font-style: italic;
+    margin-top: 5px;
+  }
+
+  /* ── RESUMEN EJECUTIVO ── */
+  .resumen-box {
+    background: #f5f5f5;
+    border-left: 4px solid #1a1a1a;
+    padding: 14px 18px;
+    margin: 24px 0 32px;
+    font-size: 10.5pt;
+    color: #2a2a2a;
+    line-height: 1.7;
+  }
+  .resumen-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 7.5pt;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 8px;
+  }
+
+  /* ── SECCIONES ── */
+  h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: 11pt;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: #0a0a0a;
+    margin: 30px 0 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  h3 {
+    font-size: 11pt;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 18px 0 6px;
+  }
+
+  p { margin-bottom: 12px; }
+  p:last-child { margin-bottom: 0; }
+
+  /* ── TABLA DE CRITERIOS ── */
+  .criteria-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0 8px;
+    font-size: 10pt;
+  }
+  .criteria-table th {
+    font-family: 'Inter', sans-serif;
+    font-size: 8pt;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: #1a1a1a;
+    color: #fff;
+    padding: 8px 12px;
+    text-align: left;
+  }
+  .criteria-table td {
+    padding: 9px 12px;
+    vertical-align: top;
+    border-bottom: 1px solid #e5e5e5;
+    line-height: 1.55;
+  }
+  .criteria-table tr:nth-child(even) td { background: #fafafa; }
+  .criteria-table .crit-name {
+    font-family: 'Inter', sans-serif;
+    font-size: 9pt;
+    font-weight: 600;
+    color: #0a0a0a;
+    white-space: nowrap;
+    width: 22%;
+  }
+  .criteria-table .crit-kiro  { width: 38%; }
+  .criteria-table .crit-sdd   { width: 38%; }
+  .criteria-table .win-sdd  { color: #1a1a1a; font-weight: 600; }
+  .criteria-table .win-kiro { color: #555; font-style: italic; }
+
+  /* ── RIESGOS ── */
+  .riesgos-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 16px 0; }
+  .riesgo-block { padding: 14px 16px; border: 1px solid #ddd; border-radius: 2px; }
+  .riesgo-block h4 {
+    font-family: 'Inter', sans-serif;
+    font-size: 8.5pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #ddd;
+  }
+  .riesgo-block ul { padding-left: 16px; }
+  .riesgo-block li { font-size: 10pt; margin-bottom: 6px; line-height: 1.5; color: #333; }
+  .riesgo-block .nota {
+    margin-top: 10px;
+    padding: 8px 10px;
+    background: #f5f5f5;
+    font-size: 9.5pt;
+    font-style: italic;
+    color: #555;
+  }
+
+  /* ── OPCIONES ── */
+  .opcion {
+    margin: 12px 0;
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .opcion.recomendada { border-color: #1a1a1a; border-width: 2px; }
+  .opcion-tag {
+    font-family: 'Inter', sans-serif;
+    font-size: 8.5pt;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding-top: 2px;
+    min-width: 60px;
+    color: #0a0a0a;
+  }
+  .opcion-recom-badge {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 7pt;
+    font-weight: 600;
+    background: #1a1a1a;
+    color: #fff;
+    padding: 1px 7px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .opcion-title { font-weight: 700; margin-bottom: 4px; }
+  .opcion-text  { font-size: 10pt; color: #333; line-height: 1.55; }
+
+  /* ── TABLA RESUMEN ── */
+  .resumen-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 9.5pt;
+    font-family: 'Inter', sans-serif;
+  }
+  .resumen-table th {
+    background: #1a1a1a;
+    color: #fff;
+    font-size: 8pt;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 7px 12px;
+    text-align: left;
+  }
+  .resumen-table td {
+    padding: 7px 12px;
+    border-bottom: 1px solid #e5e5e5;
+    vertical-align: top;
+  }
+  .resumen-table tr:nth-child(even) td { background: #fafafa; }
+  .resumen-table .check-sdd { font-weight: 600; color: #0a0a0a; }
+  .resumen-table .check-kiro { color: #555; }
+  .resumen-table .check-both { color: #333; }
+
+  /* ── FOOTER ── */
+  .doc-footer {
+    margin-top: 40px;
+    padding-top: 10px;
+    border-top: 1px solid #ccc;
+    font-family: 'Inter', sans-serif;
+    font-size: 8pt;
+    color: #aaa;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* ── PAGE BREAK HINT ── */
+  .page-break { page-break-before: always; margin-top: 0; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="doc-header">
+    <div class="doc-meta">Evaluación · Julio 2026 · Uso interno</div>
+    <div class="doc-title">SDD Model vs Kiro</div>
+    <div class="doc-subtitle">Comparativa para decisión de adopción empresarial</div>
+  </div>
+
+  <!-- RESUMEN EJECUTIVO -->
+  <div class="resumen-box">
+    <div class="resumen-label">Resumen ejecutivo</div>
+    Las herramientas de asistencia con inteligencia artificial para equipos de desarrollo han madurado al punto en que la pregunta ya no es si usar IA, sino con qué metodología hacerlo de forma consistente y auditable. Este documento compara dos enfoques: <strong>Kiro</strong>, un producto comercial de Amazon Web Services, y <strong>SDD Model</strong>, un framework propietario de proceso. Ambos resuelven el mismo problema desde capas distintas. El documento presenta criterios, riesgos y opciones para una decisión informada.
+  </div>
+
+  <!-- SECCIÓN 1 -->
+  <h2>1. El problema que resuelven</h2>
+  <p>Los equipos que incorporan IA a su flujo de desarrollo enfrentan un problema recurrente: el código se produce con mayor velocidad, pero sin trazabilidad, sin proceso auditable y con alta dependencia de la calidad del criterio individual de cada desarrollador. El resultado es software difícil de auditar, inconsistente entre proyectos y costoso de mantener.</p>
+  <p>Tanto Kiro como SDD Model proponen una solución estructural: formalizar el ciclo de desarrollo con artefactos intermedios —requerimientos, diseño, tareas— que guían a la IA y quedan como evidencia permanente del proceso. La diferencia central está en <em>cómo</em> lo hacen, para qué perfil de equipo y a qué costo organizacional.</p>
+
+  <!-- SECCIÓN 2 -->
+  <h2>2. Qué es cada uno</h2>
+
+  <h3>Kiro</h3>
+  <p>Kiro es un entorno de desarrollo integrado (IDE) desarrollado por Amazon Web Services, disponible desde mediados de 2025. Funciona como una extensión del editor de código y guía al desarrollador a través de tres fases: definición de requerimientos, diseño técnico e implementación de tareas. La interfaz incluye botones, flujos visuales y seguimiento de estado en tiempo real. Requiere suscripción mensual de créditos de AWS y procesa los artefactos en infraestructura cloud de Amazon.</p>
+
+  <h3>SDD Model</h3>
+  <p>SDD Model (Spec-Driven Development) es un framework de proceso: un conjunto de convenciones, artefactos y comandos que se integra sobre cualquier herramienta de IA existente. No es un producto de un tercero — es una metodología que la organización posee, versiona y adapta. El ciclo cubre ocho fases, desde el relevamiento inicial hasta la auditoría post-sprint. Incluye un auditor automático que verifica el cumplimiento del proceso en el pipeline de integración continua sin utilizar IA — lo que lo hace determinista y reproducible.</p>
+
+  <!-- SECCIÓN 3 -->
+  <h2>3. Diferencias clave</h2>
+  <p>Cinco criterios relevantes para una decisión ejecutiva:</p>
+
+  <table class="criteria-table">
+    <thead>
+      <tr>
+        <th>Criterio</th>
+        <th>Kiro</th>
+        <th>SDD Model</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="crit-name">Modelo de costo</td>
+        <td class="crit-kiro">Suscripción mensual en créditos AWS. Los créditos no acumulan entre meses. El costo por proyecto es difícil de predecir: el sistema rutea automáticamente entre modelos de IA de distintos precios.</td>
+        <td class="crit-sdd win-sdd">Consume los tokens de la suscripción de IA que el equipo ya tiene. Sin capa intermedia, sin costo adicional de plataforma. Incluye herramientas propias para medir y controlar el consumo por feature.</td>
+      </tr>
+      <tr>
+        <td class="crit-name">Dependencia de proveedor</td>
+        <td class="crit-kiro">Alta. El IDE, los modelos de IA, el backend y el modelo de créditos son todos de AWS. Migrar a otra herramienta implica abandonar el flujo de trabajo completo.</td>
+        <td class="crit-sdd win-sdd">Ninguna. Los artefactos son archivos de texto versionados en el repositorio de la empresa. La metodología funciona con cualquier herramienta de IA y no requiere ningún vendor específico.</td>
+      </tr>
+      <tr>
+        <td class="crit-name">Trazabilidad y auditoría</td>
+        <td class="crit-kiro">El flujo genera artefactos de diseño y lista de tareas con seguimiento en tiempo real. No incluye auditor de proceso automatizado ni verificación en el pipeline CI/CD.</td>
+        <td class="crit-sdd win-sdd">Cada requerimiento se vincula a tareas, y cada tarea a tickets. Un auditor determinista — sin IA — verifica el proceso antes de cada integración de código. Si el proceso no se cumplió, el pipeline falla.</td>
+      </tr>
+      <tr>
+        <td class="crit-name">Velocidad de adopción</td>
+        <td class="crit-kiro win-kiro">Alta. La interfaz guía al desarrollador con botones y flujos visuales. Curva de aprendizaje baja, especialmente para equipos sin disciplina de proceso previa.</td>
+        <td class="crit-sdd">Gradual. Requiere que el equipo internalice una metodología de ocho fases. La curva inicial es más alta, pero el control que otorga es proporcionalmente mayor.</td>
+      </tr>
+      <tr>
+        <td class="crit-name">Soberanía de los datos</td>
+        <td class="crit-kiro">El código y los artefactos de diseño se procesan en servidores de AWS. Para proyectos con restricciones de confidencialidad o regulatorias, esto puede requerir análisis legal adicional.</td>
+        <td class="crit-sdd win-sdd">El procesamiento ocurre en la cuenta de IA que el equipo ya usa y controla. Los artefactos viven exclusivamente en el repositorio de la empresa.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SECCIÓN 4 -->
+  <h2>4. Riesgos por opción</h2>
+
+  <div class="riesgos-cols">
+    <div class="riesgo-block">
+      <h4>Kiro — riesgos</h4>
+      <ul>
+        <li>Dependencia total de AWS para el flujo de trabajo de desarrollo.</li>
+        <li>Costo mensual recurrente no acumulable — los créditos no usados se pierden.</li>
+        <li>El "modo supervisado" es un flujo de revisión de código, no un control de cumplimiento — la documentación oficial lo aclara explícitamente.</li>
+        <li>Sin auditor de proceso integrable en el pipeline CI/CD.</li>
+      </ul>
+      <div class="nota"><strong>A favor:</strong> madurez de producto, soporte AWS, interfaz pulida, ejecución paralela de tareas.</div>
+    </div>
+    <div class="riesgo-block">
+      <h4>SDD Model — riesgos</h4>
+      <ul>
+        <li>Desarrollado por un autor principal — el conocimiento está concentrado en una persona.</li>
+        <li>No hay soporte de terceros ni comunidad externa.</li>
+        <li>La firma digital de aprobaciones (en diseño) aún no está en producción — brecha relevante para contextos de alta exigencia regulatoria.</li>
+        <li>Mayor inversión inicial en capacitación de equipos.</li>
+      </ul>
+      <div class="nota"><strong>A favor:</strong> trazabilidad auditable, control total del proceso, sin dependencia de plataforma, menor costo operativo a largo plazo.</div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 5 -->
+  <h2>5. Tres caminos posibles</h2>
+
+  <div class="opcion">
+    <div>
+      <div class="opcion-tag">Opción A</div>
+    </div>
+    <div>
+      <div class="opcion-title">Adoptar Kiro</div>
+      <div class="opcion-text">Apropiado cuando la prioridad es adopción rápida con bajo costo de capacitación y el equipo puede operar con dependencia de AWS. Requiere evaluar la confidencialidad de los datos procesados en la nube y aceptar la imprevisibilidad del modelo de créditos.</div>
+    </div>
+  </div>
+
+  <div class="opcion recomendada">
+    <div>
+      <div class="opcion-tag">Opción B <span class="opcion-recom-badge">recomendada</span></div>
+    </div>
+    <div>
+      <div class="opcion-title">Adoptar SDD Model</div>
+      <div class="opcion-text">Apropiado cuando la prioridad es trazabilidad auditable, control del proceso y ausencia de dependencia de plataforma. Requiere inversión en capacitación inicial y un plan de mitigación del riesgo de concentración de conocimiento en el equipo.</div>
+    </div>
+  </div>
+
+  <div class="opcion">
+    <div>
+      <div class="opcion-tag">Opción C</div>
+    </div>
+    <div>
+      <div class="opcion-title">Combinar ambos</div>
+      <div class="opcion-text">Kiro como interfaz de desarrollo (velocidad, UX, paralelismo de tareas) y SDD Model como capa de gobernanza (auditoría, trazabilidad, registro de decisiones). Viable si se define con precisión cuál es el artefacto autoritativo y se valida que la integración no genere doble mantenimiento mediante un piloto de prueba.</div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 6 — TABLA RESUMEN -->
+  <h2>6. Tabla resumen</h2>
+
+  <table class="resumen-table">
+    <thead>
+      <tr>
+        <th>Dimensión</th>
+        <th>Kiro</th>
+        <th>SDD Model</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Tipo de producto</td>
+        <td class="check-kiro">IDE comercial (AWS)</td>
+        <td class="check-sdd">Framework propietario</td>
+      </tr>
+      <tr>
+        <td>Costo fijo mensual</td>
+        <td class="check-kiro">Sí — créditos AWS sin acumulación</td>
+        <td class="check-sdd">No — consume suscripción existente</td>
+      </tr>
+      <tr>
+        <td>Dependencia de proveedor</td>
+        <td class="check-kiro">Alta (AWS)</td>
+        <td class="check-sdd">Ninguna</td>
+      </tr>
+      <tr>
+        <td>Auditoría en CI/CD</td>
+        <td class="check-kiro">No</td>
+        <td class="check-sdd">Sí — auditor sin IA, exit code 0/1</td>
+      </tr>
+      <tr>
+        <td>Trazabilidad req → código</td>
+        <td class="check-kiro">Narrativa (artefactos markdown)</td>
+        <td class="check-sdd">Estructural + verificada por código</td>
+      </tr>
+      <tr>
+        <td>Soberanía de datos</td>
+        <td class="check-kiro">AWS cloud (fuera de la empresa)</td>
+        <td class="check-sdd">Repositorio propio de la empresa</td>
+      </tr>
+      <tr>
+        <td>Curva de adopción</td>
+        <td class="check-kiro">Baja</td>
+        <td class="check-both">Media — mayor control a cambio</td>
+      </tr>
+      <tr>
+        <td>Integración con Jira</td>
+        <td class="check-both">Sí</td>
+        <td class="check-both">Sí — vía MCP + registro auditable</td>
+      </tr>
+      <tr>
+        <td>Soporte externo</td>
+        <td class="check-kiro">AWS (SLA comercial)</td>
+        <td class="check-sdd">Sin soporte de terceros</td>
+      </tr>
+      <tr>
+        <td>Riesgo de concentración</td>
+        <td class="check-kiro">Proveedor único (AWS)</td>
+        <td class="check-sdd">Autor principal único</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SÍNTESIS -->
+  <h2>Síntesis</h2>
+  <p>Kiro y SDD Model no son equivalentes — operan en capas distintas. Kiro optimiza la <strong>velocidad y la experiencia</strong> del desarrollador; SDD Model garantiza que el proceso sea <strong>auditable y reproducible</strong>. No son necesariamente excluyentes.</p>
+  <p>La pregunta estratégica es: ¿qué dimensión es no negociable para esta empresa? Si la respuesta es velocidad de adopción y experiencia de usuario, Kiro lidera. Si la respuesta es trazabilidad auditable, control soberano del proceso y ausencia de lock-in de plataforma, SDD Model lidera.</p>
+  <p>En contextos donde ambas dimensiones importan, la Opción C (combinación) es viable, pero requiere trabajo de integración inicial y claridad sobre cuál artefacto es la fuente de verdad del proceso.</p>
+
+  <!-- FOOTER -->
+  <div class="doc-footer">
+    <span>SDD Model vs Kiro — Evaluación ejecutiva</span>
+    <span>Julio 2026 · Uso interno</span>
+  </div>
+
+</div>
+</body>
+</html>

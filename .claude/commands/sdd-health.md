@@ -108,6 +108,9 @@ Leé todos los archivos dentro de `metrics/`. Para cada feature encontrada, extr
 - Último `DX_MET_006 TOTAL INPUT estimado` (tokens)
 - Último `Rework Ratio estimado`
 - `cobertura_inicial` del bloque Validate (si existe)
+- Evidencia E2E del bloque `## E2E` (si existe): `passed`/`needs_calibration`/`failed` y
+  `us_sin_cobertura_e2e`. Marcá ⚠️ si una feature con criterios de flujo cerró sin bloque
+  `## E2E`, o si el último `## E2E` tiene `failed > 0`.
 
 Mostrá la tabla:
 
