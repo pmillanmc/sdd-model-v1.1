@@ -237,15 +237,31 @@ Confirmá sin mostrar el token:
 Inmediatamente después de escribir `.env`, ejecutá:
 
 ```bash
-curl -s -o /tmp/sdd-myself.json -w "%{http_code}" \
-  -u "$ATLASSIAN_USER_EMAIL:$ATLASSIAN_API_TOKEN" \
+# Credencial vía config temporal de curl — nunca en argv (visible en `ps`)
+# ni en archivos world-readable de /tmp.
+CURL_CFG=$(mktemp) && chmod 600 "$CURL_CFG"
+printf 'user = "%s:%s"\n' "$ATLASSIAN_USER_EMAIL" "$ATLASSIAN_API_TOKEN" > "$CURL_CFG"
+HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+  --config "$CURL_CFG" \
   -H "Accept: application/json" \
-  "$ATLASSIAN_SITE_URL/rest/api/3/myself"
+  "$ATLASSIAN_SITE_URL/rest/api/3/myself")
+rm -f "$CURL_CFG"
+echo "$HTTP_CODE"
+```
+
+En Windows/PowerShell:
+
+```powershell
+$pair  = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes("$env:ATLASSIAN_USER_EMAIL`:$env:ATLASSIAN_API_TOKEN"))
+try {
+  $r = Invoke-WebRequest -Uri "$env:ATLASSIAN_SITE_URL/rest/api/3/myself" -Headers @{ Authorization = "Basic $pair"; Accept = "application/json" } -UseBasicParsing
+  $r.StatusCode
+} catch { $_.Exception.Response.StatusCode.value__ }
 ```
 
 Clasificá por código de respuesta:
 
-- **200** → `✅ Token válido — acceso a Jira confirmado como [emailFromResponse].`
+- **200** → `✅ Token válido — acceso a Jira confirmado.`
 - **401** → `❌ El token no es válido o el email no coincide. Revisá los 3 valores y volvé a correr este comando.`
 - **403** → `⚠️ El token es válido pero le faltan permisos. Creá uno nuevo con read:jira-work + write:jira-work activados.`
 - **Timeout / DNS / sin respuesta** → `⚠️ No puedo contactar a Jira. Verificá ATLASSIAN_SITE_URL y tu conectividad.`

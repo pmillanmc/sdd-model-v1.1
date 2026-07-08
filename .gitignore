@@ -1,6 +1,10 @@
 # Carpeta de flavor GDE — contiene documentación sensible del proyecto
 GDE/
 
+# Credenciales — nunca al repo
+.env
+.env.*
+
 node_modules/
 dist/
 coverage/

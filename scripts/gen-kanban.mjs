@@ -1,0 +1,635 @@
+/**
+ * gen-kanban.mjs — Genera kanban.html a partir de features.yaml + sprints/*.yaml + tasks.md
+ * Uso: node scripts/gen-kanban.mjs
+ */
+import { readFileSync, writeFileSync, readdirSync, existsSync } from 'fs';
+import { join, dirname, resolve } from 'path';
+import { fileURLToPath } from 'url';
+import { parse } from 'yaml';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// ── CLI args ──────────────────────────────────────────────────────────────────
+// --root <path>   fuente de datos (default: raíz del repo)
+// --out  <file>   nombre del HTML de salida (default: kanban.html en raíz del repo)
+const argv = process.argv.slice(2);
+const rootIdx = argv.indexOf('--root');
+const outIdx  = argv.indexOf('--out');
+
+const ROOT    = rootIdx !== -1 ? resolve(process.cwd(), argv[rootIdx + 1]) : join(__dirname, '..');
+const outFile = outIdx  !== -1 ? argv[outIdx + 1] : 'kanban.html';
+const outPath = join(join(__dirname, '..'), outFile);
+
+function readYaml(filePath) {
+  return parse(readFileSync(filePath, 'utf8'));
+}
+
+// ── Features ────────────────────────────────────────────────────────────────
+const { features: rawFeatures = [] } = readYaml(
+  join(ROOT, 'specs/_registry/features.yaml')
+);
+
+// ── Sprints ──────────────────────────────────────────────────────────────────
+const sprintsDir = join(ROOT, 'specs/_registry/sprints');
+const sprints = readdirSync(sprintsDir)
+  .filter(f => f.endsWith('.yaml') && !f.startsWith('_'))
+  .map(f => readYaml(join(sprintsDir, f)));
+
+// ── Enrich features ──────────────────────────────────────────────────────────
+const features = rawFeatures.map(feature => {
+  const base = join(ROOT, 'specs', feature.id);
+
+  // Count tasks from tasks.md (rows matching | T\d+)
+  let taskCount = 0;
+  const tasksPath = join(base, 'tasks.md');
+  if (existsSync(tasksPath)) {
+    const matches = readFileSync(tasksPath, 'utf8').match(/^\| T\d+/gm);
+    taskCount = matches?.length ?? 0;
+  }
+
+  // Last command from feature.status.md
+  let lastCommand = null;
+  const statusPath = join(base, 'feature.status.md');
+  if (existsSync(statusPath)) {
+    const match = readFileSync(statusPath, 'utf8').match(/last_command:\s*(.+)/);
+    lastCommand = match?.[1]?.trim() ?? null;
+  }
+
+  return { ...feature, taskCount, lastCommand };
+});
+
+// ── Build & write ─────────────────────────────────────────────────────────────
+const DATA = { features, sprints, generatedAt: new Date().toISOString() };
+writeFileSync(outPath, buildHTML(DATA), 'utf8');
+console.log(`✅  ${outFile} generado → ${outPath}`);
+
+// ── HTML template ─────────────────────────────────────────────────────────────
+function buildHTML(data) {
+  return `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SDD Model — Kanban</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0f1117;
+      --surface:   #1e293b;
+      --surface-2: #0f172a;
+      --border:    #334155;
+      --border-2:  #1e293b;
+      --text:      #e2e8f0;
+      --muted:     #64748b;
+      --secondary: #94a3b8;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ── Header ─────────────────────────────────────────── */
+    header {
+      padding: 12px 24px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+    header h1 { font-size: 0.95rem; font-weight: 700; color: #f8fafc; }
+    header p  { font-size: 0.7rem; color: var(--muted); margin-top: 1px; }
+
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: auto;
+    }
+    .filter-label { font-size: 0.68rem; color: var(--muted); }
+
+    .filter-btn {
+      padding: 4px 12px;
+      border-radius: 9999px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--secondary);
+      font-size: 0.68rem;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .filter-btn:hover  { border-color: #6366f1; color: #a5b4fc; }
+    .filter-btn.active { background: #1e1b4b; border-color: #6366f1; color: #a5b4fc; font-weight: 600; }
+
+    .gen-badge {
+      padding: 3px 10px;
+      border-radius: 9999px;
+      font-size: 0.65rem;
+      background: var(--surface-2);
+      color: var(--muted);
+      border: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    /* ── Layout ─────────────────────────────────────────── */
+    .workspace {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* ── Board ──────────────────────────────────────────── */
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      padding: 20px;
+      flex: 1;
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    .column {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .col-header {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .col-dot   { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .col-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .col-count {
+      margin-left: auto;
+      padding: 1px 8px;
+      border-radius: 9999px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      font-size: 0.62rem;
+      color: var(--muted);
+    }
+
+    .col-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .col-empty {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #334155;
+      font-size: 0.75rem;
+      text-align: center;
+      padding: 24px;
+    }
+
+    /* ── Cards ──────────────────────────────────────────── */
+    .card {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      border-left: 3px solid transparent;
+    }
+    .card:hover    { border-color: #475569; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+    .card.selected { border-color: #6366f1 !important; }
+
+    .card[data-status="OPEN"]    { border-left-color: #6366f1; }
+    .card[data-status="BLOCKED"] { border-left-color: #ef4444; }
+    .card[data-status="CLOSED"]  { border-left-color: #22c55e; }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 7px;
+      flex-wrap: wrap;
+    }
+
+    .domain-badge {
+      font-size: 0.6rem;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: #1e1b4b;
+      color: #a5b4fc;
+      border: 1px solid #3730a3;
+    }
+
+    .type-badge {
+      font-size: 0.6rem;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: #292524;
+      color: #a8a29e;
+      border: 1px solid #44403c;
+    }
+
+    .card-id {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      font-family: "SF Mono", Consolas, monospace;
+      margin-bottom: 7px;
+      word-break: break-word;
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 10px;
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .task-pill {
+      font-size: 0.62rem;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      background: #1e293b;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .touch-hint {
+      font-size: 0.62rem;
+      color: #475569;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      min-width: 0;
+    }
+
+    /* ── Sidebar ─────────────────────────────────────────── */
+    #sidebar {
+      width: 300px;
+      flex-shrink: 0;
+      background: var(--surface);
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .sidebar-empty {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: #334155;
+      font-size: 0.8rem;
+      text-align: center;
+      padding: 32px;
+    }
+
+    .sidebar-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+    }
+
+    .detail-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      margin-bottom: 10px;
+    }
+    .detail-status.OPEN    { background: #1e1b4b; color: #a5b4fc; border: 1px solid #3730a3; }
+    .detail-status.BLOCKED { background: #450a0a; color: #fca5a5; border: 1px solid #991b1b; }
+    .detail-status.CLOSED  { background: #052e16; color: #86efac; border: 1px solid #166534; }
+
+    .detail-id {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #f8fafc;
+      font-family: "SF Mono", Consolas, monospace;
+      margin-bottom: 4px;
+      line-height: 1.4;
+      word-break: break-all;
+    }
+
+    .detail-section {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-2);
+    }
+
+    .detail-section h4 {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #475569;
+      margin-bottom: 8px;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      font-size: 0.75rem;
+      padding: 5px 0;
+      border-bottom: 1px solid var(--border-2);
+    }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-row .key { color: var(--muted); flex-shrink: 0; }
+    .detail-row .val {
+      color: var(--text);
+      font-family: "SF Mono", Consolas, monospace;
+      font-size: 0.7rem;
+      text-align: right;
+      word-break: break-all;
+    }
+
+    .touch-chip {
+      display: block;
+      font-size: 0.68rem;
+      color: var(--secondary);
+      padding: 4px 8px;
+      background: var(--surface-2);
+      border-radius: 4px;
+      font-family: "SF Mono", Consolas, monospace;
+      margin-bottom: 4px;
+      word-break: break-all;
+    }
+
+    .decision-chip {
+      display: block;
+      font-size: 0.72rem;
+      color: #fde68a;
+      padding: 4px 8px;
+      background: #1c1709;
+      border-radius: 4px;
+      border-left: 2px solid #d97706;
+      margin-bottom: 4px;
+    }
+
+    .sprint-goal {
+      font-size: 0.75rem;
+      color: var(--secondary);
+      line-height: 1.55;
+      padding: 8px;
+      background: var(--surface-2);
+      border-radius: 6px;
+      border-left: 3px solid #6366f1;
+    }
+
+    /* ── Scrollbar ───────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>SDD Model — Kanban</h1>
+    <p>Spec-Driven Development · features &amp; fixes</p>
+  </div>
+  <div class="filter-group" id="sprint-filters">
+    <span class="filter-label">Sprint:</span>
+  </div>
+  <span class="gen-badge" id="gen-badge">...</span>
+</header>
+
+<div class="workspace">
+  <div class="board" id="board"></div>
+
+  <div id="sidebar">
+    <div class="sidebar-empty" id="sidebar-empty">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.35">
+        <rect x="3" y="3" width="7" height="7" rx="1"/>
+        <rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/>
+        <rect x="14" y="14" width="7" height="7" rx="1"/>
+      </svg>
+      <span>Hacé clic en una feature para ver el detalle</span>
+    </div>
+    <div class="sidebar-scroll" id="sidebar-content" style="display:none"></div>
+  </div>
+</div>
+
+<script>
+const DATA = ${JSON.stringify(data).replace(/</g, '\\u003c')};
+
+// ── Escape de HTML — todo dato de YAML/MD es input no confiable ────────────
+const esc = s => String(s ?? '')
+  .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+const COLUMNS = [
+  { status: 'OPEN',    label: 'Open',    color: '#6366f1' },
+  { status: 'BLOCKED', label: 'Blocked', color: '#ef4444' },
+  { status: 'CLOSED',  label: 'Closed',  color: '#22c55e' },
+];
+
+let activeSprint = 'ALL';
+let selectedId   = null;
+
+// ── Sprint filters ──────────────────────────────────────────
+function renderFilters() {
+  const container = document.getElementById('sprint-filters');
+  const ids = ['ALL', ...DATA.sprints.map(s => s.sprint).filter(Boolean).sort()];
+
+  ids.forEach(id => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn' + (id === activeSprint ? ' active' : '');
+    btn.textContent = id === 'ALL' ? 'Todos' : id;
+    btn.onclick = () => {
+      activeSprint = id;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderBoard();
+    };
+    container.appendChild(btn);
+  });
+}
+
+// ── Board ───────────────────────────────────────────────────
+function renderBoard() {
+  const board = document.getElementById('board');
+  board.innerHTML = '';
+
+  const pool = activeSprint === 'ALL'
+    ? DATA.features
+    : DATA.features.filter(f => f.sprint === activeSprint);
+
+  COLUMNS.forEach(col => {
+    const items = pool.filter(f => (f.status || 'OPEN').toUpperCase() === col.status);
+
+    const column = document.createElement('div');
+    column.className = 'column';
+    column.innerHTML = \`
+      <div class="col-header">
+        <span class="col-dot" style="background:\${col.color}"></span>
+        <span class="col-title" style="color:\${col.color}">\${col.label}</span>
+        <span class="col-count">\${items.length}</span>
+      </div>
+      <div class="col-body" id="col-\${col.status}"></div>
+    \`;
+    board.appendChild(column);
+
+    const body = column.querySelector('.col-body');
+    if (items.length === 0) {
+      body.innerHTML = '<div class="col-empty">Sin features</div>';
+    } else {
+      items.forEach(f => body.appendChild(buildCard(f)));
+    }
+  });
+}
+
+// ── Card ────────────────────────────────────────────────────
+function buildCard(f) {
+  const card = document.createElement('div');
+  card.className = 'card' + (f.id === selectedId ? ' selected' : '');
+  card.dataset.status = (f.status || 'OPEN').toUpperCase();
+  card.dataset.id = f.id;
+
+  const firstTouch = f.touches?.[0] ?? null;
+  const extraTouches = (f.touches?.length ?? 0) - 1;
+
+  card.innerHTML = \`
+    <div class="card-top">
+      \${f.domain ? \`<span class="domain-badge">\${esc(f.domain)}</span>\` : ''}
+      \${f.type && f.type !== 'feature' ? \`<span class="type-badge">\${esc(f.type)}</span>\` : ''}
+    </div>
+    <div class="card-id">\${esc(f.id)}</div>
+    <div class="card-meta">
+      <span>👤 \${esc(f.owner || '—')}</span>
+      <span>📅 \${esc(f.sprint || '—')}</span>
+    </div>
+    <div class="card-footer">
+      \${firstTouch
+        ? \`<span class="touch-hint">📁 \${esc(firstTouch)}\${extraTouches > 0 ? ' +' + extraTouches : ''}</span>\`
+        : '<span></span>'}
+      \${f.taskCount > 0 ? \`<span class="task-pill">\${f.taskCount} tareas</span>\` : ''}
+    </div>
+  \`;
+
+  card.addEventListener('click', () => selectFeature(f.id));
+  return card;
+}
+
+// ── Sidebar detail ──────────────────────────────────────────
+function selectFeature(id) {
+  selectedId = id;
+  document.querySelectorAll('.card').forEach(c =>
+    c.classList.toggle('selected', c.dataset.id === id)
+  );
+
+  const f = DATA.features.find(x => x.id === id);
+  if (!f) return;
+
+  const sprint = DATA.sprints.find(s => s.sprint === f.sprint);
+  const statusNorm = (f.status || 'OPEN').toUpperCase();
+
+  document.getElementById('sidebar-empty').style.display = 'none';
+  const content = document.getElementById('sidebar-content');
+  content.style.display = 'block';
+
+  const rows = [
+    ['Dominio',   f.domain      || '—'],
+    ['Owner',     f.owner       || '—'],
+    ['Sprint',    f.sprint      || '—'],
+    ['Creado',    f.created     || '—'],
+    ...(f.closed      ? [['Cerrado', f.closed]]                    : []),
+    ...(f.lastCommand ? [['Último cmd', '/' + f.lastCommand]]     : []),
+    ['Tareas',    f.taskCount > 0 ? f.taskCount + ' tareas' : '—'],
+  ];
+
+  content.innerHTML = \`
+    <span class="detail-status \${esc(statusNorm)}">\${esc(statusNorm)}</span>
+    <div class="detail-id">\${esc(f.id)}</div>
+
+    <div class="detail-section">
+      <h4>Información</h4>
+      \${rows.map(([k, v]) => \`
+        <div class="detail-row">
+          <span class="key">\${k}</span>
+          <span class="val">\${esc(v)}</span>
+        </div>
+      \`).join('')}
+    </div>
+
+    \${sprint?.goal ? \`
+    <div class="detail-section">
+      <h4>Objetivo del sprint</h4>
+      <div class="sprint-goal">\${esc(sprint.goal)}</div>
+    </div>
+    \` : ''}
+
+    \${f.touches?.length ? \`
+    <div class="detail-section">
+      <h4>Archivos tocados (\${f.touches.length})</h4>
+      \${f.touches.map(t => \`<span class="touch-chip">\${esc(t)}</span>\`).join('')}
+    </div>
+    \` : ''}
+
+    \${f.decisions?.length ? \`
+    <div class="detail-section">
+      <h4>Decisiones (\${f.decisions.length})</h4>
+      \${f.decisions.map(d => \`<span class="decision-chip">\${esc(d)}</span>\`).join('')}
+    </div>
+    \` : ''}
+  \`;
+}
+
+// ── Init ────────────────────────────────────────────────────
+const d = new Date(DATA.generatedAt);
+document.getElementById('gen-badge').textContent =
+  'Generado: ' + d.toLocaleDateString('es', { day: '2-digit', month: 'short', year: 'numeric' });
+
+renderFilters();
+renderBoard();
+</script>
+</body>
+</html>`;
+}
