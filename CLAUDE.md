@@ -28,10 +28,12 @@ constitution.md + spec.md + plan.md + tasks.md
     gap → humano ajusta → /sdd-log → DECISIONS.md
     ↓  /sdd-implement
 código + tests
+    ↓  /sdd-e2e
+QA funcional E2E contra la app corriendo (ProGuide) → evidencia
     ↓  /sdd-checklist
 checklist.md (lo completa el humano)
     ↓  /sdd-review
-verificación final: lógica + UI
+verificación final: lógica + evidencia E2E + UI
     ↓  cada sprint
 /sdd-health → auditoría de artefactos + drift de existing-arch
 
@@ -54,6 +56,7 @@ Cargá el `.md` del comando solo cuando el trigger aparezca en la conversación 
 | validate, gap, cobertura, brief vs spec | `/sdd-validate` | Spec generada, querés verificar |
 | log, decisión, ADR, alternativas | `/sdd-log` | Hay un desvío que registrar |
 | implement, código, TDD, tareas | `/sdd-implement` | `tasks.md` listo |
+| e2e, qa, prueba funcional, test case, regresión, proguide | `/sdd-e2e` | Verificar flujos contra la app corriendo (desde spec, doc, Jira, API o una suite de regresión) |
 | fix, bug, hotfix | `/sdd-fix` | Bug puntual (≤3 archivos) |
 | checklist, criterios manuales, UX | `/sdd-checklist` | Implementación cerrada |
 | review, gate final, UI vs spec | `/sdd-review` | Listo para gate final |
@@ -72,6 +75,27 @@ Cargá el `.md` del comando solo cuando el trigger aparezca en la conversación 
 - No inventés arquitectura que no esté en `plan.md`
 - Si existe `existing-arch.md`, sus restricciones son no negociables salvo decisión registrada en `DECISIONS.md`
 - Si algo del brief es ambiguo, preguntá antes de implementar
+
+## QA funcional E2E (ProGuide)
+
+- La verificación funcional contra la **app corriendo** se hace con `/sdd-e2e`, que usa el
+  MCP `proguide-test` y la skill `qa-test-cases` de ProGuide (Playwright + LLM).
+- Tres capas que NO se pisan: `pnpm test` (unit/integración, TDD en `/sdd-implement`) ·
+  `/sdd-e2e` (flujos UI/API contra la app) · `/sdd-checklist` (juicio humano/manual).
+- **La fuente NO es solo `spec.md`.** QA parte de lo que tenga: spec, documentación, ticket de
+  Jira, contrato de API o —en regresión— una suite ya congelada. `/sdd-e2e` es fuente-agnóstico;
+  cada caso referencia su origen (`US-N`, `JIRA-xxxx`, `doc §x`). Cuando la feature es SDD, los
+  casos viven en `specs/[feature_id]/e2e/` y la evidencia queda en el bloque `## E2E` de
+  `metrics/[feature_id]-metrics.md`, que `/sdd-review` lee para el gate final. En apps sin SDD
+  (o regresión suelta) no se genera esa estructura.
+- El QA solo corre `/sdd-e2e`: su **Paso 0** verifica la CLI con `proguide --version` y, si
+  falta, le pide al usuario que la instale a mano desde el repo
+  (https://github.com/molivera-proguide/proguide-test, último release vía `gh`) y espera; luego
+  confirma el MCP `proguide-test` (`.mcp.json` / `.cursor/mcp.json`) y corre
+  `proguide update skills` (scope global de usuario, `~/.claude/skills`). Recién ahí pide el
+  contexto y arma los casos.
+  Detalle de roles en `.claude/skills/coding-standards/references/e2e-qa.md`.
+- No confundir con `/sdd-test`, que es el smoke test del **propio modelo SDD**.
 
 ## Steering skill
 
