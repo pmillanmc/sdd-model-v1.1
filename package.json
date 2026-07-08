@@ -4,6 +4,10 @@
   "type": "module",
   "scripts": {
     "audit:sdd": "node scripts/sdd-audit.mjs",
+    "kanban": "node scripts/gen-kanban.mjs",
+    "kanban:demo": "node scripts/gen-kanban.mjs --root demo --out kanban-demo.html",
+    "kanban:serve": "node scripts/kanban-server.mjs",
+    "kanban:serve:demo": "node scripts/kanban-server.mjs --root demo",
     "skills:sync": "node scripts/sync-skills.mjs",
     "skills:sync:dry": "node scripts/sync-skills.mjs --dry-run"
   },
