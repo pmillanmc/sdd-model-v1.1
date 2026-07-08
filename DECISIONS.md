@@ -47,3 +47,32 @@ matchear `projectPath` se deriva del `cwd` del hook (`metrics/sessions.jsonl`), 
 **Restricción de alcance:** la limitación "Cursor no medible" aplica únicamente al agente
 nativo de Cursor (Composer/Chat propio). NO aplica a Claude Code dentro del editor.
 `IDE: Cursor` en el status no implica Variante B.
+
+## [2026-07-08] Atribución multi-sesión de tokens por feature (DX_MET_006)
+
+**Decisión:** la atribución sesión→feature se resuelve mediante un ledger append-only por
+feature, `metrics/[feature_id].sessions`, que contiene un session_id por línea. Cada
+comando del ciclo (sdd-refine, sdd-generate, sdd-validate, sdd-implement, sdd-review)
+anexa el session_id actual (CLAUDE_CODE_SESSION_ID) a ese ledger al finalizar. El
+comando sdd-metrics lee el ledger, deduplica por session_id (sort -u) y consulta ccusage
+una vez por id único; la suma es el costo end-to-end de la feature.
+
+**Fundamento:** la atribución no puede vivir en el hook de SessionStart porque en ese momento
+la feature activa no se conoce con certeza. Vive en el plano de comandos, único lugar
+donde feature_id y session_id se conocen simultáneamente.
+
+**Deduplicación (invariante):** un session_id se suma una sola vez aunque aparezca en varias
+líneas del ledger. El total de ccusage por session_id ya incluye los tokens de /compact
+(verificado: /compact es in-place, no cambia el session_id).
+
+**Corte entre features:** se usa /clear para separar sesiones entre features distintas
+(verificado 2026-07-08: /clear genera un session_id nuevo y dispara el hook con
+source: clear). Convención de trabajo: una feature por sesión; /clear al cambiar de feature.
+
+**NOTA DE MANTENIMIENTO:** el registro del binding está replicado en los cinco comandos del
+ciclo mencionados arriba. Cualquier cambio en el formato del ledger o en el mecanismo de
+append debe aplicarse en LOS CINCO archivos de forma consistente, más la lógica de lectura
+en sdd-metrics.md. Son seis archivos en total los que participan del mecanismo.
+
+**Alcance:** el ledger es agnóstico de IDE; solo la fuente de tokens (ccusage) es específica
+de Claude Code. Entornos sin tokens reales degradan al piso bytes÷4.

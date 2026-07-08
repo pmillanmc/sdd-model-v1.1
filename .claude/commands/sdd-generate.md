@@ -152,3 +152,15 @@ tasks:
 - `jira-map.yaml` debe generarse siempre, aunque todos los `jira_ticket` sean `null`.
 - No modificar `tasks.md` — el mapa vive únicamente en `jira-map.yaml`.
 - Incluir `user_story` en el mapa para mantener trazabilidad US-N → task → ticket.
+
+## Hook de métricas (obligatorio al finalizar)
+
+---
+**Registro de sesión para atribución de tokens (obligatorio):**
+Obtené el session_id actual ejecutando `!echo $CLAUDE_CODE_SESSION_ID`. Si el valor NO
+está vacío, agregá ese session_id como una línea nueva (append — nunca sobrescribir) al
+archivo `metrics/[feature_id].sessions`, creándolo si no existe. Si el valor está vacío
+(entorno que no es Claude Code), no escribas nada. Este archivo es un ledger append-only:
+puede acumular el mismo session_id varias veces y session_ids de días distintos; la
+deduplicación ocurre en la lectura (`/sdd-metrics`), no acá.
+---

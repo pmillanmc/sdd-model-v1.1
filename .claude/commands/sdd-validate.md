@@ -48,3 +48,13 @@ Al terminar el reporte de validación, agregá al archivo `metrics/[feature_id]-
 ```
 
 Si el archivo de métricas no existe aún, crealo con solo ese bloque. El reporte completo se genera al final de `sdd-implement`.
+
+---
+**Registro de sesión para atribución de tokens (obligatorio):**
+Obtené el session_id actual ejecutando `!echo $CLAUDE_CODE_SESSION_ID`. Si el valor NO
+está vacío, agregá ese session_id como una línea nueva (append — nunca sobrescribir) al
+archivo `metrics/[feature_id].sessions`, creándolo si no existe. Si el valor está vacío
+(entorno que no es Claude Code), no escribas nada. Este archivo es un ledger append-only:
+puede acumular el mismo session_id varias veces y session_ids de días distintos; la
+deduplicación ocurre en la lectura (`/sdd-metrics`), no acá.
+---

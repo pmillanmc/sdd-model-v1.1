@@ -60,10 +60,15 @@ Creá (o actualizá si ya existe) el archivo `metrics/[feature_id]-metrics.md` c
   bloque `usage` que devuelve Anthropic, leído de los logs locales por ccusage.
 
   Procedimiento:
-  1. Obtener el `session_id` de esta sesión: leer la **última** línea de
-     `metrics/sessions.jsonl` (la escribe el hook SessionStart). Si el archivo no
-     existe, avisar que falta instalar el hook y tomar la sesión activa más reciente
-     que reporte ccusage.
+  1. Obtener el set de session_ids de esta feature desde el ledger de atribución
+     `metrics/[feature_id].sessions` (lo escriben los comandos del ciclo). Deduplicar
+     con `sort -u`: cada session_id se cuenta UNA sola vez. Antes de leer, registrá
+     también la sesión actual: `!echo $CLAUDE_CODE_SESSION_ID` y, si no está vacío,
+     anexalo al ledger (así una medición corrida en una sesión suelta también queda
+     atribuida). Si el ledger no existe, avisar que no hay sesiones registradas para
+     esta feature y tomar el session_id actual como único dato. El `metrics/sessions.jsonl`
+     del hook queda como fuente de reconciliación (verificar que cada session_id existió),
+     no de atribución.
   2. Ejecutar:
      ```bash
      !npx ccusage@latest claude session --no-cost --json
@@ -84,8 +89,8 @@ Creá (o actualizá si ya existe) el archivo `metrics/[feature_id]-metrics.md` c
      evita cualquier chance de tomar una sesión ajena. NO usar el bloque `totals` del
      JSON: agrega todos los proyectos.
      - Multi-sesión: si esta slice abarcó varias sesiones (resume/compact, o cortes
-       en distintos días), sumar también esos ids. Pasarlos explícitos o tomarlos de
-       `metrics/sessions.jsonl`. Los tokens de compactación cuentan (son costo real de la slice).
+       en distintos días), los ids extra ya estarán en el ledger `metrics/[feature_id].sessions`
+       (deduplicado en el paso 1). Los tokens de compactación cuentan (son costo real de la slice).
   4. Reportar la suma por componente. Mapeo de campos del JSON de ccusage (por
      objeto de `sessions[]`; **confirmado** contra ccusage 20.0.14):
 
