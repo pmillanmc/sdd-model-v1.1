@@ -8,5 +8,17 @@
       "Bash(pnpm dev *)",
       "Bash(pnpm build *)"
     ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/hooks/sdd-session-capture.mjs\""
+          }
+        ]
+      }
+    ]
   }
 }

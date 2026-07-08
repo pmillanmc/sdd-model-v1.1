@@ -60,6 +60,7 @@ Desde `input.md`, los agentes generan cuatro artefactos operativos:
 | `DECISIONS.md` | Registro tipo ADR de cada desvío del brief — global, versionado |
 | `specs/[feature_id]/` | Una carpeta por feature con sus 4 artefactos + checklist |
 | `specs/[feature_id]/feature.status.md` | Estado del ciclo de vida: `OPEN` (en progreso) o `CLOSED` (aprobada) |
+| `specs/[feature_id]/jira-map.yaml` | Mapa de trazabilidad task ↔ ticket Jira — generado por `/sdd-generate` Paso 5 |
 | `metrics/[feature_id]-metrics.md` | Métricas de esfuerzo y calidad por feature — generado automáticamente |
 | `handoffs/` | Snapshots de gate entre fases — versionados, referenciados en `DECISIONS.md` |
 
@@ -69,10 +70,11 @@ Desde `input.md`, los agentes generan cuatro artefactos operativos:
 
 | Comando | Fase | Qué hace |
 |---|---|---|
+| `/sdd-setup` | Setup | Configura entorno, MCPs y credenciales — guiado paso a paso para cualquier perfil de dev |
 | `/sdd-explain` | Onboarding | Explica el modelo completo y cómo conecta cada parte |
 | `/sdd-scan` | 0 (brownfield) | Lee el código existente y genera `existing-arch.md` + `graph/domain.yaml` |
 | `/sdd-refine` | 2 | Grilling dinámico → `input.md` |
-| `/sdd-generate` | 3 | `input.md` → 4 artefactos (confirma `feature_id`, registra en `_registry`, chequea colisiones) |
+| `/sdd-generate` | 3 | `input.md` → 4 artefactos + crea tickets en Jira + genera `jira-map.yaml` |
 | `/sdd-validate` | 3 | Quality gate: brief vs artefactos |
 | `/sdd-log` | 3/4 | Registra decisiones en `DECISIONS.md` |
 | `/sdd-handoff` | Transversal | Comprime el estado de sesión para continuar en otra sesión o agente. Requiere DECISIONS.md al día. |
@@ -84,6 +86,47 @@ Desde `input.md`, los agentes generan cuatro artefactos operativos:
 | `/sdd-metrics` | Mant. | Reporte de esfuerzo, tokens y rework de la sesión actual |
 | `/sdd-metrics-summary` | Mant. | Tabla agregada de métricas de todas las features del proyecto |
 | `/sdd-test` | QA | Smoke test del modelo sobre un fixture sintético (22 checkpoints) |
+| `/sdd-jira-start` | Jira | Conecta un ticket de Jira con una feature SDD y lo mueve a IN PROGRESS |
+| `/sdd-jira-sync` | Jira | Reconcilia `jira-map.yaml` con el estado real de Jira en ambas direcciones |
+| `/sdd-jira-close` | Jira | Cierra la feature en SDD y mueve el ticket principal a FINALIZADO |
+
+---
+
+## Integración con Jira
+
+Los comandos `/sdd-jira-*` conectan el modelo SDD con Jira para mantener trazabilidad completa entre tasks y tickets. Requieren el **Atlassian MCP** activo.
+
+### Ciclo de vida de la integración
+
+```
+/sdd-jira-start [TICKET-KEY]   → vincula ticket de Jira con feature SDD (vínculo grueso: 1 ticket ↔ 1 feature)
+/sdd-generate                  → genera tasks + crea tickets en Jira + genera jira-map.yaml (vínculo fino: 1 ticket ↔ 1 task)
+/sdd-jira-sync                 → reconcilia ambos lados durante el desarrollo (bidireccional, gate humano)
+/sdd-jira-close                → cierra feature en SDD y mueve ticket principal a FINALIZADO
+```
+
+### Diseño de trazabilidad
+
+- `jira-map.yaml` es el único archivo que vincula tasks con tickets — `tasks.md` y `features.yaml` no se modifican.
+- Los tickets creados por el modelo llevan `label: sdd-generated` — distinguibles de tickets de PO en el board.
+- El campo `source` en el mapa indica el origen: `sdd` (creado por el modelo), `po` (creado por el PO), `merged` (unificados).
+- El campo `user_story` en el mapa mantiene trazabilidad `US-N → task → ticket`.
+
+### Configuración del Atlassian MCP
+
+> Si es tu primera vez, corré `/sdd-setup` — te guía por todo esto automáticamente.
+
+**Cursor** — `.vscode/mcp.json` ya incluye ambos servidores. Cursor los levanta automáticamente. La primera vez pedirá autenticar tu cuenta de Atlassian vía OAuth.
+
+**Claude Code** — `.claude/settings.json` ya incluye ambos servidores. Las credenciales van en `.env` en la raíz del proyecto (nunca en el repo):
+```bash
+ATLASSIAN_SITE_URL=https://tu-org.atlassian.net
+ATLASSIAN_USER_EMAIL=tu@email.com
+ATLASSIAN_API_TOKEN=tu-api-token
+```
+Generás el API token en: https://id.atlassian.com/manage-profile/security/api-tokens
+
+**Claude.ai** — conectar manualmente desde la UI: Atlassian desde el conector oficial, mcp-proguide como servidor MCP remoto.
 
 ---
 
@@ -97,6 +140,7 @@ El modelo captura automáticamente métricas de esfuerzo y calidad en cada fase:
 | `/sdd-validate` | Cobertura inicial del brief, gaps encontrados |
 | `/sdd-implement` | Ciclos de autocorrección, consultas de clarificación, tokens estimados |
 | `/sdd-review` | Resultado final, criterios sin test, gaps de UI, issues de calidad estructural (`structural_issues`) |
+| `/sdd-jira-*` | Tickets creados, sincronizados, estados actualizados, duplicados resueltos |
 
 Todos los datos se acumulan en `metrics/[feature_id]-metrics.md` con `iteration_number` para detectar retrabajo entre sesiones.
 
@@ -241,7 +285,7 @@ Este repo **es** el modelo. No hay un paquete separado que instalar. Lo que se l
 
 ```
 .claude/
-  commands/         ← los 15 comandos /sdd-* (el workflow completo)
+  commands/         ← los comandos /sdd-* (el workflow completo)
   skills/
     VERSION
     coding-standards/
@@ -249,6 +293,8 @@ Este repo **es** el modelo. No hay un paquete separado que instalar. Lo que se l
       references/   ← guías de implementación, gobernanza y auditoría
   settings.json
 CLAUDE.md           ← contexto global que el agente carga en cada turno
+.vscode/
+  mcp.json          ← configuración de MCPs para Cursor
 scripts/
   sdd-audit.mjs     ← auditor determinista (CI, sin IA)
   sync-skills.mjs   ← instalador de skills en ~/.claude/skills/
@@ -268,9 +314,9 @@ metrics/
   README.md         ← guía de telemetría DX
 ```
 
-> Los archivos como `input.md`, `constitution.md`, `spec.md`, `plan.md`, `tasks.md`
-> y carpetas como `specs/001-*/`, `metrics/001-*` son **artefactos generados** por el
-> modelo durante el ciclo de una feature — no pertenecen al modelo en sí.
+> Los archivos como `input.md`, `constitution.md`, `spec.md`, `plan.md`, `tasks.md`,
+> `jira-map.yaml` y carpetas como `specs/001-*/`, `metrics/001-*` son **artefactos generados**
+> por el modelo durante el ciclo de una feature — no pertenecen al modelo en sí.
 
 ---
 
@@ -287,6 +333,8 @@ pnpm install
 pnpm skills:sync                # instala coding-standards en ~/.claude/skills
 ```
 
+Una vez clonado, corré `/sdd-setup` para configurar el entorno y los MCPs.
+
 #### Opción B — Copiar solo los archivos del modelo
 
 Copiá las carpetas listadas arriba a la raíz de tu proyecto existente.
@@ -297,12 +345,16 @@ pnpm install
 pnpm skills:sync
 ```
 
+Una vez copiados los archivos, corré `/sdd-setup` para configurar el entorno y los MCPs.
+
 #### Opción C — Agregar como submódulo (equipos grandes)
 
 ```bash
 git submodule add https://github.com/patohed/sdd-model.git .sdd
 # Agregar los scripts a tu package.json raíz apuntando a .sdd/scripts/
 ```
+
+Una vez configurado el submódulo, corré `/sdd-setup` para configurar el entorno y los MCPs.
 
 ---
 
@@ -313,18 +365,21 @@ pnpm audit:sdd          # debe terminar sin FAILs (solo WARNs en repo vacío)
 pnpm skills:sync:dry    # previsualizá qué skills se instalan sin aplicar
 ```
 
-En Claude Code, escribí `/sdd-explain` para ver el modelo completo en contexto.
+En Claude Code, escribí `/sdd-setup` para configurar el entorno completo, o `/sdd-explain` para ver el modelo en contexto.
 
 ---
 
 ### Estructura esperada al arrancar una feature nueva
 
 ```
+/sdd-jira-start [TICKET-KEY]  ← (opcional) vinculá un ticket de Jira antes de arrancar
 drafts/          ← el equipo pone acá sus notas y borradores
 /sdd-refine      ← primer comando: genera input.md desde los drafts
-/sdd-generate    ← genera constitution.md, spec.md, plan.md, tasks.md
+/sdd-generate    ← genera constitution.md, spec.md, plan.md, tasks.md + jira-map.yaml
 /sdd-validate    ← quality gate antes de implementar
 /sdd-implement   ← implementación TDD
+/sdd-jira-sync   ← (opcional) reconciliá tasks con Jira durante el desarrollo
+/sdd-jira-close  ← (opcional) cerrá el ticket en Jira al finalizar
 ```
 
 ---
