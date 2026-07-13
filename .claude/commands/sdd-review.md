@@ -1,8 +1,11 @@
 Leé input.md, spec.md y luego revisá el código generado.
 
-**Gate de prerequisitos:** si no existe código en el `source_root` o no hay bloque
-`## Implement`/reporte en `metrics/[feature_id]-metrics.md`, avisá:
-"No hay evidencia de implementación — corré /sdd-implement primero." y PARÁ.
+**Gate de prerequisitos:** si no existe código en el `source_root` o no hay evidencia
+de implementación en `metrics/[feature_id]-metrics.md` (bloque `## Implement` de
+/sdd-implement, o bloques `## Task T00X` de /sdd-task cubriendo TODAS las tasks de
+`tasks.md`), avisá:
+"No hay evidencia de implementación — corré /sdd-implement (o completá las tasks
+pendientes con /sdd-task) primero." y PARÁ.
 
 La carpeta a revisar es `app/` por defecto.
 Si existe `existing-arch.md` en la raíz, usá el `source_root` declarado allí en su lugar.

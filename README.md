@@ -80,6 +80,7 @@ Desde `input.md`, los agentes generan cuatro artefactos operativos:
 | `/sdd-handoff` | Transversal | Comprime el estado de sesión para continuar en otra sesión o agente. Requiere DECISIONS.md al día. |
 | `/sdd-fix` | Transversal | Ruta corta para bugs/hotfixes: ≤3 archivos, test reproductor obligatorio, chequeo de colisiones |
 | `/sdd-implement` | 4 | Artefactos → código con TDD (gate: requiere validación previa) |
+| `/sdd-task` | 4 | Implementa una task puntual: `/sdd-task [feature_id] [task_id]`. Cierre automático al completar la última task |
 | `/sdd-checklist` | 4 | Genera criterios de verificación manual |
 | `/sdd-review` | 4 | Gate final: lógica + UI. Cierra la feature en el registro |
 | `/sdd-health` | Mant. | Auditoría por sprint: drift de `existing-arch.md` y del grafo, consistencia del registro, colisiones entre features OPEN |

@@ -68,6 +68,7 @@ Cargá el `.md` del comando solo cuando el trigger aparezca en la conversación 
 | validate, gap, cobertura, brief vs spec | `/sdd-validate` | Spec generada, querés verificar |
 | log, decisión, ADR, alternativas | `/sdd-log` | Hay un desvío que registrar |
 | implement, código, TDD, tareas | `/sdd-implement` | `tasks.md` listo |
+| task, una tarea, task específica, incremental | `/sdd-task` | Querés implementar UNA task puntual de una feature |
 | fix, bug, hotfix | `/sdd-fix` | Bug puntual (≤3 archivos) |
 | checklist, criterios manuales, UX | `/sdd-checklist` | Implementación cerrada |
 | review, gate final, UI vs spec | `/sdd-review` | Listo para gate final |
