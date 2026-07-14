@@ -278,6 +278,22 @@ Regla de diseño:
 
 ---
 
+### Kanban del proyecto
+
+El modelo incluye un tablero Kanban que visualiza el estado de todas las features leyendo directamente `specs/_registry/features.yaml`. Requiere que al menos una feature haya sido creada con `/sdd-generate`.
+
+```bash
+# Generar el HTML estático del tablero
+pnpm kanban               # genera kanban.html en la raíz del proyecto
+
+# Levantar el servidor local (recomendado)
+pnpm kanban:serve         # abre en http://127.0.0.1:<PORT> (el puerto se muestra en consola)
+```
+
+El servidor escucha solo en `127.0.0.1` (no expone la LAN). El HTML se regenera en cada recarga.
+
+---
+
 ## Cómo adoptar el modelo en tu proyecto
 
 ### Qué archivos conforman el modelo
