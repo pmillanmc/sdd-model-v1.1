@@ -1,0 +1,24 @@
+# Configuración de gitleaks para el modelo SDD
+# Extiende las reglas default y excluye falsos positivos conocidos:
+# los comandos del modelo documentan FORMATOS de credenciales (placeholders),
+# nunca credenciales reales.
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Placeholders documentales del modelo SDD"
+
+# Archivos que documentan formato de credenciales con valores de ejemplo
+paths = [
+  '''\.claude/commands/sdd-setup\.md''',
+  '''CLAUDE\.md''',
+  '''README\.md''',
+]
+
+# Valores placeholder explícitos usados en la documentación
+regexes = [
+  '''tu-api-token''',
+  '''tu@email\.com''',
+  '''tu-org\.atlassian\.net''',
+]

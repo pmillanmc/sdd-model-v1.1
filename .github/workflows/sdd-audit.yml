@@ -26,3 +26,15 @@ jobs:
 
       - name: Auditar consistencia del modelo SDD
         run: pnpm audit:sdd
+
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # gitleaks necesita historial para escanear commits del PR
+
+      - name: Escanear secretos (gitleaks)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
