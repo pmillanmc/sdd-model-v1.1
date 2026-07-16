@@ -48,3 +48,22 @@ Al terminar el reporte de validación, agregá al archivo `metrics/[feature_id]-
 ```
 
 Si el archivo de métricas no existe aún, crealo con solo ese bloque. El reporte completo se genera al final de `sdd-implement`.
+
+---
+
+## Kanban de estado (al finalizar)
+
+Una vez que el reporte de validación esté completo, verificá si el kanban ya está corriendo:
+
+```bash
+curl -s http://localhost:3131 > /dev/null 2>&1 && echo "running" || echo "stopped"
+```
+
+- Si responde `running` → mostrá al dev: `📊 Kanban activo en http://localhost:3131`
+- Si responde `stopped` → levantalo en background sin pedir confirmación:
+  ```bash
+  node scripts/kanban-server.mjs &
+  ```
+  Esperá 2 segundos, verificá nuevamente y mostrá: `📊 Kanban levantado en http://localhost:3131`
+
+No abras el browser automáticamente. El dev decide si lo abre.

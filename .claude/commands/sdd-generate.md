@@ -152,3 +152,22 @@ tasks:
 - `jira-map.yaml` debe generarse siempre, aunque todos los `jira_ticket` sean `null`.
 - No modificar `tasks.md` — el mapa vive únicamente en `jira-map.yaml`.
 - Incluir `user_story` en el mapa para mantener trazabilidad US-N → task → ticket.
+
+---
+
+## Kanban de estado (al finalizar)
+
+Una vez que todos los artefactos estén generados, verificá si el kanban ya está corriendo:
+
+```bash
+curl -s http://localhost:3131 > /dev/null 2>&1 && echo "running" || echo "stopped"
+```
+
+- Si responde `running` → mostrá al dev: `📊 Kanban activo en http://localhost:3131`
+- Si responde `stopped` → levantalo en background sin pedir confirmación:
+  ```bash
+  node scripts/kanban-server.mjs &
+  ```
+  Esperá 2 segundos, verificá nuevamente y mostrá: `📊 Kanban levantado en http://localhost:3131`
+
+No abras el browser automáticamente. El dev decide si lo abre.
