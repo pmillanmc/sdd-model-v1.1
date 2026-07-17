@@ -402,7 +402,7 @@ Cuando el usuario confirme que los servers están activos:
    ✅ Servers MCP activos en [IDE]
 
 🚀 Próximos pasos:
-   Inspeccioná .sdd/specs/ para decidir el siguiente comando:
+   Inspeccioná specs/ para decidir el siguiente comando:
    • Sin specs todavía → /sdd-refine
    • Con input.md sin spec.md → /sdd-generate <feature_id>
    • Con spec.md sin validar → /sdd-validate <feature_id>
@@ -415,7 +415,7 @@ Cuando el usuario confirme que los servers están activos:
    estándar del modelo. Sin /sdd-log no hay fallback.
 ```
 
-**Inspección de `.sdd/specs/`** para próximos pasos: leé el directorio y mostrá solo la sugerencia que corresponda al estado real del proyecto, no las 4 opciones genéricas. Si `.sdd/specs/` no existe, recomendá `/sdd-refine`.
+**Inspección de `specs/`** para próximos pasos: leé el directorio y mostrá solo la sugerencia que corresponda al estado real del proyecto, no las 4 opciones genéricas. Si `specs/` no existe, recomendá `/sdd-refine`.
 
 ---
 
@@ -439,7 +439,7 @@ Cuando el usuario confirme que los servers están activos:
 - Mensaje de cierre específico al IDE detectado. Ref: bug 3.5.
 - Validación del token Atlassian vía REST `/myself` inmediatamente después de escribir `.env`. Ref: "Mejora — Validar token" del handoff.
 - Guía manual paso a paso para que el usuario active los servers MCP en su IDE (limitación: el agente no puede manipular toggles de la UI del IDE).
-- Próximos pasos del resumen final basados en estado real de `.sdd/specs/` en lugar de hardcoded `/sdd-jira-start`. Ref: bug 1.
+- Próximos pasos del resumen final basados en estado real de `specs/` en lugar de hardcoded `/sdd-jira-start`. Ref: bug 1.
 - Numeración visible de pasos eliminada del output al usuario. Numeración interna conservada para el agente. Ref: bug 2.
 - Documentación cruzada con `CLAUDE.md`: el setup deja claro que el fallback MCP→REST en runtime queda gobernado por la regla de `CLAUDE.md` y se registra invocando `/sdd-log` (no escribiendo en `DECISIONS.md` directamente).
 
