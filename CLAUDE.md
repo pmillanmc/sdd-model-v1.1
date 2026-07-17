@@ -17,16 +17,23 @@ Si el repo ya tiene código: corré /sdd-scan UNA vez
     ↓
 existing-arch.md (estado descriptivo del codebase)
 
-[PREPARACIÓN — sin comandos]
-El equipo pone borradores en drafts/
-(notas, wireframes, restricciones, contexto)
+[DISCOVERY — opcional, antes de los borradores]
+Si tenés una idea cruda sin borradores todavía:
+   /sdd-brief → convierte la idea en un brief de negocio en drafts/
+   (es un insumo más para refine, NO lo reemplaza)
 
-    ↓  PRIMER COMANDO
-   /sdd-refine   ← o usar el skill `business-clarifier` de Claude (equivalentes, no usar ambos)
+[PREPARACIÓN — sin comandos obligatorios]
+El equipo pone borradores en drafts/
+(notas, wireframes, restricciones, y el brief si se usó /sdd-brief)
+
+    ↓  PRIMER COMANDO DEL CICLO
+   /sdd-refine   ← consolida TODO drafts/ en input.md
         ↓
 input.md (brief pulido)
     ↓  /sdd-generate
 constitution.md + spec.md + plan.md + tasks.md
+    ↓  /sdd-ui-behaviour   (solo si la feature tiene UI)
+specs/[feature_id]/ui-behaviour.md
     ↓  /sdd-validate
     gap → humano ajusta → /sdd-log → DECISIONS.md
     ↓  /sdd-implement
@@ -63,8 +70,10 @@ Cargá el `.md` del comando solo cuando el trigger aparezca en la conversación 
 | setup, configurar, primera vez, instalar, mcp | `/sdd-setup` | Primera vez en el proyecto o entorno sin configurar |
 | explain, qué es, cómo funciona, onboarding | `/sdd-explain` | Primer contacto con el modelo |
 | scan, codebase, código existente, brownfield | `/sdd-scan` | Proyecto con código previo |
-| refine, clarifica, grilling, ambigüedad, brief | `/sdd-refine` | Hay `drafts/` sin pulir |
+| brief, idea, discovery, clarificar idea, empezar de cero | `/sdd-brief` | Idea cruda, todavía sin borradores |
+| refine, clarifica, grilling, ambigüedad, borradores | `/sdd-refine` | Hay `drafts/` sin pulir |
 | generate, spec, constitution, plan, tasks | `/sdd-generate` | `input.md` listo |
+| ui behaviour, ui behavior, pantallas, estados, flujos de usuario | `/sdd-ui-behaviour` | Spec generada y la feature tiene UI |
 | validate, gap, cobertura, brief vs spec | `/sdd-validate` | Spec generada, querés verificar |
 | log, decisión, ADR, alternativas | `/sdd-log` | Hay un desvío que registrar |
 | implement, código, TDD, tareas | `/sdd-implement` | `tasks.md` listo |

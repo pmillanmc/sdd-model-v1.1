@@ -1,4 +1,5 @@
 Leé input.md y luego leé constitution.md, spec.md, plan.md y tasks.md.
+Si existe `specs/[feature_id]/ui-behaviour.md`, leélo TAMBIÉN.
 Si existe `existing-arch.md` en la raíz, leélo TAMBIÉN (modo brownfield).
 
 Verificá que los artefactos generados cubren el brief original. Para cada punto del input.md, chequeá:
@@ -12,6 +13,20 @@ En modo brownfield, validá ADEMÁS:
 5. ¿`constitution.md` evita contradecir patrones inquebrantables de `existing-arch.md`?
 6. ¿`tasks.md` distingue entre archivos a crear y archivos existentes a modificar?
 Cualquier contradicción frente a `existing-arch.md` es un ❌ y debe registrarse vía /sdd-log si el humano decide ignorarla.
+
+**Cobertura de comportamiento de UI (regla crear-o-loguear):**
+Si la sección UI/FLUJO de `input.md` describe comportamiento no trivial Y no existe
+`specs/[feature_id]/ui-behaviour.md`, marcalo como ⚠️ y NO lo dejes pasar en silencio:
+
+    ⚠️ La feature tiene comportamiento de UI en input.md pero no hay ui-behaviour.md.
+       → Corré /sdd-ui-behaviour para especificarlo, o registrá la omisión con /sdd-log.
+
+El humano decide: producir el artefacto o registrar un ADR. No cierres la validación con
+este punto irresuelto por una de las dos vías.
+
+Si `ui-behaviour.md` existe, incluílo en la cobertura: cada pantalla/flujo debe traccionar
+a una user story de `spec.md`, y cada punto de UI de `input.md` debe estar cubierto por
+alguna pantalla.
 
 Al terminar, generá un reporte con este formato:
 

@@ -270,6 +270,24 @@ for (const f of features) {
       pass("schema", `${f.id}: tasks.md tiene trazabilidad US-N en todas las tareas`);
     }
   }
+
+  // ui-behaviour.md (opcional): si existe, debe tener las secciones ancla.
+  // No se exige su existencia — features sin UI no lo generan (ver /sdd-validate,
+  // regla crear-o-loguear). Solo se valida el schema cuando el archivo está presente.
+  const uiFile = `${dir}/ui-behaviour.md`;
+  if (exists(uiFile)) {
+    const uiContent = read(uiFile);
+    const hasPantallas = /^##\s+pantallas/im.test(uiContent);
+    const hasFlujos = /^##\s+flujos/im.test(uiContent);
+    if (!hasPantallas || !hasFlujos) {
+      warn(
+        "schema",
+        `${f.id}: ui-behaviour.md incompleto (falta ${!hasPantallas ? '"## Pantallas"' : '"## Flujos"'}) — regenerá con /sdd-ui-behaviour`
+      );
+    } else {
+      pass("schema", `${f.id}: ui-behaviour.md tiene estructura mínima (Pantallas + Flujos)`);
+    }
+  }
 }
 
 report();
