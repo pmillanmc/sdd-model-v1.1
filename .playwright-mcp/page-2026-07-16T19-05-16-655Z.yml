@@ -1,0 +1,374 @@
+- generic [active] [ref=f4e1]:
+  - generic [ref=f4e2]:
+    - generic [ref=f4e5]:
+      - generic [ref=f4e6]: Análisis · 16 jul 2026 · GDE
+      - heading "KirovsSDD Model v1.1" [level=1] [ref=f4e7]:
+        - text: KirovsSDD
+        - generic [ref=f4e8]: Model v1.1
+      - paragraph [ref=f4e9]: Comparativa técnica para adopción en sector público argentino. 7 ejes, fuentes verificadas en vivo, recomendación accionable.
+      - generic [ref=f4e10]:
+        - generic [ref=f4e11]:
+          - generic [ref=f4e12]: "7"
+          - generic [ref=f4e13]: Ejes comparados
+        - generic [ref=f4e14]:
+          - generic [ref=f4e15]: SDD
+          - generic [ref=f4e16]: Recomendado GDE
+        - generic [ref=f4e17]:
+          - generic [ref=f4e18]: "3"
+          - generic [ref=f4e19]: Escenarios
+        - generic [ref=f4e20]:
+          - generic [ref=f4e21]: B
+          - generic [ref=f4e22]: Escenario recomendado
+    - generic [ref=f4e23]: scroll
+  - separator [ref=f4e24]
+  - generic [ref=f4e25]:
+    - generic [ref=f4e26]: Fuentes
+    - heading "Metodología y confiabilidad" [level=2] [ref=f4e27]
+    - paragraph [ref=f4e28]:
+      - text: "Todo lo afirmado tiene una marca:"
+      - strong [ref=f4e29]: "[V]"
+      - text: verificado en fuente directa ·
+      - strong [ref=f4e30]: "[I]"
+      - text: inferencia del analista.
+    - generic [ref=f4e31]:
+      - generic [ref=f4e32]:
+        - generic [ref=f4e33]: sdd-model-v1.1
+        - generic [ref=f4e34]: Leído desde el repo en producción
+        - generic [ref=f4e35]:
+          - text: Archivos leídos vía MCP de GitHub directamente de
+          - code [ref=f4e36]: main
+          - text: ": README.md, CLAUDE.md, scripts/sdd-audit.mjs, .claude/commands/* (22 comandos), sdd-implement.md y sdd-review.md en detalle, .github/workflows/sdd-audit.yml y el árbol de specs/."
+        - generic [ref=f4e37]:
+          - generic [ref=f4e38]: README.md
+          - generic [ref=f4e39]: CLAUDE.md
+          - generic [ref=f4e40]: 22 commands
+          - generic [ref=f4e41]: sdd-audit.mjs
+          - generic [ref=f4e42]: CI workflow
+      - generic [ref=f4e43]:
+        - generic [ref=f4e44]: Kiro (AWS)
+        - generic [ref=f4e45]: Navegación en vivo — 16-jul-2026
+        - generic [ref=f4e46]: Páginas verificadas con browser en tiempo real. Incluye validación adicional con Playwright el mismo día del análisis para detectar cambios post-redacción. Discrepancias internas de kiro.dev también documentadas.
+        - generic [ref=f4e47]:
+          - generic [ref=f4e48]: kiro.dev/pricing
+          - generic [ref=f4e49]: docs/specs
+          - generic [ref=f4e50]: docs/steering
+          - generic [ref=f4e51]: privacy-and-security
+          - generic [ref=f4e52]: Playwright live
+  - separator [ref=f4e53]
+  - generic [ref=f4e54]:
+    - generic [ref=f4e55]: Resumen
+    - heading "7 ejes. Un ganador por criterio." [level=2] [ref=f4e56]
+    - paragraph [ref=f4e57]: La tabla completa. Cada fila tiene análisis expandible abajo.
+    - table [ref=f4e59]:
+      - rowgroup [ref=f4e60]:
+        - row [ref=f4e61]:
+          - columnheader "Eje" [ref=f4e62]
+          - columnheader "Kiro" [ref=f4e63]
+          - columnheader "SDD Model v1.1" [ref=f4e64]
+          - columnheader "Ganador" [ref=f4e65]
+      - rowgroup [ref=f4e66]:
+        - row [ref=f4e67]:
+          - cell "1. Modelo conceptual y flujo" [ref=f4e68]
+          - cell "3 fases · Quick Plan · Vibe mode" [ref=f4e69]
+          - cell "8 fases · 22 comandos · ciclo completo" [ref=f4e70]
+          - cell "Empate" [ref=f4e71]
+        - row [ref=f4e73]:
+          - cell "2. Trazabilidad" [ref=f4e74]
+          - cell "req→design→task · status en IDE" [ref=f4e75]
+          - cell "US-N→task→ticket · audit determinista" [ref=f4e76]
+          - cell "SDD" [ref=f4e77]
+        - row [ref=f4e79]:
+          - cell "3. Gobernanza y gates" [ref=f4e80]
+          - cell "Supervised mode · no auditor en CI" [ref=f4e81]
+          - cell "Prompt gates + sdd-audit.mjs en CI" [ref=f4e82]
+          - cell "SDD" [ref=f4e83]
+        - row [ref=f4e85]:
+          - cell "4. Extensibilidad" [ref=f4e86]
+          - cell "IDE + CLI + Web + Mobile + ACP + MDM" [ref=f4e87]
+          - cell "Agnóstico · Jira MCP · multi-repo" [ref=f4e88]
+          - cell "Empate" [ref=f4e89]
+        - row [ref=f4e91]:
+          - cell "5. Costo operativo / lock-in" [ref=f4e92]
+          - cell "Créditos AWS · no roll-over mensual" [ref=f4e93]
+          - cell "Tokens propios · sin plataforma intermedia" [ref=f4e94]
+          - cell "SDD" [ref=f4e95]
+        - row [ref=f4e97]:
+          - cell "6. Curva / madurez" [ref=f4e98]
+          - cell "IDE 1.0 · docs pulidas · AWS backing" [ref=f4e99]
+          - cell "Docs internas sólidas · autor único" [ref=f4e100]
+          - cell "Kiro" [ref=f4e101]
+        - row [ref=f4e103]:
+          - cell "7. Fit para GDE" [ref=f4e104]
+          - cell "GovCloud US · compliance AWS · residencia?" [ref=f4e105]
+          - cell "Brownfield nativo · auditoría en CI · Windows" [ref=f4e106]
+          - cell "SDD" [ref=f4e107]
+  - separator [ref=f4e109]
+  - generic [ref=f4e110]:
+    - generic [ref=f4e111]: Análisis
+    - heading "Cada eje, en profundidad" [level=2] [ref=f4e112]
+    - paragraph [ref=f4e113]: Expandí cada fila para leer el análisis completo con fuentes.
+    - generic [ref=f4e114]:
+      - generic [ref=f4e116] [cursor=pointer]:
+        - generic [ref=f4e117]:
+          - generic [ref=f4e118]: EJE 01
+          - generic [ref=f4e119]: Modelo conceptual y flujo de trabajo
+          - generic [ref=f4e120]: Empate
+        - generic [ref=f4e121]: ▼
+      - generic [ref=f4e123] [cursor=pointer]:
+        - generic [ref=f4e124]:
+          - generic [ref=f4e125]: EJE 02
+          - generic [ref=f4e126]: Trazabilidad
+          - generic [ref=f4e127]: SDD
+        - generic [ref=f4e128]: ▼
+      - generic [ref=f4e130] [cursor=pointer]:
+        - generic [ref=f4e131]:
+          - generic [ref=f4e132]: EJE 03
+          - generic [ref=f4e133]: Gobernanza y gates — el eje más decisivo para GDE
+          - generic [ref=f4e134]: SDD
+        - generic [ref=f4e135]: ▼
+      - generic [ref=f4e137] [cursor=pointer]:
+        - generic [ref=f4e138]:
+          - generic [ref=f4e139]: EJE 04
+          - generic [ref=f4e140]: Extensibilidad e integración
+          - generic [ref=f4e141]: Empate
+        - generic [ref=f4e142]: ▼
+      - generic [ref=f4e144] [cursor=pointer]:
+        - generic [ref=f4e145]:
+          - generic [ref=f4e146]: EJE 05
+          - generic [ref=f4e147]: Costo operativo, lock-in y reproducibilidad
+          - generic [ref=f4e148]: SDD
+        - generic [ref=f4e149]: ▼
+      - generic [ref=f4e151] [cursor=pointer]:
+        - generic [ref=f4e152]:
+          - generic [ref=f4e153]: EJE 06
+          - generic [ref=f4e154]: Curva de aprendizaje y madurez
+          - generic [ref=f4e155]: Kiro
+        - generic [ref=f4e156]: ▼
+      - generic [ref=f4e158] [cursor=pointer]:
+        - generic [ref=f4e159]:
+          - generic [ref=f4e160]: EJE 07
+          - generic [ref=f4e161]: Fit específico para GDE
+          - generic [ref=f4e162]: SDD
+        - generic [ref=f4e163]: ▼
+  - separator [ref=f4e164]
+  - generic [ref=f4e165]:
+    - generic [ref=f4e166]: Validación en vivo
+    - heading "Verificación Playwright — 16 jul 2026" [level=2] [ref=f4e167]
+    - paragraph [ref=f4e168]: Navegación en vivo post-redacción. Datos confirmados, discrepancias y novedades.
+    - generic [ref=f4e169]:
+      - generic [ref=f4e170]:
+        - generic [ref=f4e171]: ✅
+        - generic [ref=f4e172]:
+          - generic [ref=f4e173]: Precios y créditos — sin cambios
+          - generic [ref=f4e174]: Free 50 · Pro $20/1000 · Pro+ $40/2000 · Pro Max $100/5000 · Power $200/10000. Add-on $0.04/crédito. Roll-over mensual confirmado como nulo para créditos de plan. Todos los valores exactos.
+      - generic [ref=f4e175]:
+        - generic [ref=f4e176]: ✅
+        - generic [ref=f4e177]:
+          - generic [ref=f4e178]: Supervised mode — cita verificada
+          - generic [ref=f4e179]:
+            - text: "Texto exacto en privacidad y seguridad:"
+            - emphasis [ref=f4e180]: "\"Supervised mode is a code review workflow, not a security control… does not function as a sandbox, isolation boundary, or access control mechanism.\""
+      - generic [ref=f4e181]:
+        - generic [ref=f4e182]: ⚠️
+        - generic [ref=f4e183]:
+          - generic [ref=f4e184]: Modelo Free tier — inconsistencia en kiro.dev
+          - generic [ref=f4e185]: "La página tiene dos textos contradictorios: el plan card dice Sonnet 4.5 y el FAQ dice Sonnet 4.6. El análisis original usó el dato del FAQ (4.6). Es un bug de kiro.dev, no del análisis."
+      - generic [ref=f4e186]:
+        - generic [ref=f4e187]: ⚠️
+        - generic [ref=f4e188]:
+          - generic [ref=f4e189]: Add-on roll-over — matiz no mencionado
+          - generic [ref=f4e190]:
+            - text: Los créditos
+            - emphasis [ref=f4e191]: add-on comprados
+            - text: SÍ hacen roll-over (12 meses desde la fecha de compra). Los créditos del plan mensual no. El análisis agrupaba ambos bajo "no roll-over" — corrección menor.
+      - generic [ref=f4e192]:
+        - generic [ref=f4e193]: 🆕
+        - generic [ref=f4e194]:
+          - generic [ref=f4e195]: Analyze Requirements — feature nueva
+          - generic [ref=f4e196]:
+            - text: "Kiro agregó un paso previo al diseño:"
+            - emphasis [ref=f4e197]: "\"Catch inconsistencies, ambiguities, and gaps in your requirements before design.\""
+            - text: No estaba en el análisis original. Acorta la brecha con el /sdd-validate del modelo SDD.
+      - generic [ref=f4e198]:
+        - generic [ref=f4e199]: ✅
+        - generic [ref=f4e200]:
+          - generic [ref=f4e201]: GovCloud (US) — confirmado y acotado
+          - generic [ref=f4e202]: ~20% más caro que commercial. Sin Free tier en GovCloud. Requiere suscripción paga y autenticación vía AWS IAM Identity Center. El análisis estaba correcto en todos los puntos.
+  - separator [ref=f4e203]
+  - generic [ref=f4e204]:
+    - generic [ref=f4e205]: Trade-offs
+    - heading "Riesgos por opción" [level=2] [ref=f4e206]
+    - paragraph [ref=f4e207]: Qué se gana y qué se resigna con cada camino.
+    - generic [ref=f4e208]:
+      - generic [ref=f4e209]:
+        - generic [ref=f4e210]:
+          - generic [ref=f4e211]: Opción A
+          - generic [ref=f4e212]: Adoptar Kiro
+        - list [ref=f4e213]:
+          - listitem [ref=f4e214]:
+            - text: —
+            - strong [ref=f4e215]: Lock-in AWS
+            - generic [ref=f4e216]: I
+            - text: — créditos, ruteo de modelos y backend son propietarios; salida costosa.
+          - listitem [ref=f4e217]:
+            - text: —
+            - strong [ref=f4e218]: Soberanía de datos
+            - generic [ref=f4e219]: I
+            - text: — sin GovCloud para Argentina, el código de GDE va a AWS commercial.
+          - listitem [ref=f4e220]:
+            - text: —
+            - strong [ref=f4e221]: Gate ≠ control
+            - generic [ref=f4e222]: V
+            - text: — Quick Plan/Autopilot saltean gates; sin auditor de proceso en CI.
+          - listitem [ref=f4e223]:
+            - text: —
+            - strong [ref=f4e224]: Costo opaco
+            - generic [ref=f4e225]: V
+            - text: — "Auto" rutea a modelos no explícitos; difícil de presupuestar.
+        - generic [ref=f4e226]:
+          - strong [ref=f4e227]: "A favor:"
+          - text: madurez, soporte AWS, UX, paralelismo de tasks, distribución por MDM.
+      - generic [ref=f4e228]:
+        - generic [ref=f4e229]:
+          - generic [ref=f4e230]: Opción B
+          - generic [ref=f4e231]: Adoptar SDD v1.1
+        - list [ref=f4e232]:
+          - listitem [ref=f4e233]:
+            - text: —
+            - strong [ref=f4e234]: Bus-factor 1
+            - generic [ref=f4e235]: V
+            - text: — autor único, sin comunidad ni soporte externo.
+          - listitem [ref=f4e236]:
+            - text: —
+            - strong [ref=f4e237]: Gate incompleto en main
+            - generic [ref=f4e238]: V
+            - text: — artefactos firmados SHA256 son diseño de branch, no producción.
+          - listitem [ref=f4e239]:
+            - text: —
+            - strong [ref=f4e240]: Disciplina de proceso
+            - generic [ref=f4e241]: V
+            - text: — 22 comandos exigen adopción y training.
+          - listitem [ref=f4e242]:
+            - text: —
+            - strong [ref=f4e243]: Sin UX de producto
+            - generic [ref=f4e244]: V
+            - text: — no hay IDE, dashboards nativos ni ejecución paralela out of the box.
+        - generic [ref=f4e245]:
+          - strong [ref=f4e246]: "A favor:"
+          - text: reproducibilidad, cero lock-in, auditoría determinista, control total, probado en GDE/Windows.
+      - generic [ref=f4e247]:
+        - generic [ref=f4e248]:
+          - generic [ref=f4e249]: Opción C
+          - generic [ref=f4e250]: Híbrido
+        - list [ref=f4e251]:
+          - listitem [ref=f4e252]:
+            - text: —
+            - strong [ref=f4e253]: Doble fuente de verdad
+            - generic [ref=f4e254]: I
+            - text: — .kiro/specs/ vs specs/ pueden divergir.
+          - listitem [ref=f4e255]:
+            - text: —
+            - strong [ref=f4e256]: Costo duplicado
+            - generic [ref=f4e257]: V
+            - text: — pagar créditos Kiro
+            - emphasis [ref=f4e258]: "y"
+            - text: tokens Claude propios.
+          - listitem [ref=f4e259]:
+            - text: —
+            - strong [ref=f4e260]: Mapeo no automatizado
+            - generic [ref=f4e261]: I
+            - text: — requiere un piloto para validar que el mapeo es viable sin doble mantenimiento.
+        - generic [ref=f4e262]:
+          - strong [ref=f4e263]: "A favor:"
+          - text: combina UX de Kiro con enforcement de SDD — si se define bien el límite autoritativo.
+  - separator [ref=f4e264]
+  - generic [ref=f4e265]:
+    - generic [ref=f4e266]: Recomendación
+    - heading "Tres escenarios. Una recomendación principal." [level=2] [ref=f4e267]
+    - paragraph [ref=f4e268]: "Para GDE, con los cinco criterios declarados: auditoría, reproducibilidad, soberanía, brownfield, Windows."
+    - generic [ref=f4e269]:
+      - generic [ref=f4e270]:
+        - generic [ref=f4e271]: no recomendado hoy
+        - generic [ref=f4e272]: Escenario A — Kiro puro
+        - generic [ref=f4e273]: Preferible si GDE prioriza adopción rápida
+        - generic [ref=f4e274]: Cuando el equipo crece con devs no técnicos y se necesita estandarizar herramienta y distribuir políticas por MDM. Requiere resolver la pregunta de residencia de datos y aceptar el lock-in AWS.
+        - generic [ref=f4e275]:
+          - generic [ref=f4e276]: · Se resuelve la soberanía de datos (acuerdo legal con AWS o aceptación del organismo)
+          - generic [ref=f4e277]: · Se acepta el lock-in y el modelo de créditos como costo previsible
+          - generic [ref=f4e278]: · No es prioridad el auditor de proceso en CI
+      - generic [ref=f4e279]:
+        - generic [ref=f4e280]: recomendado como base
+        - generic [ref=f4e281]: Escenario B — SDD v1.1
+        - generic [ref=f4e282]: La recomendación primaria para GDE
+        - generic [ref=f4e283]: "Encaja con las cinco prioridades del proyecto. Condiciones para que sea sólido en producción estatal: cerrar el gate firmado, mitigar bus-factor y extender el auditor a gates específicos de GDE."
+        - generic [ref=f4e284]:
+          - generic [ref=f4e285]: · Promover artefactos de aprobación SHA256 a main
+          - generic [ref=f4e286]: · Documentar y sumar un segundo mantenedor
+          - generic [ref=f4e287]: · Extender auditor a gates Java/Oracle/OpenShift si aplica
+      - generic [ref=f4e288]:
+        - generic [ref=f4e289]: viable como transición
+        - generic [ref=f4e290]: Escenario C — Híbrido
+        - generic [ref=f4e291]: Kiro como motor de ejecución + SDD como governance
+        - generic [ref=f4e292]: Kiro para specs, paralelismo de tasks y hooks. SDD para features.yaml, DECISIONS.md, metrics/ y pnpm audit:sdd como fuente de verdad de proceso. Viable si el mapeo .kiro/specs/* → specs/* es automatizable.
+        - generic [ref=f4e293]:
+          - generic [ref=f4e294]: · Validar mapeo con un piloto de 1 feature GDE
+          - generic [ref=f4e295]: · Definir cuál es el artefacto autoritativo
+          - generic [ref=f4e296]: · Presupuesto que tolera créditos Kiro + tokens propios
+  - separator [ref=f4e297]
+  - generic [ref=f4e298]:
+    - generic [ref=f4e299]: Síntesis
+    - heading "¿Se complementan o uno supera al otro?" [level=2] [ref=f4e300]
+    - paragraph [ref=f4e301]: "El veredicto teórico: en qué capa opera cada uno y por qué eso define la respuesta."
+    - generic [ref=f4e302]:
+      - generic [ref=f4e303]:
+        - paragraph [ref=f4e304]:
+          - text: La pregunta correcta no es
+          - strong [ref=f4e305]: "\"¿Kiro o SDD?\""
+          - text: sino
+          - strong [ref=f4e306]: "\"¿en qué capa estás comprando?\""
+          - text: Kiro es un
+          - emphasis [ref=f4e307]: producto de ejecución
+          - text: ": empaqueta un flujo de trabajo (spec → design → task → código) dentro de un IDE con UX cuidada, paralelismo automático y respaldo de AWS. SDD es un"
+          - emphasis [ref=f4e308]: framework de gobernanza
+          - text: ": define las reglas del proceso y las hace cumplir de forma determinista, independientemente del IDE o del agente que se use. Esa diferencia de capa es lo que hace que la comparativa no sea simétrica."
+        - paragraph [ref=f4e309]:
+          - text: Donde Kiro supera a SDD es en
+          - strong [ref=f4e310]: fricción de adopción
+          - text: ". El flujo de tres fases con botones, el Quick Plan para prototipos, el status en tiempo real en el IDE, la distribución de políticas por MDM y el respaldo institucional de AWS son ventajas reales para equipos que necesitan estandarizar rápido con bajo costo de training. SDD requiere disciplina de proceso consciente: 22 comandos, artefactos intermedios obligatorios y un auditor que para el merge si detecta inconsistencias. Para un equipo sin esa cultura previa, la curva es alta."
+        - paragraph [ref=f4e311]:
+          - text: Donde SDD supera a Kiro de forma estructural es en
+          - strong [ref=f4e312]: trazabilidad auditable y soberanía
+          - text: . El auditor determinista
+          - code [ref=f4e313]: sdd-audit.mjs
+          - text: "no usa IA, corre en CI y falla el build si el proceso no se siguió. Kiro no tiene equivalente: Supervised mode es explícitamente un workflow de review, no un control de seguridad. Además, SDD procesa los artefactos donde el equipo elija — la cuenta Claude del organismo —, sin pasar por AWS commercial, lo que elimina la pregunta de residencia de datos que Kiro abre para el contexto argentino."
+        - paragraph [ref=f4e314]:
+          - text: El escenario más interesante teóricamente es el
+          - strong [ref=f4e315]: híbrido
+          - text: ": usar Kiro como motor de ejecución (specs, tasks, paralelismo) y SDD como capa de gobernanza (features.yaml, DECISIONS.md, metrics/, audit en CI). Kiro generaría los artefactos; SDD verificaría que cumplen las reglas del proceso. La viabilidad depende de si el mapeo"
+          - code [ref=f4e316]: .kiro/specs/*
+          - text: →
+          - code [ref=f4e317]: specs/*
+          - text: es automatizable sin doble mantenimiento — algo que solo un piloto puede confirmar.
+        - paragraph [ref=f4e318]: Para GDE específicamente, la gobernanza es el criterio no negociable. Un artefacto de aprobación que lo firma el LLM sin verificación externa es una brecha en ambos sistemas, pero SDD es el único que tiene la arquitectura — el auditor determinista, la cadena US-N → task → ticket, el registro ADR, los gates de prerequisito — para cerrarla progresivamente sin reemplazar la herramienta. En Kiro, esa capa no existe y no está en el roadmap público.
+      - generic [ref=f4e319]:
+        - generic [ref=f4e320]:
+          - generic [ref=f4e321]: Kiro gana en
+          - generic [ref=f4e322]:
+            - strong [ref=f4e323]: Fricción de adopción.
+            - text: IDE integrado, UX con botones, Quick Plan para prototipos rápidos, distribución de políticas por MDM, respaldo AWS con roadmap público y comunidad activa. Para equipos grandes que arrancan desde cero, es el camino de menor resistencia.
+        - generic [ref=f4e324]:
+          - generic [ref=f4e325]: SDD gana en
+          - generic [ref=f4e326]:
+            - strong [ref=f4e327]: Gobernanza ejecutable.
+            - text: El único de los dos con un auditor determinista en CI que no usa IA y para el merge si el proceso no se siguió. Trazabilidad estructural US-N → task → ticket verificable por código, sin lock-in de plataforma, sin pregunta de soberanía de datos.
+        - generic [ref=f4e328]:
+          - generic [ref=f4e329]: La brecha que comparten
+          - generic [ref=f4e330]:
+            - strong [ref=f4e331]: El artefacto de aprobación lo produce el LLM.
+            - text: En ninguno de los dos hay firma humana criptográfica en producción hoy. SDD tiene el diseño para cerrar esa brecha (SHA256 + artefactos firmados) — pero vive en un branch sin mergear. Eso es lo próximo a resolver para GDE.
+  - separator [ref=f4e332]
+  - contentinfo [ref=f4e333]:
+    - paragraph [ref=f4e334]:
+      - text: Kiro vs SDD Model — Análisis para GDE · 16 jul 2026 ·
+      - link "ver markdown original" [ref=f4e335] [cursor=pointer]:
+        - /url: comparativa-kiro-vs-sdd-model-gde.md

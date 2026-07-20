@@ -1,0 +1,374 @@
+- generic [active] [ref=f2e1]:
+  - navigation "Main" [ref=f2e3]:
+    - text: Search
+    - generic [ref=f2e5]:
+      - link "Loading image... Kiro" [ref=f2e8] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f2e12]:
+          - generic [ref=f2e13]: Loading image...
+          - img "Kiro" [ref=f2e15]
+      - generic [ref=f2e16]:
+        - button "Search across all Kiro content (Command+K)" [ref=f2e20] [cursor=pointer]:
+          - generic [ref=f2e21]: Search
+        - button "Main Navigation" [ref=f2e25] [cursor=pointer]
+  - main [ref=f2e28]:
+    - generic [ref=f2e31]:
+      - heading "Pricing" [level=1] [ref=f2e35]
+      - generic [ref=f2e36]:
+        - tablist [ref=f2e37]:
+          - tab "Individuals" [selected] [ref=f2e38] [cursor=pointer]
+          - tab "Teams" [ref=f2e39] [cursor=pointer]
+        - tabpanel [ref=f2e40]:
+          - heading [level=2] [ref=f2e41]: Individual plans
+          - generic [ref=f2e42]:
+            - generic [ref=f2e43]: Get $20 credited toward your subscription when you first upgrade to a paid plan using social login or AWS Builder ID.
+            - generic [ref=f2e53]:
+              - generic [ref=f2e54]:
+                - heading [level=3] [ref=f2e56]: KIRO FREE
+                - generic [ref=f2e57]:
+                  - generic [ref=f2e58]: $0
+                  - generic [ref=f2e59]: per month
+                - list [ref=f2e60]:
+                  - listitem [ref=f2e61]:
+                    - generic [ref=f2e66]:
+                      - text: "50"
+                      - link [ref=f2e67] [cursor=pointer]:
+                        - /url: "#what-is-a-credit"
+                        - text: credits
+                  - listitem [ref=f2e68]:
+                    - generic [ref=f2e72]: Access to open weight models* and Claude Sonnet 4.5
+                - link [ref=f2e75] [cursor=pointer]:
+                  - /url: /downloads/
+                  - generic [ref=f2e76]: Download now
+              - generic [ref=f2e77]:
+                - heading [level=3] [ref=f2e79]: KIRO PRO
+                - generic [ref=f2e80]:
+                  - generic [ref=f2e81]: $20
+                  - generic [ref=f2e82]: per user / month
+                - list [ref=f2e83]:
+                  - listitem [ref=f2e84]:
+                    - generic [ref=f2e89]:
+                      - text: 1,000
+                      - link [ref=f2e90] [cursor=pointer]:
+                        - /url: "#what-is-a-credit"
+                        - text: credits
+                  - listitem [ref=f2e91]:
+                    - generic [ref=f2e95]: Access to premium models**
+                  - listitem [ref=f2e97]:
+                    - generic [ref=f2e101]: Add-on credits ($0.04/credit)
+                - link [ref=f2e104] [cursor=pointer]:
+                  - /url: https://app.kiro.dev
+                  - generic [ref=f2e105]: Sign up / upgrade
+              - generic [ref=f2e106]:
+                - heading [level=3] [ref=f2e108]: KIRO PRO+
+                - generic [ref=f2e109]:
+                  - generic [ref=f2e110]: $40
+                  - generic [ref=f2e111]: per user / month
+                - list [ref=f2e112]:
+                  - listitem [ref=f2e113]:
+                    - generic [ref=f2e118]:
+                      - text: 2,000
+                      - link [ref=f2e119] [cursor=pointer]:
+                        - /url: "#what-is-a-credit"
+                        - text: credits
+                  - listitem [ref=f2e120]:
+                    - generic [ref=f2e124]: Access to premium models**
+                  - listitem [ref=f2e126]:
+                    - generic [ref=f2e130]: Add-on credits ($0.04/credit)
+                - link [ref=f2e133] [cursor=pointer]:
+                  - /url: https://app.kiro.dev
+                  - generic [ref=f2e134]: Sign up / upgrade
+              - generic [ref=f2e135]:
+                - heading [level=3] [ref=f2e137]: KIRO PRO MAX
+                - generic [ref=f2e138]:
+                  - generic [ref=f2e139]: $100
+                  - generic [ref=f2e140]: per user / month
+                - list [ref=f2e141]:
+                  - listitem [ref=f2e142]:
+                    - generic [ref=f2e147]:
+                      - text: 5,000
+                      - link [ref=f2e148] [cursor=pointer]:
+                        - /url: "#what-is-a-credit"
+                        - text: credits
+                  - listitem [ref=f2e149]:
+                    - generic [ref=f2e153]: Access to premium models**
+                  - listitem [ref=f2e155]:
+                    - generic [ref=f2e159]: Add-on credits ($0.04/credit)
+                - link [ref=f2e162] [cursor=pointer]:
+                  - /url: https://app.kiro.dev
+                  - generic [ref=f2e163]: Sign up / upgrade
+              - generic [ref=f2e164]:
+                - heading [level=3] [ref=f2e166]: KIRO POWER
+                - generic [ref=f2e167]:
+                  - generic [ref=f2e168]: $200
+                  - generic [ref=f2e169]: per user / month
+                - list [ref=f2e170]:
+                  - listitem [ref=f2e171]:
+                    - generic [ref=f2e176]:
+                      - text: 10,000
+                      - link [ref=f2e177] [cursor=pointer]:
+                        - /url: "#what-is-a-credit"
+                        - text: credits
+                  - listitem [ref=f2e178]:
+                    - generic [ref=f2e182]: Access to premium models**
+                  - listitem [ref=f2e184]:
+                    - generic [ref=f2e188]: Add-on credits ($0.04/credit)
+                - link [ref=f2e191] [cursor=pointer]:
+                  - /url: https://app.kiro.dev
+                  - generic [ref=f2e192]: Sign up / upgrade
+            - generic [ref=f2e194]:
+              - generic [ref=f2e195]:
+                - generic [ref=f2e196]: Need Kiro for your team?
+                - generic [ref=f2e197]: Centralized billing, SSO, usage analytics, and enterprise security controls.
+              - generic [ref=f2e198]:
+                - link [ref=f2e199] [cursor=pointer]:
+                  - /url: https://pages.awscloud.com/kiro-contact-us.html
+                  - generic [ref=f2e200]: Contact sales
+                - link [ref=f2e201] [cursor=pointer]:
+                  - /url: /enterprise/
+                  - generic [ref=f2e202]: Enterprise features
+            - generic [ref=f2e203]:
+              - paragraph [ref=f2e204]:
+                - text: "* Users on the Free Tier who signed up with social logins or AWS Builder ID have access to Claude Sonnet 4.5 and open weight models such as Qwen3 Coder Next, DeepSeek v3.2, and MiniMax 2.1. Access is subject to"
+                - link [ref=f2e205] [cursor=pointer]:
+                  - /url: /docs/models/
+                  - text: rate limits
+                - text: .
+              - paragraph [ref=f2e206]:
+                - text: "** Paid plan users have access to open weight and"
+                - link [ref=f2e207] [cursor=pointer]:
+                  - /url: /docs/models/
+                  - text: premium models
+                - text: ", including Auto, Claude Sonnet 4.6 and Claude Opus 4.8. Not all premium models are available in all countries/regions."
+              - paragraph [ref=f2e208]: Prices are exclusive of applicable taxes and duties, including VAT and applicable sales tax. For customers with a Japanese billing address, use of Kiro is subject to Japanese Consumption Tax.
+      - generic [ref=f2e211]:
+        - heading "Common Questions" [level=2] [ref=f2e212]
+        - generic [ref=f2e214]:
+          - generic [ref=f2e215]:
+            - heading [level=3] [ref=f2e216]:
+              - button "How does Kiro pricing work?" [ref=f2e217] [cursor=pointer]
+            - generic [ref=f2e223]:
+              - heading [level=3] [ref=f2e224]: How does Kiro pricing work?
+              - generic [ref=f2e225]: Kiro offers flexible pricing tiers designed around how developers use Kiro. New users can start with the perpetual Kiro Free tier, which includes 50 credits. The Free Tier includes access to open weight models and Claude Sonnet 4.6, with limits. You can upgrade to paid tiers ranging from Pro ($20/month), Pro+ ($40/month), Pro Max ($100/month), to Power ($200/month) for increased capacity. Paid tiers for individuals allow purchasing add-on credits to continue using Kiro beyond plan limits. Plans for teams include flexible overages available at $0.04 per additional credit. Kiro prices shown do not include applicable taxes or duties (such as VAT or sales tax) unless explicitly noted. Note that if you have a Japanese billing address, Japanese Consumption Tax will apply to your Kiro usage. The amount of tax collected depends on many factors, including, but not limited to, your Tax Registration Number ("TRN" or Tax ID), and billing address. Kiro in GovCloud pricing is approximately 20% higher than commercial pricing and does not include the Free tier. Kiro processes paid subscriptions on the 1st day of each calendar month.
+          - generic [ref=f2e226]:
+            - heading [level=3] [ref=f2e227]:
+              - button "Which models does Kiro use under the hood?" [ref=f2e228] [cursor=pointer]
+            - generic [ref=f2e234]:
+              - heading [level=3] [ref=f2e235]: Which models does Kiro use under the hood?
+              - generic [ref=f2e236]: By default, your prompts are processed by Auto, an agent that uses a mix of different frontier models such as Sonnet 4.5, combined with specialized models that are experts in specific tasks, intent detection, caching, and other techniques to give you a better balance of quality, latency, and costs. You can also choose to have your prompts processed exclusively by Sonnet 4.5, Sonnet 4.6, Haiku 4.5, Opus 4.5, Opus 4.6, or Opus 4.7.
+          - generic [ref=f2e237]:
+            - heading [level=3] [ref=f2e238]:
+              - button "How does the sign-up bonus work?" [ref=f2e239] [cursor=pointer]
+            - generic [ref=f2e245]:
+              - heading [level=3] [ref=f2e246]: How does the sign-up bonus work?
+              - generic [ref=f2e247]: "The first time you upgrade to any Kiro paid plan, you get $20 credited towards your subscription when using Kiro as an individual via social login or Builder ID (not AWS Identity Center). Upgrading to a paid subscription requires a valid credit card. Kiro processes paid subscriptions on the 1st day of each calendar month. Let’s assume you first upgrade to a Kiro Pro plan ($20/month) on the 15th of June, for example, here’s how the sign-up bonus would work for you: you’d get credited $20 * 15/30 days left in June, which is $10. on July 1st, your card would get charged for (July subscription price) - (remaining free trial credit), which is $20 - ($20 * 15/30) = $10."
+          - generic [ref=f2e248]:
+            - heading [level=3] [ref=f2e249]:
+              - button "What is a credit?" [ref=f2e250] [cursor=pointer]
+            - generic [ref=f2e256]:
+              - heading [level=3] [ref=f2e257]: What is a credit?
+              - generic [ref=f2e258]: A credit is a unit of work in response to user prompts. Simple prompts can consume less than 1 credit. More complex prompts, such as executing a spec task, typically cost more than 1 credit. Additionally, different models consume credits at different rates, with a prompt executed via Sonnet 4.6 costing more credits than executing it with Auto. For example, a given task that consumes X credits to execute in Auto, will cost you 1.3X credits to execute via Sonnet 4.6. Credits are metered to the second decimal point, so the least number of credits a task can consume is 0.01 credits.
+          - generic [ref=f2e259]:
+            - heading [level=3] [ref=f2e260]:
+              - button "What can I use credits for?" [ref=f2e261] [cursor=pointer]
+            - generic [ref=f2e267]:
+              - heading [level=3] [ref=f2e268]: What can I use credits for?
+              - generic [ref=f2e269]: Any prompt you ask Kiro to execute, whether in vibe mode or spec mode, as well as spec refinement, task execution, and agent hook execution, will consume credits.
+          - generic [ref=f2e270]:
+            - heading [level=3] [ref=f2e271]:
+              - button "How can I track my credit usage?" [ref=f2e272] [cursor=pointer]
+            - generic [ref=f2e278]:
+              - heading [level=3] [ref=f2e279]: How can I track my credit usage?
+              - generic [ref=f2e280]: You can see the monthly credit limits for your plan, the number of credits used, and credits remaining in your subscription dashboard accessible in the Kiro IDE. Credit usage is updated at least every 5 minutes.
+          - generic [ref=f2e281]:
+            - heading [level=3] [ref=f2e282]:
+              - button "Can I buy more credits?" [ref=f2e283] [cursor=pointer]
+            - generic [ref=f2e289]:
+              - heading [level=3] [ref=f2e290]: Can I buy more credits?
+              - generic [ref=f2e291]: "Yes — how it works depends on whether you're on an individual or team plan: **Individual plans (Pro, Pro+, Pro Max, Power):** Purchase add-on credits to continue working. Credits cost $0.04 each, are billed immediately when you buy a pack, and you control exactly how much extra capacity to add. Packs range from $5 (125 credits) to $100. Unused add-on credits roll over and expire 12 months from the date of purchase. See [Add-on credits](/docs/billing/add-on-credits/) for details. **Team plans (Enterprise):** Admins can enable overages so users keep working past their limits automatically. Additional usage is billed at $0.04 per credit at month-end based on usage beyond the plan allocation. Overages are disabled by default and must be enabled in the Kiro console settings."
+          - generic [ref=f2e292]:
+            - heading [level=3] [ref=f2e293]:
+              - button "Can I share my Kiro subscription with my team?" [ref=f2e294] [cursor=pointer]
+            - generic [ref=f2e300]:
+              - heading [level=3] [ref=f2e301]: Can I share my Kiro subscription with my team?
+              - generic [ref=f2e302]: No, subscriptions and usage limits are calculated per individual user. For team usage, each developer needs their own subscription. Team billing and management features are coming soon.
+          - generic [ref=f2e303]:
+            - heading [level=3] [ref=f2e304]:
+              - button "With which tools can I use my Kiro subscription?" [ref=f2e305] [cursor=pointer]
+            - generic [ref=f2e311]:
+              - heading [level=3] [ref=f2e312]: With which tools can I use my Kiro subscription?
+              - generic [ref=f2e313]: "Kiro subscriptions can be used with Kiro IDE, Kiro CLI, Kiro on the web, ACP compatible IDEs, and automation in software development (ex: reviews during CI/CD). Use with OpenClaw and similar tools that leverage third-party harnesses is prohibited."
+          - generic [ref=f2e314]:
+            - heading [level=3] [ref=f2e315]:
+              - button "What happens if I don’t use all my monthly credits?" [ref=f2e316] [cursor=pointer]
+            - generic [ref=f2e322]:
+              - heading [level=3] [ref=f2e323]: What happens if I don’t use all my monthly credits?
+              - generic [ref=f2e324]: Usage limits reset at the start of each billing month. Unused credits do not roll over to the next month.
+          - generic [ref=f2e325]:
+            - heading [level=3] [ref=f2e326]:
+              - button "What payment methods do you accept?" [ref=f2e327] [cursor=pointer]
+            - generic [ref=f2e333]:
+              - heading [level=3] [ref=f2e334]: What payment methods do you accept?
+              - generic [ref=f2e335]: We accept all major credit cards.
+          - generic [ref=f2e336]:
+            - heading [level=3] [ref=f2e337]:
+              - button "What countries or regions are supported for individual plans?" [ref=f2e338] [cursor=pointer]
+            - generic [ref=f2e344]:
+              - heading [level=3] [ref=f2e345]: What countries or regions are supported for individual plans?
+              - generic [ref=f2e346]: "Currently, you can purchase a Kiro paid plan with a billing address in Afghanistan, Algeria, Angola, Antigua and Barbuda, Argentina, Armenia, Aruba, Australia, Austria, Azerbaijan, Bangladesh, Belgium, Belize, Bermuda, Bhutan, Bolivia, Bosnia and Herzegovina, Botswana, Brazil, Brunei, Bulgaria, Burkina Faso, Burundi, Cambodia, Canada, Cape Verde, Cayman Islands, Central African Republic, Chad, Chile, China, Colombia, Comoros, Congo, Cook Islands, Costa Rica, Croatia, Curacao, Cyprus, Czech Republic, Democratic Republic of the Congo, Denmark, Djibouti, Dominica, Dominican Republic, East Timor, Ecuador, El Salvador, Equatorial Guinea, Eritrea, Estonia, Ethiopia, Falkland Islands, Fiji, Finland, France, French Guiana, Gabon, Gambia, Germany, Gibraltar, Greece, Greenland, Grenada, Guatemala, Guinea, Guinea-Bissau, Guyana, Haiti, Honduras, Hong Kong SAR, Hungary, India, Indonesia, Iraq, Ireland, Israel, Italy, Jamaica, Japan, Jordan, Kiribati, Kosovo, Latvia, Lebanon, Lesotho, Liberia, Libya, Lithuania, Luxembourg, Macao SAR, Macedonia, Madagascar, Malawi, Malaysia, Maldives, Mali, Malta, Mauritania, Mexico, Mongolia, Montenegro, Morocco, Mozambique, Myanmar, Namibia, Nauru, Nepal, Netherlands, New Zealand, Nicaragua, Niger, Norway, Palestinian Territories, Panama, Papua New Guinea, Paraguay, Philippines, Poland, Portugal, Qatar, Romania, Rwanda, Saint Kitts and Nevis, Saint Lucia, Saint Vincent and the Grenadines, Samoa, San Marino, Seychelles, Sierra Leone, Singapore, Slovakia, Slovenia, Solomon Islands, Somalia, South Africa, South Korea, South Sudan, Spain, Sri Lanka, Swaziland, Sweden, Switzerland, Tajikistan, Tanzania, Thailand, Togo, Tonga, Trinidad and Tobago, Tunisia, Turkmenistan, Tuvalu, United Arab Emirates, United Kingdom, United States of America, Uruguay, Uzbekistan, Vanuatu, Vatican City State, Venezuela, and Yemen. More countries or regions will be added soon. Model availability can vary by country or region. Kiro's model offerings align with each model provider's usage and geographic requirements for third-party services and interfaces. For more information, see each model provider's supported countries and regions, if relevant: [Anthropic](https://www.anthropic.com/supported-countries), Qwen, DeepSeek, Kimi, MiniMax, GLM."
+          - generic [ref=f2e347]:
+            - heading [level=3] [ref=f2e348]:
+              - button "Is the Kiro on the web preview included in my current plan or will I be charged extra?" [ref=f2e349] [cursor=pointer]
+            - generic [ref=f2e355]:
+              - heading [level=3] [ref=f2e356]: Is the Kiro on the web preview included in my current plan or will I be charged extra?
+              - generic [ref=f2e357]: Kiro on the web uses the existing credit model. Credits are consumed regardless of which interface the work runs on (IDE, CLI, or web). No separate charge for cloud compute. Available in preview to Kiro Pro, Pro+, Pro Max, and Power users.
+          - generic [ref=f2e358]:
+            - heading [level=3] [ref=f2e359]:
+              - button "Will I be charged for Kiro powers?" [ref=f2e360] [cursor=pointer]
+            - generic [ref=f2e366]:
+              - heading [level=3] [ref=f2e367]: Will I be charged for Kiro powers?
+              - generic [ref=f2e368]: No, there is no additional charge for using Kiro powers. All Kiro users can access and use Kiro powers.
+          - generic [ref=f2e369]:
+            - heading [level=3] [ref=f2e370]:
+              - button "Is Kiro pricing different in GovCloud regions?" [ref=f2e371] [cursor=pointer]
+            - generic [ref=f2e377]:
+              - heading [level=3] [ref=f2e378]: Is Kiro pricing different in GovCloud regions?
+              - generic [ref=f2e379]: Yes, Kiro pricing in [AWS GovCloud](https://docs.aws.amazon.com/govcloud-us/latest/UserGuide/govcloud-kiro.html) (US) Regions is approximately 20% higher than standard commercial region pricing. All Kiro subscription tiers (Pro, Pro+, Pro Max, and Power) are subject to this regional pricing adjustment when accessed through AWS GovCloud (US) Regions.
+          - generic [ref=f2e380]:
+            - heading [level=3] [ref=f2e381]:
+              - button "Is the free tier supported for Kiro in GovCloud?" [ref=f2e382] [cursor=pointer]
+            - generic [ref=f2e388]:
+              - heading [level=3] [ref=f2e389]: Is the free tier supported for Kiro in GovCloud?
+              - generic [ref=f2e390]: The Free tier is not available in the AWS GovCloud (US) Regions. Kiro in AWS GovCloud (US) requires a paid subscription plan (Pro, Pro+, Pro Max, or Power) and enterprise authentication via AWS IAM Identity Center.
+        - link "View billing docs" [ref=f2e392] [cursor=pointer]:
+          - /url: /docs/billing/
+  - contentinfo [ref=f2e394]:
+    - generic [ref=f2e396]:
+      - generic [ref=f2e399]:
+        - generic [ref=f2e400]: Loading image...
+        - img "Kiro" [ref=f2e402]
+      - navigation "Footer Navigation" [ref=f2e403]:
+        - generic [ref=f2e404]:
+          - heading "Product" [level=2] [ref=f2e405]
+          - list [ref=f2e406]:
+            - listitem [ref=f2e407]:
+              - link "About Kiro" [ref=f2e408] [cursor=pointer]:
+                - /url: /about/
+            - listitem [ref=f2e409]:
+              - link "IDE" [ref=f2e410] [cursor=pointer]:
+                - /url: /ide/
+            - listitem [ref=f2e411]:
+              - link "CLI" [ref=f2e412] [cursor=pointer]:
+                - /url: /cli/
+            - listitem [ref=f2e413]:
+              - link "Web" [ref=f2e414] [cursor=pointer]:
+                - /url: /web/
+            - listitem [ref=f2e415]:
+              - link "Mobile" [ref=f2e416] [cursor=pointer]:
+                - /url: /mobile/
+            - listitem [ref=f2e417]:
+              - link "Pricing" [ref=f2e418] [cursor=pointer]:
+                - /url: /pricing/
+            - listitem [ref=f2e419]:
+              - link "Downloads" [ref=f2e420] [cursor=pointer]:
+                - /url: /downloads/
+        - generic [ref=f2e421]:
+          - heading "For" [level=2] [ref=f2e422]
+          - list [ref=f2e423]:
+            - listitem [ref=f2e424]:
+              - link "Enterprise" [ref=f2e425] [cursor=pointer]:
+                - /url: /enterprise/
+            - listitem [ref=f2e426]:
+              - link "Startups" [ref=f2e427] [cursor=pointer]:
+                - /url: /startups/
+            - listitem [ref=f2e428]:
+              - link "Students" [ref=f2e429] [cursor=pointer]:
+                - /url: /students/
+        - generic [ref=f2e430]:
+          - heading "Community" [level=2] [ref=f2e431]
+          - list [ref=f2e432]:
+            - listitem [ref=f2e433]:
+              - link "Overview" [ref=f2e434] [cursor=pointer]:
+                - /url: /community/
+            - listitem [ref=f2e435]:
+              - link "Ambassadors" [ref=f2e436] [cursor=pointer]:
+                - /url: /ambassadors/
+            - listitem [ref=f2e437]:
+              - link "Discord" [ref=f2e438] [cursor=pointer]:
+                - /url: /discord/
+            - listitem [ref=f2e439]:
+              - link "Events" [ref=f2e440] [cursor=pointer]:
+                - /url: /events/
+            - listitem [ref=f2e441]:
+              - link "Powers" [ref=f2e442] [cursor=pointer]:
+                - /url: /powers/
+            - listitem [ref=f2e443]:
+              - link "Shop" [ref=f2e444] [cursor=pointer]:
+                - /url: https://shop.kiro.dev
+            - listitem [ref=f2e445]:
+              - link "Showcase" [ref=f2e446] [cursor=pointer]:
+                - /url: /showcase/
+        - generic [ref=f2e447]:
+          - heading "Resources" [level=2] [ref=f2e448]
+          - list [ref=f2e449]:
+            - listitem [ref=f2e450]:
+              - link "Docs" [ref=f2e451] [cursor=pointer]:
+                - /url: /docs/
+            - listitem [ref=f2e452]:
+              - link "Blog" [ref=f2e453] [cursor=pointer]:
+                - /url: /blog/
+            - listitem [ref=f2e454]:
+              - link "Changelog" [ref=f2e455] [cursor=pointer]:
+                - /url: /changelog/
+            - listitem [ref=f2e456]:
+              - link "FAQs" [ref=f2e457] [cursor=pointer]:
+                - /url: /faq/
+            - listitem [ref=f2e458]:
+              - link "Report a bug" [ref=f2e459] [cursor=pointer]:
+                - /url: https://github.com/kirodotdev/Kiro/issues/new/choose
+            - listitem [ref=f2e460]:
+              - link "Suggest an idea" [ref=f2e461] [cursor=pointer]:
+                - /url: https://github.com/kirodotdev/Kiro/issues/new?template=feature_request.yml
+            - listitem [ref=f2e462]:
+              - link "Billing support" [ref=f2e463] [cursor=pointer]:
+                - /url: https://app.kiro.dev/settings/account
+        - generic [ref=f2e464]:
+          - heading "Social" [level=2] [ref=f2e465]
+          - list "Social" [ref=f2e466]:
+            - listitem [ref=f2e467]:
+              - link "Join our Discord community" [ref=f2e468] [cursor=pointer]:
+                - /url: https://discord.gg/kirodotdev
+            - listitem [ref=f2e471]:
+              - link "Follow us on LinkedIn" [ref=f2e472] [cursor=pointer]:
+                - /url: https://www.linkedin.com/showcase/kirodotdev
+            - listitem [ref=f2e475]:
+              - link "Follow us on X" [ref=f2e476] [cursor=pointer]:
+                - /url: https://x.com/kirodotdev
+            - listitem [ref=f2e479]:
+              - link "Follow us on Instagram" [ref=f2e480] [cursor=pointer]:
+                - /url: https://www.instagram.com/kirodotdev
+            - listitem [ref=f2e483]:
+              - link "Follow us on YouTube" [ref=f2e484] [cursor=pointer]:
+                - /url: https://www.youtube.com/@kirodotdev
+            - listitem [ref=f2e487]:
+              - link "Follow us on Bluesky" [ref=f2e488] [cursor=pointer]:
+                - /url: https://bsky.app/profile/kiro.dev
+            - listitem [ref=f2e492]:
+              - link "Follow us on Twitch" [ref=f2e493] [cursor=pointer]:
+                - /url: https://www.twitch.tv/kirodotdev
+    - generic [ref=f2e498]:
+      - link "AWS Amazon" [ref=f2e500] [cursor=pointer]:
+        - /url: https://aws.amazon.com
+      - generic [ref=f2e504]:
+        - link "Site Terms" [ref=f2e505] [cursor=pointer]:
+          - /url: https://aws.amazon.com/terms/
+        - link "License" [ref=f2e506] [cursor=pointer]:
+          - /url: /license/
+        - link "Responsible AI Policy" [ref=f2e507] [cursor=pointer]:
+          - /url: https://aws.amazon.com/ai/responsible-ai/policy/
+        - link "Legal" [ref=f2e508] [cursor=pointer]:
+          - /url: https://aws.amazon.com/legal/
+        - link "Privacy Policy" [ref=f2e509] [cursor=pointer]:
+          - /url: https://aws.amazon.com/privacy/
+        - link "Cookie Preferences" [ref=f2e510] [cursor=pointer]:
+          - /url: "#"

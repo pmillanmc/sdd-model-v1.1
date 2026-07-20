@@ -41,7 +41,7 @@ Desde `input.md`, los agentes generan cuatro artefactos operativos:
 `/sdd-validate` verifica que los artefactos cubran el brief. Si hay gaps, **avisa y para** — no modifica nada solo. Cada decisión que desvía el brief queda registrada en `DECISIONS.md` vía `/sdd-log`.
 
 ### Fase 4 — Código `🤖 IA | gate 👤 humano`
-`/sdd-implement` ejecuta las tareas en orden con un **loop TDD explícito por tarea**: Red → Green → Refactor. El paso de refactor verifica duplicación, nombres que no reflejan su intención y abstracciones prematuras antes de pasar a la siguiente tarea. `/sdd-checklist` genera los criterios no automatizables (UX, accesibilidad, seguridad, negocio) que el equipo humano completa. `/sdd-review` hace el gate final en tres pasadas: lógica (spec + tests), UI (input.md → spec → código) y **calidad estructural** (duplicación, nombres engañosos, abstracciones prematuras acumuladas en toda la feature).
+`/sdd-implement` ejecuta las tareas en orden con un **loop TDD explícito por tarea**: Red → Green → Refactor. El paso de refactor verifica duplicación, nombres que no reflejan su intención y abstracciones prematuras antes de pasar a la siguiente tarea. `/sdd-e2e` deriva casos de prueba E2E desde la fuente de verdad disponible (spec.md, documentación, ticket de Jira o contrato de API) —o re-ejecuta una suite de regresión existente— y los corre contra la app viva con ProGuide (Playwright + LLM vía el MCP `proguide-test`), produciendo evidencia funcional real. `/sdd-checklist` genera los criterios no automatizables (UX, accesibilidad, seguridad, negocio) que el equipo humano completa. `/sdd-review` hace el gate final en cuatro pasadas: lógica (spec + tests), evidencia E2E (ProGuide), UI (input.md → spec → código) y **calidad estructural** (duplicación, nombres engañosos, abstracciones prematuras acumuladas en toda la feature).
 
 ### Mantenimiento — cada sprint `👤 Tech Lead`
 `/sdd-health` audita todos los artefactos activos: detecta archivos sobredimensionados, principios contradictorios, tasks completadas no archivadas y user stories sin código. Solo reporta — nunca modifica solo.
@@ -59,6 +59,7 @@ Desde `input.md`, los agentes generan cuatro artefactos operativos:
 | `constitution.md` | Principios del proyecto — global, vive en la raíz |
 | `DECISIONS.md` | Registro tipo ADR de cada desvío del brief — global, versionado |
 | `specs/[feature_id]/` | Una carpeta por feature con sus 4 artefactos + checklist |
+| `specs/[feature_id]/e2e/cases.md` | Casos de prueba E2E derivados de los `Given/When/Then` — generado por `/sdd-e2e` |
 | `specs/[feature_id]/feature.status.md` | Estado del ciclo de vida: `OPEN` (en progreso) o `CLOSED` (aprobada) |
 | `specs/[feature_id]/jira-map.yaml` | Mapa de trazabilidad task ↔ ticket Jira — generado por `/sdd-generate` Paso 5 |
 | `metrics/[feature_id]-metrics.md` | Métricas de esfuerzo y calidad por feature — generado automáticamente |
@@ -81,8 +82,9 @@ Desde `input.md`, los agentes generan cuatro artefactos operativos:
 | `/sdd-fix` | Transversal | Ruta corta para bugs/hotfixes: ≤3 archivos, test reproductor obligatorio, chequeo de colisiones |
 | `/sdd-implement` | 4 | Artefactos → código con TDD (gate: requiere validación previa) |
 | `/sdd-task` | 4 | Implementa una task puntual: `/sdd-task [feature_id] [task_id]`. Cierre automático al completar la última task |
+| `/sdd-e2e` | 4 (QA) · transversal | Deriva casos E2E desde la fuente que haya (spec, doc, Jira, API) o re-ejecuta una suite de regresión, contra la app corriendo con ProGuide |
 | `/sdd-checklist` | 4 | Genera criterios de verificación manual |
-| `/sdd-review` | 4 | Gate final: lógica + UI. Cierra la feature en el registro |
+| `/sdd-review` | 4 | Gate final: lógica + evidencia E2E + UI + calidad estructural. Cierra la feature en el registro |
 | `/sdd-health` | Mant. | Auditoría por sprint: drift de `existing-arch.md` y del grafo, consistencia del registro, colisiones entre features OPEN |
 | `/sdd-metrics` | Mant. | Reporte de esfuerzo, tokens y rework de la sesión actual |
 | `/sdd-metrics-summary` | Mant. | Tabla agregada de métricas de todas las features del proyecto |
@@ -140,7 +142,8 @@ El modelo captura automáticamente métricas de esfuerzo y calidad en cada fase:
 | `/sdd-refine` | Rondas de grilling, categorías faltantes y ambiguas al inicio |
 | `/sdd-validate` | Cobertura inicial del brief, gaps encontrados |
 | `/sdd-implement` | Ciclos de autocorrección, consultas de clarificación, tokens estimados |
-| `/sdd-review` | Resultado final, criterios sin test, gaps de UI, issues de calidad estructural (`structural_issues`) |
+| `/sdd-e2e` | Casos totales, passed / needs_calibration / failed, US con cobertura E2E, run_url |
+| `/sdd-review` | Resultado final, criterios sin test, gaps de UI, hallazgos E2E, issues de calidad estructural (`structural_issues`) |
 | `/sdd-jira-*` | Tickets creados, sincronizados, estados actualizados, duplicados resueltos |
 
 Todos los datos se acumulan en `metrics/[feature_id]-metrics.md` con `iteration_number` para detectar retrabajo entre sesiones.
@@ -199,6 +202,96 @@ La metodología y los artefactos son agnósticos al IDE. Lo que varía es cómo 
 | **Windsurf / cualquier agente** | El contenido de cada `.md` es el prompt — copiar y pegar |
 
 Los archivos en `.claude/commands/` son instrucciones en texto plano. Funcionan en cualquier herramienta que acepte un prompt en markdown.
+
+---
+
+## QA funcional E2E con ProGuide
+
+El modelo integra **ProGuide Test** como motor de QA E2E: la capa que verifica los flujos
+reales de la feature **contra la app corriendo**, cerrando el hueco entre los tests unitarios
+y el juicio humano.
+
+### Las tres capas de verificación
+
+| Capa | Herramienta | Verifica | Comando |
+|---|---|---|---|
+| Unit / integración (TDD) | `pnpm test` | lógica interna, contratos de módulo | `/sdd-implement` |
+| **Funcional E2E** | **ProGuide (`proguide-test` MCP + skill `qa-test-cases`)** | **flujos de UI/API contra la app corriendo** | **`/sdd-e2e`** |
+| Manual / juicio humano | checklist | UX, accesibilidad, negocio subjetivo | `/sdd-checklist` |
+
+### La fuente de verdad no es solo la spec
+
+QA rara vez tiene una única fuente. `/sdd-e2e` es **fuente-agnóstico**: deriva casos desde lo
+que haya, y cada caso referencia su origen para trazabilidad.
+
+| Fuente | Referencia en el caso | Cuándo |
+|---|---|---|
+| `spec.md` (SDD, `Given/When/Then`) | `US: US-N` | Feature SDD-managed |
+| Documentación funcional / historia | `Ref: doc §x` | Sin spec, o QA transversal |
+| Ticket de Jira / issue | `Ref: JIRA-1234` | La info vive en el ticket |
+| Contrato de API (OpenAPI/colección) | `Ref: <endpoint>` | Casos REST |
+| **Suite de regresión existente** | la propia suite | **Regresión**: re-ejecutar, no redactar |
+
+### Cómo cierra la trazabilidad (feature SDD)
+
+```
+fuente (spec / doc / Jira / API)
+   ↓  /sdd-e2e  (deriva casos, uno por criterio, con su referencia de origen)
+casos E2E (specs/[feature_id]/e2e/ en SDD, o proguide_tests/ en apps sin SDD)
+   ↓  ProGuide: dry-run → execute → iterar
+metrics/[feature_id]-metrics.md  (bloque ## E2E: passed / needs_calibration / failed, run_url)
+   ↓  lee en su Parte 1b (solo si la fuente es la spec SDD)
+/sdd-review  (gate: requisito con caso passed = cubierto; un failed = hallazgo bloqueante)
+```
+
+En **regresión** el flujo es más corto: no hay fuente nueva ni redacción — se re-ejecuta la
+suite congelada (`proguide regress <módulo>`) y solo se recalibran los casos que el drift de UI
+haya roto.
+
+`/sdd-e2e` **delega la mecánica** (explorar la app, redactar, dry-run, ejecutar, calibrar) a la
+skill `qa-test-cases` de ProGuide y solo aporta el encuadre (qué derivar, dónde guardarlo, cómo
+reportar). Distingue siempre: `needs_calibration` **no es bug** (selector que no resolvió);
+`failed` **sí es hallazgo** (aserción no cumplida) y nunca se resuelve aflojando el assert.
+
+> No confundir con `/sdd-test`, que es el smoke test del **propio modelo SDD** sobre un
+> fixture sintético. `/sdd-e2e` prueba el **producto** de la feature.
+
+### Requisitos de la integración
+
+El QA solo invoca **`/sdd-e2e`**, que hace el bootstrap (Paso 0 del comando). El agente:
+
+1. **Detecta la CLI** con `proguide --version`. Si falta, **no la instala solo**: le pide al
+   usuario que la instale a mano desde el repositorio y espera. Todavía no está en npm; se baja
+   el **último release** de GitHub (usando [GitHub CLI](https://cli.github.com/)):
+
+   > Repo: https://github.com/molivera-proguide/proguide-test
+
+   ```bash
+   gh release download --repo molivera-proguide/proguide-test --pattern "*.tgz"
+   npm install -g ./proguide-test-*.tgz
+   ```
+
+   (Alternativa sin `gh`: descargar el `.tgz` desde
+   https://github.com/molivera-proguide/proguide-test/releases/latest e instalarlo con
+   `npm install -g <archivo>.tgz`.) Luego confirma el entorno con `proguide doctor --json`
+   (Node ≥ 20, `ANTHROPIC_API_KEY`).
+2. **Confirma el MCP** `proguide-test`. El modelo trae los templates:
+   - Claude Code: `.mcp.json`
+   - Cursor: `.cursor/mcp.json`
+
+   Ambos toman la key vía `${ANTHROPIC_API_KEY}` del entorno — no se commitea ningún secreto.
+   Si tu cliente MCP tiene secret store, usalo en lugar de la variable de entorno.
+3. **Carga la skill** de QA en Claude Code con `proguide update skills` — paso obligatorio
+   **después de toda instalación/actualización nueva** de la CLI. Instala en el scope **global**
+   de usuario (`~/.claude/skills`), visible en cualquier workspace. Es idempotente.
+4. **Pide el contexto** de la feature (feature_id, base_url, credenciales, criterios a cubrir)
+   y recién ahí arma los casos.
+
+Para rutas protegidas, configurá el bloque `auth` en `proguide_tests/config.yaml` (ver README
+de ProGuide) y pasá credenciales por MCP/CLI, nunca literales en los casos.
+
+La suite de regresión congelada vive en `proguide_tests/suite/[feature_id]/` y se versiona con
+la app; se re-ejecuta determinista con `proguide regress [feature_id]` (sin LLM ni pre-pass).
 
 ---
 
@@ -302,23 +395,29 @@ Este repo **es** el modelo. No hay un paquete separado que instalar. Lo que se l
 
 ```
 .claude/
-  commands/         ← los comandos /sdd-* (el workflow completo)
+  commands/         ← los comandos /sdd-* (el workflow completo, incluye /sdd-e2e)
   skills/
     VERSION
     coding-standards/
       SKILL.md
-      references/   ← guías de implementación, gobernanza y auditoría
+      references/   ← guías de implementación, gobernanza, auditoría y QA E2E
   settings.json
+.mcp.json           ← registro del MCP proguide-test (Claude Code) — QA E2E
+.cursor/
+  mcp.json          ← registro del MCP proguide-test (Cursor) — QA E2E
 CLAUDE.md           ← contexto global que el agente carga en cada turno
 .vscode/
   mcp.json          ← configuración de MCPs para Cursor
 scripts/
   sdd-audit.mjs     ← auditor determinista (CI, sin IA)
   sync-skills.mjs   ← instalador de skills en ~/.claude/skills/
-package.json        ← scripts: audit:sdd, skills:sync
+  gen-kanban.mjs    ← generador del tablero kanban
+  kanban-server.mjs ← servidor local del kanban (127.0.0.1)
+package.json        ← scripts: audit:sdd, skills:sync, kanban
+.gitleaks.toml      ← config de escaneo de secretos (allowlist de placeholders)
 .github/
   workflows/
-    sdd-audit.yml   ← GitHub Action que corre el auditor en cada PR
+    sdd-audit.yml   ← GitHub Action: auditor + escaneo de secretos en cada PR
 graph/
   domain.template.yaml          ← plantilla del grafo de dominio
 specs/
@@ -395,6 +494,7 @@ drafts/          ← el equipo pone acá sus notas y borradores
 /sdd-generate    ← genera constitution.md, spec.md, plan.md, tasks.md + jira-map.yaml
 /sdd-validate    ← quality gate antes de implementar
 /sdd-implement   ← implementación TDD
+/sdd-e2e         ← QA funcional E2E contra la app corriendo (ProGuide)
 /sdd-jira-sync   ← (opcional) reconciliá tasks con Jira durante el desarrollo
 /sdd-jira-close  ← (opcional) cerrá el ticket en Jira al finalizar
 ```

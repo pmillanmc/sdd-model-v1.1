@@ -1,0 +1,6 @@
+[    1756ms] [WARNING] Amplify has not been configured. Please call Amplify.configure() before using this service. @ https://kiro.dev/_next/static/chunks/76655-56c3ab6072f606b2.js:13
+[    1764ms] [WARNING] Amplify has not been configured. Please call Amplify.configure() before using this service. @ https://kiro.dev/_next/static/chunks/76655-56c3ab6072f606b2.js:13
+[    1784ms] [WARNING] Amplify has not been configured. Please call Amplify.configure() before using this service. @ https://kiro.dev/_next/static/chunks/76655-56c3ab6072f606b2.js:13
+[    2734ms] [LOG] Adobe Analytics configured: trackExternalLinks = false @ :11
+[    5068ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://prod.tools.shortbread.aws.dev/1x1.png?awsccc=1784227344186:0
+[    5077ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://prod.tools.shortbread.aws.dev/1x1.png?awsccc=1784227344867:0

@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kiro vs SDD Model — Análisis comparativo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:   #080808;
+    --bg-2: #0f0f0f;
+    --bg-3: #161616;
+    --border:   #1f1f1f;
+    --border-2: #2a2a2a;
+    --text:       #f5f5f5;
+    --text-muted: #737373;
+    --text-dim:   #404040;
+    --pink:          #ff1f6d;
+    --pink-2:        #ff4d8d;
+    --pink-glow:     rgba(255,31,109,0.25);
+    --pink-glow-soft:rgba(255,31,109,0.08);
+    --blue:  #3b82f6;
+    --green: #22c55e;
+    --amber: #f59e0b;
+    --white: #ffffff;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar { width:4px; }
+  ::-webkit-scrollbar-track { background:var(--bg); }
+  ::-webkit-scrollbar-thumb { background:var(--border-2); border-radius:2px; }
+
+  body::before {
+    content:'';
+    position:fixed; inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events:none; z-index:1000;
+  }
+
+  .container { max-width:1200px; margin:0 auto; padding:0 32px; }
+  .section    { padding:96px 0; }
+  .section-sm { padding:64px 0; }
+
+  .fade-in { opacity:0; transform:translateY(20px); transition:opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity:1; transform:translateY(0); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height:100vh;
+    display:flex; flex-direction:column; justify-content:center;
+    position:relative; overflow:hidden;
+  }
+  .hero-bg {
+    position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% -10%, rgba(255,31,109,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 30% at 80% 100%, rgba(59,130,246,0.06) 0%, transparent 60%);
+  }
+  .hero-grid {
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size:60px 60px;
+    mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%);
+    opacity:0.4;
+  }
+  .hero-content { position:relative; z-index:1; }
+
+  .hero-badge {
+    display:inline-flex; align-items:center; gap:6px;
+    padding:4px 12px;
+    border:1px solid var(--border-2); border-radius:999px;
+    font-size:11px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--text-muted); background:var(--bg-2);
+    margin-bottom:32px;
+    animation:fadeDown 0.8s ease forwards;
+  }
+  .hero-badge::before {
+    content:''; width:6px; height:6px; border-radius:50%;
+    background:var(--pink); box-shadow:0 0 8px var(--pink);
+    animation:pulse 2s infinite;
+  }
+
+  .hero-title {
+    font-size:clamp(42px,7vw,88px); font-weight:700;
+    letter-spacing:-0.04em; line-height:1;
+    animation:fadeDown 0.8s 0.1s ease both;
+  }
+  .hero-title .accent { color:transparent; -webkit-text-stroke:1px var(--pink); }
+  .hero-title .blue   { color:var(--blue); text-shadow:0 0 40px rgba(59,130,246,0.5); }
+  .hero-title .vs     { color:var(--text-muted); font-weight:300; font-size:0.6em; vertical-align:middle; margin:0 12px; }
+
+  .hero-sub {
+    margin-top:24px; font-size:17px; color:var(--text-muted);
+    max-width:540px; font-weight:300;
+    animation:fadeDown 0.8s 0.2s ease both;
+  }
+
+  .hero-meta {
+    margin-top:48px; display:flex; gap:32px; flex-wrap:wrap;
+    animation:fadeDown 0.8s 0.3s ease both;
+  }
+  .hero-stat { display:flex; flex-direction:column; gap:2px; }
+  .hero-stat-num { font-size:28px; font-weight:700; color:var(--white); font-variant-numeric:tabular-nums; }
+  .hero-stat-num .p { color:var(--pink); }
+  .hero-stat-num .b { color:var(--blue); }
+  .hero-stat-label { font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.08em; }
+
+  .hero-scroll {
+    position:absolute; bottom:40px; left:50%; transform:translateX(-50%);
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    color:var(--text-dim); font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
+    animation:fadeDown 1s 0.6s ease both;
+  }
+  .hero-scroll::after {
+    content:''; width:1px; height:40px;
+    background:linear-gradient(to bottom, var(--border-2), transparent);
+    animation:scrollLine 2s infinite;
+  }
+
+  /* ── SECTION HEADERS ── */
+  .section-label {
+    font-size:11px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--pink); margin-bottom:12px;
+  }
+  .section-title {
+    font-size:clamp(26px,4vw,38px); font-weight:700;
+    letter-spacing:-0.03em; color:var(--white); line-height:1.1;
+  }
+  .section-desc { margin-top:12px; color:var(--text-muted); max-width:520px; font-size:15px; }
+
+  .divider { border:none; height:1px; background:linear-gradient(to right, transparent, var(--border-2), transparent); }
+
+  /* ── METODOLOGÍA ── */
+  .method-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:40px; }
+  .method-card {
+    padding:24px; border:1px solid var(--border); border-radius:10px;
+    background:var(--bg-2); position:relative; overflow:hidden;
+  }
+  .method-card::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:2px;
+    opacity:0.6;
+  }
+  .method-card.sdd::before { background:linear-gradient(to right, transparent, var(--pink), transparent); }
+  .method-card.kiro::before { background:linear-gradient(to right, transparent, var(--blue), transparent); }
+  .method-label {
+    font-family:'JetBrains Mono', monospace; font-size:10px;
+    letter-spacing:0.1em; text-transform:uppercase; margin-bottom:10px;
+  }
+  .method-label.sdd { color:var(--pink); }
+  .method-label.kiro { color:var(--blue); }
+  .method-title { font-size:15px; font-weight:600; color:var(--white); margin-bottom:8px; }
+  .method-text { font-size:13px; color:var(--text-muted); line-height:1.65; }
+  .method-sources { margin-top:14px; display:flex; flex-wrap:wrap; gap:6px; }
+  .source-tag {
+    font-family:'JetBrains Mono', monospace; font-size:10px;
+    padding:2px 8px; border-radius:4px;
+    border:1px solid var(--border-2); color:var(--text-muted); background:var(--bg-3);
+  }
+
+  /* ── TABLA COMPARATIVA ── */
+  .comp-table-wrap { margin-top:48px; overflow-x:auto; border-radius:10px; border:1px solid var(--border); }
+  .comp-table { width:100%; border-collapse:collapse; }
+  .comp-table th, .comp-table td {
+    padding:14px 18px; text-align:left; font-size:13px;
+    border-bottom:1px solid var(--border);
+  }
+  .comp-table thead th {
+    background:var(--bg-3); color:var(--text-muted);
+    font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase;
+  }
+  .comp-table thead th:first-child { color:var(--text-dim); }
+  .comp-table tbody tr { background:var(--bg-2); transition:background 0.2s; }
+  .comp-table tbody tr:hover { background:var(--bg-3); }
+  .comp-table tbody tr:last-child td { border-bottom:none; }
+  .comp-table .eje-cell { color:var(--white); font-weight:600; font-size:13px; }
+  .comp-table .kiro-cell { color:var(--text-muted); }
+  .comp-table .sdd-cell  { color:var(--text-muted); }
+  .comp-table .ganador-cell { }
+
+  .winner-badge {
+    display:inline-flex; align-items:center; gap:5px;
+    font-family:'JetBrains Mono', monospace; font-size:10px; font-weight:500;
+    padding:3px 10px; border-radius:999px; letter-spacing:0.05em;
+    white-space:nowrap;
+  }
+  .winner-badge.sdd   { background:rgba(255,31,109,0.1);  border:1px solid rgba(255,31,109,0.3);  color:var(--pink-2); }
+  .winner-badge.kiro  { background:rgba(59,130,246,0.1);  border:1px solid rgba(59,130,246,0.3);  color:#60a5fa; }
+  .winner-badge.tie   { background:rgba(115,115,115,0.1); border:1px solid rgba(115,115,115,0.3); color:var(--text-muted); }
+  .winner-badge::before { content:''; width:5px; height:5px; border-radius:50%; }
+  .winner-badge.sdd::before  { background:var(--pink); }
+  .winner-badge.kiro::before { background:var(--blue); }
+  .winner-badge.tie::before  { background:var(--text-dim); }
+
+  /* ── EJES DETALLE ── */
+  .ejes-grid { display:flex; flex-direction:column; gap:2px; margin-top:48px; }
+  .eje-item {
+    border:1px solid var(--border); border-radius:10px;
+    background:var(--bg-2); overflow:hidden;
+    transition:border-color 0.25s;
+  }
+  .eje-item:hover { border-color:var(--border-2); }
+  .eje-header {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 24px; cursor:pointer; user-select:none;
+    gap:16px;
+  }
+  .eje-header-left { display:flex; align-items:center; gap:16px; flex:1; min-width:0; }
+  .eje-num {
+    font-family:'JetBrains Mono', monospace; font-size:11px;
+    color:var(--pink); letter-spacing:0.08em; flex-shrink:0;
+  }
+  .eje-name { font-size:14px; font-weight:600; color:var(--white); }
+  .eje-chevron {
+    font-size:12px; color:var(--text-dim); transition:transform 0.25s; flex-shrink:0;
+  }
+  .eje-item.open .eje-chevron { transform:rotate(180deg); }
+  .eje-body { display:none; padding:0 24px 24px; }
+  .eje-item.open .eje-body { display:block; }
+
+  .eje-cols { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:4px; }
+  .eje-col-title {
+    font-family:'JetBrains Mono', monospace; font-size:10px;
+    letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px;
+  }
+  .eje-col-title.sdd  { color:var(--pink); }
+  .eje-col-title.kiro { color:var(--blue); }
+  .eje-col-text { font-size:13px; color:var(--text-muted); line-height:1.7; }
+
+  .eje-verdict {
+    margin-top:16px; padding:14px 18px;
+    border-radius:8px; border:1px solid var(--border-2);
+    background:var(--bg-3);
+    font-size:13px; color:var(--text); line-height:1.65;
+  }
+  .eje-verdict strong { color:var(--white); }
+
+  .verified-badge {
+    display:inline-flex; align-items:center; gap:4px;
+    font-family:'JetBrains Mono', monospace; font-size:9px;
+    padding:1px 6px; border-radius:4px;
+    border:1px solid rgba(34,197,94,0.3); color:#4ade80;
+    background:rgba(34,197,94,0.06); vertical-align:middle; margin-left:6px;
+  }
+  .inferred-badge {
+    display:inline-flex; align-items:center; gap:4px;
+    font-family:'JetBrains Mono', monospace; font-size:9px;
+    padding:1px 6px; border-radius:4px;
+    border:1px solid rgba(245,158,11,0.3); color:#fbbf24;
+    background:rgba(245,158,11,0.06); vertical-align:middle; margin-left:6px;
+  }
+
+  /* ── RIESGOS ── */
+  .riesgos-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-top:48px; }
+  .riesgo-card {
+    padding:24px; border:1px solid var(--border); border-radius:10px;
+    background:var(--bg-2); position:relative; overflow:hidden;
+  }
+  .riesgo-card::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:2px; opacity:0.5;
+  }
+  .riesgo-card.kiro::before  { background:linear-gradient(to right, transparent, var(--blue), transparent); }
+  .riesgo-card.sdd::before   { background:linear-gradient(to right, transparent, var(--pink), transparent); }
+  .riesgo-card.hybrid::before { background:linear-gradient(to right, transparent, var(--amber), transparent); }
+  .riesgo-header { margin-bottom:16px; }
+  .riesgo-label { font-family:'JetBrains Mono', monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:6px; }
+  .riesgo-label.kiro   { color:var(--blue); }
+  .riesgo-label.sdd    { color:var(--pink); }
+  .riesgo-label.hybrid { color:var(--amber); }
+  .riesgo-title { font-size:15px; font-weight:600; color:var(--white); }
+  .riesgo-list { list-style:none; display:flex; flex-direction:column; gap:8px; }
+  .riesgo-list li {
+    font-size:12px; color:var(--text-muted); line-height:1.55;
+    padding-left:14px; position:relative;
+  }
+  .riesgo-list li::before { content:'—'; position:absolute; left:0; color:var(--text-dim); }
+  .riesgo-positivo {
+    margin-top:16px; padding:10px 14px;
+    border-radius:6px; border:1px solid var(--border-2);
+    background:var(--bg-3); font-size:12px; color:var(--text-muted); line-height:1.55;
+  }
+  .riesgo-positivo strong { color:var(--text); }
+
+  /* ── ESCENARIOS ── */
+  .escenarios-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-top:48px; }
+  .escenario-card {
+    padding:24px; border:1px solid var(--border); border-radius:10px;
+    background:var(--bg-2); position:relative; overflow:hidden;
+    transition:border-color 0.25s, transform 0.25s;
+  }
+  .escenario-card:hover { transform:translateY(-2px); }
+  .escenario-card.recommended {
+    border-color:rgba(255,31,109,0.35);
+    box-shadow:0 0 32px rgba(255,31,109,0.08);
+  }
+  .escenario-card::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:2px; opacity:0.6;
+  }
+  .escenario-card.a::before { background:linear-gradient(to right, transparent, var(--blue), transparent); }
+  .escenario-card.b::before { background:linear-gradient(to right, transparent, var(--pink), transparent); }
+  .escenario-card.c::before { background:linear-gradient(to right, transparent, var(--amber), transparent); }
+  .escenario-tag {
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:11px; color:var(--text-muted);
+    border:1px solid var(--border-2); padding:2px 10px;
+    border-radius:999px; margin-bottom:14px; background:var(--bg-3);
+  }
+  .escenario-tag.recommended { border-color:rgba(255,31,109,0.3); color:var(--pink-2); background:rgba(255,31,109,0.06); }
+  .escenario-tag.recommended::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--pink); box-shadow:0 0 6px var(--pink); }
+  .escenario-num { font-family:'JetBrains Mono', monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px; }
+  .escenario-num.a { color:var(--blue); }
+  .escenario-num.b { color:var(--pink); }
+  .escenario-num.c { color:var(--amber); }
+  .escenario-title { font-size:15px; font-weight:600; color:var(--white); margin-bottom:10px; }
+  .escenario-text { font-size:12px; color:var(--text-muted); line-height:1.65; }
+  .escenario-conditions { margin-top:14px; display:flex; flex-direction:column; gap:6px; }
+  .escenario-cond {
+    font-size:11px; color:var(--text-muted); padding-left:12px;
+    position:relative; line-height:1.45;
+  }
+  .escenario-cond::before { content:'·'; position:absolute; left:0; color:var(--text-dim); }
+
+  /* ── VALIDACIÓN PLAYWRIGHT ── */
+  .val-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:40px; }
+  .val-card {
+    padding:20px; border:1px solid var(--border); border-radius:10px;
+    background:var(--bg-2); display:flex; gap:14px; align-items:flex-start;
+  }
+  .val-icon { font-size:18px; flex-shrink:0; margin-top:1px; }
+  .val-title { font-size:13px; font-weight:600; color:var(--white); margin-bottom:5px; }
+  .val-text  { font-size:12px; color:var(--text-muted); line-height:1.6; }
+  .val-code  { font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--pink-2); background:rgba(255,31,109,0.08); border:1px solid rgba(255,31,109,0.15); padding:2px 7px; border-radius:4px; }
+
+  /* ── SÍNTESIS ── */
+  .sintesis-body { margin-top:48px; display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start; }
+  .sintesis-prose p { font-size:15px; color:var(--text-muted); line-height:1.8; margin-bottom:20px; }
+  .sintesis-prose p:last-child { margin-bottom:0; }
+  .sintesis-prose strong { color:var(--text); }
+  .sintesis-callouts { display:flex; flex-direction:column; gap:14px; }
+  .sintesis-callout {
+    padding:20px 22px; border-radius:10px;
+    border-left:3px solid;
+    background:var(--bg-2);
+  }
+  .sintesis-callout.pink  { border-color:var(--pink);  background:linear-gradient(135deg, rgba(255,31,109,0.05) 0%, var(--bg-2) 60%); }
+  .sintesis-callout.blue  { border-color:var(--blue);  background:linear-gradient(135deg, rgba(59,130,246,0.05) 0%, var(--bg-2) 60%); }
+  .sintesis-callout.amber { border-color:var(--amber); background:linear-gradient(135deg, rgba(245,158,11,0.05) 0%, var(--bg-2) 60%); }
+  .sintesis-callout-label { font-family:'JetBrains Mono', monospace; font-size:9px; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:8px; }
+  .sintesis-callout.pink  .sintesis-callout-label { color:var(--pink); }
+  .sintesis-callout.blue  .sintesis-callout-label { color:#60a5fa; }
+  .sintesis-callout.amber .sintesis-callout-label { color:var(--amber); }
+  .sintesis-callout-text { font-size:13px; color:var(--text-muted); line-height:1.7; }
+  .sintesis-callout-text strong { color:var(--white); }
+
+  @media (max-width:768px) { .sintesis-body { grid-template-columns:1fr; gap:32px; } }
+
+  /* ── FOOTER ── */
+  .footer { padding:48px 0; border-top:1px solid var(--border); text-align:center; color:var(--text-dim); font-size:12px; }
+  .footer span { color:var(--pink); }
+  .footer a { color:var(--text-dim); text-decoration:none; }
+  .footer a:hover { color:var(--text-muted); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-12px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+  @keyframes scrollLine {
+    0%   { transform:scaleY(0); transform-origin:top; }
+    50%  { transform:scaleY(1); transform-origin:top; }
+    51%  { transform:scaleY(1); transform-origin:bottom; }
+    100% { transform:scaleY(0); transform-origin:bottom; }
+  }
+
+  @media (max-width: 768px) {
+    .method-grid, .eje-cols, .riesgos-grid, .escenarios-grid, .val-grid, .qa-grid { grid-template-columns:1fr; }
+    .container { padding:0 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="container hero-content">
+    <div class="hero-badge">Análisis · 16 jul 2026 · GDE</div>
+    <h1 class="hero-title">
+      <span class="accent">Kiro</span><span class="vs">vs</span><span style="color:var(--pink);text-shadow:0 0 40px rgba(255,31,109,0.6)">SDD</span><br>
+      <span style="font-size:0.45em;font-weight:300;color:var(--text-muted);letter-spacing:0;display:block;margin-top:8px">Model v1.1</span>
+    </h1>
+    <p class="hero-sub">
+      Comparativa técnica para adopción en sector público argentino.
+      7 ejes, fuentes verificadas en vivo, recomendación accionable.
+    </p>
+    <div class="hero-meta">
+      <div class="hero-stat">
+        <div class="hero-stat-num">7</div>
+        <div class="hero-stat-label">Ejes comparados</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num"><span class="p">SDD</span></div>
+        <div class="hero-stat-label">Recomendado GDE</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">3</div>
+        <div class="hero-stat-label">Escenarios</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num" style="color:var(--amber)">B</div>
+        <div class="hero-stat-label">Escenario recomendado</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll">scroll</div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════ METODOLOGÍA ══════════════ -->
+<section class="section container fade-in">
+  <div class="section-label">Fuentes</div>
+  <h2 class="section-title">Metodología y confiabilidad</h2>
+  <p class="section-desc">Todo lo afirmado tiene una marca: <strong>[V]</strong> verificado en fuente directa · <strong>[I]</strong> inferencia del analista.</p>
+
+  <div class="method-grid">
+    <div class="method-card sdd">
+      <div class="method-label sdd">sdd-model-v1.1</div>
+      <div class="method-title">Leído desde el repo en producción</div>
+      <div class="method-text">
+        Archivos leídos vía MCP de GitHub directamente de <code style="color:var(--pink-2);background:rgba(255,31,109,0.08);padding:1px 5px;border-radius:3px">main</code>:
+        README.md, CLAUDE.md, scripts/sdd-audit.mjs, .claude/commands/* (22 comandos),
+        sdd-implement.md y sdd-review.md en detalle, .github/workflows/sdd-audit.yml y el árbol de specs/.
+      </div>
+      <div class="method-sources">
+        <span class="source-tag">README.md</span>
+        <span class="source-tag">CLAUDE.md</span>
+        <span class="source-tag">22 commands</span>
+        <span class="source-tag">sdd-audit.mjs</span>
+        <span class="source-tag">CI workflow</span>
+      </div>
+    </div>
+    <div class="method-card kiro">
+      <div class="method-label kiro">Kiro (AWS)</div>
+      <div class="method-title">Navegación en vivo — 16-jul-2026</div>
+      <div class="method-text">
+        Páginas verificadas con browser en tiempo real. Incluye validación adicional
+        con Playwright el mismo día del análisis para detectar cambios post-redacción.
+        Discrepancias internas de kiro.dev también documentadas.
+      </div>
+      <div class="method-sources">
+        <span class="source-tag">kiro.dev/pricing</span>
+        <span class="source-tag">docs/specs</span>
+        <span class="source-tag">docs/steering</span>
+        <span class="source-tag">privacy-and-security</span>
+        <span class="source-tag">Playwright live</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════ TABLA ══════════════ -->
+<section class="section container fade-in">
+  <div class="section-label">Resumen</div>
+  <h2 class="section-title">7 ejes. Un ganador por criterio.</h2>
+  <p class="section-desc">La tabla completa. Cada fila tiene análisis expandible abajo.</p>
+
+  <div class="comp-table-wrap">
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th>Eje</th>
+          <th style="color:#60a5fa">Kiro</th>
+          <th style="color:#ff4d8d">SDD Model v1.1</th>
+          <th>Ganador</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="eje-cell">1. Modelo conceptual y flujo</td>
+          <td class="kiro-cell">3 fases · Quick Plan · Vibe mode</td>
+          <td class="sdd-cell">8 fases · 22 comandos · ciclo completo</td>
+          <td><span class="winner-badge tie">Empate</span></td>
+        </tr>
+        <tr>
+          <td class="eje-cell">2. Trazabilidad</td>
+          <td class="kiro-cell">req→design→task · status en IDE</td>
+          <td class="sdd-cell">US-N→task→ticket · audit determinista</td>
+          <td><span class="winner-badge sdd">SDD</span></td>
+        </tr>
+        <tr>
+          <td class="eje-cell">3. Gobernanza y gates</td>
+          <td class="kiro-cell">Supervised mode · no auditor en CI</td>
+          <td class="sdd-cell">Prompt gates + sdd-audit.mjs en CI</td>
+          <td><span class="winner-badge sdd">SDD</span></td>
+        </tr>
+        <tr>
+          <td class="eje-cell">4. Extensibilidad</td>
+          <td class="kiro-cell">IDE + CLI + Web + Mobile + ACP + MDM</td>
+          <td class="sdd-cell">Agnóstico · Jira MCP · multi-repo</td>
+          <td><span class="winner-badge tie">Empate</span></td>
+        </tr>
+        <tr>
+          <td class="eje-cell">5. Costo operativo / lock-in</td>
+          <td class="kiro-cell">Créditos AWS · no roll-over mensual</td>
+          <td class="sdd-cell">Tokens propios · sin plataforma intermedia</td>
+          <td><span class="winner-badge sdd">SDD</span></td>
+        </tr>
+        <tr>
+          <td class="eje-cell">6. Curva / madurez</td>
+          <td class="kiro-cell">IDE 1.0 · docs pulidas · AWS backing</td>
+          <td class="sdd-cell">Docs internas sólidas · autor único</td>
+          <td><span class="winner-badge kiro">Kiro</span></td>
+        </tr>
+        <tr>
+          <td class="eje-cell">7. Fit para GDE</td>
+          <td class="kiro-cell">GovCloud US · compliance AWS · residencia?</td>
+          <td class="sdd-cell">Brownfield nativo · auditoría en CI · Windows</td>
+          <td><span class="winner-badge sdd">SDD</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════ EJES DETALLE ══════════════ -->
+<section class="section container fade-in">
+  <div class="section-label">Análisis</div>
+  <h2 class="section-title">Cada eje, en profundidad</h2>
+  <p class="section-desc">Expandí cada fila para leer el análisis completo con fuentes.</p>
+
+  <div class="ejes-grid">
+
+    <div class="eje-item">
+      <div class="eje-header" onclick="toggleEje(this)">
+        <div class="eje-header-left">
+          <span class="eje-num">EJE 01</span>
+          <span class="eje-name">Modelo conceptual y flujo de trabajo</span>
+          <span class="winner-badge tie" style="margin-left:auto;margin-right:16px">Empate</span>
+        </div>
+        <span class="eje-chevron">▼</span>
+      </div>
+      <div class="eje-body">
+        <div class="eje-cols">
+          <div>
+            <div class="eje-col-title kiro">Kiro <span class="verified-badge">V</span></div>
+            <div class="eje-col-text">Formaliza el desarrollo en <em>.kiro/specs/&lt;feature&gt;/</em> con tres artefactos: requirements.md (user stories + criterios EARS), design.md y tasks.md. Flujo de tres fases con dos variantes (Requirements-First y Design-First) y Quick Plan que autogenera los tres artefactos sin gates. Bugfix Specs específicos. Modo Vibe para exploración libre. Ejecución de tareas con grafo de dependencias y paralelismo automático por waves.</div>
+          </div>
+          <div>
+            <div class="eje-col-title sdd">SDD v1.1 <span class="verified-badge">V</span></div>
+            <div class="eje-col-text">8 fases explícitas: scan → refine → generate → validate → implement → checklist → review → health. Más comandos transversales: handoff, fix, log, task, métricas e integración Jira. 22 comandos en markdown de texto plano — el prompt <em>es</em> el comando. Incorpora contrato negativo (Fuera de scope v1), registro ADR de decisiones, detección de colisiones entre features, y auditoría por sprint.</div>
+          </div>
+        </div>
+        <div class="eje-verdict"><strong>Veredicto:</strong> Kiro gana en simplicidad y UX (paralelismo, botones, status en vivo). SDD gana en cobertura del ciclo real de equipo. La debilidad de SDD es el costo cognitivo; la de Kiro es que su flujo corto puede ser insuficiente para governance estatal.</div>
+      </div>
+    </div>
+
+    <div class="eje-item">
+      <div class="eje-header" onclick="toggleEje(this)">
+        <div class="eje-header-left">
+          <span class="eje-num">EJE 02</span>
+          <span class="eje-name">Trazabilidad</span>
+          <span class="winner-badge sdd" style="margin-left:auto;margin-right:16px">SDD</span>
+        </div>
+        <span class="eje-chevron">▼</span>
+      </div>
+      <div class="eje-body">
+        <div class="eje-cols">
+          <div>
+            <div class="eje-col-title kiro">Kiro <span class="verified-badge">V</span> <span class="inferred-badge">I</span></div>
+            <div class="eje-col-text">Vincula requirement → design → task dentro de la carpeta del spec, con status de tareas actualizado en tiempo real en el IDE. Trazabilidad legible y navegable. Sin embargo, los artefactos son markdown generados por LLM, sin identificadores de trazabilidad obligatorios entre criterio de aceptación y task, sin firma ni verificación externa.</div>
+          </div>
+          <div>
+            <div class="eje-col-title sdd">SDD v1.1 <span class="verified-badge">V</span></div>
+            <div class="eje-col-text">Cadena completa verificada por código: spec.md obliga user stories US-N; tasks.md exige que cada tarea referencie su US-N (auditado con regex en CHECK 6); jira-map.yaml mantiene US-N → task → ticket; DECISIONS.md registra desvíos tipo ADR; metrics/ guarda evidencia por fase; features.yaml indexa status/owner/sprint/touches. <code style="color:var(--pink-2);background:rgba(255,31,109,0.08);padding:1px 5px;border-radius:3px">pnpm audit:sdd</code> verifica sin IA.</div>
+          </div>
+        </div>
+        <div class="eje-verdict"><strong>Veredicto:</strong> SDD tiene trazabilidad estructuralmente superior y la única de las dos <strong>auditable deterministamente</strong>. Matiz: la evidencia de cierre la escribe el propio agente — no hay firma humana criptográfica en producción (brecha a cerrar).</div>
+      </div>
+    </div>
+
+    <div class="eje-item">
+      <div class="eje-header" onclick="toggleEje(this)">
+        <div class="eje-header-left">
+          <span class="eje-num">EJE 03</span>
+          <span class="eje-name">Gobernanza y gates — el eje más decisivo para GDE</span>
+          <span class="winner-badge sdd" style="margin-left:auto;margin-right:16px">SDD</span>
+        </div>
+        <span class="eje-chevron">▼</span>
+      </div>
+      <div class="eje-body">
+        <div class="eje-cols">
+          <div>
+            <div class="eje-col-title kiro">Kiro <span class="verified-badge">V</span></div>
+            <div class="eje-col-text">Requirements-First/Design-First introducen gates de aprobación humana entre fases. Supervised mode muestra diff para aceptar/rechazar. Pero Kiro es explícito: <em>"Supervised mode es un workflow de code review, no un control de seguridad… no funciona como sandbox, límite de aislamiento ni control de acceso."</em> Quick Plan saltea gates por diseño. Sin auditor de proceso en CI.</div>
+          </div>
+          <div>
+            <div class="eje-col-title sdd">SDD v1.1 <span class="verified-badge">V</span></div>
+            <div class="eje-col-text">Defensa en profundidad real: (1) Convención de prompt — cada comando verifica prerequisites y PARA si falta algo; saltarlo requiere confirmación + entrada en DECISIONS.md. (2) Auditor determinista en CI — sdd-audit.mjs en GitHub Action: si una feature figura CLOSED sin metrics con APROBADO, el merge falla. Es el linter del proceso.</div>
+          </div>
+        </div>
+        <div class="eje-verdict"><strong>Límite honesto compartido:</strong> en ambos, el artefacto de aprobación lo produce el LLM. SDD diseñó artefactos firmados con SHA256, pero eso vive en branch sin mergear — hoy no es enforcement real. Es la brecha a cerrar para GDE. <strong>Aún así:</strong> SDD es el único con enforcement determinista del proceso en CI.</div>
+      </div>
+    </div>
+
+    <div class="eje-item">
+      <div class="eje-header" onclick="toggleEje(this)">
+        <div class="eje-header-left">
+          <span class="eje-num">EJE 04</span>
+          <span class="eje-name">Extensibilidad e integración</span>
+          <span class="winner-badge tie" style="margin-left:auto;margin-right:16px">Empate</span>
+        </div>
+        <span class="eje-chevron">▼</span>
+      </div>
+      <div class="eje-body">
+        <div class="eje-cols">
+          <div>
+            <div class="eje-col-title kiro">Kiro <span class="verified-badge">V</span></div>
+            <div class="eje-col-text">IDE + CLI + Web (preview) + Mobile + IDEs con ACP; MCP; hooks de agente; steering (.kiro/steering/ con scope workspace/global y team steering distribuible por MDM/Group Policy); custom agents; CI/CD. Los foundational steering (product.md, tech.md, structure.md) equivalen a constitution.md + plan.md + existing-arch.md del SDD.</div>
+          </div>
+          <div>
+            <div class="eje-col-title sdd">SDD v1.1 <span class="verified-badge">V</span></div>
+            <div class="eje-col-text">Agnóstico de IDE por diseño: funciona en Claude Code (nativo), Cursor, Copilot y Windsurf. Integra Jira vía Atlassian MCP con fallback a REST (registrado por /sdd-log). mcp-proguide para governance local. Multi-repo por sparse-checkout / submódulo. Skill coding-standards con progressive disclosure para no inflar contexto.</div>
+          </div>
+        </div>
+        <div class="eje-verdict"><strong>Veredicto:</strong> Kiro ofrece superficie de producto (Web, Mobile, team steering por MDM) que SDD no tiene. SDD ofrece portabilidad total y cero dependencia propietaria. Para multi-repo multi-IDE, SDD encaja mejor; para estandarizar y distribuir políticas por MDM a muchos devs, Kiro tiene ventaja operativa.</div>
+      </div>
+    </div>
+
+    <div class="eje-item">
+      <div class="eje-header" onclick="toggleEje(this)">
+        <div class="eje-header-left">
+          <span class="eje-num">EJE 05</span>
+          <span class="eje-name">Costo operativo, lock-in y reproducibilidad</span>
+          <span class="winner-badge sdd" style="margin-left:auto;margin-right:16px">SDD</span>
+        </div>
+        <span class="eje-chevron">▼</span>
+      </div>
+      <div class="eje-body">
+        <div class="eje-cols">
+          <div>
+            <div class="eje-col-title kiro">Kiro <span class="verified-badge">V</span></div>
+            <div class="eje-col-text">Créditos: Free $0/50 · Pro $20/1000 · Pro+ $40/2000 · Pro Max $100/5000 · Power $200/10000. Add-on $0.04/crédito (individuales y teams). Los créditos del plan mensual <strong>no hacen roll-over</strong>; los add-on SÍ (12 meses desde compra). Ruteo de modelos opaco via "Auto" (Sonnet 4.6 cuesta 1.3× que Auto). Lock-in AWS alto.</div>
+          </div>
+          <div>
+            <div class="eje-col-title sdd">SDD v1.1 <span class="verified-badge">V</span></div>
+            <div class="eje-col-text">Sin plataforma intermedia: consume tokens de tu propia suscripción/API de Claude. Reduce costo con routing por graph/domain.yaml. Mide consumo propio con telemetría DX (DX_MET_006 via ccusage). Reproducibilidad alta: artefactos en texto versionado, auditor sin IA (0 tokens, exit code 0/1).</div>
+          </div>
+        </div>
+        <div class="eje-verdict"><strong>Veredicto:</strong> SDD es superior en reproducibilidad y ausencia de lock-in. Kiro ofrece previsibilidad de presupuesto a cambio de lock-in AWS y consumo opaco.</div>
+      </div>
+    </div>
+
+    <div class="eje-item">
+      <div class="eje-header" onclick="toggleEje(this)">
+        <div class="eje-header-left">
+          <span class="eje-num">EJE 06</span>
+          <span class="eje-name">Curva de aprendizaje y madurez</span>
+          <span class="winner-badge kiro" style="margin-left:auto;margin-right:16px">Kiro</span>
+        </div>
+        <span class="eje-chevron">▼</span>
+      </div>
+      <div class="eje-body">
+        <div class="eje-cols">
+          <div>
+            <div class="eje-col-title kiro">Kiro <span class="verified-badge">V</span></div>
+            <div class="eje-col-text">IDE 1.0 (fuera de preview, 1 año cumplido al 16-jul-2026). Docs pulidas y navegables, changelog público, comunidad (Discord, ambassadors, showcase), respaldo de AWS con roadmap y soporte. Curva de entrada baja: botones, generación de foundational steering, Quick Plan.</div>
+          </div>
+          <div>
+            <div class="eje-col-title sdd">SDD v1.1 <span class="verified-badge">V</span></div>
+            <div class="eje-col-text">Docs internas sólidas (README 20KB + CLAUDE.md 13KB) y smoke test propio (/sdd-test, 22 checkpoints). Proyecto de un autor, sin comunidad externa ni soporte de terceros. La curva es alta por 22 comandos y disciplina de proceso requerida. Bus-factor 1 es el riesgo principal.</div>
+          </div>
+        </div>
+        <div class="eje-verdict"><strong>Veredicto:</strong> Kiro gana en madurez, soporte y estabilidad institucional. SDD gana en control total y capacidad de ajustar cualquier regla — con el riesgo de bus-factor 1.</div>
+      </div>
+    </div>
+
+    <div class="eje-item">
+      <div class="eje-header" onclick="toggleEje(this)">
+        <div class="eje-header-left">
+          <span class="eje-num">EJE 07</span>
+          <span class="eje-name">Fit específico para GDE</span>
+          <span class="winner-badge sdd" style="margin-left:auto;margin-right:16px">SDD</span>
+        </div>
+        <span class="eje-chevron">▼</span>
+      </div>
+      <div class="eje-body">
+        <div class="eje-cols">
+          <div>
+            <div class="eje-col-title kiro">Kiro <span class="verified-badge">V</span> <span class="inferred-badge">I</span></div>
+            <div class="eje-col-text">Compliance AWS fuerte, IAM, VPC PrivateLink, data perimeters. GovCloud (US) disponible (~20% más caro, sin Free tier). Pero GovCloud es <strong>US-gov, no aplica a gobierno argentino</strong> — para GDE, Kiro procesaría vía AWS commercial, lo que abre una pregunta de residencia/soberanía de datos no trivial para plataforma documental estatal.</div>
+          </div>
+          <div>
+            <div class="eje-col-title sdd">SDD v1.1 <span class="verified-badge">V</span></div>
+            <div class="eje-col-text">Diseñado alrededor del contexto GDE: brownfield nativo (/sdd-scan → existing-arch.md + grafo, patrones inquebrantables), auditoría determinista en CI, telemetría de costo, ya probado en Windows/PowerShell/Cursor/multi-repo. Stack-agnóstico: no impone gestor de paquetes ni arquitectura, respeta existing-arch.md. El procesamiento ocurre donde el equipo elija (cuenta Claude propia).</div>
+          </div>
+        </div>
+        <div class="eje-verdict"><strong>Veredicto:</strong> Para GDE, SDD encaja mejor en los tres criterios que más pesan: auditoría determinista, reproducibilidad/soberanía de datos, brownfield. Kiro aporta madurez y controles de infra AWS, pero su GovCloud no traslada a Argentina y agrega una pregunta de residencia de datos.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════ VALIDACIÓN PLAYWRIGHT ══════════════ -->
+<section class="section container fade-in">
+  <div class="section-label">Validación en vivo</div>
+  <h2 class="section-title">Verificación Playwright — 16 jul 2026</h2>
+  <p class="section-desc">Navegación en vivo post-redacción. Datos confirmados, discrepancias y novedades.</p>
+
+  <div class="val-grid">
+    <div class="val-card">
+      <div class="val-icon">✅</div>
+      <div>
+        <div class="val-title">Precios y créditos — sin cambios</div>
+        <div class="val-text">Free 50 · Pro $20/1000 · Pro+ $40/2000 · Pro Max $100/5000 · Power $200/10000. Add-on $0.04/crédito. Roll-over mensual confirmado como nulo para créditos de plan. Todos los valores exactos.</div>
+      </div>
+    </div>
+    <div class="val-card">
+      <div class="val-icon">✅</div>
+      <div>
+        <div class="val-title">Supervised mode — cita verificada</div>
+        <div class="val-text">Texto exacto en privacidad y seguridad: <em>"Supervised mode is a code review workflow, not a security control… does not function as a sandbox, isolation boundary, or access control mechanism."</em></div>
+      </div>
+    </div>
+    <div class="val-card">
+      <div class="val-icon">⚠️</div>
+      <div>
+        <div class="val-title">Modelo Free tier — inconsistencia en kiro.dev</div>
+        <div class="val-text">La página tiene dos textos contradictorios: el plan card dice <span class="val-code">Sonnet 4.5</span> y el FAQ dice <span class="val-code">Sonnet 4.6</span>. El análisis original usó el dato del FAQ (4.6). Es un bug de kiro.dev, no del análisis.</div>
+      </div>
+    </div>
+    <div class="val-card">
+      <div class="val-icon">⚠️</div>
+      <div>
+        <div class="val-title">Add-on roll-over — matiz no mencionado</div>
+        <div class="val-text">Los créditos <em>add-on comprados</em> SÍ hacen roll-over (12 meses desde la fecha de compra). Los créditos del plan mensual no. El análisis agrupaba ambos bajo "no roll-over" — corrección menor.</div>
+      </div>
+    </div>
+    <div class="val-card">
+      <div class="val-icon">🆕</div>
+      <div>
+        <div class="val-title">Analyze Requirements — feature nueva</div>
+        <div class="val-text">Kiro agregó un paso previo al diseño: <em>"Catch inconsistencies, ambiguities, and gaps in your requirements before design."</em> No estaba en el análisis original. Acorta la brecha con el <span class="val-code">/sdd-validate</span> del modelo SDD.</div>
+      </div>
+    </div>
+    <div class="val-card">
+      <div class="val-icon">✅</div>
+      <div>
+        <div class="val-title">GovCloud (US) — confirmado y acotado</div>
+        <div class="val-text">~20% más caro que commercial. Sin Free tier en GovCloud. Requiere suscripción paga y autenticación vía AWS IAM Identity Center. El análisis estaba correcto en todos los puntos.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════ RIESGOS ══════════════ -->
+<section class="section container fade-in">
+  <div class="section-label">Trade-offs</div>
+  <h2 class="section-title">Riesgos por opción</h2>
+  <p class="section-desc">Qué se gana y qué se resigna con cada camino.</p>
+
+  <div class="riesgos-grid">
+    <div class="riesgo-card kiro">
+      <div class="riesgo-header">
+        <div class="riesgo-label kiro">Opción A</div>
+        <div class="riesgo-title">Adoptar Kiro</div>
+      </div>
+      <ul class="riesgo-list">
+        <li><strong>Lock-in AWS</strong> <span class="inferred-badge">I</span> — créditos, ruteo de modelos y backend son propietarios; salida costosa.</li>
+        <li><strong>Soberanía de datos</strong> <span class="inferred-badge">I</span> — sin GovCloud para Argentina, el código de GDE va a AWS commercial.</li>
+        <li><strong>Gate ≠ control</strong> <span class="verified-badge">V</span> — Quick Plan/Autopilot saltean gates; sin auditor de proceso en CI.</li>
+        <li><strong>Costo opaco</strong> <span class="verified-badge">V</span> — "Auto" rutea a modelos no explícitos; difícil de presupuestar.</li>
+      </ul>
+      <div class="riesgo-positivo"><strong>A favor:</strong> madurez, soporte AWS, UX, paralelismo de tasks, distribución por MDM.</div>
+    </div>
+    <div class="riesgo-card sdd">
+      <div class="riesgo-header">
+        <div class="riesgo-label sdd">Opción B</div>
+        <div class="riesgo-title">Adoptar SDD v1.1</div>
+      </div>
+      <ul class="riesgo-list">
+        <li><strong>Bus-factor 1</strong> <span class="verified-badge">V</span> — autor único, sin comunidad ni soporte externo.</li>
+        <li><strong>Gate incompleto en main</strong> <span class="verified-badge">V</span> — artefactos firmados SHA256 son diseño de branch, no producción.</li>
+        <li><strong>Disciplina de proceso</strong> <span class="verified-badge">V</span> — 22 comandos exigen adopción y training.</li>
+        <li><strong>Sin UX de producto</strong> <span class="verified-badge">V</span> — no hay IDE, dashboards nativos ni ejecución paralela out of the box.</li>
+      </ul>
+      <div class="riesgo-positivo"><strong>A favor:</strong> reproducibilidad, cero lock-in, auditoría determinista, control total, probado en GDE/Windows.</div>
+    </div>
+    <div class="riesgo-card hybrid">
+      <div class="riesgo-header">
+        <div class="riesgo-label hybrid">Opción C</div>
+        <div class="riesgo-title">Híbrido</div>
+      </div>
+      <ul class="riesgo-list">
+        <li><strong>Doble fuente de verdad</strong> <span class="inferred-badge">I</span> — .kiro/specs/ vs specs/ pueden divergir.</li>
+        <li><strong>Costo duplicado</strong> <span class="verified-badge">V</span> — pagar créditos Kiro <em>y</em> tokens Claude propios.</li>
+        <li><strong>Mapeo no automatizado</strong> <span class="inferred-badge">I</span> — requiere un piloto para validar que el mapeo es viable sin doble mantenimiento.</li>
+      </ul>
+      <div class="riesgo-positivo"><strong>A favor:</strong> combina UX de Kiro con enforcement de SDD — si se define bien el límite autoritativo.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════ RECOMENDACIÓN ══════════════ -->
+<section class="section container fade-in">
+  <div class="section-label">Recomendación</div>
+  <h2 class="section-title">Tres escenarios. Una recomendación principal.</h2>
+  <p class="section-desc">Para GDE, con los cinco criterios declarados: auditoría, reproducibilidad, soberanía, brownfield, Windows.</p>
+
+  <div class="escenarios-grid">
+    <div class="escenario-card a">
+      <div class="escenario-tag">no recomendado hoy</div>
+      <div class="escenario-num a">Escenario A — Kiro puro</div>
+      <div class="escenario-title">Preferible si GDE prioriza adopción rápida</div>
+      <div class="escenario-text">
+        Cuando el equipo crece con devs no técnicos y se necesita estandarizar herramienta y distribuir políticas por MDM. Requiere resolver la pregunta de residencia de datos y aceptar el lock-in AWS.
+      </div>
+      <div class="escenario-conditions">
+        <div class="escenario-cond">Se resuelve la soberanía de datos (acuerdo legal con AWS o aceptación del organismo)</div>
+        <div class="escenario-cond">Se acepta el lock-in y el modelo de créditos como costo previsible</div>
+        <div class="escenario-cond">No es prioridad el auditor de proceso en CI</div>
+      </div>
+    </div>
+    <div class="escenario-card b recommended">
+      <div class="escenario-tag recommended">recomendado como base</div>
+      <div class="escenario-num b">Escenario B — SDD v1.1</div>
+      <div class="escenario-title">La recomendación primaria para GDE</div>
+      <div class="escenario-text">
+        Encaja con las cinco prioridades del proyecto. Condiciones para que sea sólido en producción estatal: cerrar el gate firmado, mitigar bus-factor y extender el auditor a gates específicos de GDE.
+      </div>
+      <div class="escenario-conditions">
+        <div class="escenario-cond">Promover artefactos de aprobación SHA256 a main</div>
+        <div class="escenario-cond">Documentar y sumar un segundo mantenedor</div>
+        <div class="escenario-cond">Extender auditor a gates Java/Oracle/OpenShift si aplica</div>
+      </div>
+    </div>
+    <div class="escenario-card c">
+      <div class="escenario-tag">viable como transición</div>
+      <div class="escenario-num c">Escenario C — Híbrido</div>
+      <div class="escenario-title">Kiro como motor de ejecución + SDD como governance</div>
+      <div class="escenario-text">
+        Kiro para specs, paralelismo de tasks y hooks. SDD para features.yaml, DECISIONS.md, metrics/ y pnpm audit:sdd como fuente de verdad de proceso. Viable si el mapeo .kiro/specs/* → specs/* es automatizable.
+      </div>
+      <div class="escenario-conditions">
+        <div class="escenario-cond">Validar mapeo con un piloto de 1 feature GDE</div>
+        <div class="escenario-cond">Definir cuál es el artefacto autoritativo</div>
+        <div class="escenario-cond">Presupuesto que tolera créditos Kiro + tokens propios</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════ SÍNTESIS ══════════════ -->
+<section class="section container fade-in">
+  <div class="section-label">Síntesis</div>
+  <h2 class="section-title">¿Se complementan o uno supera al otro?</h2>
+  <p class="section-desc">El veredicto teórico: en qué capa opera cada uno y por qué eso define la respuesta.</p>
+
+  <div class="sintesis-body">
+    <div class="sintesis-prose">
+      <p>
+        La pregunta correcta no es <strong>"¿Kiro o SDD?"</strong> sino <strong>"¿en qué capa estás comprando?"</strong>
+        Kiro es un <em>producto de ejecución</em>: empaqueta un flujo de trabajo (spec → design → task → código)
+        dentro de un IDE con UX cuidada, paralelismo automático y respaldo de AWS.
+        SDD es un <em>framework de gobernanza</em>: define las reglas del proceso y las
+        hace cumplir de forma determinista, independientemente del IDE o del agente que se use.
+        Esa diferencia de capa es lo que hace que la comparativa no sea simétrica.
+      </p>
+      <p>
+        Donde Kiro supera a SDD es en <strong>fricción de adopción</strong>. El flujo de tres fases con botones,
+        el Quick Plan para prototipos, el status en tiempo real en el IDE, la distribución de políticas
+        por MDM y el respaldo institucional de AWS son ventajas reales para equipos que necesitan
+        estandarizar rápido con bajo costo de training. SDD requiere disciplina de proceso
+        consciente: 22 comandos, artefactos intermedios obligatorios y un auditor que para el
+        merge si detecta inconsistencias. Para un equipo sin esa cultura previa, la curva es alta.
+      </p>
+      <p>
+        Donde SDD supera a Kiro de forma estructural es en <strong>trazabilidad auditable y soberanía</strong>.
+        El auditor determinista <code style="color:var(--pink-2);background:rgba(255,31,109,0.08);padding:1px 5px;border-radius:3px">sdd-audit.mjs</code>
+        no usa IA, corre en CI y falla el build si el proceso no se siguió.
+        Kiro no tiene equivalente: Supervised mode es explícitamente un workflow de review, no un control
+        de seguridad. Además, SDD procesa los artefactos donde el equipo elija — la cuenta
+        Claude del organismo —, sin pasar por AWS commercial, lo que elimina la pregunta de
+        residencia de datos que Kiro abre para el contexto argentino.
+      </p>
+      <p>
+        El escenario más interesante teóricamente es el <strong>híbrido</strong>: usar Kiro como motor de ejecución
+        (specs, tasks, paralelismo) y SDD como capa de gobernanza (features.yaml, DECISIONS.md,
+        metrics/, audit en CI). Kiro generaría los artefactos; SDD verificaría que cumplen las
+        reglas del proceso. La viabilidad depende de si el mapeo
+        <code style="color:var(--blue);background:rgba(59,130,246,0.08);padding:1px 5px;border-radius:3px">.kiro/specs/*</code> →
+        <code style="color:var(--pink-2);background:rgba(255,31,109,0.08);padding:1px 5px;border-radius:3px">specs/*</code>
+        es automatizable sin doble mantenimiento — algo que solo un piloto puede confirmar.
+      </p>
+      <p>
+        Para GDE específicamente, la gobernanza es el criterio no negociable.
+        Un artefacto de aprobación que lo firma el LLM sin verificación externa es una brecha
+        en ambos sistemas, pero SDD es el único que tiene la arquitectura
+        — el auditor determinista, la cadena US-N → task → ticket, el registro ADR, los gates de prerequisito —
+        para cerrarla progresivamente sin reemplazar la herramienta. En Kiro, esa capa no existe y
+        no está en el roadmap público.
+      </p>
+    </div>
+
+    <div class="sintesis-callouts">
+      <div class="sintesis-callout blue">
+        <div class="sintesis-callout-label">Kiro gana en</div>
+        <div class="sintesis-callout-text">
+          <strong>Fricción de adopción.</strong> IDE integrado, UX con botones, Quick Plan para prototipos rápidos, distribución de políticas por MDM, respaldo AWS con roadmap público y comunidad activa. Para equipos grandes que arrancan desde cero, es el camino de menor resistencia.
+        </div>
+      </div>
+      <div class="sintesis-callout pink">
+        <div class="sintesis-callout-label">SDD gana en</div>
+        <div class="sintesis-callout-text">
+          <strong>Gobernanza ejecutable.</strong> El único de los dos con un auditor determinista en CI que no usa IA y para el merge si el proceso no se siguió. Trazabilidad estructural US-N → task → ticket verificable por código, sin lock-in de plataforma, sin pregunta de soberanía de datos.
+        </div>
+      </div>
+      <div class="sintesis-callout amber">
+        <div class="sintesis-callout-label">La brecha que comparten</div>
+        <div class="sintesis-callout-text">
+          <strong>El artefacto de aprobación lo produce el LLM.</strong> En ninguno de los dos hay firma humana criptográfica en producción hoy. SDD tiene el diseño para cerrar esa brecha (SHA256 + artefactos firmados) — pero vive en un branch sin mergear. Eso es lo próximo a resolver para GDE.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<footer class="footer">
+  <p>Kiro vs SDD Model — Análisis para GDE · <span>16 jul 2026</span> · <a href="comparativa-kiro-vs-sdd-model-gde.md">ver markdown original</a></p>
+</footer>
+
+<script>
+// ── FADE IN ON SCROLL ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// ── ACCORDION EJES ──
+function toggleEje(header) {
+  const item = header.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.eje-item.open').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+</script>
+</body>
+</html>

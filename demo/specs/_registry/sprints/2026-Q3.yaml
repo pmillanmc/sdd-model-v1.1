@@ -1,0 +1,15 @@
+sprint:
+  id: 2026-Q3
+  name: "Q3 2026 - Multi-tenancy Core"
+  start: 2026-07-01
+  end: 2026-09-30
+  goal: "Implementar las bases de multi-tenancy: autenticación, permisos y aislamiento de datos"
+  features:
+    - 001-multi-tenant-auth
+    - 002-billing-dashboard
+    - 003-user-permissions
+    - 005-tenant-isolation-fix
+    - 007-api-rate-limiting
+    - 010-email-templates
+  capacity: 120
+  status: active

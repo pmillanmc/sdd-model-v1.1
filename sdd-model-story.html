@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDD Model — Story & Knowledge Graph</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
+<style>
+  :root {
+    --bg: #080808;
+    --bg-2: #0f0f0f;
+    --bg-3: #161616;
+    --border: #1f1f1f;
+    --border-2: #2a2a2a;
+    --text: #f5f5f5;
+    --text-muted: #737373;
+    --text-dim: #404040;
+    --pink: #ff1f6d;
+    --pink-2: #ff4d8d;
+    --pink-glow: rgba(255,31,109,0.25);
+    --pink-glow-soft: rgba(255,31,109,0.08);
+    --white: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ─── scrollbar ─── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 2px; }
+
+  /* ─── noise overlay ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  /* ─── utils ─── */
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+  .section { padding: 96px 0; }
+  .section-sm { padding: 64px 0; }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% -10%, rgba(255,31,109,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 30% at 80% 100%, rgba(255,31,109,0.06) 0%, transparent 60%);
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%);
+    opacity: 0.4;
+  }
+
+  .hero-content { position: relative; z-index: 1; }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border: 1px solid var(--border-2);
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    background: var(--bg-2);
+    margin-bottom: 32px;
+    animation: fadeDown 0.8s ease forwards;
+  }
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--pink);
+    box-shadow: 0 0 8px var(--pink);
+    animation: pulse 2s infinite;
+  }
+
+  .hero-title {
+    font-size: clamp(48px, 8vw, 96px);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    animation: fadeDown 0.8s 0.1s ease both;
+  }
+  .hero-title .accent {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--pink);
+    text-stroke: 1px var(--pink);
+  }
+  .hero-title .glow {
+    color: var(--pink);
+    text-shadow: 0 0 40px rgba(255,31,109,0.6), 0 0 80px rgba(255,31,109,0.3);
+  }
+
+  .hero-sub {
+    margin-top: 24px;
+    font-size: 18px;
+    color: var(--text-muted);
+    max-width: 520px;
+    font-weight: 300;
+    animation: fadeDown 0.8s 0.2s ease both;
+  }
+
+  .hero-meta {
+    margin-top: 48px;
+    display: flex;
+    gap: 32px;
+    animation: fadeDown 0.8s 0.3s ease both;
+  }
+  .hero-stat { display: flex; flex-direction: column; gap: 2px; }
+  .hero-stat-num {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--white);
+    font-variant-numeric: tabular-nums;
+  }
+  .hero-stat-num span { color: var(--pink); }
+  .hero-stat-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-dim);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    animation: fadeDown 1s 0.6s ease both;
+  }
+  .hero-scroll::after {
+    content: '';
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--border-2), transparent);
+    animation: scrollLine 2s infinite;
+  }
+
+  /* ─── SECTION HEADERS ─── */
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--white);
+    line-height: 1.1;
+  }
+  .section-desc {
+    margin-top: 12px;
+    color: var(--text-muted);
+    max-width: 480px;
+    font-size: 15px;
+  }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    border: none;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--border-2), transparent);
+  }
+
+  /* ─── PHASES FLOW ─── */
+  .phases-flow {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0;
+    margin-top: 56px;
+    position: relative;
+  }
+  .phases-flow::before {
+    content: '';
+    position: absolute;
+    top: 32px;
+    left: 40px;
+    right: 40px;
+    height: 1px;
+    background: linear-gradient(to right, var(--border), var(--pink), var(--border));
+  }
+
+  .phase-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 8px;
+    position: relative;
+  }
+
+  .phase-dot {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 1px solid var(--border-2);
+    background: var(--bg-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s;
+    cursor: default;
+  }
+  .phase-item:hover .phase-dot {
+    border-color: var(--pink);
+    box-shadow: 0 0 20px var(--pink-glow);
+    background: var(--bg-3);
+  }
+  .phase-dot.active {
+    border-color: var(--pink);
+    box-shadow: 0 0 16px var(--pink-glow);
+  }
+
+  .phase-num {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--pink);
+    letter-spacing: 0.1em;
+    margin-top: 16px;
+    text-transform: uppercase;
+  }
+  .phase-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--white);
+    margin-top: 4px;
+    text-align: center;
+  }
+  .phase-desc {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+  .phase-cmd {
+    margin-top: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--pink-2);
+    background: rgba(255,31,109,0.08);
+    border: 1px solid rgba(255,31,109,0.15);
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-align: center;
+  }
+
+  /* ─── KNOWLEDGE GRAPH ─── */
+  .graph-wrapper {
+    margin-top: 48px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg-2);
+    position: relative;
+  }
+  .graph-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    box-shadow: inset 0 0 60px rgba(255,31,109,0.04);
+    pointer-events: none;
+    z-index: 1;
+  }
+  #knowledge-graph {
+    width: 100%;
+    height: 580px;
+  }
+  .graph-statusbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    z-index: 2;
+  }
+  .graph-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+  .graph-status-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--pink);
+    box-shadow: 0 0 10px var(--pink);
+    animation: pulse 1.2s infinite;
+  }
+  .graph-replay {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--pink-2);
+    background: rgba(255,31,109,0.06);
+    border: 1px solid rgba(255,31,109,0.25);
+    border-radius: 6px;
+    padding: 4px 14px;
+    cursor: pointer;
+    transition: all 0.25s;
+    letter-spacing: 0.05em;
+  }
+  .graph-replay:hover {
+    background: rgba(255,31,109,0.15);
+    border-color: var(--pink);
+    box-shadow: 0 0 16px var(--pink-glow);
+  }
+  .graph-caption {
+    position: absolute;
+    bottom: 76px;
+    left: 24px;
+    max-width: 420px;
+    padding: 14px 18px;
+    background: rgba(8,8,8,0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border-2);
+    border-left: 2px solid var(--pink);
+    border-radius: 8px;
+    z-index: 3;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    pointer-events: none;
+  }
+  .graph-caption.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .graph-caption-phase {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--pink);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .graph-caption-text {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.55;
+    font-weight: 300;
+  }
+  .graph-legend {
+    display: flex;
+    gap: 24px;
+    padding: 16px 24px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+
+  /* ─── TIMELINE ─── */
+  .timeline {
+    margin-top: 56px;
+    position: relative;
+    padding-left: 32px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--pink), var(--border), transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 48px;
+    padding-left: 24px;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -36px;
+    top: 8px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 1px solid var(--border-2);
+    transition: all 0.3s;
+  }
+  .timeline-item:first-child::before {
+    background: var(--pink);
+    border-color: var(--pink);
+    box-shadow: 0 0 10px var(--pink-glow);
+  }
+  .timeline-item:hover::before {
+    border-color: var(--pink);
+    background: var(--pink-glow);
+  }
+
+  .timeline-iter {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--pink);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .timeline-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
+  .timeline-text {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 640px;
+  }
+  .timeline-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+  }
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border-2);
+    color: var(--text-muted);
+    background: var(--bg-2);
+  }
+  .tag.pink {
+    border-color: rgba(255,31,109,0.3);
+    color: var(--pink-2);
+    background: rgba(255,31,109,0.06);
+  }
+
+  /* ─── COMMANDS GRID ─── */
+  .cmd-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 48px;
+  }
+  .cmd-card {
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-2);
+    transition: all 0.25s;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+  .cmd-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--pink-glow-soft), transparent);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+  .cmd-card:hover {
+    border-color: rgba(255,31,109,0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+  .cmd-card:hover::before { opacity: 1; }
+
+  .cmd-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--pink-2);
+    margin-bottom: 6px;
+  }
+  .cmd-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .cmd-phase {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 10px;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ─── WHAT'S NEXT ─── */
+  .next-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 48px;
+  }
+  .next-card {
+    padding: 28px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg-2);
+    position: relative;
+    overflow: hidden;
+  }
+  .next-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--pink), transparent);
+    opacity: 0.5;
+  }
+  .next-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text-muted);
+    border: 1px solid var(--border-2);
+    padding: 2px 10px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+    background: var(--bg-3);
+  }
+  .next-status.pending::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #f59e0b;
+    box-shadow: 0 0 6px rgba(245,158,11,0.5);
+  }
+  .next-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 10px;
+    letter-spacing: -0.02em;
+  }
+  .next-text {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    padding: 48px 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 12px;
+  }
+  .footer span { color: var(--pink); }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  @keyframes scrollLine {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    51% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  .shimmer-text {
+    background: linear-gradient(90deg, var(--white) 0%, var(--pink) 50%, var(--white) 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 4s linear infinite;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="container hero-content">
+    <div class="hero-badge">27 may → 14 jul 2026 · 7 semanas</div>
+    <h1 class="hero-title">
+      Spec<span class="accent">-Driven</span><br>
+      <span class="glow">Development</span>
+    </h1>
+    <p class="hero-sub">
+      Un modelo de trabajo donde el código es la consecuencia
+      de un proceso estructurado, no el punto de partida.
+    </p>
+    <div class="hero-meta">
+      <div class="hero-stat">
+        <div class="hero-stat-num">20<span>+</span></div>
+        <div class="hero-stat-label">Comandos</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">2<span>+</span></div>
+        <div class="hero-stat-label">Colaboradores</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">59</div>
+        <div class="hero-stat-label">Commits</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">7</div>
+        <div class="hero-stat-label">Semanas</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll">scroll</div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════ CYCLE ══════════════ -->
+<section class="section container fade-in">
+  <div class="section-label">El ciclo</div>
+  <h2 class="section-title">5 fases. Un solo flujo.</h2>
+  <p class="section-desc">Cada fase tiene gates de aprobación humana. Ningún agente avanza sin confirmación.</p>
+
+  <div class="phases-flow">
+    <div class="phase-item">
+      <div class="phase-dot">🔍</div>
+      <div class="phase-num">Fase 0</div>
+      <div class="phase-name">Scan</div>
+      <div class="phase-desc">Solo brownfield. Lee el codebase existente.</div>
+      <div class="phase-cmd">sdd-scan</div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-dot">📝</div>
+      <div class="phase-num">Fase 1</div>
+      <div class="phase-name">Brief</div>
+      <div class="phase-desc">El equipo deposita borradores en drafts/</div>
+      <div class="phase-cmd">drafts/</div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-dot active">✨</div>
+      <div class="phase-num">Fase 2</div>
+      <div class="phase-name">Refine</div>
+      <div class="phase-desc">Grilling de ambigüedades → input.md</div>
+      <div class="phase-cmd">sdd-refine</div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-dot">📐</div>
+      <div class="phase-num">Fase 3</div>
+      <div class="phase-name">Spec</div>
+      <div class="phase-desc">4 artefactos: constitution, spec, plan, tasks</div>
+      <div class="phase-cmd">sdd-generate</div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-dot">⚡</div>
+      <div class="phase-num">Fase 4</div>
+      <div class="phase-name">Código</div>
+      <div class="phase-desc">TDD loop: Red → Green → Refactor</div>
+      <div class="phase-cmd">sdd-implement</div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-dot">🔄</div>
+      <div class="phase-num">Mant.</div>
+      <div class="phase-name">Salud</div>
+      <div class="phase-desc">Auditoría de artefactos por sprint</div>
+      <div class="phase-cmd">sdd-health</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════ KNOWLEDGE GRAPH ══════════════ -->
+<section class="section container fade-in">
+  <div class="section-label">Knowledge Graph</div>
+  <h2 class="section-title">Comandos, artefactos y dependencias</h2>
+  <p class="section-desc">Cada nodo es un comando o artefacto. Las aristas muestran qué produce, lee o actualiza cada uno.</p>
+
+  <div class="graph-wrapper">
+    <div class="graph-statusbar">
+      <div class="graph-status"><span class="graph-status-dot"></span><span id="graph-phase-label">iniciando…</span></div>
+      <button id="graph-replay" class="graph-replay" title="Reproducir de nuevo">▶ replay</button>
+    </div>
+    <div id="knowledge-graph"></div>
+    <div class="graph-caption" id="graph-caption">
+      <div class="graph-caption-phase" id="caption-phase"></div>
+      <div class="graph-caption-text" id="caption-text"></div>
+    </div>
+    <div class="graph-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#ff1f6d"></div> Brownfield</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#a855f7"></div> Refinement</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div> Spec</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div> Implementación</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div> Mantenimiento</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#06b6d4"></div> Jira</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#6b7280"></div> Artefacto</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════ TIMELINE ══════════════ -->
+<section class="section container fade-in">
+  <div class="section-label">Historia</div>
+  <h2 class="section-title shimmer-text">7 semanas. Del prompt al proceso.</h2>
+  <p class="section-desc">Cómo evolucionó el modelo desde el commit inicial (27 de mayo) hasta hoy.</p>
+
+  <div class="timeline">
+
+    <div class="timeline-item">
+      <div class="timeline-iter">Semana 7 · 5–14 julio</div>
+      <div class="timeline-title">Métricas reales, seguridad y sdd-task</div>
+      <div class="timeline-text">
+        sdd-metrics pasó de estimar tokens (bytes÷4) a leerlos de verdad con ccusage en Claude Code. Después llegó el hardening: 6 remediaciones de una auditoría de seguridad (XSS en el kanban, bind a 127.0.0.1, checks de inyección en todo input no confiable). Y el cierre: sdd-task para implementar una task puntual con gate de dependencias, y el kanban documentado.
+      </div>
+      <div class="timeline-tags">
+        <span class="tag pink">ccusage</span>
+        <span class="tag pink">security hardening</span>
+        <span class="tag pink">sdd-task</span>
+        <span class="tag">kanban</span>
+        <span class="tag">escapeHtml</span>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-iter">Semana 5–6 · 22–29 junio</div>
+      <div class="timeline-title">Visualización + TDD explícito + setup por IDE</div>
+      <div class="timeline-text">
+        El grafo de dominio ganó una visualización interactiva con vis.js — nodos por dominio, sidebar con detalle, distinción brownfield/greenfield. sdd-implement formalizó el loop TDD (Red → Green → Refactor) con gate de calidad estructural. sdd-setup se volvió IDE-aware con validación de tokens, y se documentó la regla de fallback MCP→REST con trazabilidad obligatoria.
+      </div>
+      <div class="timeline-tags">
+        <span class="tag pink">vis.js graph</span>
+        <span class="tag pink">TDD Red→Green→Refactor</span>
+        <span class="tag">sdd-setup IDE-aware</span>
+        <span class="tag">fallback MCP→REST</span>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-iter">Semana 4 · 19 junio</div>
+      <div class="timeline-title">El día grande: calidad de artefactos + Jira</div>
+      <div class="timeline-text">
+        Un solo día, dos frentes. Calidad: sección fuera-de-scope obligatoria en spec.md, tasks con slicing vertical (tracer bullets), prohibición de nombres de funciones, detección de tipo de feature en el refine, y el steering skill coding-standards para el equipo. Integración: los tres comandos Jira, sdd-setup, y sdd-generate creando tickets con jira-map.yaml.
+      </div>
+      <div class="timeline-tags">
+        <span class="tag pink">fuera de scope v1</span>
+        <span class="tag pink">tracer bullets</span>
+        <span class="tag pink">sdd-jira-*</span>
+        <span class="tag">coding-standards skill</span>
+        <span class="tag">jira-map.yaml</span>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-iter">Semana 3 · 13–16 junio</div>
+      <div class="timeline-title">Navegación de contexto + MCP server</div>
+      <div class="timeline-text">
+        Dos comandos para operar el contexto del agente: sdd-compact-guide (cuándo conviene compactar según la fase) y sdd-context-budget (cuánto pesa el framework en tokens). sdd-handoff sumó la sección obligatoria de caminos descartados y sdd-log el registro de alternativas. Además nació el sdd-mcp server con 11 tools determinísticas, que luego se movió a repo propio.
+      </div>
+      <div class="timeline-tags">
+        <span class="tag pink">sdd-compact-guide</span>
+        <span class="tag pink">sdd-context-budget</span>
+        <span class="tag pink">sdd-mcp server</span>
+        <span class="tag">caminos descartados</span>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-iter">Semana 2–3 · 8–12 junio</div>
+      <div class="timeline-title">Gobernanza de equipo + auditor determinista</div>
+      <div class="timeline-text">
+        El salto de un dev a un equipo. Registro maestro de features (features.yaml) con status OPEN/CLOSED, grafo de dominio para routing de contexto, detección de colisiones entre features de distintos owners, ruta corta sdd-fix para bugs. Y la pieza clave: sdd-audit.mjs, el auditor determinista que corre en CI sin IA — lo que el script verifica, los agentes no lo recalculan.
+      </div>
+      <div class="timeline-tags">
+        <span class="tag pink">features.yaml</span>
+        <span class="tag pink">sdd-audit.mjs + CI</span>
+        <span class="tag pink">colisiones</span>
+        <span class="tag">OPEN/CLOSED</span>
+        <span class="tag">sdd-fix</span>
+        <span class="tag">graph/domain.yaml</span>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-iter">Semana 1–2 · 28 may – 8 junio</div>
+      <div class="timeline-title">Telemetría DX + handoff + brownfield</div>
+      <div class="timeline-text">
+        Tres líneas en paralelo que convergieron en un merge el 8 de junio: la telemetría DX de patohed (sdd-metrics, rework ratio, DX_MET_001–006), el sdd-handoff de pmillanmc (snapshot de sesión para continuar en otro agente), y el soporte brownfield — sdd-scan lee el codebase existente y genera existing-arch.md, cuyas restricciones son no negociables.
+      </div>
+      <div class="timeline-tags">
+        <span class="tag pink">sdd-metrics</span>
+        <span class="tag pink">sdd-handoff</span>
+        <span class="tag pink">sdd-scan</span>
+        <span class="tag">rework ratio</span>
+        <span class="tag">existing-arch.md</span>
+        <span class="tag">merge 2 autores</span>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-iter">Día 0 · 27 de mayo</div>
+      <div class="timeline-title">Initial commit: el ciclo base</div>
+      <div class="timeline-text">
+        La idea fundacional: reemplazar prompts aislados por un proceso con fases, artefactos versionables y gates humanos. El ciclo original: refine → generate → implement → review. Cuatro comandos, cuatro artefactos (constitution, spec, plan, tasks), y el principio que sigue vigente: el código es la consecuencia del proceso, no el punto de partida.
+      </div>
+      <div class="timeline-tags">
+        <span class="tag pink">initial commit</span>
+        <span class="tag">ciclo base</span>
+        <span class="tag">4 artefactos</span>
+        <span class="tag">gates humanos</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════ COMMANDS ══════════════ -->
+<section class="section container fade-in">
+  <div class="section-label">Comandos</div>
+  <h2 class="section-title">El arsenal completo</h2>
+  <p class="section-desc">20+ comandos que cubren el ciclo completo de una feature.</p>
+
+  <div class="cmd-grid">
+    <div class="cmd-card"><div class="cmd-phase">setup</div><div class="cmd-name">/sdd-setup</div><div class="cmd-desc">Configura entorno, MCPs y credenciales paso a paso</div></div>
+    <div class="cmd-card"><div class="cmd-phase">0</div><div class="cmd-name">/sdd-scan</div><div class="cmd-desc">Lee el codebase existente → existing-arch.md + grafo</div></div>
+    <div class="cmd-card"><div class="cmd-phase">2</div><div class="cmd-name">/sdd-refine</div><div class="cmd-desc">Grilling de 6 categorías → input.md limpio</div></div>
+    <div class="cmd-card"><div class="cmd-phase">3</div><div class="cmd-name">/sdd-generate</div><div class="cmd-desc">input.md → 4 artefactos + Jira + grafo</div></div>
+    <div class="cmd-card"><div class="cmd-phase">3</div><div class="cmd-name">/sdd-validate</div><div class="cmd-desc">Verifica cobertura brief vs artefactos</div></div>
+    <div class="cmd-card"><div class="cmd-phase">3/4</div><div class="cmd-name">/sdd-log</div><div class="cmd-desc">Registra decisiones y desvíos en DECISIONS.md</div></div>
+    <div class="cmd-card"><div class="cmd-phase">4</div><div class="cmd-name">/sdd-implement</div><div class="cmd-desc">Todas las tasks con TDD loop completo</div></div>
+    <div class="cmd-card"><div class="cmd-phase">4</div><div class="cmd-name">/sdd-task</div><div class="cmd-desc">Una task puntual: /sdd-task [feature] [T00X]</div></div>
+    <div class="cmd-card"><div class="cmd-phase">4</div><div class="cmd-name">/sdd-fix</div><div class="cmd-desc">Bugs rápidos ≤3 archivos, sin ciclo completo</div></div>
+    <div class="cmd-card"><div class="cmd-phase">4</div><div class="cmd-name">/sdd-checklist</div><div class="cmd-desc">Criterios manuales: UX, accesibilidad, negocio</div></div>
+    <div class="cmd-card"><div class="cmd-phase">4</div><div class="cmd-name">/sdd-review</div><div class="cmd-desc">Gate final: lógica + UI + calidad estructural</div></div>
+    <div class="cmd-card"><div class="cmd-phase">mant.</div><div class="cmd-name">/sdd-health</div><div class="cmd-desc">Auditoría completa del modelo por sprint</div></div>
+    <div class="cmd-card"><div class="cmd-phase">mant.</div><div class="cmd-name">/sdd-handoff</div><div class="cmd-desc">Snapshot de sesión para retomar el hilo</div></div>
+    <div class="cmd-card"><div class="cmd-phase">mant.</div><div class="cmd-name">/sdd-metrics</div><div class="cmd-desc">Reporte de tokens y rework de la sesión</div></div>
+    <div class="cmd-card"><div class="cmd-phase">mant.</div><div class="cmd-name">/sdd-metrics-summary</div><div class="cmd-desc">Tabla agregada de todas las features</div></div>
+    <div class="cmd-card"><div class="cmd-phase">nav.</div><div class="cmd-name">/sdd-compact-guide</div><div class="cmd-desc">¿Conviene compactar el contexto ahora?</div></div>
+    <div class="cmd-card"><div class="cmd-phase">nav.</div><div class="cmd-name">/sdd-context-budget</div><div class="cmd-desc">Peso en tokens del framework</div></div>
+    <div class="cmd-card"><div class="cmd-phase">jira</div><div class="cmd-name">/sdd-jira-start</div><div class="cmd-desc">Vincula ticket Jira con feature SDD</div></div>
+    <div class="cmd-card"><div class="cmd-phase">jira</div><div class="cmd-name">/sdd-jira-sync</div><div class="cmd-desc">Reconcilia jira-map.yaml ↔ Jira</div></div>
+    <div class="cmd-card"><div class="cmd-phase">jira</div><div class="cmd-name">/sdd-jira-close</div><div class="cmd-desc">Cierra feature y mueve ticket a DONE</div></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════ WHAT'S NEXT ══════════════ -->
+<section class="section-sm container fade-in">
+  <div class="section-label">En la antesala</div>
+  <h2 class="section-title">Lo que viene</h2>
+  <p class="section-desc">Dos piezas que no llegaron a main todavía.</p>
+
+  <div class="next-grid">
+    <div class="next-card">
+      <div class="next-status pending">pendiente de validación</div>
+      <div class="next-title">QA funcional E2E con ProGuide</div>
+      <div class="next-text">
+        Nuevo comando /sdd-e2e fuente-agnóstico (spec, Jira, contrato de API, suite de regresión). Integra la CLI ProGuide y delega a la skill qa-test-cases. sdd-review suma una Parte 1b para consumir evidencia E2E. En rama pmillan/qa-imple, pendiente de validación del equipo.
+      </div>
+    </div>
+    <div class="next-card">
+      <div class="next-status pending">propuesta en revisión QA</div>
+      <div class="next-title">Capa de PR Review asistida</div>
+      <div class="next-text">
+        Convención de branches (owner/tipo/feature_id), commits con feature_id como scope, template de PR y comando /sdd-pr-review que pre-revisa el diff contra la spec antes de que llegue al TL. El agente comenta pero nunca aprueba — el approve es exclusivo del TL.
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<footer class="footer">
+  <p>SDD Model · <span>patohed/sdd-model</span> · julio 2026</p>
+</footer>
+
+<script>
+// ─── FADE IN ON SCROLL ───
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// ─── KNOWLEDGE GRAPH — TIME-LAPSE VIVO ───
+
+// Secuencia narrativa: cada paso agrega nodos/aristas en el orden real del workflow,
+// con una explicación de QUÉ hace el modelo en ese momento.
+const SEQUENCE = [
+  { phase: 'Fase 0 · Discovery',
+    desc: 'Si el proyecto ya tiene código, sdd-scan lo recorre una sola vez. No opina: describe el stack real, los patrones inquebrantables y las restricciones.',
+    nodes: [ { id: 1, label: 'sdd-scan', group: 'brownfield', shape: 'box' } ], edges: [] },
+  { phase: 'Fase 0 · Los mapas del territorio',
+    desc: 'Nacen dos artefactos: existing-arch.md (las reglas no negociables del codebase) y el grafo de dominio, que le permite al agente leer SOLO los archivos del dominio afectado — ahorro directo de tokens.',
+    nodes: [
+      { id: 10, label: 'existing-arch.md', group: 'artefact', shape: 'ellipse' },
+      { id: 11, label: 'graph/domain.yaml', group: 'artefact', shape: 'ellipse' } ],
+    edges: [
+      { id: 'e1', from: 1, to: 10, arrows: 'to', label: 'crea' },
+      { id: 'e2', from: 1, to: 11, arrows: 'to', label: 'crea' } ] },
+  { phase: 'Fase 1 · Brief humano',
+    desc: 'El equipo (PO, TL, devs) deposita material crudo en drafts/: notas, wireframes, restricciones. Sin formato exigido — el modelo se adapta a cómo trabaja el equipo, no al revés.',
+    nodes: [ { id: 12, label: 'drafts/', group: 'artefact', shape: 'ellipse' } ], edges: [] },
+  { phase: 'Fase 2 · El grilling',
+    desc: 'sdd-refine lee los borradores y pregunta hasta cerrar 6 categorías: problema, usuario, done criteria, out of scope, restricciones y UI. Detecta el tipo de feature y agrega preguntas específicas de dominio.',
+    nodes: [ { id: 2, label: 'sdd-refine', group: 'refinement', shape: 'box' } ],
+    edges: [
+      { id: 'e3', from: 12, to: 2, arrows: 'to' },
+      { id: 'e4', from: 10, to: 2, arrows: 'to', dashes: true } ] },
+  { phase: 'Fase 2 · Fuente única de verdad',
+    desc: 'El resultado es input.md: el brief sin ambigüedades. Todo lo que viene después deriva de este archivo. Si algo no está acá, no existe.',
+    nodes: [ { id: 13, label: 'input.md', group: 'artefact', shape: 'ellipse' } ],
+    edges: [ { id: 'e5', from: 2, to: 13, arrows: 'to', label: 'crea' } ] },
+  { phase: 'Fase 3 · Especificación',
+    desc: 'sdd-generate confirma el feature_id con el humano y arma los artefactos operativos. Una feature por pasada — cada una con su carpeta, su ciclo de vida y su registro.',
+    nodes: [ { id: 3, label: 'sdd-generate', group: 'spec', shape: 'box' } ],
+    edges: [ { id: 'e6', from: 13, to: 3, arrows: 'to' } ] },
+  { phase: 'Fase 3 · Los 4 artefactos',
+    desc: 'constitution (principios MUST/PROHIBITED), spec (user stories Given/When/Then + fuera-de-scope), plan (stack y estructura) y tasks (slicing vertical, trazables a user stories).',
+    nodes: [
+      { id: 14, label: 'constitution.md', group: 'artefact', shape: 'ellipse' },
+      { id: 15, label: 'spec.md', group: 'artefact', shape: 'ellipse' },
+      { id: 16, label: 'plan.md', group: 'artefact', shape: 'ellipse' },
+      { id: 17, label: 'tasks.md', group: 'artefact', shape: 'ellipse' } ],
+    edges: [
+      { id: 'e7', from: 3, to: 14, arrows: 'to', label: 'crea' },
+      { id: 'e8', from: 3, to: 15, arrows: 'to', label: 'crea' },
+      { id: 'e9', from: 3, to: 16, arrows: 'to', label: 'crea' },
+      { id: 'e10', from: 3, to: 17, arrows: 'to', label: 'crea' } ] },
+  { phase: 'Fase 3 · Gobernanza automática',
+    desc: 'La feature queda registrada en features.yaml con owner, sprint y touches (los archivos que va a tocar). Con eso el modelo detecta colisiones con features de otros devs ANTES de que alguien escriba código.',
+    nodes: [
+      { id: 18, label: 'features.yaml', group: 'artefact', shape: 'ellipse' },
+      { id: 21, label: 'jira-map.yaml', group: 'artefact', shape: 'ellipse' } ],
+    edges: [
+      { id: 'e11', from: 3, to: 18, arrows: 'to', label: 'registra' },
+      { id: 'e12', from: 3, to: 11, arrows: 'to', label: 'actualiza', dashes: true },
+      { id: 'e13', from: 3, to: 21, arrows: 'to', label: 'crea' } ] },
+  { phase: 'Integración Jira',
+    desc: 'Si el equipo usa Jira, el modelo habla con el tablero: vincula tickets con features, crea tickets por task y reconcilia ambos lados durante el desarrollo. Trazabilidad US-N → task → ticket.',
+    nodes: [
+      { id: 33, label: 'sdd-jira-start', group: 'jira', shape: 'box' },
+      { id: 34, label: 'sdd-jira-sync', group: 'jira', shape: 'box' },
+      { id: 35, label: 'sdd-jira-close', group: 'jira', shape: 'box' } ],
+    edges: [
+      { id: 'e14', from: 18, to: 33, arrows: 'to' },
+      { id: 'e15', from: 21, to: 34, arrows: 'to' },
+      { id: 'e16', from: 18, to: 35, arrows: 'to' } ] },
+  { phase: 'Fase 3 · Quality gate',
+    desc: 'sdd-validate cruza el brief contra los artefactos: ¿cada punto tiene user story, task y principio que lo proteja? Si hay gaps, avisa y PARA. El humano decide — el agente nunca ajusta solo.',
+    nodes: [
+      { id: 4, label: 'sdd-validate', group: 'spec', shape: 'box' },
+      { id: 20, label: 'metrics/', group: 'artefact', shape: 'ellipse' } ],
+    edges: [
+      { id: 'e17', from: 15, to: 4, arrows: 'to' },
+      { id: 'e18', from: 4, to: 20, arrows: 'to', label: 'evidencia' } ] },
+  { phase: 'Transversal · Memoria de decisiones',
+    desc: 'Cada desvío del plan pasa por sdd-log: qué cambió, qué alternativas se consideraron, por qué se descartaron y quién decidió. DECISIONS.md es la memoria institucional del proyecto.',
+    nodes: [
+      { id: 5, label: 'sdd-log', group: 'spec', shape: 'box' },
+      { id: 19, label: 'DECISIONS.md', group: 'artefact', shape: 'ellipse' } ],
+    edges: [ { id: 'e19', from: 5, to: 19, arrows: 'to', label: 'ADR' } ] },
+  { phase: 'Fase 4 · Código con TDD',
+    desc: 'Recién acá se escribe código. sdd-implement verifica gates (validate corrió, feature OPEN, sin colisiones) y ejecuta cada task con el loop Red → Green → Refactor. El test siempre va primero.',
+    nodes: [ { id: 6, label: 'sdd-implement', group: 'impl', shape: 'box' } ],
+    edges: [
+      { id: 'e20', from: 14, to: 6, arrows: 'to' },
+      { id: 'e21', from: 15, to: 6, arrows: 'to' },
+      { id: 'e22', from: 17, to: 6, arrows: 'to' },
+      { id: 'e23', from: 6, to: 20, arrows: 'to', label: 'reporte' } ] },
+  { phase: 'Fase 4 · Iteración incremental',
+    desc: 'sdd-task implementa UNA task puntual con el mismo rigor: gate de dependencias (las anteriores deben estar completas), regresión total y cierre automático si era la última. Para repartir tasks entre devs.',
+    nodes: [ { id: 30, label: 'sdd-task', group: 'impl', shape: 'box' } ],
+    edges: [
+      { id: 'e24', from: 17, to: 30, arrows: 'to', dashes: true },
+      { id: 'e25', from: 30, to: 20, arrows: 'to' } ] },
+  { phase: 'Fase 4 · Gate final',
+    desc: 'sdd-review verifica en tres pasadas: lógica (cada criterio tiene test que pasa), UI (lo pedido está implementado) y calidad estructural. Solo él cierra la feature. Para bugs chicos existe sdd-fix: ≤3 archivos, test reproductor obligatorio.',
+    nodes: [
+      { id: 7, label: 'sdd-review', group: 'impl', shape: 'box' },
+      { id: 8, label: 'sdd-fix', group: 'impl', shape: 'box' } ],
+    edges: [
+      { id: 'e26', from: 6, to: 7, arrows: 'to' },
+      { id: 'e27', from: 30, to: 7, arrows: 'to', dashes: true },
+      { id: 'e28', from: 7, to: 18, arrows: 'to', label: 'CLOSED' },
+      { id: 'e29', from: 8, to: 19, arrows: 'to', dashes: true } ] },
+  { phase: 'Mantenimiento · El modelo se cuida solo',
+    desc: 'sdd-health audita drift y colisiones cada sprint. sdd-metrics mide tokens reales y rework ratio. sdd-audit corre en CI sin IA: lo que el script verifica, los agentes no lo recalculan.',
+    nodes: [
+      { id: 9, label: 'sdd-health', group: 'maint', shape: 'box' },
+      { id: 31, label: 'sdd-handoff', group: 'maint', shape: 'box' },
+      { id: 32, label: 'sdd-metrics', group: 'maint', shape: 'box' },
+      { id: 36, label: 'sdd-audit (CI)', group: 'maint', shape: 'box' } ],
+    edges: [
+      { id: 'e30', from: 18, to: 9, arrows: 'to' },
+      { id: 'e31', from: 19, to: 9, arrows: 'to' },
+      { id: 'e32', from: 20, to: 32, arrows: 'to' },
+      { id: 'e33', from: 18, to: 36, arrows: 'to' },
+      { id: 'e34', from: 11, to: 36, arrows: 'to' },
+      { id: 'e35', from: 20, to: 36, arrows: 'to' } ] },
+];
+
+const STEP_MS = 9000;          // tiempo por paso — ritmo de lectura humana, sin apuro
+const FLASH_MS = 2400;         // el nacimiento decae lento, sin golpe visual
+
+const nodes = new vis.DataSet([]);
+const edges = new vis.DataSet([]);
+
+const groupColors = {
+  brownfield: '#ff1f6d',
+  refinement: '#a855f7',
+  spec:       '#3b82f6',
+  impl:       '#22c55e',
+  maint:      '#f59e0b',
+  jira:       '#06b6d4',
+  artefact:   '#4b5563',
+};
+
+const options = {
+  nodes: {
+    font: { color: '#f5f5f5', face: 'Inter', size: 12 },
+    borderWidth: 1,
+    shadow: false,
+    margin: 8,
+    color: {
+      background: '#161616',
+      border: '#2a2a2a',
+      highlight: { background: '#1f1f1f', border: '#ff1f6d' },
+      hover: { background: '#1f1f1f', border: '#ff4d8d' },
+    },
+  },
+  edges: {
+    color: { color: '#2a2a2a', highlight: '#ff1f6d', hover: '#ff4d8d' },
+    font: { color: '#525252', size: 9, face: 'JetBrains Mono', align: 'middle' },
+    smooth: { type: 'curvedCW', roundness: 0.15 },
+    width: 1,
+    selectionWidth: 2,
+  },
+  groups: Object.fromEntries(
+    Object.entries(groupColors).map(([k, v]) => [
+      k, { color: { border: v, background: '#0f0f0f', highlight: { border: v, background: '#161616' } } }
+    ])
+  ),
+  physics: {
+    enabled: true,
+    barnesHut: { gravitationalConstant: -2000, centralGravity: 0.45, springLength: 105, springConstant: 0.035, damping: 0.42, avoidOverlap: 0.35 },
+    stabilization: false,   // física siempre viva — el grafo respira suave mientras crece
+    minVelocity: 0.5,
+  },
+  interaction: {
+    hover: true,
+    tooltipDelay: 100,
+    zoomView: true,
+    dragView: true,
+  },
+  layout: { randomSeed: 42 },
+};
+
+const container = document.getElementById('knowledge-graph');
+container.style.background = '#0f0f0f';
+const network = new vis.Network(container, { nodes, edges }, options);
+
+const phaseLabel = document.getElementById('graph-phase-label');
+const replayBtn = document.getElementById('graph-replay');
+const caption = document.getElementById('graph-caption');
+const captionPhase = document.getElementById('caption-phase');
+const captionText = document.getElementById('caption-text');
+
+let timers = [];
+let trafficTimer = null;
+let cameraTimer = null;
+
+function clearTimers() {
+  timers.forEach(t => clearTimeout(t));
+  timers = [];
+  if (trafficTimer) { clearInterval(trafficTimer); trafficTimer = null; }
+  if (cameraTimer) { clearInterval(cameraTimer); cameraTimer = null; }
+}
+
+// ------- cámara acompañante -------
+// sigue el crecimiento del grafo de forma continua, con zoom limitado
+// para que los primeros nodos no aparezcan gigantes ni se corten los bordes
+const ZOOM_MAX = 0.68;   // nunca más cerca que esto
+const ZOOM_MIN = 0.28;   // nunca más lejos que esto
+const CAM_PAD = 190;     // margen en px alrededor del grafo
+
+function cameraFollow(duration = 1100) {
+  const ids = nodes.getIds();
+  if (!ids.length) return;
+  const pos = network.getPositions(ids);
+  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+  ids.forEach(id => {
+    const p = pos[id];
+    if (!p) return;
+    if (p.x < minX) minX = p.x;
+    if (p.x > maxX) maxX = p.x;
+    if (p.y < minY) minY = p.y;
+    if (p.y > maxY) maxY = p.y;
+  });
+  const w = container.clientWidth, h = container.clientHeight;
+  const bbW = (maxX - minX) + CAM_PAD * 2;
+  const bbH = (maxY - minY) + CAM_PAD * 2;
+  let scale = Math.min(w / bbW, h / bbH);
+  scale = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, scale));
+  const center = { x: (minX + maxX) / 2, y: (minY + maxY) / 2 };
+
+  // solo mover si el cambio es perceptible — evita jitter
+  const cur = network.getViewPosition();
+  const curScale = network.getScale();
+  const drift = Math.hypot(cur.x - center.x, cur.y - center.y);
+  if (drift < 40 && Math.abs(curScale - scale) < 0.05) return;
+
+  network.moveTo({
+    position: center,
+    scale,
+    animation: { duration, easingFunction: 'easeInOutQuad' },
+  });
+}
+
+function showCaption(phase, text) {
+  caption.classList.remove('show');
+  timers.push(setTimeout(() => {
+    captionPhase.textContent = phase;
+    captionText.textContent = text;
+    caption.classList.add('show');
+  }, 350));
+}
+
+// nodo nace suave: aparece con borde rosa tenue y decae al color de grupo.
+// nace CERCA de su nodo ancla (el que lo conecta) para que el layout no salte.
+function birthNode(n, anchorId) {
+  const spawn = { ...n };
+  if (anchorId != null && nodes.get(anchorId)) {
+    const p = network.getPositions([anchorId])[anchorId];
+    if (p) {
+      const a = Math.random() * Math.PI * 2;
+      spawn.x = p.x + Math.cos(a) * 90;
+      spawn.y = p.y + Math.sin(a) * 90;
+    }
+  }
+  nodes.add({
+    ...spawn,
+    borderWidth: 1.5,
+    opacity: 0.4,
+    color: {
+      background: 'rgba(255,31,109,0.10)',
+      border: 'rgba(255,77,141,0.7)',
+    },
+  });
+  // primer paso del decaimiento: se asienta
+  timers.push(setTimeout(() => {
+    if (nodes.get(n.id)) nodes.update({ id: n.id, opacity: 1 });
+  }, 300));
+  // segundo paso: vuelve al color del grupo
+  timers.push(setTimeout(() => {
+    if (nodes.get(n.id)) {
+      nodes.update({ id: n.id, borderWidth: 1, color: null });
+    }
+  }, FLASH_MS));
+}
+
+// arista nace rosa tenue y decae al gris de reposo
+function birthEdge(e) {
+  edges.add({ ...e, color: { color: 'rgba(255,31,109,0.55)', opacity: 0.6 }, width: 1.5 });
+  timers.push(setTimeout(() => {
+    if (edges.get(e.id)) {
+      edges.update({ id: e.id, color: null, width: 1 });
+    }
+  }, FLASH_MS + 400));
+}
+
+// pulsos de "tráfico" — aristas que se iluminan suavemente al azar cuando el grafo está completo
+function startTraffic() {
+  const allEdges = edges.getIds();
+  if (!allEdges.length) return;
+  trafficTimer = setInterval(() => {
+    const id = allEdges[Math.floor(Math.random() * allEdges.length)];
+    edges.update({ id, color: { color: 'rgba(255,31,109,0.6)' }, width: 1.5 });
+    setTimeout(() => {
+      if (edges.get(id)) edges.update({ id, color: null, width: 1 });
+    }, 2000);
+  }, 3200);
+}
+
+function runTimelapse() {
+  clearTimers();
+  nodes.clear();
+  edges.clear();
+  caption.classList.remove('show');
+  replayBtn.style.opacity = '0.35';
+  replayBtn.disabled = true;
+
+  // la cámara acompaña todo el time-lapse, no cada paso aislado
+  cameraTimer = setInterval(() => cameraFollow(2000), 2400);
+
+  SEQUENCE.forEach((step, i) => {
+    timers.push(setTimeout(() => {
+      phaseLabel.textContent = `${i + 1}/${SEQUENCE.length} · ${step.phase.toLowerCase()}`;
+      showCaption(step.phase, step.desc);
+      step.nodes.forEach((n, j) => {
+        // buscar el ancla: un nodo ya existente conectado por las aristas de este paso
+        const anchor = step.edges
+          .map(e => (e.from === n.id ? e.to : e.to === n.id ? e.from : null))
+          .find(id => id != null && nodes.get(id));
+        timers.push(setTimeout(() => birthNode(n, anchor), 900 + j * 800));
+      });
+      step.edges.forEach((e, j) => timers.push(setTimeout(() => birthEdge(e), 1600 + j * 800)));
+    }, i * STEP_MS));
+  });
+
+  // cierre: el grafo queda vivo con tráfico
+  timers.push(setTimeout(() => {
+    phaseLabel.textContent = 'modelo completo · grafo vivo';
+    showCaption('El modelo, completo', 'Cada arista que se ilumina es información fluyendo: artefactos que alimentan comandos, comandos que producen evidencia. El código es solo uno de los nodos.');
+    replayBtn.style.opacity = '1';
+    replayBtn.disabled = false;
+    startTraffic();
+    // la cámara sigue acompañando un rato y después se aquieta
+    timers.push(setTimeout(() => {
+      if (cameraTimer) { clearInterval(cameraTimer); cameraTimer = null; }
+      cameraFollow(1800);
+    }, 6000));
+    // el caption final se retira solo, después de leerse
+    timers.push(setTimeout(() => caption.classList.remove('show'), 14000));
+  }, SEQUENCE.length * STEP_MS + 600));
+}
+
+replayBtn.addEventListener('click', runTimelapse);
+
+// arranca el time-lapse recién cuando el grafo entra en viewport
+const graphObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      graphObserver.disconnect();
+      runTimelapse();
+    }
+  });
+}, { threshold: 0.3 });
+graphObserver.observe(container);
+</script>
+</body>
+</html>

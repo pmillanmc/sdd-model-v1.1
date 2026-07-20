@@ -1,0 +1,13 @@
+sprint:
+  id: 2026-Q4
+  name: "Q4 2026 - Analytics & Compliance"
+  start: 2026-10-01
+  end: 2026-12-31
+  goal: "Reportes, analytics en tiempo real y auditoría completa"
+  features:
+    - 004-reports-export
+    - 006-analytics-dashboard
+    - 008-subdomain-routing
+    - 009-audit-logs
+  capacity: 100
+  status: planned

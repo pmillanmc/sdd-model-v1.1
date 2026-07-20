@@ -1,0 +1,572 @@
+- generic [active] [ref=f4e1]:
+  - navigation "Main" [ref=f4e3]:
+    - text: Search
+    - generic [ref=f4e5]:
+      - link "Loading image... Kiro" [ref=f4e8] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f4e12]:
+          - generic [ref=f4e13]: Loading image...
+          - img "Kiro" [ref=f4e15]
+      - generic [ref=f4e16]:
+        - button "Search across all Kiro content (Command+K)" [ref=f4e20] [cursor=pointer]:
+          - generic [ref=f4e21]: Search
+        - button "Main Navigation" [ref=f4e25] [cursor=pointer]
+  - main [ref=f4e28]:
+    - generic [ref=f4e29]:
+      - complementary [ref=f4e30]:
+        - navigation "Documentation product" [ref=f4e34]:
+          - generic [ref=f4e35]:
+            - link "IDE" [ref=f4e36] [cursor=pointer]:
+              - /url: /docs/
+            - link "CLI" [ref=f4e37] [cursor=pointer]:
+              - /url: /docs/cli/
+            - link "Web" [ref=f4e38] [cursor=pointer]:
+              - /url: /docs/web/
+      - generic [ref=f4e41]:
+        - generic [ref=f4e42]:
+          - navigation "breadcrumb" [ref=f4e45]:
+            - list [ref=f4e46]:
+              - listitem [ref=f4e47]:
+                - link "Docs" [ref=f4e48] [cursor=pointer]:
+                  - /url: /docs
+              - listitem [ref=f4e49]
+              - listitem [ref=f4e52]:
+                - link "IDE" [ref=f4e53] [cursor=pointer]:
+                  - /url: /docs
+              - listitem [ref=f4e54]
+              - listitem [ref=f4e57]:
+                - link "Privacy and security" [disabled] [ref=f4e58]
+          - heading "Privacy and security" [level=1] [ref=f4e61]
+          - generic [ref=f4e62]:
+            - generic [ref=f4e63]:
+              - paragraph [ref=f4e64]: Kiro is an AWS application that works as a standalone agentic IDE. Kiro's security framework is built around AWS's security infrastructure and follows practices to protect your development environment and data. Cloud security at AWS is the highest priority. As an AWS customer, you benefit from a data center and network architecture that is built to meet the requirements of the most security-sensitive organizations.
+              - paragraph [ref=f4e65]:
+                - text: Security is a shared responsibility between AWS and you. The
+                - link "shared responsibility model" [ref=f4e66] [cursor=pointer]:
+                  - /url: https://aws.amazon.com/compliance/shared-responsibility-model/
+                - text: "describes this as security of the cloud and security in the cloud:"
+              - list [ref=f4e67]:
+                - listitem [ref=f4e68]:
+                  - paragraph [ref=f4e69]:
+                    - text: Security of the cloud – AWS is responsible for protecting the infrastructure that runs AWS services in the AWS Cloud. AWS also provides you with services that you can use securely. Third-party auditors regularly test and verify the effectiveness of our security as part of the
+                    - link "AWS Compliance Programs" [ref=f4e70] [cursor=pointer]:
+                      - /url: https://aws.amazon.com/compliance/programs/
+                    - text: . To learn about the compliance programs that apply to Kiro, see
+                    - link "AWS Services in Scope by Compliance Program" [ref=f4e71] [cursor=pointer]:
+                      - /url: https://aws.amazon.com/compliance/services-in-scope/
+                    - text: .
+                - listitem [ref=f4e72]:
+                  - paragraph [ref=f4e73]: Security in the cloud – Your responsibility is determined by the AWS service that you use. You are also responsible for other factors including the sensitivity of your data, your company’s requirements, and applicable laws and regulations
+              - paragraph [ref=f4e74]: This documentation helps you understand how to apply the shared responsibility model when using Kiro. It shows you how to configure Kiro to meet your security and compliance objectives. You also learn how to use other AWS services that help you to monitor and secure your Kiro resources.
+              - generic [ref=f4e75]:
+                - heading "URL fetching" [level=2] [ref=f4e76]
+                - link "Copy link to Url fetching section" [ref=f4e77] [cursor=pointer]:
+                  - /url: "#url-fetching"
+              - paragraph [ref=f4e82]: In the Kiro chat module, you can paste a specific URL for your device to fetch and use it as context to help Kiro answer your query or solve your task. You are responsible for the URL content that you fetch and ensuring that your use complies with any applicable third-party terms and laws.
+              - generic [ref=f4e83]:
+                - heading "Autopilot versus supervised mode" [level=2] [ref=f4e84]
+                - link "Copy link to Autopilot versus supervised mode section" [ref=f4e85] [cursor=pointer]:
+                  - /url: "#autopilot-versus-supervised-mode"
+              - paragraph [ref=f4e90]: "Kiro offers two interaction modes, Autopilot and Supervised, that control how you review agent actions. Both modes grant the agent the same capabilities: creating, modifying, searching, and deleting files in your codebase and running commands that impact the filesystem. The difference is the review workflow, not the underlying permissions or access scope."
+              - note "Note" [ref=f4e91]:
+                - strong [ref=f4e95]: Warning
+                - paragraph [ref=f4e97]:
+                  - strong [ref=f4e98]: Supervised mode is a code review workflow, not a security control.
+                  - text: It is designed to help you review and approve agent-generated changes. It does not function as a sandbox, isolation boundary, or access control mechanism. To restrict what the agent can access or modify, use
+                  - link "protected paths" [ref=f4e99] [cursor=pointer]:
+                    - /url: "#protected-paths"
+                  - text: ","
+                  - link "trusted commands" [ref=f4e100] [cursor=pointer]:
+                    - /url: "#trusted-commands"
+                  - text: ", workspace isolation, and credential scoping as described in"
+                  - link "best practices" [ref=f4e101] [cursor=pointer]:
+                    - /url: "#best-practices"
+                  - text: .
+              - table [ref=f4e103]:
+                - rowgroup [ref=f4e104]:
+                  - row [ref=f4e105]:
+                    - columnheader "Capability" [ref=f4e106]
+                    - columnheader "Autopilot" [ref=f4e107]
+                    - columnheader "Supervised" [ref=f4e108]
+                - rowgroup [ref=f4e109]:
+                  - row [ref=f4e110]:
+                    - cell "Agent can read files" [ref=f4e111]
+                    - cell "Yes" [ref=f4e112]
+                    - cell "Yes" [ref=f4e113]
+                  - row [ref=f4e114]:
+                    - cell "Agent can write files to disk" [ref=f4e115]
+                    - cell "Yes" [ref=f4e116]
+                    - cell "Yes" [ref=f4e117]
+                  - row [ref=f4e118]:
+                    - cell "Agent can run commands" [ref=f4e119]
+                    - cell "Yes (with trusted commands policy)" [ref=f4e120]
+                    - cell "Yes (with trusted commands policy)" [ref=f4e121]
+                  - row [ref=f4e122]:
+                    - cell "Review step before changes are applied" [ref=f4e123]
+                    - cell "No, changes are applied immediately" [ref=f4e124]
+                    - cell "Yes, you review a diff and accept or reject" [ref=f4e125]
+                  - row [ref=f4e126]:
+                    - cell "Revert capability" [ref=f4e127]
+                    - cell [ref=f4e128]:
+                      - text: Manual (via
+                      - strong [ref=f4e129]: Revert all changes
+                      - text: or checkpoints)
+                    - cell "Automatic on rejection; also manual revert available" [ref=f4e130]
+                  - row [ref=f4e131]:
+                    - cell "Prevents writes to protected paths without approval" [ref=f4e132]
+                    - cell "Yes" [ref=f4e133]
+                    - cell "Yes" [ref=f4e134]
+              - generic [ref=f4e135]:
+                - heading "How supervised mode works" [level=3] [ref=f4e136]
+                - link "Copy link to How supervised mode works section" [ref=f4e137] [cursor=pointer]:
+                  - /url: "#how-supervised-mode-works"
+              - paragraph [ref=f4e142]: In both modes, the agent writes file changes to disk during tool execution. In supervised mode, these writes are tagged for your review. After the agent's turn completes, Kiro checks for pending file changes and prompts you to accept or reject before continuing. If you reject, files revert to their pre-turn state.
+              - paragraph [ref=f4e143]: "Kiro classifies the following operations as file-modifying. Any of these operations triggers a mandatory review prompt at the end of the agent's turn:"
+              - table [ref=f4e145]:
+                - rowgroup [ref=f4e146]:
+                  - row [ref=f4e147]:
+                    - columnheader "Operation" [ref=f4e148]
+                    - columnheader "Description" [ref=f4e149]
+                - rowgroup [ref=f4e150]:
+                  - row [ref=f4e151]:
+                    - cell "File creation or overwrite" [ref=f4e152]
+                    - cell "Creating new files or replacing file contents" [ref=f4e153]
+                  - row [ref=f4e154]:
+                    - cell "Text replacement" [ref=f4e155]
+                    - cell "Replacing specific text within a file" [ref=f4e156]
+                  - row [ref=f4e157]:
+                    - cell "Content append" [ref=f4e158]
+                    - cell "Adding content to the end of a file" [ref=f4e159]
+                  - row [ref=f4e160]:
+                    - cell "File deletion" [ref=f4e161]
+                    - cell "Removing a file from the workspace" [ref=f4e162]
+                  - row [ref=f4e163]:
+                    - cell "Code editing" [ref=f4e164]
+                    - cell "Modifying code within a file" [ref=f4e165]
+                  - row [ref=f4e166]:
+                    - cell "Symbol rename" [ref=f4e167]
+                    - cell "Renaming a variable, function, or class across files" [ref=f4e168]
+                  - row [ref=f4e169]:
+                    - cell "File relocation" [ref=f4e170]
+                    - cell "Moving a file and updating its references" [ref=f4e171]
+              - paragraph [ref=f4e172]: This review check is built into Kiro's workflow and cannot be skipped by the AI model. If a file-modifying operation ran during the turn, the approval prompt will appear.
+              - paragraph [ref=f4e173]:
+                - text: Shell commands follow a separate approval path. By default, all commands require your approval before execution (see
+                - link "trusted commands" [ref=f4e174] [cursor=pointer]:
+                  - /url: "#trusted-commands"
+                - text: ). To maintain full oversight, keep your trusted commands list minimal and avoid broad wildcards.
+              - generic [ref=f4e175]:
+                - heading "What supervised mode provides" [level=3] [ref=f4e176]
+                - link "Copy link to What supervised mode provides section" [ref=f4e177] [cursor=pointer]:
+                  - /url: "#what-supervised-mode-provides"
+              - paragraph [ref=f4e182]: "When supervised mode is enabled, Kiro enforces the following behaviors for file-modifying operations:"
+              - list [ref=f4e183]:
+                - listitem [ref=f4e184]:
+                  - strong [ref=f4e185]: "Turn-level review for file-modifying operations:"
+                  - text: Every file-modifying operation listed above results in an approval prompt before changes are applied.
+                - listitem [ref=f4e186]:
+                  - strong [ref=f4e187]: "Automatic revert on rejection:"
+                  - text: If you reject, files are restored to their exact state before the agent's turn began.
+                - listitem [ref=f4e188]:
+                  - strong [ref=f4e189]: "Protected path enforcement:"
+                  - text: Writes to
+                  - link "protected paths" [ref=f4e190] [cursor=pointer]:
+                    - /url: "#protected-paths"
+                  - text: require explicit approval before the write occurs, in both modes.
+                - listitem [ref=f4e191]:
+                  - strong [ref=f4e192]: "Command approval:"
+                  - text: Unrecognized commands require your approval before execution, in both modes.
+              - generic [ref=f4e193]:
+                - heading "Scope and limitations" [level=3] [ref=f4e194]
+                - link "Copy link to Scope and limitations section" [ref=f4e195] [cursor=pointer]:
+                  - /url: "#scope-and-limitations"
+              - paragraph [ref=f4e200]: Supervised mode reviews changes made through Kiro's file-editing operations. Other actions, such as shell commands you've added to your trusted list, follow their own approval policy. Supervised mode does not restrict which files the agent can read, which commands it can suggest, or what network access it has.
+              - paragraph [ref=f4e201]: "To maintain full oversight of your environment:"
+              - list [ref=f4e202]:
+                - listitem [ref=f4e203]:
+                  - text: Keep your
+                  - link "trusted commands" [ref=f4e204] [cursor=pointer]:
+                    - /url: "#trusted-commands"
+                  - text: list minimal and avoid broad wildcards.
+                - listitem [ref=f4e205]:
+                  - text: Use
+                  - link "protected paths" [ref=f4e206] [cursor=pointer]:
+                    - /url: "#protected-paths"
+                  - text: to require approval for writes to sensitive locations.
+                - listitem [ref=f4e207]:
+                  - text: Use workspace isolation and credential scoping as described in
+                  - link "best practices" [ref=f4e208] [cursor=pointer]:
+                    - /url: "#best-practices"
+                  - text: .
+              - generic [ref=f4e209]:
+                - heading "Autopilot mode (default)" [level=3] [ref=f4e210]
+                - link "Copy link to Autopilot mode default section" [ref=f4e211] [cursor=pointer]:
+                  - /url: "#autopilot-mode-default"
+              - paragraph [ref=f4e216]: "In Autopilot mode, Kiro works autonomously:"
+              - list [ref=f4e217]:
+                - listitem [ref=f4e218]: Kiro executes multiple steps without requiring approval for each one.
+                - listitem [ref=f4e219]: Kiro makes decisions based on its understanding of your requirements.
+                - listitem [ref=f4e220]: You can toggle autopilot on/off in the chat interface.
+                - listitem [ref=f4e221]: Changes are written and applied immediately. You can review them after the fact.
+                - listitem [ref=f4e222]:
+                  - text: You can interrupt at any time and revert changes via
+                  - strong [ref=f4e223]: Revert all changes
+                  - text: or
+                  - link "checkpoints" [ref=f4e224] [cursor=pointer]:
+                    - /url: /docs/chat/checkpoints
+                  - text: .
+              - generic [ref=f4e225]:
+                - heading "Supervised mode" [level=3] [ref=f4e226]
+                - link "Copy link to Supervised mode section" [ref=f4e227] [cursor=pointer]:
+                  - /url: "#supervised-mode"
+              - paragraph [ref=f4e232]: "In Supervised mode, Kiro works interactively, pausing for your review after each turn:"
+              - list [ref=f4e233]:
+                - listitem [ref=f4e234]: After the agent modifies files, it pauses and presents a diff for your review.
+                - listitem [ref=f4e235]: You can accept individual changes (hunk-level granularity) or reject them to revert.
+                - listitem [ref=f4e236]: The agent asks clarifying questions when needed.
+                - listitem [ref=f4e237]: To reduce interruptions, consecutive edits to the same file may be batched.
+              - paragraph [ref=f4e238]: Supervised mode is best suited for situations where you want to closely review agent output. For example, when working in an unfamiliar codebase, making changes to critical paths, or onboarding a new team member to agent-assisted workflows.
+              - generic [ref=f4e239]:
+                - heading "Choosing the right mode" [level=3] [ref=f4e240]
+                - link "Copy link to Choosing the right mode section" [ref=f4e241] [cursor=pointer]:
+                  - /url: "#choosing-the-right-mode"
+              - paragraph [ref=f4e246]:
+                - text: Use
+                - strong [ref=f4e247]: Autopilot
+                - text: when you trust the task scope and want the agent to work efficiently without interruption. Use
+                - strong [ref=f4e248]: Supervised
+                - text: when you want to review each set of changes before they persist. In both cases, apply the security controls described in
+                - link "best practices" [ref=f4e249] [cursor=pointer]:
+                  - /url: "#best-practices"
+                - text: to protect sensitive files, credentials, and infrastructure.
+              - paragraph [ref=f4e250]:
+                - text: When operating in either mode, you can view individual or all file changes made by the agent by selecting
+                - strong [ref=f4e251]: View all changes
+                - text: in the
+                - strong [ref=f4e252]: Chat
+                - text: module. You can also select
+                - strong [ref=f4e253]: Revert all changes
+                - text: or revert to a
+                - link "checkpoint" [ref=f4e254] [cursor=pointer]:
+                  - /url: /docs/chat/checkpoints
+                - text: to restore your files to their previous state.
+              - generic [ref=f4e255]:
+                - heading "Trusted commands" [level=2] [ref=f4e256]
+                - link "Copy link to Trusted commands section" [ref=f4e257] [cursor=pointer]:
+                  - /url: "#trusted-commands"
+              - paragraph [ref=f4e262]:
+                - text: By default, Kiro requires approval before running any command. You can create your own trusted commands list by searching for
+                - strong [ref=f4e263]: "Kiro Agent: Trusted Commands"
+                - text: in your settings.
+              - paragraph [ref=f4e264]: "Kiro uses simple string prefix matching to determine if a command should be automatically trusted:"
+              - list [ref=f4e265]:
+                - listitem [ref=f4e266]:
+                  - strong [ref=f4e267]: Exact matching
+                  - text: ": Commands must match exactly (e.g.,"
+                  - code [ref=f4e268]: npm install
+                  - text: )
+                - listitem [ref=f4e269]:
+                  - strong [ref=f4e270]: Wildcard matching
+                  - text: ": Use"
+                  - code [ref=f4e271]: "*"
+                  - text: to trust command variations (e.g.,
+                  - code [ref=f4e272]: npm *
+                  - text: trusts all npm commands)
+                - listitem [ref=f4e273]:
+                  - strong [ref=f4e274]: Universal trust
+                  - text: ": Use"
+                  - code [ref=f4e275]: "*"
+                  - text: alone to trust all commands (use with extreme caution)
+              - paragraph [ref=f4e276]: The system treats entire commands as single strings and only checks if they start with trusted patterns. It does not analyze command structure, chains, or special characters, putting full responsibility on you to carefully configure trusted patterns.
+              - generic [ref=f4e277]:
+                - heading "Protected paths" [level=2] [ref=f4e278]
+                - link "Copy link to Protected paths section" [ref=f4e279] [cursor=pointer]:
+                  - /url: "#protected-paths"
+              - paragraph [ref=f4e284]: Kiro requires explicit approval before writing to certain protected paths, preventing unintended modifications to sensitive workspace configuration files. This applies in both Autopilot and Supervised mode — when the agent attempts to create or modify a file matching a protected pattern, you see a confirmation prompt and the change is not applied until you approve it. If you decline, the agent skips the write and continues with the rest of the task.
+              - generic [ref=f4e285]:
+                - heading "Protected path patterns" [level=3] [ref=f4e286]
+                - link "Copy link to Protected path patterns section" [ref=f4e287] [cursor=pointer]:
+                  - /url: "#protected-path-patterns"
+              - paragraph [ref=f4e292]: "The following path patterns are protected:"
+              - table [ref=f4e294]:
+                - rowgroup [ref=f4e295]:
+                  - row [ref=f4e296]:
+                    - columnheader "Pattern" [ref=f4e297]
+                    - columnheader "Match type" [ref=f4e298]
+                    - columnheader "Description" [ref=f4e299]
+                - rowgroup [ref=f4e300]:
+                  - row [ref=f4e301]:
+                    - cell [ref=f4e302]:
+                      - code [ref=f4e303]: .vscode/
+                    - cell "Path contains" [ref=f4e304]
+                    - cell "VS Code workspace settings" [ref=f4e305]
+                  - row [ref=f4e306]:
+                    - cell [ref=f4e307]:
+                      - code [ref=f4e308]: vscode~
+                    - cell "Path contains" [ref=f4e309]
+                    - cell "VS Code backup and recovery files" [ref=f4e310]
+                  - row [ref=f4e311]:
+                    - cell [ref=f4e312]:
+                      - code [ref=f4e313]: .git/
+                    - cell "Path contains" [ref=f4e314]
+                    - cell [ref=f4e315]:
+                      - text: Files inside the
+                      - code [ref=f4e316]: .git
+                      - text: directory
+                  - row [ref=f4e317]:
+                    - cell [ref=f4e318]:
+                      - code [ref=f4e319]: git~
+                    - cell "Path contains" [ref=f4e320]
+                    - cell "Git lock and backup files" [ref=f4e321]
+                  - row [ref=f4e322]:
+                    - cell [ref=f4e323]:
+                      - code [ref=f4e324]: .code-workspace
+                    - cell "Path contains" [ref=f4e325]
+                    - cell "Multi-root workspace files" [ref=f4e326]
+                  - row [ref=f4e327]:
+                    - cell [ref=f4e328]:
+                      - code [ref=f4e329]: .git
+                    - cell "Exact basename" [ref=f4e330]
+                    - cell [ref=f4e331]:
+                      - text: The
+                      - code [ref=f4e332]: .git
+                      - text: directory or submodule file itself
+                  - row [ref=f4e333]:
+                    - cell [ref=f4e334]:
+                      - code [ref=f4e335]: mcp.json
+                    - cell "Exact basename" [ref=f4e336]
+                    - cell "MCP server configuration" [ref=f4e337]
+                  - row [ref=f4e338]:
+                    - cell [ref=f4e339]:
+                      - code [ref=f4e340]: .kiroignore
+                    - cell "Exact basename" [ref=f4e341]
+                    - cell "Kiro ignore rules" [ref=f4e342]
+              - generic [ref=f4e343]:
+                - heading "Match types" [level=3] [ref=f4e344]
+                - link "Copy link to Match types section" [ref=f4e345] [cursor=pointer]:
+                  - /url: "#match-types"
+              - list [ref=f4e350]:
+                - listitem [ref=f4e351]:
+                  - strong [ref=f4e352]: Path contains
+                  - text: — Matches if the pattern appears anywhere in the file path. For example,
+                  - code [ref=f4e353]: .vscode/
+                  - text: matches both
+                  - code [ref=f4e354]: .vscode/settings.json
+                  - text: and
+                  - code [ref=f4e355]: .vscode/extensions.json
+                  - text: .
+                - listitem [ref=f4e356]:
+                  - strong [ref=f4e357]: Exact basename
+                  - text: — Matches if the filename (the last segment of the path) exactly equals the pattern. For example,
+                  - code [ref=f4e358]: mcp.json
+                  - text: matches
+                  - code [ref=f4e359]: project/mcp.json
+                  - text: but not
+                  - code [ref=f4e360]: mcp.json.bak
+                  - text: .
+              - paragraph [ref=f4e361]: When a match is detected, Kiro pauses and displays a confirmation prompt. The file is not written until you approve.
+              - generic [ref=f4e362]:
+                - heading "Best practices" [level=2] [ref=f4e363]
+                - link "Copy link to Best practices section" [ref=f4e364] [cursor=pointer]:
+                  - /url: "#best-practices"
+              - paragraph [ref=f4e369]: Kiro provides a number of security features to consider as you develop and implement your own security policies. The following best practices are general guidelines and don’t represent a complete security solution. Because these best practices might not be appropriate or sufficient for your environment, treat them as helpful considerations rather than prescriptions.
+              - generic [ref=f4e370]:
+                - heading "Protecting your resources" [level=3] [ref=f4e371]
+                - link "Copy link to Protecting your resources section" [ref=f4e372] [cursor=pointer]:
+                  - /url: "#protecting-your-resources"
+              - paragraph [ref=f4e377]: "When using GitHub or Google authentication with Kiro, be aware that the Kiro agent operates within your local environment and may access:"
+              - list [ref=f4e378]:
+                - listitem [ref=f4e379]: Local files and repositories
+                - listitem [ref=f4e380]: Environment variables
+                - listitem [ref=f4e381]: AWS credentials stored in your environment
+                - listitem [ref=f4e382]: Other configuration files with sensitive information
+              - generic [ref=f4e383]:
+                - heading "Recommendations" [level=3] [ref=f4e384]
+                - link "Copy link to Recommendations section" [ref=f4e385] [cursor=pointer]:
+                  - /url: "#recommendations"
+              - list [ref=f4e390]:
+                - listitem [ref=f4e391]:
+                  - strong [ref=f4e392]: Workspace Isolation
+                  - list [ref=f4e393]:
+                    - listitem [ref=f4e394]: Keep sensitive projects in separate workspaces
+                    - listitem [ref=f4e395]: Use .gitignore to prevent access to sensitive files
+                    - listitem [ref=f4e396]: Consider using workspace trust features in your IDE
+                - listitem [ref=f4e397]:
+                  - strong [ref=f4e398]: Use a Clean Environment
+                  - list [ref=f4e399]:
+                    - listitem [ref=f4e400]: Consider creating a dedicated user account or container environment for Kiro
+                    - listitem [ref=f4e401]: Limit access to only the repositories and resources needed for your current project
+                - listitem [ref=f4e402]:
+                  - strong [ref=f4e403]: Manage AWS Credentials Carefully
+                  - list [ref=f4e404]:
+                    - listitem [ref=f4e405]: Use temporary credentials with appropriate permissions
+                    - listitem [ref=f4e406]: Consider using AWS named profiles to isolate Kiro's access
+                    - listitem [ref=f4e407]: For sensitive work, remove AWS credentials from your environment when not needed
+                - listitem [ref=f4e408]:
+                  - strong [ref=f4e409]: Repository Access Control
+                  - list [ref=f4e410]:
+                    - listitem [ref=f4e411]: When using GitHub authentication, review which repositories Kiro can access
+                    - listitem [ref=f4e412]: Use repository-specific access tokens when possible
+                    - listitem [ref=f4e413]: Regularly audit access permissions
+              - generic [ref=f4e414]:
+                - heading "Remote extensions security" [level=2] [ref=f4e415]
+                - link "Copy link to Remote extensions security section" [ref=f4e416] [cursor=pointer]:
+                  - /url: "#remote-extensions-security"
+              - note "Note" [ref=f4e421]:
+                - strong [ref=f4e425]: Warning
+                - paragraph [ref=f4e427]:
+                  - strong [ref=f4e428]: Security Note
+                  - text: ": Using remote extensions opens a connection between your local machine and the remote machine. Only connect to secure remote machines that you trust and that are owned by a party whom you trust. A compromised remote could use the connection to execute code on your local machine. Third-party extensions including remote extensions are not developed, maintained, or managed by Kiro. We are not responsible for third-party extensions and cannot guarantee their stability, compatibility, or ongoing support."
+              - paragraph [ref=f4e429]:
+                - text: Kiro supports Open VSX extensions, including remote SSH extensions (the community-maintained
+                - link "Open Remote - SSH" [ref=f4e430] [cursor=pointer]:
+                  - /url: https://open-vsx.org/extension/jeanp413/open-remote-ssh
+                - text: extension on Open VSX is a popular choice), to provide a familiar development experience. For comprehensive information about extension compatibility and support in Kiro, see our
+                - link "extension compatibility guide" [ref=f4e431] [cursor=pointer]:
+                  - /url: /docs/guides/migrating-from-vscode/#extension-compatibility
+                - text: .
+              - paragraph [ref=f4e432]: By following these practices, you can enjoy Kiro's capabilities while maintaining appropriate security boundaries for your development environment.
+            - generic [ref=f4e433]: "Page updated: May 15, 2026"
+            - generic [ref=f4e437]:
+              - 'link "Previous: Agent Focus Mode" [ref=f4e439] [cursor=pointer]':
+                - /url: /docs/experimental/focus-mode/
+                - generic [ref=f4e442]: Agent Focus Mode
+              - 'link "Next: Data protection" [ref=f4e444] [cursor=pointer]':
+                - /url: /docs/privacy-and-security/data-protection/
+                - generic [ref=f4e445]: Data protection
+        - complementary [ref=f4e448]:
+          - generic [ref=f4e450]:
+            - button "Copy page as Markdown" [ref=f4e451] [cursor=pointer]:
+              - generic [ref=f4e455]: Copy page
+            - button "More page actions" [ref=f4e456] [cursor=pointer]
+    - separator [ref=f4e459]
+  - contentinfo [ref=f4e460]:
+    - generic [ref=f4e462]:
+      - generic [ref=f4e465]:
+        - generic [ref=f4e466]: Loading image...
+        - img "Kiro" [ref=f4e468]
+      - navigation "Footer Navigation" [ref=f4e469]:
+        - generic [ref=f4e470]:
+          - heading "Product" [level=2] [ref=f4e471]
+          - list [ref=f4e472]:
+            - listitem [ref=f4e473]:
+              - link "About Kiro" [ref=f4e474] [cursor=pointer]:
+                - /url: /about/
+            - listitem [ref=f4e475]:
+              - link "IDE" [ref=f4e476] [cursor=pointer]:
+                - /url: /ide/
+            - listitem [ref=f4e477]:
+              - link "CLI" [ref=f4e478] [cursor=pointer]:
+                - /url: /cli/
+            - listitem [ref=f4e479]:
+              - link "Web" [ref=f4e480] [cursor=pointer]:
+                - /url: /web/
+            - listitem [ref=f4e481]:
+              - link "Mobile" [ref=f4e482] [cursor=pointer]:
+                - /url: /mobile/
+            - listitem [ref=f4e483]:
+              - link "Pricing" [ref=f4e484] [cursor=pointer]:
+                - /url: /pricing/
+            - listitem [ref=f4e485]:
+              - link "Downloads" [ref=f4e486] [cursor=pointer]:
+                - /url: /downloads/
+        - generic [ref=f4e487]:
+          - heading "For" [level=2] [ref=f4e488]
+          - list [ref=f4e489]:
+            - listitem [ref=f4e490]:
+              - link "Enterprise" [ref=f4e491] [cursor=pointer]:
+                - /url: /enterprise/
+            - listitem [ref=f4e492]:
+              - link "Startups" [ref=f4e493] [cursor=pointer]:
+                - /url: /startups/
+            - listitem [ref=f4e494]:
+              - link "Students" [ref=f4e495] [cursor=pointer]:
+                - /url: /students/
+        - generic [ref=f4e496]:
+          - heading "Community" [level=2] [ref=f4e497]
+          - list [ref=f4e498]:
+            - listitem [ref=f4e499]:
+              - link "Overview" [ref=f4e500] [cursor=pointer]:
+                - /url: /community/
+            - listitem [ref=f4e501]:
+              - link "Ambassadors" [ref=f4e502] [cursor=pointer]:
+                - /url: /ambassadors/
+            - listitem [ref=f4e503]:
+              - link "Discord" [ref=f4e504] [cursor=pointer]:
+                - /url: /discord/
+            - listitem [ref=f4e505]:
+              - link "Events" [ref=f4e506] [cursor=pointer]:
+                - /url: /events/
+            - listitem [ref=f4e507]:
+              - link "Powers" [ref=f4e508] [cursor=pointer]:
+                - /url: /powers/
+            - listitem [ref=f4e509]:
+              - link "Shop" [ref=f4e510] [cursor=pointer]:
+                - /url: https://shop.kiro.dev
+            - listitem [ref=f4e511]:
+              - link "Showcase" [ref=f4e512] [cursor=pointer]:
+                - /url: /showcase/
+        - generic [ref=f4e513]:
+          - heading "Resources" [level=2] [ref=f4e514]
+          - list [ref=f4e515]:
+            - listitem [ref=f4e516]:
+              - link "Docs" [ref=f4e517] [cursor=pointer]:
+                - /url: /docs/
+            - listitem [ref=f4e518]:
+              - link "Blog" [ref=f4e519] [cursor=pointer]:
+                - /url: /blog/
+            - listitem [ref=f4e520]:
+              - link "Changelog" [ref=f4e521] [cursor=pointer]:
+                - /url: /changelog/
+            - listitem [ref=f4e522]:
+              - link "FAQs" [ref=f4e523] [cursor=pointer]:
+                - /url: /faq/
+            - listitem [ref=f4e524]:
+              - link "Report a bug" [ref=f4e525] [cursor=pointer]:
+                - /url: https://github.com/kirodotdev/Kiro/issues/new/choose
+            - listitem [ref=f4e526]:
+              - link "Suggest an idea" [ref=f4e527] [cursor=pointer]:
+                - /url: https://github.com/kirodotdev/Kiro/issues/new?template=feature_request.yml
+            - listitem [ref=f4e528]:
+              - link "Billing support" [ref=f4e529] [cursor=pointer]:
+                - /url: https://app.kiro.dev/settings/account
+        - generic [ref=f4e530]:
+          - heading "Social" [level=2] [ref=f4e531]
+          - list "Social" [ref=f4e532]:
+            - listitem [ref=f4e533]:
+              - link "Join our Discord community" [ref=f4e534] [cursor=pointer]:
+                - /url: https://discord.gg/kirodotdev
+            - listitem [ref=f4e537]:
+              - link "Follow us on LinkedIn" [ref=f4e538] [cursor=pointer]:
+                - /url: https://www.linkedin.com/showcase/kirodotdev
+            - listitem [ref=f4e541]:
+              - link "Follow us on X" [ref=f4e542] [cursor=pointer]:
+                - /url: https://x.com/kirodotdev
+            - listitem [ref=f4e545]:
+              - link "Follow us on Instagram" [ref=f4e546] [cursor=pointer]:
+                - /url: https://www.instagram.com/kirodotdev
+            - listitem [ref=f4e549]:
+              - link "Follow us on YouTube" [ref=f4e550] [cursor=pointer]:
+                - /url: https://www.youtube.com/@kirodotdev
+            - listitem [ref=f4e553]:
+              - link "Follow us on Bluesky" [ref=f4e554] [cursor=pointer]:
+                - /url: https://bsky.app/profile/kiro.dev
+            - listitem [ref=f4e558]:
+              - link "Follow us on Twitch" [ref=f4e559] [cursor=pointer]:
+                - /url: https://www.twitch.tv/kirodotdev
+    - generic [ref=f4e564]:
+      - link "AWS Amazon" [ref=f4e566] [cursor=pointer]:
+        - /url: https://aws.amazon.com
+      - generic [ref=f4e570]:
+        - link "Site Terms" [ref=f4e571] [cursor=pointer]:
+          - /url: https://aws.amazon.com/terms/
+        - link "License" [ref=f4e572] [cursor=pointer]:
+          - /url: /license/
+        - link "Responsible AI Policy" [ref=f4e573] [cursor=pointer]:
+          - /url: https://aws.amazon.com/ai/responsible-ai/policy/
+        - link "Legal" [ref=f4e574] [cursor=pointer]:
+          - /url: https://aws.amazon.com/legal/
+        - link "Privacy Policy" [ref=f4e575] [cursor=pointer]:
+          - /url: https://aws.amazon.com/privacy/
+        - link "Cookie Preferences" [ref=f4e576] [cursor=pointer]:
+          - /url: "#"
