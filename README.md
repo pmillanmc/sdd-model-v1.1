@@ -411,10 +411,13 @@ CLAUDE.md           ← contexto global que el agente carga en cada turno
 scripts/
   sdd-audit.mjs     ← auditor determinista (CI, sin IA)
   sync-skills.mjs   ← instalador de skills en ~/.claude/skills/
-package.json        ← scripts: audit:sdd, skills:sync
+  gen-kanban.mjs    ← generador del tablero kanban
+  kanban-server.mjs ← servidor local del kanban (127.0.0.1)
+package.json        ← scripts: audit:sdd, skills:sync, kanban
+.gitleaks.toml      ← config de escaneo de secretos (allowlist de placeholders)
 .github/
   workflows/
-    sdd-audit.yml   ← GitHub Action que corre el auditor en cada PR
+    sdd-audit.yml   ← GitHub Action: auditor + escaneo de secretos en cada PR
 graph/
   domain.template.yaml          ← plantilla del grafo de dominio
 specs/
