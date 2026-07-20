@@ -85,3 +85,70 @@ Usá pnpm como instalador de paquetes.
 Asegúrate de incluir SIEMPRE una sección de **Measurable Process Outcomes (DX)** en la especificación, con estas dos métricas obligatorias:
 * **DX-001**: El agente debe completar la implementación con menos de [X] ciclos de autocorrección (Rework).
 * **DX-002**: Mantener la densidad de ambigüedad en 0 (sin consultas de aclaración para la IA).
+
+## Paso 5 — Sincronización con Jira (requiere Atlassian MCP)
+
+Si el Atlassian MCP no está activo, avisá y salteá este paso:
+"Atlassian MCP no disponible — jira-map.yaml quedará pendiente. Podés sincronizar después con /sdd-jira-sync."
+
+Si está activo, construí la propuesta de tickets a partir de `tasks.md`.
+Para cada task, inferí su tipo según estas reglas (alineadas con slicing vertical):
+- `feature` — slice vertical completo que entrega un user story de punta a punta (backend + UI + integración). Es el tipo más común con slicing vertical.
+- `setup` — configuración de entorno, instalación de dependencias, scaffold. Siempre `US: —`.
+- `test` — tasks de testing que van como entrega separada (e2e, integración cross-feature).
+- `fix` — correcciones sobre código existente.
+
+Mostrá la propuesta al usuario antes de crear nada en Jira:
+
+```
+📋 Tasks listas para crear en Jira:
+
+  T-001 · [tipo] · "[título]"
+  T-002 · [tipo] · "[título]"
+  ...
+
+¿Confirmás, editás o descartás alguno antes de crear en Jira?
+```
+
+Esperá confirmación. El dev puede:
+- Aprobar todo → continuar con todos
+- Editar un título → actualizar y continuar
+- Descartar una task → no crear ese ticket, marcarlo como `jira_ticket: null` en el mapa
+
+Una vez confirmado, creá cada ticket en Jira con:
+- `title`: `[T-NNN] [título de la task]`
+- `description`: inferida de la descripción de la task en `tasks.md`, incluyendo la referencia al user story (`US-N`)
+- `label`: `sdd-generated` (obligatorio en todos los tickets creados por este comando)
+- `type`: el tipo inferido de la task
+
+**Generá `specs/[feature_id]/jira-map.yaml`** con el resultado:
+
+```yaml
+feature_id: [feature_id]
+jira_ticket: [ticket de la feature, si existe — ver /sdd-jira-start]
+generated_by: sdd-generate
+updated: [fecha ISO 8601]
+tasks:
+  - task_id: T-001
+    title: "[título]"
+    type: [tipo]
+    user_story: [US-N o —]
+    jira_ticket: [KEY-NNN]
+    source: sdd
+    status: open
+  - task_id: T-002
+    title: "[título]"
+    type: [tipo]
+    user_story: [US-N o —]
+    jira_ticket: null   # descartado por el dev o Atlassian MCP no disponible
+    source: sdd
+    status: pending
+```
+
+**Reglas estrictas del Paso 5:**
+- Nunca crear tickets en Jira sin confirmación del dev.
+- El label `sdd-generated` es obligatorio — identifica el origen SDD en el board.
+- Si un ticket falla al crearse, marcá `jira_ticket: null` en el mapa y avisá al dev con el error. No abortes la creación del resto.
+- `jira-map.yaml` debe generarse siempre, aunque todos los `jira_ticket` sean `null`.
+- No modificar `tasks.md` — el mapa vive únicamente en `jira-map.yaml`.
+- Incluir `user_story` en el mapa para mantener trazabilidad US-N → task → ticket.

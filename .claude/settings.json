@@ -1,12 +1,22 @@
 {
   "permissions": {
     "allow": [
-      "Bash(pnpm create *)",
-      "Bash(pnpm install *)",
-      "Bash(pnpm add *)",
+      "Bash(pnpm install)",
       "Bash(pnpm test *)",
       "Bash(pnpm dev *)",
       "Bash(pnpm build *)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/hooks/sdd-session-capture.mjs\""
+          }
+        ]
+      }
     ]
   }
 }

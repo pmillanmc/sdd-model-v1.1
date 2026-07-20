@@ -1,6 +1,10 @@
 # Carpeta de flavor GDE — contiene documentación sensible del proyecto
 GDE/
 
+# Credenciales — nunca al repo
+.env
+.env.*
+
 node_modules/
 dist/
 coverage/
@@ -8,3 +12,5 @@ coverage/
 
 # MCP server — vive en su propio repo, no es parte del modelo
 mcp/
+
+.cursor/

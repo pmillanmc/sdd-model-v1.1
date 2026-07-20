@@ -1,8 +1,11 @@
 Leé input.md, spec.md y luego revisá el código generado.
 
-**Gate de prerequisitos:** si no existe código en el `source_root` o no hay bloque
-`## Implement`/reporte en `metrics/[feature_id]-metrics.md`, avisá:
-"No hay evidencia de implementación — corré /sdd-implement primero." y PARÁ.
+**Gate de prerequisitos:** si no existe código en el `source_root` o no hay evidencia
+de implementación en `metrics/[feature_id]-metrics.md` (bloque `## Implement` de
+/sdd-implement, o bloques `## Task T00X` de /sdd-task cubriendo TODAS las tasks de
+`tasks.md`), avisá:
+"No hay evidencia de implementación — corré /sdd-implement (o completá las tasks
+pendientes con /sdd-task) primero." y PARÁ.
 
 La carpeta a revisar es `app/` por defecto.
 Si existe `existing-arch.md` en la raíz, usá el `source_root` declarado allí en su lugar.
@@ -52,6 +55,16 @@ o equivalente), verificá:
 Si un requisito visual de input.md no tiene criterio en spec.md ni código → es un gap
 que no fue trackeado en ningún artefacto.
 
+## Parte 3 — Calidad estructural
+
+Para cada archivo tocado por la feature, verificá:
+
+1. ¿Hay lógica duplicada entre dos o más archivos del `source_root`?
+2. ¿Alguna función, variable o componente tiene un nombre que contradice o no refleja su comportamiento real?
+3. ¿Hay abstracción prematura — código que implementa casos que ningún user story de `spec.md` pide?
+
+No es un criterio estético: cada ítem negativo es un gap estructural que el dev debe decidir si corrige o acepta explícitamente.
+
 Al terminar, generá un reporte con este formato:
 
 ## Review de implementación
@@ -71,6 +84,9 @@ Al terminar, generá un reporte con este formato:
 
 ### 🎨 Gaps de UI (en input.md pero no en spec ni en código)
 - [requisitos visuales o de flujo que nunca fueron trackeados]
+
+### 🏗️ Calidad estructural
+- [duplicación encontrada, nombres engañosos, abstracciones prematuras — o "Sin observaciones" si no hay]
 
 ### Resultado
 [APROBADO / PENDIENTE — con resumen de qué falta si no está aprobado]
@@ -92,6 +108,7 @@ Al terminar el reporte, agregá al archivo `metrics/[feature_id]-metrics.md` el 
 - criterios_sin_implementar: [número de ❌]
 - gaps_ui: [número de gaps de UI]
 - hallazgos_e2e: [número de casos E2E `failed` — si > 0, resultado NO puede ser APROBADO]
+- structural_issues: [número de ítems en 🏗️ Calidad estructural — 0 si "Sin observaciones"]
 ```
 
 > **Contrato con el auditor:** el campo `resultado:` debe contener literalmente `APROBADO` o `PENDIENTE`.

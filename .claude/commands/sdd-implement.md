@@ -34,5 +34,15 @@ respetando los principios de constitution.md.
 Usá pnpm como gestor de paquetes salvo que `existing-arch.md` indique otro.
 Empezá directamente, sin pedir confirmación.
 
+**Loop TDD por tarea (obligatorio, en este orden):**
+1. **Red** — escribí el test que describe el comportamiento esperado (debe fallar).
+2. **Green** — implementá el mínimo código para que el test pase.
+3. **Refactor** — antes de pasar a la siguiente tarea, revisá el código que acabás de escribir:
+   - ¿Hay lógica duplicada respecto a una tarea anterior?
+   - ¿Algún nombre (variable, función, componente) no refleja lo que hace?
+   - ¿Hay abstracción prematura — código que anticipa casos que la spec no pide?
+   Si encontrás algo, corregilo. No agregues comportamiento nuevo. Corré los tests de nuevo antes de continuar.
+   Si el refactor requiere tocar más de 3 archivos o cambiar contratos, avisá antes de proceder.
+
 
 **Gobernanza de Cierre:** Antes de dar por terminada la implementación, debes generar obligatoriamente el reporte de métricas en la carpeta `metrics/` basándote en la estructura definida en `sdd-metrics.md`.
