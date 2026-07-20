@@ -18,6 +18,27 @@ Para cada criterio Given/When/Then en spec.md, verificá:
 2. ¿El test pasa? (si podés correrlo, hacelo con pnpm test)
 3. ¿El comportamiento está implementado en el código?
 
+## Parte 1b — Evidencia E2E (ProGuide)
+
+Si existe un bloque `## E2E` en `metrics/[feature_id]-metrics.md` (lo escribe `/sdd-e2e`),
+leélo e incorporá su evidencia funcional contra la app corriendo. El bloque puede provenir de
+distintas fuentes (`fuente: spec | jira | doc | api | regresion`); para este gate importa
+mapear los `requisitos_cubiertos` contra los `Given/When/Then` de la spec:
+
+1. Un criterio Given/When/Then con un caso E2E `passed` (ver `requisitos_cubiertos`) cuenta como
+   **cubierto con verificación funcional**, además de lo que digan los tests unitarios.
+2. Un caso E2E `failed` es un **hallazgo bloqueante**: el elemento existe pero la aserción de
+   comportamiento no se cumple. Reportalo en `❌ Sin implementar` / hallazgos y el resultado
+   NO puede ser APROBADO hasta resolverlo.
+3. Un caso `needs_calibration` **no es un bug**: es un selector/texto que no resolvió en
+   runtime. No lo cuentes como criterio cubierto ni como hallazgo; anotalo como pendiente de
+   calibración.
+
+Si la feature tiene criterios Given/When/Then E2E-verificables (flujos de UI o API) y **no**
+hay bloque `## E2E`, avisá: "No hay evidencia E2E — corré /sdd-e2e para verificar los flujos
+contra la app corriendo." No bloquees por esto si el equipo decide cubrir esos criterios solo
+con tests de integración, pero dejalo explícito en el reporte.
+
 ## Parte 2 — Requisitos de UI (visual y flujo)
 
 Para cada descripción visual o de flujo en input.md (sección "Cómo se ve la interfaz"
@@ -57,6 +78,10 @@ Al terminar, generá un reporte con este formato:
 ### ❌ Sin implementar
 - [criterios que no están cubiertos ni en código ni en tests]
 
+### 🧪 Hallazgos E2E (ProGuide)
+- [casos `failed`: bug real, elemento encontrado pero aserción no cumplida — bloqueante]
+- [casos `needs_calibration`: pendientes de calibración, NO son bugs]
+
 ### 🎨 Gaps de UI (en input.md pero no en spec ni en código)
 - [requisitos visuales o de flujo que nunca fueron trackeados]
 
@@ -82,6 +107,7 @@ Al terminar el reporte, agregá al archivo `metrics/[feature_id]-metrics.md` el 
 - criterios_sin_test: [número de ⚠️]
 - criterios_sin_implementar: [número de ❌]
 - gaps_ui: [número de gaps de UI]
+- hallazgos_e2e: [número de casos E2E `failed` — si > 0, resultado NO puede ser APROBADO]
 - structural_issues: [número de ítems en 🏗️ Calidad estructural — 0 si "Sin observaciones"]
 ```
 

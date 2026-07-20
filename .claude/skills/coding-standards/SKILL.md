@@ -15,6 +15,7 @@ Activar cuando la tarea incluya:
 - revisión de PR o code review
 - dudas sobre convenciones del repo
 - decisiones de proceso (gates, colisiones, cierre)
+- QA funcional / E2E de una feature (verificar flujos contra la app corriendo)
 
 ## Reglas de oro
 
@@ -30,5 +31,6 @@ Leé solo la referencia que aplique:
 - Gobernanza y equipo: `references/team-governance.md`
 - Implementación y review: `references/implementation-review.md`
 - Auditoría determinista y CI: `references/deterministic-audit.md`
+- QA E2E con ProGuide: `references/e2e-qa.md`
 
 Si la tarea cruza varias áreas, cargá múltiples referencias pero evitá leer archivos no necesarios.
