@@ -1,5 +1,12 @@
 # SDD Model — Contexto del proyecto
 
+<!-- SDD:FRAMEWORK BEGIN v1.2.0-proposed -->
+<!-- Todo lo que está entre estos marcadores es capa A (framework): se distribuye igual a
+     todos los repos y NO se edita en destino. Ver contracts/framework.md.
+     Las reglas propias de este repo van después del marcador de cierre, al final del archivo.
+     Cada marcador aparece EXACTAMENTE UNA VEZ en este archivo: el manifiesto de integridad
+     hashea lo que hay entre ellos, así que una segunda aparición literal parte el bloque. -->
+
 ## Qué es esto
 
 Este es un modelo de trabajo para Spec-Driven Development (SDD).
@@ -93,6 +100,11 @@ Cargá el `.md` del comando solo cuando el trigger aparezca en la conversación 
 - No inventés arquitectura que no esté en `plan.md`
 - Si existe `existing-arch.md`, sus restricciones son no negociables salvo decisión registrada en `DECISIONS.md`
 - Si algo del brief es ambiguo, preguntá antes de implementar
+- **No muevas ni renombres carpetas del modelo.** El layout es interfaz — ver
+  "El layout es interfaz" más abajo y `contracts/paths.md`
+- **No edites archivos de capa A en destino** (comandos, skills, hooks,
+  scripts, contratos). Se cambian upstream y se redistribuyen: un cambio local
+  es drift y el manifiesto de integridad lo va a marcar
 
 ## QA funcional E2E (ProGuide)
 
@@ -121,15 +133,83 @@ Cargá el `.md` del comando solo cuando el trigger aparezca en la conversación 
 - Usalo para implementación/review y dudas de convenciones con progressive disclosure.
 - El skill NO reemplaza comandos SDD ni `pnpm audit:sdd`.
 
+## Las tres capas (obligatorio antes de copiar cualquier archivo del modelo)
+
+El modelo distingue tres capas con reglas de propiedad distintas. El contrato completo, ruta por
+ruta, está en **`contracts/paths.md`** — leelo antes de mover, copiar o crear carpetas del modelo.
+
+| Capa | Contenido | Regla |
+|---|---|---|
+| **A · Framework** | `.claude/commands/`, `.claude/skills/`, `.claude/hooks/`, `scripts/`, `contracts/`, plantillas `*.template.*`, scripts de `package.json` | Idéntico en todos los repos. Una sola fuente, versionada en `.claude/VERSION`. **No editable en destino** |
+| **B · Negocio** | `catalog/product.yaml`: catálogo de features de Discovery (`discovery_id`, título, épica, release, talle, criterios de aceptación de negocio) | Compartido entre repos, **read-only**. Lo genera el discovery-model aguas arriba |
+| **C · Implementación** | `specs/`, `graph/domain.yaml`, `existing-arch.md`, `metrics/`, `drafts/`, `handoffs/`, y en el registro: `status`, `owner`, `sprint`, `touches`, `domain`, `closed` | **Por repo.** Se commitea con el código. **Nunca se comparte** |
+
+**Nunca copies capa C entre repos.** No es una preferencia de proceso: `graph/domain.yaml` lista
+rutas exactas de código y la regla de routing obliga a leer solo esos archivos, así que un grafo
+ajeno enruta a archivos que no existen; los `touches` se cruzan para detectar colisiones dentro de
+un filesystem; `existing-arch.md` describe un codebase concreto; `metrics/` es evidencia de una
+ejecución. Si dos árboles de capa C "derivan", es porque no debían ser iguales.
+
+## Multi-repo: un producto, varios codebases
+
+Cuando el mismo producto se implementa en repos separados (ej. una API y una web), cada repo corre
+su propio ciclo SDD completo y **no comparte estado**:
+
+- **Un registro por repo.** `specs/_registry/features.yaml` es local. Puede declarar un bloque
+  `meta:` con `repo:` (identidad del codebase) y `catalog:` (ruta al catálogo de negocio, o `null`).
+- **`id` es local al repo.** Es el nombre de carpeta en `specs/`, la clave del registro y el prefijo
+  de `metrics/<id>-metrics.md`. **No asumas que el mismo `id` significa lo mismo en otro repo**: el
+  número lo asigna cada repo por su cuenta. Convención: se conserva el slug y varía el número
+  (`vulnops: 012-sso-login` ↔ `web-vulnops: 007-sso-login`).
+- **`discovery_id` es la única clave de join entre repos.** Puede aparecer en varios registros.
+  `epic`, `release` y `size` en el registro local son **caché** del catálogo: si divergen, manda el
+  catálogo.
+- **Sin `catalog/`, el repo es standalone** y todo funciona exactamente como antes: multi-repo es
+  aditivo, no cambia nada en un repo de un solo codebase.
+- **Las colisiones son intra-repo.** Dos personas trabajando en API y web no colisionan: son
+  filesystems distintos. Lo que sí puede romperse es el **contrato** entre los dos (la API cambia de
+  forma y la web asume la anterior); eso no lo detecta el auditor y va por coordinación humana.
+
+## El layout es interfaz
+
+Estas rutas son **contrato**, no organización. `specs/`, `metrics/` y `graph/` son **hermanos de la
+raíz**, nunca subcarpetas de `specs/`:
+
+```
+specs/  specs/_registry/  specs/_registry/sprints/  specs/<id>/
+metrics/  graph/  drafts/  handoffs/  catalog/  contracts/
+input.md  existing-arch.md  DECISIONS.md
+```
+
+`scripts/sdd-audit.mjs`, los scripts de kanban y el hook de sesión las leen por ruta fija. Anidar
+`metrics/` o `graph/` dentro de `specs/` no las "ordena": rompe los checks de gates y hace que el
+routing de contexto desaparezca degradado a un WARN.
+
+**Mover, renombrar o anidar cualquiera de esas rutas exige, en el mismo commit:** entrada en
+`DECISIONS.md` vía `/sdd-log` + actualización de `contracts/paths.md` + bump **MAJOR** de
+`.claude/VERSION`.
+
+**Los agentes no reorganizan estas carpetas**, ni cuando el pedido llega de pasada dentro de otra
+tarea. Avisá que es un cambio de contrato y pedí la decisión.
+
 ## Gobernanza y routing de contexto
 
 - **Registro maestro**: `specs/_registry/features.yaml` indexa toda feature
   (status, dominio, owner, sprint, archivos que toca, decisiones).
   `/sdd-generate` registra, `/sdd-review` cierra, `/sdd-health` audita.
+  Es **local al repo** (capa C) y nunca se copia a otro repo.
+- **Catálogo de negocio (opcional)**: `catalog/product.yaml` es la capa B —
+  read-only, generada aguas arriba por el discovery-model. Da la identidad de
+  negocio (`discovery_id`, épica, release, talle, criterios de aceptación).
+  El registro local la referencia por `discovery_id`; `epic`, `release` y
+  `size` locales son caché y el catálogo manda. Si no existe, el repo es
+  standalone y nada cambia.
 - **Sprints**: un archivo por sprint en `specs/_registry/sprints/` con scope
   y gate de cierre. El humano define el scope; los comandos no lo modifican.
 - **Grafo de dominio**: `graph/domain.yaml` mapea dominios → entidades,
-  servicios, componentes y rutas exactas de archivos. Lo genera `/sdd-scan`.
+  servicios, componentes y rutas exactas de archivos. Lo genera `/sdd-scan`
+  sobre **este** codebase. Es capa C: un grafo traído de otro repo enruta a
+  archivos inexistentes y rompe el routing en silencio.
 - **Regla de routing (ahorro de tokens)**: ante cualquier tarea, consultá
   PRIMERO `graph/domain.yaml` para identificar el dominio afectado y leé
   SOLO los archivos listados en `files`. No escanees el codebase completo
@@ -147,8 +227,19 @@ Cargá el `.md` del comando solo cuando el trigger aparezca en la conversación 
   `DECISIONS.md` vía /sdd-log.
 - **Audit determinista**: `pnpm audit:sdd` (script `scripts/sdd-audit.mjs`)
   verifica consistencia del modelo sin IA: registro↔specs, colisiones,
-  gates de cierre, grafo y sprints. Corre en CI en cada PR. Lo que el
-  script ya verifica, los agentes NO lo recalculan — leen su salida.
+  gates de cierre, grafo, sprints, `discovery_id` contra el catálogo (si
+  existe) y consistencia de versión del framework. Corre en CI en cada PR.
+  Lo que el script ya verifica, los agentes NO lo recalculan — leen su salida.
+- **El auditor audita un `--root`**: por defecto `process.cwd()`, es decir el
+  repo desde el que se lo invoca — nunca la carpeta donde está instalado el
+  script. Siempre imprime el root resuelto y la versión del framework en la
+  cabecera; si el root no tiene layout SDD, falla en vez de pasar en verde.
+  Antes de creerle a un reporte, verificá que el root de la cabecera es el
+  repo que querías auditar.
+- **Colisiones cross-repo no existen para el auditor**: los `touches` se
+  cruzan dentro de un filesystem. Un cambio de contrato entre la API y la web
+  no lo detecta ningún script; se coordina entre personas y se registra en
+  `DECISIONS.md`.
 - **Bugs chicos van por /sdd-fix**, no por el ciclo completo ni por fuera
   del modelo. Si un fix crece (>3 archivos, contratos nuevos), se promueve
   a feature con /sdd-refine.
@@ -158,6 +249,9 @@ Cargá el `.md` del comando solo cuando el trigger aparezca en la conversación 
 Los comandos `/sdd-jira-start`, `/sdd-jira-sync` y `/sdd-jira-close` requieren dos servidores MCP activos:
 - **mcp-proguide** — gobernanza SDD local (registry, audit, graph, metrics)
 - **Atlassian MCP** — integración con Jira
+
+Hay un tercer MCP **opcional** (ningún comando lo requiere para funcionar):
+- **cortex** — compresión de contexto de código vía análisis estático (grafo de dependencias, PageRank). Útil en brownfield (insumo de `/sdd-scan`) y como fallback de exploración en `/sdd-implement`/`/sdd-fix` cuando `graph/domain.yaml` no cubre el archivo o dominio en cuestión. Se distribuye como ejecutable standalone (`cortex-mcp.exe`, no requiere Python) — repo fuente: `pmillanmc/cortex`.
 
 Si es tu primera vez configurando el entorno, corré `/sdd-setup` — te guía paso a paso.
 
@@ -185,6 +279,16 @@ ATLASSIAN_USER_EMAIL=tu@email.com
 ATLASSIAN_API_TOKEN=tu-api-token
 ```
 Generás el API token en: https://id.atlassian.com/manage-profile/security/api-tokens
+
+**Cortex (opcional):** `.mcp.json` ya trae la entrada `cortex` apuntando a una ruta fija del ejecutable:
+```json
+"cortex": { "command": "C:\\tools\\cortex-mcp.exe" }
+```
+Requiere que cada dev copie `cortex-mcp.exe` a esa misma ruta (`C:\tools\cortex-mcp.exe`) en su máquina —
+la ruta es local, no viaja con el repo. Si tu copia vive en otro lado, ajustá el `command` en tu
+`.mcp.json` local (no lo commitees así salvo que todo el equipo use la misma ruta). Sin el exe en esa
+ruta, Claude Code intentará levantar el server y fallará en silencio — los comandos SDD que no dependen
+de Cortex siguen funcionando igual.
 
 ### Claude.ai
 Los MCPs se conectan manualmente desde la UI de Claude.ai:
@@ -284,3 +388,6 @@ Verificá los servers MCP en Claude Code:
   (Sintaxis aproximada — los comandos exactos pueden variar entre
    versiones de Claude Code.)
 ```
+
+<!-- SDD:FRAMEWORK END -->
+<!-- Las reglas propias de este repo van a partir de acá. El framework no las toca. -->
