@@ -14,15 +14,16 @@ Este documento explica **qué significa** esa lista.
 El **framework** (capa A) es el conjunto de archivos que hacen funcionar el modelo SDD y que son
 **idénticos byte a byte en todos los repos donde el modelo está instalado**.
 
-Criterio de inclusión, en una línea: *si dos repos legítimamente pueden tener contenido distinto
-en ese archivo, no es capa A.*
+Criterio de inclusión, en una línea: *si dos instalaciones del framework pueden legítimamente tener
+contenido distinto en ese archivo, no es capa A.*
 
 De ahí se sigue lo que **no** es framework, aunque viva en las mismas carpetas:
 
 | No es capa A | Por qué |
 |---|---|
 | `existing-arch.md`, `graph/domain.yaml`, `specs/**`, `metrics/**`, `drafts/**`, `handoffs/**` | Capa C: describen *este* codebase |
-| `catalog/product.yaml` | Capa B: se genera aguas arriba, no lo versiona el framework |
+| `drafts/brief.md` | Capa B: lo entrega el handoff de Discovery, no lo versiona el framework |
+| `CONTRACT.md` | Capa C: superficie pública de *este* repo, generada por cortex |
 | `.mcp.json`, `.cursor/mcp.json`, `.claude/settings.json`, `.claude/settings.local.json` | Contienen rutas de máquina y permisos por repo (`C:\tools\cortex-mcp.exe`) — DevOps |
 | `.gitattributes`, `.gitleaks.toml`, `.env*` | Política de repo — DevOps |
 | `README.md` | Documenta *un* repo. La versión del modelo tiene la suya, los repos de código tienen otra |
@@ -94,10 +95,11 @@ Exige nota de migración en `DECISIONS.md` y actualización de `contracts/paths.
 
 **MINOR** — agrega capacidad sin invalidar nada previo:
 - comando, skill o referencia nueva;
-- CHECK nuevo que arranca en WARN, o que solo aplica si existe un archivo opcional
-  (`catalog/product.yaml`);
+- CHECK nuevo que arranca en WARN, o que solo aplica si está presente un campo opcional
+  (`discovery_id` para el CHECK 7, `internal:` para el CHECK 9);
 - flag nuevo con default equivalente al comportamiento anterior (`--root`);
-- campo opcional nuevo en el registro (`meta.repo`, `catalog`).
+- campo opcional nuevo en el registro (`meta.repo`) o en el grafo (`public`, `internal`,
+  `capability`, `module`, `meta.aliases`).
 
 **PATCH** — no cambia contratos ni comportamiento observable:
 - redacción de prompts, ejemplos, mensajes de error;
@@ -121,7 +123,7 @@ release, y sería una llamada de red dentro de un script que se define como offl
 ## 6. Consecuencia abierta: los skills son globales, no del repo
 
 `scripts/sync-skills.mjs:20,45-49` copia `.claude/skills/*` a `~/.claude/skills/` con
-`force: true`. El destino es **el usuario, no el repo**. Con dos repos instalados en la misma
+`force: true`. El destino es **el usuario, no el repo**. Con dos codebases instalados en la misma
 máquina y versiones distintas del framework, el último `pnpm skills:sync` gana y el otro repo
 queda corriendo skills que no son los suyos. `proguide update skills` escribe en el mismo lugar
 (`CLAUDE.md` → sección QA funcional E2E).

@@ -2,10 +2,14 @@
 # Lista canónica de la capa A (framework SDD). Insumo del manifiesto de integridad.
 # Semántica de cada tipo y de los bumps de versión: contracts/framework.md
 #
-# Formato:  <TIPO>  <ruta relativa a la raíz del repo>
-#   EXACT   verificar SHA-256 del archivo completo. Diferencia = drift = FAIL.
-#   BLOCK   verificar solo el contenido entre <!-- SDD:FRAMEWORK BEGIN --> y <!-- SDD:FRAMEWORK END -->.
-#   MERGE   verificar presencia y valor de claves declaradas, nunca el archivo completo.
+# Formato:  <TIPO>  <ruta relativa a la raíz del repo>  [<clave>]
+#   EXACT   dos columnas. Verificar SHA-256 del archivo completo. Diferencia = drift = FAIL.
+#   BLOCK   dos columnas. Verificar solo el contenido entre <!-- SDD:FRAMEWORK BEGIN --> y <!-- SDD:FRAMEWORK END -->.
+#   MERGE   TRES columnas: la tercera es la clave a verificar dentro del archivo, en notación
+#           de puntos (ej. `MERGE  package.json  scripts.audit:sdd`). Se verifica presencia y
+#           valor de esa clave, nunca el archivo completo.
+#
+# Un parser debe separar por espacios en máximo 3 campos: EXACT/BLOCK dejan el tercero vacío.
 #
 # Lineas que empiezan con # son comentarios. Sin globs: la lista es explicita a proposito,
 # para que agregar un comando sea un cambio visible en el diff (y un bump MINOR).

@@ -141,7 +141,7 @@ ruta, está en **`contracts/paths.md`** — leelo antes de mover, copiar o crear
 | Capa | Contenido | Regla |
 |---|---|---|
 | **A · Framework** | `.claude/commands/`, `.claude/skills/`, `.claude/hooks/`, `scripts/`, `contracts/`, plantillas `*.template.*`, scripts de `package.json` | Idéntico en todos los repos. Una sola fuente, versionada en `.claude/VERSION`. **No editable en destino** |
-| **B · Negocio** | `catalog/product.yaml`: catálogo de features de Discovery (`discovery_id`, título, épica, release, talle, criterios de aceptación de negocio) | Compartido entre repos, **read-only**. Lo genera el discovery-model aguas arriba |
+| **B · Negocio** | La identidad de negocio de la feature: `discovery_id`, épica, release, talle, capacidad. **No es un archivo compartido**: llega en el `drafts/brief.md` del handoff de Discovery, versionado con `contract_version` | Se referencia por ID, no se copia. La genera el discovery-model aguas arriba |
 | **C · Implementación** | `specs/`, `graph/domain.yaml`, `existing-arch.md`, `metrics/`, `drafts/`, `handoffs/`, y en el registro: `status`, `owner`, `sprint`, `touches`, `domain`, `closed` | **Por repo.** Se commitea con el código. **Nunca se comparte** |
 
 **Nunca copies capa C entre repos.** No es una preferencia de proceso: `graph/domain.yaml` lista
@@ -150,25 +150,41 @@ ajeno enruta a archivos que no existen; los `touches` se cruzan para detectar co
 un filesystem; `existing-arch.md` describe un codebase concreto; `metrics/` es evidencia de una
 ejecución. Si dos árboles de capa C "derivan", es porque no debían ser iguales.
 
-## Multi-repo: un producto, varios codebases
+## Un producto, N codebases
 
-Cuando el mismo producto se implementa en repos separados (ej. una API y una web), cada repo corre
-su propio ciclo SDD completo y **no comparte estado**:
+**La unidad del modelo es el `DATA_ROOT`, no el repositorio.** Un `DATA_ROOT` es una raíz que tiene
+`specs/`, `metrics/` y `graph/` como hermanos. Un producto tiene **N ≥ 1** codebases, cada uno con su
+`DATA_ROOT`, y cada `DATA_ROOT` corre su ciclo SDD completo sin compartir estado con los demás.
 
-- **Un registro por repo.** `specs/_registry/features.yaml` es local. Puede declarar un bloque
-  `meta:` con `repo:` (identidad del codebase) y `catalog:` (ruta al catálogo de negocio, o `null`).
-- **`id` es local al repo.** Es el nombre de carpeta en `specs/`, la clave del registro y el prefijo
-  de `metrics/<id>-metrics.md`. **No asumas que el mismo `id` significa lo mismo en otro repo**: el
-  número lo asigna cada repo por su cuenta. Convención: se conserva el slug y varía el número
-  (`vulnops: 012-sso-login` ↔ `web-vulnops: 007-sso-login`).
-- **`discovery_id` es la única clave de join entre repos.** Puede aparecer en varios registros.
-  `epic`, `release` y `size` en el registro local son **caché** del catálogo: si divergen, manda el
-  catálogo.
-- **Sin `catalog/`, el repo es standalone** y todo funciona exactamente como antes: multi-repo es
-  aditivo, no cambia nada en un repo de un solo codebase.
-- **Las colisiones son intra-repo.** Dos personas trabajando en API y web no colisionan: son
-  filesystems distintos. Lo que sí puede romperse es el **contrato** entre los dos (la API cambia de
-  forma y la web asume la anterior); eso no lo detecta el auditor y va por coordinación humana.
+El modelo **no conoce roles**: no sabe ni le importa si un codebase es una API, una web, un worker,
+una app móvil o infraestructura. Ninguna regla ni ningún check se ramifica por eso. Los nombres
+propios que veas en documentos de rollout son instancias, no definiciones.
+
+- **`N = 1` es el caso normal.** No hay un "modo multi-codebase" que se prenda: con N > 1 lo único
+  que cambia es cuántas veces se instancia lo mismo.
+- **Un repositorio puede contener uno o varios `DATA_ROOT`.** En un monorepo, o hay un `specs/` en
+  la raíz —un registro para todo, y ahí las colisiones de `touches` **sí** son reales porque es un
+  solo filesystem— o uno por app (`apps/<x>/specs/…`). Se **declara** con `--root`, no se infiere.
+- **Un `DATA_ROOT` nunca abarca dos repositorios.** Si `specs/` vive en un repo y el código en otro,
+  las rutas del grafo apuntan afuera del árbol y el CHECK 4 falla.
+- **Un registro por `DATA_ROOT`.** `specs/_registry/features.yaml` es local y puede declarar
+  `meta.repo` con la identidad **autodeclarada** del codebase. No se deduce del nombre del repo.
+- **`id`: dos regímenes según el origen de la feature.**
+  - Vino de **Discovery** → el `id` **se deriva y es el mismo en todos los codebases** que la
+    implementen: `F031-sso-login` → `031-sso-login` (quitar la `F`, conservar el slug). El número
+    sale del contador de Discovery, no de contar carpetas. Mismo `id`, `spec.md`/`plan.md`/`tasks.md`
+    y métricas distintos en cada uno.
+  - **Nació en el codebase** (deuda técnica, un fix que creció) → `id` local en el rango **`9nn-`**
+    (`901-refactor-cache`). Evita chocar con la numeración de Discovery, que no se renumera nunca.
+- **Dos claves de join, las dos por referencia:** `discovery_id` une **features**; `domain` (el
+  `sdd_domain` de Discovery) une **módulos**. Dos codebases que declaran `domain: reservas` hablan de
+  la misma capacidad sin compartir ningún archivo.
+- **`epic`, `release` y `size` en el registro son constancia del handoff**, no caché a reconciliar.
+  Nadie los sincroniza.
+- **Sin Discovery, el codebase es standalone** y todo funciona exactamente como antes.
+- **Las colisiones son intra-`DATA_ROOT`.** Dos personas en `DATA_ROOT` distintos no colisionan: son
+  filesystems distintos. Lo que sí puede romperse es el **contrato** entre codebases (uno cambia de
+  forma y el otro asume la anterior); eso no lo detecta ningún script y va por coordinación humana.
 
 ## El layout es interfaz
 
@@ -177,7 +193,7 @@ raíz**, nunca subcarpetas de `specs/`:
 
 ```
 specs/  specs/_registry/  specs/_registry/sprints/  specs/<id>/
-metrics/  graph/  drafts/  handoffs/  catalog/  contracts/
+metrics/  graph/  drafts/  handoffs/  contracts/
 input.md  existing-arch.md  DECISIONS.md
 ```
 
@@ -192,18 +208,50 @@ routing de contexto desaparezca degradado a un WARN.
 **Los agentes no reorganizan estas carpetas**, ni cuando el pedido llega de pasada dentro de otra
 tarea. Avisá que es un cambio de contrato y pedí la decisión.
 
+## Arquitectura por capacidades
+
+El codebase se organiza alrededor de **capacidades de negocio**, no de tipos de archivo.
+`controllers/`, `services/`, `repositories/` sirven **adentro** de un módulo; nunca como estructura
+principal del proyecto.
+
+La cadena, de punta a punta:
+
+```
+BC (capacidad de negocio, Discovery)  →  sdd_domain  →  dominio en graph/domain.yaml
+   →  módulo físico  →  interfaz pública  →  plan.md  →  tasks.md  →  código  →  test de integración
+```
+
+La identificación de capacidades **no es un paso del modelo SDD**: la hace Discovery en
+`registry/capabilities.yaml`, que mapea `BC01 → sdd_domain`. La relación es muchos a uno — un
+dominio es dueño de una o más capacidades, nunca al revés.
+
+Reglas de frontera:
+
+- **El módulo esconde su implementación detrás de una interfaz pública chica y estable.** La
+  comunicación entre módulos pasa por esa interfaz, nunca por internals.
+- `graph/domain.yaml` declara la frontera: `capability`, `module`, `public`, `internal`,
+  `depends_on` (que es una **lista de permisos**, no una descripción) y `meta.aliases`.
+- `public:` e `internal:` son **opt-in por dominio**. Un dominio que no los declara se comporta como
+  hoy.
+- **Las firmas de la interfaz pública se fijan en `plan.md` y el agente no las inventa ni las
+  cambia.** Los nombres internos no se fijan nunca: ahí la implementación es libre. Es la única
+  excepción a la regla de "sin nombres de funciones" de `tasks.md`.
+- Antes de colocar una feature, preguntá: ¿qué capacidad es, qué dominio la posee, cuál es su
+  interfaz, qué contratos existen. Si el grafo no lo dice, no lo inventes: avisá.
+- Los tests priorizan la **interfaz pública** del módulo por sobre el archivo suelto.
+
 ## Gobernanza y routing de contexto
 
 - **Registro maestro**: `specs/_registry/features.yaml` indexa toda feature
   (status, dominio, owner, sprint, archivos que toca, decisiones).
   `/sdd-generate` registra, `/sdd-review` cierra, `/sdd-health` audita.
   Es **local al repo** (capa C) y nunca se copia a otro repo.
-- **Catálogo de negocio (opcional)**: `catalog/product.yaml` es la capa B —
-  read-only, generada aguas arriba por el discovery-model. Da la identidad de
-  negocio (`discovery_id`, épica, release, talle, criterios de aceptación).
-  El registro local la referencia por `discovery_id`; `epic`, `release` y
-  `size` locales son caché y el catálogo manda. Si no existe, el repo es
-  standalone y nada cambia.
+- **Identidad de negocio (opcional)**: llega en `drafts/brief.md` por el handoff
+  del discovery-model, con `contract_version` en el frontmatter. Es la capa B y
+  **no es un archivo compartido**: se referencia por `discovery_id`, no se copia.
+  `/sdd-generate` propaga `discovery_id` y `contract_version` a
+  `specs/<id>/feature.status.md`, que es el único registro durable por feature
+  (`brief.md` e `input.md` tienen nombre fijo y se sobreescriben).
 - **Sprints**: un archivo por sprint en `specs/_registry/sprints/` con scope
   y gate de cierre. El humano define el scope; los comandos no lo modifican.
 - **Grafo de dominio**: `graph/domain.yaml` mapea dominios → entidades,
@@ -214,6 +262,11 @@ tarea. Avisá que es un cambio de contrato y pedí la decisión.
   PRIMERO `graph/domain.yaml` para identificar el dominio afectado y leé
   SOLO los archivos listados en `files`. No escanees el codebase completo
   salvo que el grafo no exista o no cubra el dominio (en ese caso, avisá).
+- **Desempate con cortex**: si el MCP `cortex` está conectado, sus instrucciones
+  declaran `get_context_pack` como *"the primary tool"*. **Gana el grafo**: es una
+  lectura de YAML y es la arquitectura *acordada*, no la medida. Cortex entra
+  solo cuando el grafo no cubre el dominio, y en la autoría del grafo dentro de
+  `/sdd-scan` — nunca en una verificación.
 
 ## Reglas de trabajo en equipo
 
@@ -227,8 +280,9 @@ tarea. Avisá que es un cambio de contrato y pedí la decisión.
   `DECISIONS.md` vía /sdd-log.
 - **Audit determinista**: `pnpm audit:sdd` (script `scripts/sdd-audit.mjs`)
   verifica consistencia del modelo sin IA: registro↔specs, colisiones,
-  gates de cierre, grafo, sprints, `discovery_id` contra el catálogo (si
-  existe) y consistencia de versión del framework. Corre en CI en cada PR.
+  gates de cierre, grafo, sprints, trazabilidad de Discovery (derivación
+  `discovery_id` → `id`), consistencia de versión del framework e imports a
+  rutas `internal:` declaradas. Corre en CI en cada PR.
   Lo que el script ya verifica, los agentes NO lo recalculan — leen su salida.
 - **El auditor audita un `--root`**: por defecto `process.cwd()`, es decir el
   repo desde el que se lo invoca — nunca la carpeta donde está instalado el
@@ -237,7 +291,7 @@ tarea. Avisá que es un cambio de contrato y pedí la decisión.
   Antes de creerle a un reporte, verificá que el root de la cabecera es el
   repo que querías auditar.
 - **Colisiones cross-repo no existen para el auditor**: los `touches` se
-  cruzan dentro de un filesystem. Un cambio de contrato entre la API y la web
+  cruzan dentro de un filesystem. Un cambio de contrato entre codebases
   no lo detecta ningún script; se coordina entre personas y se registra en
   `DECISIONS.md`.
 - **Bugs chicos van por /sdd-fix**, no por el ciclo completo ni por fuera
@@ -280,15 +334,27 @@ ATLASSIAN_API_TOKEN=tu-api-token
 ```
 Generás el API token en: https://id.atlassian.com/manage-profile/security/api-tokens
 
-**Cortex (opcional):** `.mcp.json` ya trae la entrada `cortex` apuntando a una ruta fija del ejecutable:
-```json
-"cortex": { "command": "C:\\tools\\cortex-mcp.exe" }
-```
-Requiere que cada dev copie `cortex-mcp.exe` a esa misma ruta (`C:\tools\cortex-mcp.exe`) en su máquina —
-la ruta es local, no viaja con el repo. Si tu copia vive en otro lado, ajustá el `command` en tu
-`.mcp.json` local (no lo commitees así salvo que todo el equipo use la misma ruta). Sin el exe en esa
-ruta, Claude Code intentará levantar el server y fallará en silencio — los comandos SDD que no dependen
-de Cortex siguen funcionando igual.
+**Cortex (opcional):** lo instala y registra el paso opcional de `/sdd-setup`, que detecta el estado
+antes de ofrecer nada. La ruta del ejecutable **es de cada máquina y la dice el dev** — no se
+hardcodea en el repo: una ruta ajena en un `.mcp.json` commiteado hace que el cliente intente
+levantar un server inexistente y falle sin decir nada.
+
+Cuatro estados posibles, con remedios distintos:
+
+| Estado | Síntoma | Remedio |
+|---|---|---|
+| `CORTEX_OK` | las tools `mcp__cortex__*` están disponibles | nada |
+| `CORTEX_NOT_LOADED` | config y binario están, las tools no aparecen | reiniciar el cliente (en Cursor, además activar el toggle) |
+| `CORTEX_BIN_MISSING` | la config apunta a una ruta que no existe en esta máquina | corregir la ruta o conseguir el binario |
+| `CORTEX_ABSENT` | no hay entrada `cortex` en la config | `/sdd-setup` → paso opcional de Cortex |
+
+No verifiques Cortex ejecutando el binario: es un server stdio y lanzado a mano se queda esperando.
+La única verificación válida es que las tools aparezcan.
+
+Sin Cortex **todo el modelo funciona igual**, solo más lento: `/sdd-implement` y `/sdd-fix` caen a
+búsqueda manual en silencio, y `/sdd-scan` infiere por heurística y lo declara en
+`meta.generated_by` del grafo antes de pedir la confirmación humana. **Ningún gate ni check del
+auditor depende de Cortex.**
 
 ### Claude.ai
 Los MCPs se conectan manualmente desde la UI de Claude.ai:
