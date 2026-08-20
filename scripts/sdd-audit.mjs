@@ -8,7 +8,11 @@
  * Salida: reporte por consola.
  * Exit code 0 = OK (puede haber WARN) · Exit code 1 = al menos un FAIL.
  *
- * Uso:  pnpm audit:sdd   (o: node scripts/sdd-audit.mjs)
+ * Uso:  pnpm audit:sdd                      audita el cwd
+ *       node scripts/sdd-audit.mjs --root <path>   audita otro árbol
+ *
+ * El árbol auditado (DATA_ROOT) nunca se deriva de la ubicación de este script:
+ * es `--root` si se pasa, y `process.cwd()` si no. Ver contracts/paths.md §2.
  */
 
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
@@ -16,7 +20,23 @@ import { join, dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import YAML from "yaml";
 
-const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+// ---------- roots (contracts/paths.md §2) ----------
+// DATA_ROOT      el codebase auditado: donde viven specs/, metrics/, graph/.
+// FRAMEWORK_ROOT donde vive el framework instalado: .claude/, scripts/, contracts/.
+// Regla: ningún script del modelo deriva DATA_ROOT de su propia ubicación en disco.
+const argv = process.argv.slice(2);
+const rootArg = argv.indexOf("--root");
+const DATA_ROOT =
+  rootArg !== -1 && argv[rootArg + 1]
+    ? resolve(process.cwd(), argv[rootArg + 1])
+    : process.cwd();
+const FRAMEWORK_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+
+/** Versión del framework instalado, o null si no está declarada */
+function frameworkVersion() {
+  const p = join(FRAMEWORK_ROOT, ".claude", "VERSION");
+  return existsSync(p) ? readFileSync(p, "utf8").trim() : null;
+}
 
 const failures = [];
 const warnings = [];
@@ -26,8 +46,8 @@ const warn = (check, msg) => warnings.push({ check, msg });
 const pass = (check, msg) => passes.push({ check, msg });
 
 // ---------- helpers ----------
-const read = (p) => readFileSync(join(ROOT, p), "utf8");
-const exists = (p) => existsSync(join(ROOT, p));
+const read = (p) => readFileSync(join(DATA_ROOT, p), "utf8");
+const exists = (p) => existsSync(join(DATA_ROOT, p));
 
 function loadYaml(p) {
   try {
@@ -55,6 +75,48 @@ function pathsOverlap(a, b) {
   return na === nb || na.startsWith(nb + "/") || nb.startsWith(na + "/");
 }
 
+/**
+ * Devuelve los bloques `## <tipo> — ...` de un archivo de métricas, en orden de aparición.
+ * Un bloque termina donde empieza el próximo heading de nivel 2 (`### ...` no corta).
+ */
+function metricsBlocks(content, tipo) {
+  const re = new RegExp(`^##[ \\t]+${tipo}\\b.*$`, "gim");
+  const starts = [];
+  let m;
+  while ((m = re.exec(content)) !== null) starts.push(m.index);
+  return starts.map((start) => {
+    const next = content.indexOf("\n## ", start + 1);
+    return { start, body: content.slice(start, next === -1 ? content.length : next) };
+  });
+}
+
+/** Último bloque físico de un tipo (el que decide el gate), o null */
+function lastBlock(content, tipo) {
+  const all = metricsBlocks(content, tipo);
+  return all.length ? all[all.length - 1] : null;
+}
+
+/** Extrae el valor de `- campo: valor` dentro del cuerpo de un bloque */
+function blockField(body, field) {
+  const m = body.match(new RegExp(`^[ \\t]*[-*]?[ \\t]*${field}[ \\t]*:[ \\t]*(.+)$`, "im"));
+  return m ? m[1].trim() : null;
+}
+
+/** Cuenta tasks canónicas `- [ ] TNNN` / `- [x] TNNN` de una feature */
+function taskCounts(id) {
+  const p = `specs/${id}/tasks.md`;
+  if (!exists(p)) return null;
+  let total = 0, done = 0;
+  for (const line of read(p).split(/\r?\n/)) {
+    const m = line.match(/^[ \t]*[-*][ \t]*\[([ xX])\][ \t]*T\d{3}/);
+    if (m) {
+      total++;
+      if (m[1].toLowerCase() === "x") done++;
+    }
+  }
+  return { total, done };
+}
+
 /** Junta todas las strings hoja de un objeto/array anidado */
 function collectStrings(node, acc = []) {
   if (typeof node === "string") acc.push(node);
@@ -67,7 +129,11 @@ function collectStrings(node, acc = []) {
 // ---------- reporte ----------
 function report() {
   const line = "─".repeat(60);
-  console.log(`\nSDD AUDIT — ${new Date().toISOString().slice(0, 10)}\n${line}`);
+  const fw = frameworkVersion();
+  console.log(`\nSDD AUDIT — ${new Date().toISOString().slice(0, 10)}`);
+  console.log(`root:      ${DATA_ROOT}`);
+  console.log(`framework: ${fw ?? "sin declarar (.claude/VERSION ausente)"}`);
+  console.log(line);
 
   if (passes.length) {
     console.log("\n✅ OK");
@@ -90,6 +156,22 @@ function report() {
   );
   process.exit(failures.length ? 1 : 0);
 }
+
+// ---------- CHECK 0: layout SDD presente en DATA_ROOT ----------
+// Sin esto el auditor pasa en verde apuntando a cualquier carpeta del disco:
+// "registro ausente" es indistinguible de "root equivocado". Ver contracts/paths.md §3.
+const LAYOUT_DIRS = ["specs", "metrics", "graph"];
+const layoutPresent = LAYOUT_DIRS.filter((d) => exists(d));
+if (!layoutPresent.length) {
+  fail(
+    "layout",
+    `layout SDD no encontrado en ${DATA_ROOT} — se esperaba al menos una de: ` +
+      LAYOUT_DIRS.map((d) => `${d}/`).join(", ") +
+      ". Si el codebase está en otro lado, pasá --root <path>"
+  );
+  report();
+}
+pass("layout", `layout SDD presente (${layoutPresent.map((d) => `${d}/`).join(", ")})`);
 
 // ---------- carga del registro ----------
 const REGISTRY = "specs/_registry/features.yaml";
@@ -133,9 +215,9 @@ for (const f of features) {
 
 // specs/ huérfanas (carpeta sin entrada en el registro)
 if (exists("specs")) {
-  for (const entry of readdirSync(join(ROOT, "specs"))) {
+  for (const entry of readdirSync(join(DATA_ROOT, "specs"))) {
     if (entry.startsWith("_")) continue;
-    if (!statSync(join(ROOT, "specs", entry)).isDirectory()) continue;
+    if (!statSync(join(DATA_ROOT, "specs", entry)).isDirectory()) continue;
     if (!features.some((f) => f.id === entry)) {
       fail("registro↔specs", `specs/${entry}/ existe pero no figura en features.yaml`);
     }
@@ -187,6 +269,66 @@ for (const f of features) {
     if (!/##\s*Validate/i.test(content))
       warn("gates", `${f.id}: tiene métricas pero sin bloque Validate — ¿se corrió /sdd-validate?`);
   }
+
+  // --- Contrato del bloque ## Implement (productor: /sdd-implement) ---
+  if (f.type !== "fix" && hasMetrics) {
+    const impl = lastBlock(content, "Implement");
+    const counts = taskCounts(f.id);
+
+    if (impl) {
+      const declaradas = blockField(impl.body, "tasks_completadas");
+      const tests = blockField(impl.body, "tests");
+
+      if (!declaradas || !/^\d+\s*\/\s*\d+$/.test(declaradas)) {
+        fail("gates", `${f.id}: bloque ## Implement sin "tasks_completadas: m/m" válido`);
+      } else {
+        const [n, m] = declaradas.split("/").map((x) => parseInt(x.trim(), 10));
+        if (n !== m)
+          fail("gates", `${f.id}: ## Implement declara implementación parcial (${declaradas}) — no habilita /sdd-review`);
+        else if (counts && counts.total !== m)
+          fail("gates", `${f.id}: ## Implement declara ${declaradas} pero tasks.md tiene ${counts.total} tasks canónicas`);
+        else if (counts && counts.done !== counts.total)
+          fail("gates", `${f.id}: ## Implement dice ${declaradas} pero tasks.md tiene ${counts.total - counts.done} task(s) sin marcar [x]`);
+        else pass("gates", `${f.id}: evidencia de implementación completa (${declaradas})`);
+      }
+
+      if (!tests) fail("gates", `${f.id}: bloque ## Implement sin campo "tests"`);
+      else if (!/^PASS$/i.test(tests))
+        fail("gates", `${f.id}: ## Implement con "tests: ${tests}" — un rojo no habilita /sdd-review`);
+    } else if (counts && counts.total > 0 && counts.done === counts.total) {
+      warn("gates", `${f.id}: todas las tasks están [x] pero falta el bloque ## Implement — /sdd-review va a rechazar el gate`);
+    }
+
+    if (f.status === "CLOSED" && !impl && !/##\s*Task\s+T\d{3}/i.test(content))
+      fail("gates", `${f.id}: CLOSED sin bloque ## Implement ni ## Task T00X en ${metricsFile}`);
+  }
+
+  // --- Contrato del override de gate (productor: /sdd-implement, autoriza el humano) ---
+  if (hasMetrics) {
+    const val = lastBlock(content, "Validate");
+    const ovr = lastBlock(content, "Gate Override");
+    const gaps = val ? parseInt(blockField(val.body, "gaps_encontrados") ?? "", 10) : NaN;
+
+    if (ovr) {
+      const authorized = blockField(ovr.body, "authorized");
+      const iter = blockField(ovr.body, "validate_iteration");
+      const valIter = val ? blockField(val.body, "iteration_number") : null;
+
+      if (!/^true$/i.test(authorized ?? ""))
+        fail("gates", `${f.id}: ## Gate Override sin "authorized: true"`);
+      else if (val && ovr.start < val.start)
+        fail("gates", `${f.id}: ## Gate Override es anterior al último ## Validate — no lo autoriza`);
+      else if (valIter && iter && iter !== valIter)
+        fail("gates", `${f.id}: ## Gate Override apunta a validate_iteration ${iter} pero el último Validate es ${valIter}`);
+      else pass("gates", `${f.id}: override de gate Validate autorizado y trazable`);
+
+      if (exists("DECISIONS.md") && !read("DECISIONS.md").includes(f.id))
+        warn("gates", `${f.id}: tiene override de gate pero no aparece en DECISIONS.md — corré /sdd-log`);
+    }
+
+    if (Number.isInteger(gaps) && gaps > 0 && lastBlock(content, "Implement") && !ovr)
+      fail("gates", `${f.id}: se implementó con ${gaps} gap(s) de validación abiertos y sin ## Gate Override`);
+  }
 }
 
 // ---------- CHECK 4: grafo vs filesystem ----------
@@ -217,7 +359,7 @@ if (!exists(GRAPH)) {
 const SPRINTS_DIR = "specs/_registry/sprints";
 if (exists(SPRINTS_DIR)) {
   const today = new Date().toISOString().slice(0, 10);
-  for (const file of readdirSync(join(ROOT, SPRINTS_DIR)).filter((f) => /\.ya?ml$/.test(f))) {
+  for (const file of readdirSync(join(DATA_ROOT, SPRINTS_DIR)).filter((f) => /\.ya?ml$/.test(f))) {
     const sprint = loadYaml(`${SPRINTS_DIR}/${file}`);
     if (!sprint) continue;
     const ended = sprint.end && String(sprint.end) < today;

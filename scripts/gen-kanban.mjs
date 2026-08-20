@@ -16,9 +16,11 @@ const argv = process.argv.slice(2);
 const rootIdx = argv.indexOf('--root');
 const outIdx  = argv.indexOf('--out');
 
-const ROOT    = rootIdx !== -1 ? resolve(process.cwd(), argv[rootIdx + 1]) : join(__dirname, '..');
+// DATA_ROOT: mismo default que sdd-audit.mjs — `--root` si se pasa, `cwd` si no.
+// Nunca la ubicación de este script (contracts/paths.md §2).
+const ROOT    = rootIdx !== -1 ? resolve(process.cwd(), argv[rootIdx + 1]) : process.cwd();
 const outFile = outIdx  !== -1 ? argv[outIdx + 1] : 'kanban.html';
-const outPath = join(join(__dirname, '..'), outFile);
+const outPath = resolve(process.cwd(), outFile);
 
 function readYaml(filePath) {
   return parse(readFileSync(filePath, 'utf8'));
