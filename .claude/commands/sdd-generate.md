@@ -7,6 +7,11 @@ Leé input.md.
 
 **Paso previo obligatorio — Confirmar feature_id:**
 Antes de generar cualquier artefacto, determiná el `feature_id` de esta feature:
+- **Si `input.md` conserva un frontmatter con `discovery_id`** (la feature vino de Discovery):
+  usá el `feature_id` y el `domain` que ya trae. No los propongas de nuevo — se decidieron aguas
+  arriba y son la única forma de seguir el hilo entre los dos modelos. Confirmá en una línea:
+  "Esta feature viene de Discovery: uso `feature_id` \[valor\] y dominio \[valor\]. ¿Correcto?"
+  Guardá también `discovery_id`, `epic`, `release` y `size` para el registro.
 - Si existe una carpeta en `specs/`, usá su nombre (ej. `001-login`).
 - Si no existe, proponé el siguiente número disponible y un nombre corto basado en `input.md` (ej. `002-dashboard`).
 - Mostrá el `feature_id` propuesto al usuario y pedí confirmación con una sola línea: "¿El feature_id `[valor]` es correcto?"
@@ -23,6 +28,9 @@ last_command: sdd-generate
 **Registro de gobernanza (obligatorio):**
 Agregá (o actualizá) la entrada de esta feature en `specs/_registry/features.yaml`:
 - `id`, `status: OPEN`, `domain` (consultá `graph/domain.yaml`; si el dominio no existe, proponé uno nuevo y avisá), `owner` (preguntá si no es deducible), `sprint` (el sprint activo en `specs/_registry/sprints/`, o `null`), `created`, `touches` (las rutas que `tasks.md` declara tocar/crear) y `decisions: []`.
+- **Si la feature vino de Discovery**, agregá también `discovery_id`, `epic`, `release` y `size`
+  del frontmatter del brief. Es lo que permite recorrer la cadena completa desde el objetivo de
+  negocio hasta el commit. Si no vino de Discovery, omitilos o dejalos en `null`.
 Si `specs/_registry/features.yaml` no existe, creálo con esta feature como primera entrada.
 
 **Chequeo de colisiones (obligatorio en equipo):**
@@ -164,10 +172,12 @@ curl -s http://localhost:3131 > /dev/null 2>&1 && echo "running" || echo "stoppe
 ```
 
 - Si responde `running` → mostrá al dev: `📊 Kanban activo en http://localhost:3131`
-- Si responde `stopped` → levantalo en background sin pedir confirmación:
-  ```bash
-  node scripts/kanban-server.mjs &
-  ```
-  Esperá 2 segundos, verificá nuevamente y mostrá: `📊 Kanban levantado en http://localhost:3131`
+- Si responde `stopped` → preguntá: "¿Querés levantar el kanban para ver el estado en vivo? (http://localhost:3131)"
+  - Si acepta, levantalo en background:
+    ```bash
+    node scripts/kanban-server.mjs &
+    ```
+    Esperá 2 segundos, verificá nuevamente y mostrá: `📊 Kanban levantado en http://localhost:3131`
+  - Si declina, no insistas: no vuelvas a preguntar por el kanban en `/sdd-validate` ni en el resto del ciclo de esta feature.
 
 No abras el browser automáticamente. El dev decide si lo abre.

@@ -16,5 +16,13 @@
 #     touches:                    # rutas que crea o modifica (para colisiones)
 #       - src/...
 #     decisions: []               # entradas relacionadas de DECISIONS.md
+#
+#   Trazabilidad con Discovery (opcional — null si la feature no vino de ahí):
+#     discovery_id: F001          # ID en el discovery-model de origen
+#     epic: EP001                 # épica del roadmap que la originó
+#     release: R1                 # release en el que se planificó
+#     size: M                     # talle estimado en Discovery (XS..L; XL no cruza)
+#   Los completa /sdd-generate a partir del frontmatter de drafts/brief.md.
+#   Una feature que no vino de Discovery los deja en null y todo funciona igual.
 
 features: []
