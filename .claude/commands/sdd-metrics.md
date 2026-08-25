@@ -7,7 +7,11 @@
 ### Paso 0 — Determinar feature_id e iteration_number
 Antes de escribir el reporte:
 1. El `feature_id` es el nombre de la carpeta dentro de `specs/` (ej. `001-login`). Si no existe carpeta, usá el nombre del artefacto principal (ej. nombre del `input.md`).
-2. Contá cuántos archivos `*-metrics.md` existen ya en `metrics/` para esa feature. Ese número + 1 es el `iteration_number`.
+2. El `iteration_number` se cuenta **dentro** de `metrics/[feature_id]-metrics.md`, que es un
+   archivo único por feature: contá cuántos bloques `### 📊 Reporte de Esfuerzo SDD` ya tiene y
+   sumale 1. NO cuentes archivos `*-metrics.md` en `metrics/` — hay uno solo por feature, así que
+   ese criterio daba siempre `1` y rompía la trazabilidad entre iteraciones.
+   Si el archivo no existe todavía, el `iteration_number` es `1`.
 3. El `command_origin` es el comando que disparó este reporte (ej. `sdd-implement`, `sdd-validate`, `manual`).
 
 ### Paso 0.5 — Detección de entorno (solo afecta a DX_MET_006)

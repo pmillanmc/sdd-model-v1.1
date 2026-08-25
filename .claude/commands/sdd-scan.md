@@ -27,6 +27,36 @@ que la IA puede proponer en `constitution.md`, `plan.md` y la implementación.
 
 ## Proceso
 
+### Paso 0 — Intento con Cortex (opcional, con fallback automático)
+Antes de explorar el repo archivo por archivo, fijate si el MCP `cortex` está conectado
+e invocá `extract_spec(repo_path, query, feature?)` con la ruta del repo y una query
+genérica tipo "arquitectura general del proyecto".
+
+- **Si responde:** usá el `ProjectMap` (capas, flujos, gaps, `agent_prompt`) como
+  borrador inicial para los Pasos 1-2. No lo tomes como definitivo — igual clasificá
+  cada dimensión como DETECTADO/AMBIGUO/NO DETECTABLE y pasala por los mismos gates
+  de confirmación humana de los Pasos 3-5. Cortex acelera el descubrimiento, no
+  reemplaza la validación humana ni el formato de `existing-arch.md` de este comando.
+- **Si la tool no existe (MCP no conectado), falla, o no responde:** seguí directo
+  con el Paso 1 tradicional. Es un fallback silencioso y esperado — no se lo reportes
+  como error al humano, no bloquea el comando, no requiere `/sdd-log`.
+
+**Procedencia (obligatorio en los dos casos).** Este comando produce artefactos **durables que el
+humano firma**, así que la forma en que se inferieron queda registrada:
+
+- `graph/domain.yaml` → `meta.generated_by: sdd-scan+cortex` (agregá la versión si la tenés) cuando
+  Cortex participó, o `sdd-scan` cuando no.
+- Al pedir la confirmación del grafo (Paso 6.4), una línea antes: *"lo inferí con análisis estático
+  de Cortex"* o *"lo inferí leyendo el código, sin análisis estático — revisá con más cuidado"*.
+
+Es la única excepción al fallback silencioso, y es por una razón concreta: firmar un grafo creyendo
+que salió de análisis estático no es lo mismo que firmarlo sabiendo que salió de heurística. En
+`/sdd-implement` y `/sdd-fix` el fallback **sí** es silencioso — ahí Cortex solo ayuda a encontrar
+archivos y no cambia ningún artefacto que alguien tenga que firmar.
+
+Si el MCP no está y el humano quiere tenerlo, decile una vez: *"si querés que Cortex acelere esto,
+corré `/sdd-setup` — tiene un paso opcional que lo detecta e instala."* No lo repitas.
+
 ### Paso 1 — Inventario automático
 Recorré la raíz del repo y leé:
 - Archivos de manifest: `package.json`, `pnpm-lock.yaml`, `pyproject.toml`, `Cargo.toml`, `go.mod`, etc.

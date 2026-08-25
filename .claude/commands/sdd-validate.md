@@ -60,10 +60,6 @@ curl -s http://localhost:3131 > /dev/null 2>&1 && echo "running" || echo "stoppe
 ```
 
 - Si responde `running` → mostrá al dev: `📊 Kanban activo en http://localhost:3131`
-- Si responde `stopped` → levantalo en background sin pedir confirmación:
-  ```bash
-  node scripts/kanban-server.mjs &
-  ```
-  Esperá 2 segundos, verificá nuevamente y mostrá: `📊 Kanban levantado en http://localhost:3131`
+- Si responde `stopped` → no preguntes de nuevo (esa decisión ya se ofreció en `/sdd-generate`). Mostrá solo un recordatorio pasivo: `💡 Kanban apagado — podés levantarlo con: node scripts/kanban-server.mjs`
 
 No abras el browser automáticamente. El dev decide si lo abre.

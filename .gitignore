@@ -14,3 +14,33 @@ coverage/
 mcp/
 
 .cursor/
+
+# Archivos de lock de Office — nunca al repo
+~$*
+
+# ── No pertenece al modelo SDD ────────────────────────────────────────────────
+# Telemetría local: la escribe el hook de sesión, es append-only por máquina y
+# contiene rutas absolutas. /sdd-metrics la lee del disco, no del repo.
+metrics/sessions.jsonl
+
+# Salidas generadas — se regeneran con `pnpm kanban` / `pnpm kanban:demo`
+kanban.html
+kanban-demo.html
+
+# Basura de herramientas
+.playwright-mcp/
+.qodo/
+*.tmp
+
+# Config de cliente MCP con rutas de máquina (ver contracts/framework.md §1)
+.vscode/mcp.json
+
+# Material de comunicación y presentaciones — no es el framework ni su
+# funcionamiento. Vive en el disco / donde el equipo lo publique, no en el repo.
+*.docx
+*.pdf
+sdd-model-story.html
+graph-render.html
+comparativa-kiro-vs-sdd*.html
+comparativa-kiro-vs-sdd-model-gde.md
+eze-proyecto.txt

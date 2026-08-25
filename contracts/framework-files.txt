@@ -1,0 +1,97 @@
+# contracts/framework-files.txt
+# Lista canónica de la capa A (framework SDD). Insumo del manifiesto de integridad.
+# Semántica de cada tipo y de los bumps de versión: contracts/framework.md
+#
+# Formato:  <TIPO>  <ruta relativa a la raíz del repo>  [<clave>]
+#   EXACT   dos columnas. Verificar SHA-256 del archivo completo. Diferencia = drift = FAIL.
+#   BLOCK   dos columnas. Verificar solo el contenido entre <!-- SDD:FRAMEWORK BEGIN --> y <!-- SDD:FRAMEWORK END -->.
+#   MERGE   TRES columnas: la tercera es la clave a verificar dentro del archivo, en notación
+#           de puntos (ej. `MERGE  package.json  scripts.audit:sdd`). Se verifica presencia y
+#           valor de esa clave, nunca el archivo completo.
+#
+# Un parser debe separar por espacios en máximo 3 campos: EXACT/BLOCK dejan el tercero vacío.
+#
+# Lineas que empiezan con # son comentarios. Sin globs: la lista es explicita a proposito,
+# para que agregar un comando sea un cambio visible en el diff (y un bump MINOR).
+
+# ── Versión y manifiesto ───────────────────────────────────────────────────────
+EXACT  .claude/VERSION
+EXACT  .claude/skills/VERSION
+
+# ── Comandos ───────────────────────────────────────────────────────────────────
+EXACT  .claude/commands/sdd-checklist.md
+EXACT  .claude/commands/sdd-compact-guide.md
+EXACT  .claude/commands/sdd-context-budget.md
+EXACT  .claude/commands/sdd-e2e.md
+EXACT  .claude/commands/sdd-explain.md
+EXACT  .claude/commands/sdd-fix.md
+EXACT  .claude/commands/sdd-generate.md
+EXACT  .claude/commands/sdd-handoff.md
+EXACT  .claude/commands/sdd-health.md
+EXACT  .claude/commands/sdd-implement.md
+EXACT  .claude/commands/sdd-jira-close.md
+EXACT  .claude/commands/sdd-jira-start.md
+EXACT  .claude/commands/sdd-jira-sync.md
+EXACT  .claude/commands/sdd-log.md
+EXACT  .claude/commands/sdd-metrics-summary.md
+EXACT  .claude/commands/sdd-metrics.md
+EXACT  .claude/commands/sdd-refine.md
+EXACT  .claude/commands/sdd-review.md
+EXACT  .claude/commands/sdd-scan.md
+EXACT  .claude/commands/sdd-setup.md
+EXACT  .claude/commands/sdd-task.md
+EXACT  .claude/commands/sdd-test.md
+EXACT  .claude/commands/sdd-validate.md
+
+# ── Skills ─────────────────────────────────────────────────────────────────────
+EXACT  .claude/skills/coding-standards/SKILL.md
+EXACT  .claude/skills/coding-standards/references/deterministic-audit.md
+EXACT  .claude/skills/coding-standards/references/e2e-qa.md
+EXACT  .claude/skills/coding-standards/references/implementation-review.md
+EXACT  .claude/skills/coding-standards/references/sdd-lifecycle.md
+EXACT  .claude/skills/coding-standards/references/team-governance.md
+
+# ── Hooks ──────────────────────────────────────────────────────────────────────
+EXACT  .claude/hooks/sdd-session-capture.mjs
+
+# ── Scripts ────────────────────────────────────────────────────────────────────
+EXACT  scripts/sdd-audit.mjs
+EXACT  scripts/gen-kanban.mjs
+EXACT  scripts/kanban-server.mjs
+EXACT  scripts/sync-skills.mjs
+
+# ── Contratos ──────────────────────────────────────────────────────────────────
+EXACT  contracts/paths.md
+EXACT  contracts/framework.md
+EXACT  contracts/framework-files.txt
+EXACT  CHANGELOG.md
+
+# ── Plantillas (el modelo las trae; los archivos reales son capa C) ────────────
+EXACT  specs/_registry/features.template.yaml
+EXACT  specs/_registry/sprints/_template.yaml
+EXACT  graph/domain.template.yaml
+EXACT  drafts/README.md
+EXACT  metrics/README.md
+
+# ── CI ─────────────────────────────────────────────────────────────────────────
+EXACT  .github/workflows/sdd-audit.yml
+
+# ── Híbridos ───────────────────────────────────────────────────────────────────
+BLOCK  CLAUDE.md
+MERGE  package.json  scripts.audit:sdd
+MERGE  package.json  scripts.kanban
+MERGE  package.json  scripts.kanban:demo
+MERGE  package.json  scripts.kanban:serve
+MERGE  package.json  scripts.kanban:serve:demo
+MERGE  package.json  scripts.skills:sync
+MERGE  package.json  scripts.skills:sync:dry
+MERGE  package.json  devDependencies.yaml
+
+# ── Fixture de demo (opcional en repos de codigo; requerido en el repo del modelo) ──
+EXACT  demo/specs/_registry/features.yaml
+EXACT  demo/specs/_registry/sprints/2026-Q3.yaml
+EXACT  demo/specs/_registry/sprints/2026-Q4.yaml
+EXACT  demo/specs/001-multi-tenant-auth/feature.status.md
+EXACT  demo/specs/001-multi-tenant-auth/tasks.md
+EXACT  demo/specs/002-billing-dashboard/feature.status.md
+EXACT  demo/specs/002-billing-dashboard/tasks.md
