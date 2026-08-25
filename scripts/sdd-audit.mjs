@@ -12,7 +12,7 @@
  *       node scripts/sdd-audit.mjs --root <path>   audita otro árbol
  *
  * El árbol auditado (DATA_ROOT) nunca se deriva de la ubicación de este script:
- * es `--root` si se pasa, y `process.cwd()` si no. Ver contracts/paths.md §2.
+ * es `--root` si se pasa, y `process.cwd()` si no. Ver contracts/paths.md §1.
  */
 
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
@@ -20,7 +20,7 @@ import { join, dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import YAML from "yaml";
 
-// ---------- roots (contracts/paths.md §2) ----------
+// ---------- roots (contracts/paths.md §1) ----------
 // DATA_ROOT      el codebase auditado: donde viven specs/, metrics/, graph/.
 // FRAMEWORK_ROOT donde vive el framework instalado: .claude/, scripts/, contracts/.
 // Regla: ningún script del modelo deriva DATA_ROOT de su propia ubicación en disco.
@@ -159,7 +159,7 @@ function report() {
 
 // ---------- CHECK 0: layout SDD presente en DATA_ROOT ----------
 // Sin esto el auditor pasa en verde apuntando a cualquier carpeta del disco:
-// "registro ausente" es indistinguible de "root equivocado". Ver contracts/paths.md §3.
+// "registro ausente" es indistinguible de "root equivocado". Ver contracts/paths.md §4.
 const LAYOUT_DIRS = ["specs", "metrics", "graph"];
 const layoutPresent = LAYOUT_DIRS.filter((d) => exists(d));
 if (!layoutPresent.length) {

@@ -64,6 +64,7 @@ EXACT  scripts/sync-skills.mjs
 EXACT  contracts/paths.md
 EXACT  contracts/framework.md
 EXACT  contracts/framework-files.txt
+EXACT  CHANGELOG.md
 
 # ── Plantillas (el modelo las trae; los archivos reales son capa C) ────────────
 EXACT  specs/_registry/features.template.yaml
