@@ -20,6 +20,13 @@ avisá: "Esto excede un fix — corresponde el ciclo completo (/sdd-refine)" y p
 Consultá `graph/domain.yaml` para identificar el dominio afectado y leé SOLO
 los archivos listados en `files`. No escanees el codebase.
 
+Si el dominio o el archivo del bug NO está cubierto por `graph/domain.yaml` (gap de
+routing): antes de explorar el repo a mano, fijate si el MCP `cortex` está conectado
+e invocá `get_context_pack(repo_path, query)` describiendo el bug. Si responde, usá
+ese pack acotado en vez de un escaneo amplio. Si la tool no existe, falla, o no
+responde, explorá manualmente como fallback — silencioso, no bloquea el fix ni
+requiere `/sdd-log`.
+
 ### Paso 2 — Chequeo de colisiones (obligatorio en equipo)
 Leé `specs/_registry/features.yaml`. Para cada feature con `status: OPEN`,
 intersectá sus `touches` con los archivos que este fix va a tocar.

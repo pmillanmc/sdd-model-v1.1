@@ -19,7 +19,8 @@ Etapas secuenciales que el agente debe ejecutar, en este orden, sin anunciar los
 7. Validación del token vía REST `/myself`.
 8. Compilación de `mcp-proguide` si falta.
 9. Guía manual para que el usuario active los servers MCP (varía por IDE).
-10. Verificación final + resumen.
+10. Cortex (MCP opcional): detección de estado + instalación guiada si el dev la pide.
+11. Verificación final + resumen.
 
 ---
 
@@ -384,6 +385,132 @@ Mostrá la guía correspondiente al IDE detectado:
 ```
 
 **Esperá confirmación humana antes de pasar al resumen.** No asumas que está hecho.
+
+---
+
+## Cortex — MCP opcional (análisis estático del codebase)
+
+Cortex acelera `/sdd-scan`, `/sdd-implement` y `/sdd-fix` leyendo el codebase sin gastar tokens de
+razonamiento. **Es opcional: ningún comando lo requiere y ninguna verificación depende de él.**
+Si el dev dice que no, seguí y no vuelvas a ofrecerlo en esta corrida.
+
+**Ofrecelo solo si el repo tiene código** (hay `existing-arch.md`, o `src/`, o algo más que los
+artefactos del modelo). En un repo vacío es ruido.
+
+### Detectar el estado (antes de preguntar nada)
+
+En este orden, y **sin ejecutar el binario**:
+
+1. **¿Tenés disponibles las tools `mcp__cortex__*`?** Es la única verificación que prueba que
+   *funciona*. Si están → `CORTEX_OK`. Decí una línea ("Cortex está conectado") y pasá al resumen.
+2. Si no están, buscá la entrada `cortex` en la config del IDE detectado: `.mcp.json` (Claude Code),
+   `.cursor/mcp.json` (Cursor), `.vscode/mcp.json` (VS Code).
+3. Si hay entrada, resolvé su `command`:
+   - es una **ruta a archivo** (ej. `...\cortex-mcp.exe`) → verificá que el archivo exista.
+   - es `python` / una ruta a intérprete → corré `cortex --help` y `python --version` (necesita 3.11+).
+
+Con eso clasificá:
+
+| Estado | tools | entrada | binario | Qué le decís al dev |
+|---|---|---|---|---|
+| `CORTEX_OK` | sí | — | — | está listo, nada que hacer |
+| `CORTEX_NOT_LOADED` | no | sí | sí | está todo instalado pero el cliente no lo levantó: reiniciar el IDE, y en Cursor además activar el toggle del server |
+| `CORTEX_BIN_MISSING` | no | sí | **no** | la config apunta a una ruta que en esta máquina no existe. Mostrá la ruta exacta que figura |
+| `CORTEX_ABSENT` | no | no | no | no está instalado: ofrecé la instalación guiada |
+
+**No ejecutes el ejecutable para probarlo.** Es un server stdio: lanzado a mano se queda esperando
+entrada y deja la terminal colgada. Verificá que el archivo exista, nada más. La prueba real es que
+las tools aparezcan después de reiniciar el cliente.
+
+### Instalación guiada (solo si el dev la pide)
+
+Preguntá una sola cosa para elegir el camino:
+
+```
+¿Vas a modificar el código de Cortex, o solo usarlo?
+
+  • Solo usarlo   → ejecutable autocontenido, no necesita Python
+  • Modificarlo   → instalación con pip (requiere Python 3.11+ y acceso al repo)
+```
+
+**Camino A — ejecutable (el habitual).** El repo de Cortex es privado, así que el binario lo
+consigue el dev, no vos:
+
+```
+Cortex se distribuye como un ejecutable autocontenido (~48 MB, no necesita Python).
+
+1. Conseguí el binario. Con GitHub CLI y acceso al repo:
+
+     gh release download --repo pmillanmc/cortex --pattern "cortex-mcp.exe"
+
+   Si no tenés acceso (el repo es privado), pedile el archivo a quien lo tenga.
+
+2. Copialo donde quieras — fuera de este repo. No lo pongas dentro del proyecto:
+   pesa 48 MB y no es parte del framework.
+
+3. Decime la ruta completa donde quedó y yo registro el server.
+```
+
+**PARÁ hasta que el dev te pase la ruta.** No la inventes, no asumas `C:\tools\cortex-mcp.exe`, y
+no copies ni descargues el archivo vos.
+
+**Camino B — pip.** Requiere Python 3.11+ y acceso al repo privado con token personal de scope
+`repo`:
+
+```
+1. pip install git+https://github.com/pmillanmc/cortex.git
+2. Verificá:  cortex --help     (deberías ver scan, graph, context, spec)
+3. Avisame cuando termine.
+```
+
+Si usa entorno virtual, el `command` del server tiene que ser la ruta completa al intérprete del
+venv, no `python` pelado.
+
+### Registrar el server
+
+Pedí confirmación antes de escribir, y avisá dónde vas a escribir. **Los tres formatos difieren** —
+usá el del IDE detectado:
+
+```json
+// Claude Code → .mcp.json          |  Cursor → .cursor/mcp.json
+{ "mcpServers": { "cortex": { "command": "<ruta-que-dio-el-dev>" } } }
+
+// VS Code → .vscode/mcp.json
+{ "servers": { "cortex": { "type": "stdio", "command": "<ruta-que-dio-el-dev>" } } }
+```
+
+Con el camino B, el `command` es el intérprete y los args son `["-m", "cortex.mcp"]`.
+
+**Antes de escribir en un archivo que se commitea (`.mcp.json`), avisá la consecuencia y dejá
+elegir:**
+
+```
+La ruta del ejecutable es de tu máquina. Si la escribo en .mcp.json, va al repo
+y a los demás no les va a servir: el cliente va a intentar levantar un server
+que en su máquina no existe y va a fallar sin decir nada.
+
+  a) La dejo fuera del repo (recomendado) — te muestro el JSON y la pegás en tu
+     config local; cada dev corre /sdd-setup y registra su propia ruta.
+  b) La escribo en .mcp.json — solo si todo el equipo usa la misma ruta.
+
+¿Cuál preferís?
+```
+
+### Cerrar
+
+Después de registrar: **reiniciar el cliente** (Cursor: además activar el toggle del server en
+Settings → Tools). Recién ahí las tools aparecen.
+
+Decile que puede volver a correr `/sdd-setup` para verificar: es idempotente y, si ya está todo,
+lo reporta y sigue de largo.
+
+Y dejá claro el límite, para que nadie espere de más:
+
+```
+Cortex acelera el descubrimiento del codebase. No cambia ningún gate:
+`pnpm audit:sdd` no lo usa nunca, y sin Cortex todos los comandos funcionan igual
+—leyendo el código— solo más lento.
+```
 
 ---
 
