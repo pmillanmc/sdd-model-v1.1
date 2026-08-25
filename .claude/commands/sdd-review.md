@@ -7,6 +7,15 @@ de implementación en `metrics/[feature_id]-metrics.md` (bloque `## Implement` d
 "No hay evidencia de implementación — corré /sdd-implement (o completá las tasks
 pendientes con /sdd-task) primero." y PARÁ.
 
+No alcanza con que el bloque exista: leé sus valores. Si hay varios `## Implement`, tomá
+**solo el último**, y exigí `tasks_completadas: m/m` con `m` = total de tasks de `tasks.md`
+y `tests: PASS`. Si está parcial, mal formado o con tests en rojo, reportá el contrato
+inválido y PARÁ. Un `### 📊 Reporte de Esfuerzo SDD` es telemetría y no habilita este gate.
+
+Si el último `## Implement` declara `gate_override: true`, buscá el bloque `## Gate Override`
+correspondiente y mencionalo explícitamente en el reporte final: esta feature llegó a review
+con gaps de validación aceptados por decisión humana, y eso tiene que quedar visible en el gate.
+
 La carpeta a revisar es `app/` por defecto.
 Si existe `existing-arch.md` en la raíz, usá el `source_root` declarado allí en su lugar.
 
