@@ -391,7 +391,8 @@ El servidor escucha solo en `127.0.0.1` (no expone la LAN). El HTML se regenera 
 
 ### Qué archivos conforman el modelo
 
-Este repo **es** el modelo. No hay un paquete separado que instalar. Lo que se lleva a cada proyecto es:
+Este repo es la **fuente** del modelo. Lo que llega a cada proyecto es la capa A materializada
+—con `sdd init`, desde el paquete `@pmillanmc/sdd-framework` o desde un tag—, y es esto:
 
 ```
 .claude/
@@ -401,6 +402,10 @@ Este repo **es** el modelo. No hay un paquete separado que instalar. Lo que se l
     coding-standards/
       SKILL.md
       references/   ← guías de implementación, gobernanza, auditoría y QA E2E
+  hooks/
+    sdd-session-capture.mjs  ← telemetría de sesión (lo engancha /sdd-setup)
+  VERSION           ← versión del framework instalado (fuente única)
+  MANIFEST.sha256   ← hashes de la capa A — lo verifica `sdd check`
   settings.json
 .mcp.json           ← registro del MCP proguide-test (Claude Code) — QA E2E
 .cursor/
@@ -409,15 +414,22 @@ CLAUDE.md           ← contexto global que el agente carga en cada turno
 .vscode/
   mcp.json          ← configuración de MCPs para Cursor
 scripts/
+  sdd-cli.mjs       ← `sdd init/update/check/version` — un comando para todo
+  sdd-install.mjs   ← materializa el framework en un repo
+  sdd-verify.mjs    ← integridad: árbol vs. manifiesto (offline)
+  sdd-manifest.mjs  ← genera .claude/MANIFEST.sha256 (upstream)
+  sdd-bump.mjs      ← sube la versión en sus 4 superficies (upstream)
   sdd-audit.mjs     ← auditor determinista (CI, sin IA)
   sync-skills.mjs   ← instalador de skills en ~/.claude/skills/
   gen-kanban.mjs    ← generador del tablero kanban
   kanban-server.mjs ← servidor local del kanban (127.0.0.1)
-package.json        ← scripts: audit:sdd, skills:sync, kanban
+  lib/framework.mjs ← primitivas compartidas de la capa A
+package.json        ← scripts: audit:sdd, sdd:verify, skills:sync, kanban
 .gitleaks.toml      ← config de escaneo de secretos (allowlist de placeholders)
 .github/
   workflows/
-    sdd-audit.yml   ← GitHub Action: auditor + escaneo de secretos en cada PR
+    sdd-audit.yml   ← integridad + auditor + secretos, en cada PR
+    sdd-version.yml ← gate: avisa si el framework quedó atrás, frena si hay un MAJOR
 graph/
   domain.template.yaml          ← plantilla del grafo de dominio
 specs/
@@ -454,7 +466,7 @@ npx github:pmillanmc/sdd-model-v1.1 init
 
 `sdd init` materializa el framework, corre el gestor de paquetes que use tu repo, verifica la
 integridad contra el manifiesto y audita. Cuatro pasos en una corrida. Pineá una versión con
-`#v1.4.0` al final si querés una en particular.
+`#v1.6.0` al final si querés una en particular.
 
 #### Vía paquete, si vas a actualizar seguido
 
@@ -493,7 +505,8 @@ ejecutables por separado; el CLI solo los orquesta.
 | `MERGE` | `package.json` | escribe **solo** las claves del framework; el resto del archivo es tuyo |
 
 La lista completa está en `contracts/framework-files.txt`, y qué significa cada tipo en
-`contracts/framework.md` §2.
+`contracts/framework.md` §2. **El mecanismo completo —transporte, instalación, verificación y
+control— está en [`contracts/distribucion.md`](contracts/distribucion.md).**
 
 Si el destino ya tiene capa A editada localmente, `sdd-install` **aborta y la lista** en vez de
 pisarla. Eso es drift: los cambios al framework se hacen upstream y se redistribuyen.
