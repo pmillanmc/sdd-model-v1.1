@@ -12,6 +12,14 @@ a pasar el auditor, era MAJOR.**
 
 **MINOR.** Documenta el mecanismo de distribución como contrato.
 
+### Corrige
+
+- **`--dry-run` decía «creados:» en pasado** para archivos que no creaba, y con cincuenta líneas
+  de salida que parecen una instalación exitosa se lee como que el trabajo ya está hecho. Ahora
+  dice «se crearían:», y el CLI cierra con un aviso en negrita de que no se instaló nada más el
+  comando exacto para hacerlo de verdad. Detectado por un usuario que corrió el dry-run creyendo
+  que instalaba.
+
 ### Agrega
 
 - **`contracts/distribucion.md`** — cómo viaja el framework de upstream a cada repo: las cuatro
