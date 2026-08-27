@@ -83,6 +83,15 @@ function ultimoTag() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 if (cmd === "init" || cmd === "update") {
+  // En un repo con historia, la primera pregunta es qué va a tocar. Se contesta
+  // sin escribir nada: --dry-run corta después del paso 1.
+  if (flags.has("dry-run")) {
+    console.log(`\n[1m[1/1] Qué haría en ${ROOT}[0m`);
+    const c = run(script("sdd-install.mjs"), ["--root", ROOT, "--dry-run"]);
+    console.log(`\n   Nada de esto se escribió. Para hacerlo: sdd ${cmd}`);
+    process.exit(c);
+  }
+
   const total = 4;
 
   step(1, total, "Materializando el framework");
@@ -170,6 +179,7 @@ console.log(`sdd — instalar y mantener el modelo SDD en un repo
   sdd version   qué versión corre este repo y cuál es la última publicada
 
   --root <path>   sobre qué repo operar (default: el directorio actual)
+  --dry-run       mostrar qué haría, sin escribir nada
   --no-install    no correr el gestor de paquetes
   --force         pisar archivos de capa A editados en destino (descarta el diff)
 

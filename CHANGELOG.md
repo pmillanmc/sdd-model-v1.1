@@ -8,6 +8,20 @@ a pasar el auditor, era MAJOR.**
 
 ---
 
+## 1.4.1 — 2026-08-27
+
+**PATCH.** Ver qué va a pasar antes de que pase. Pensado para la primera instalación en un repo
+con historia.
+
+- `sdd init --dry-run` / `sdd update --dry-run` — muestra qué haría y corta sin escribir nada.
+- `sdd-install` detecta **colisiones**: en una instalación nueva (destino sin manifiesto), un
+  archivo que ya existe en una ruta de capa A no es una reinstalación, es un archivo del repo que
+  se va a perder. Ahora los lista antes de escribir en `--dry-run`, y avisa cómo recuperarlos
+  (`git checkout --`) si la instalación ya ocurrió. El caso típico: un repo con su propio
+  `scripts/lib/` o su propio `scripts/sync-skills.mjs`.
+
+---
+
 ## 1.4.0 — 2026-08-27
 
 **MINOR.** Instalar el modelo pasa de cinco comandos a uno. Nada de lo anterior deja de funcionar.

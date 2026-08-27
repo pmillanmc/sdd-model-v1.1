@@ -95,6 +95,13 @@ const write = (abs, content) => {
   writeFileSync(abs, content, "utf8");
 };
 
+// En una instalación nueva (destino sin manifiesto), un archivo que ya existe en
+// una ruta de capa A no es una reinstalación: es un archivo del repo que se va a
+// perder. Es la pregunta que se hace cualquiera antes de instalar esto en un repo
+// con historia, así que se responde antes de escribir.
+const primeraVez = !existsSync(destManifest);
+const colisiones = [];
+
 // EXACT
 for (const e of entries.filter((x) => x.type === "EXACT")) {
   const from = join(SRC, e.path);
@@ -104,8 +111,19 @@ for (const e of entries.filter((x) => x.type === "EXACT")) {
   }
   const to = join(DEST, e.path);
   if (!existsSync(to)) done.created.push(e.path);
+  else if (primeraVez) colisiones.push(e.path);
   write(to, norm(readFileSync(from, "utf8")));
   done.EXACT++;
+}
+
+if (colisiones.length) {
+  console.log(`${DRY ? "DRY " : "WARN"}  ${colisiones.length} archivo(s) del repo en rutas que usa el framework:\n`);
+  for (const p of colisiones) console.log(`      ${p}`);
+  console.log(
+    DRY
+      ? `\n      Se sobrescribirían. Movelos antes de instalar de verdad.\n`
+      : `\n      Se sobrescribieron. Recuperalos con: git checkout -- <ruta>\n`
+  );
 }
 
 // BLOCK
