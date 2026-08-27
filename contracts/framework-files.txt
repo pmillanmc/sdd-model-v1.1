@@ -68,6 +68,7 @@ EXACT  scripts/lib/framework.mjs
 
 # ── Contratos ──────────────────────────────────────────────────────────────────
 EXACT  contracts/paths.md
+EXACT  contracts/distribucion.md
 EXACT  contracts/framework.md
 EXACT  contracts/framework-files.txt
 EXACT  CHANGELOG.md

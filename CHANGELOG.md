@@ -8,6 +8,24 @@ a pasar el auditor, era MAJOR.**
 
 ---
 
+## 1.7.0 — 2026-08-27
+
+**MINOR.** Documenta el mecanismo de distribución como contrato.
+
+### Agrega
+
+- **`contracts/distribucion.md`** — cómo viaja el framework de upstream a cada repo: las cuatro
+  capas del mecanismo (transporte, instalación, verificación, control), por qué existe el paso de
+  materialización, qué escribe la instalación y qué se niega a escribir, el ciclo de un release,
+  quién verifica qué, y la diferencia entre integridad y autenticidad. Cierra el ítem 4.2 del
+  rollout, que pedía elegir e implementar el mecanismo.
+
+  Incluye lo que el mecanismo **no** resuelve y qué archivos son upstream-only
+  (`sdd-release.yml`, `sdd-selftest.mjs`), más la constancia de que el fixture `demo/` es visual
+  y hoy no pasa el auditor a propósito.
+
+---
+
 ## 1.6.0 — 2026-08-27
 
 **MINOR.** El framework pasa a tener tests de su propia distribución. Nada de lo anterior deja de
