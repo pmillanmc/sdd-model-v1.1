@@ -17,6 +17,8 @@ on:
 permissions:
   contents: read
   packages: write
+  id-token: write        # OIDC: la identidad con la que sigstore firma
+  attestations: write    # guardar la attestation contra este repo
 
 jobs:
   release:
@@ -65,7 +67,28 @@ jobs:
       - name: Auditar consistencia del modelo
         run: pnpm audit:sdd
 
+      # Se empaqueta primero para poder firmar EXACTAMENTE el archivo que se
+      # publica. Si se publicara con `pnpm publish` a secas, el tarball se
+      # armaría de nuevo y la firma sería de otro artefacto.
+      - name: Empaquetar
+        run: pnpm pack --pack-destination dist
+
+      # Attestation de procedencia: sigstore firma con la identidad OIDC de este
+      # workflow, no con una llave privada que haya que guardar ni rotar. Prueba
+      # que este .tgz salió de este repo, de este commit y de este workflow.
+      #
+      # Quien lo consuma verifica con:
+      #   gh attestation verify <archivo>.tgz --repo pmillanmc/sdd-model-v1.1
+      #
+      # El manifiesto prueba integridad —que los bytes no cambiaron desde que se
+      # hasheó— pero viaja adentro de la caja. Esto prueba autenticidad: de dónde
+      # vino la caja.
+      - name: Attestation de procedencia
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: dist/*.tgz
+
       - name: Publicar
-        run: pnpm publish --no-git-checks --access restricted
+        run: npm publish dist/*.tgz --access restricted
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

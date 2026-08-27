@@ -1,14 +1,22 @@
 name: SDD Audit
 
+# Las dos verificaciones offline del framework, en cada PR:
+#   sdd-verify   ¿los bytes de capa A son los de la versión que dice tener?
+#   sdd-audit    ¿el modelo es internamente consistente?
+#
+# Este workflow se materializa en CADA repo consumidor, así que no puede asumir
+# el gestor de paquetes: lo deduce del lockfile, igual que `sdd init`.
+#
+# Capa A: no se edita en destino.
+
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
 
-# Menor privilegio explícito: este workflow se materializa en cada repo
-# consumidor, y sin declararlo hereda el default de ESE repo — que puede ser
-# write-all. Ninguno de los dos jobs escribe nada.
+# Menor privilegio explícito: sin declararlo hereda el default de ESE repo,
+# que puede ser write-all. Ninguno de los dos jobs escribe nada.
 permissions:
   contents: read
 
@@ -18,23 +26,34 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: pnpm
 
-      - name: Instalar dependencias
-        run: pnpm install --frozen-lockfile
+      - name: Instalar dependencias con el gestor de este repo
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f pnpm-lock.yaml ]; then
+            corepack enable pnpm
+            pnpm install --frozen-lockfile
+          elif [ -f yarn.lock ]; then
+            corepack enable yarn
+            yarn install --immutable || yarn install --frozen-lockfile
+          elif [ -f package-lock.json ]; then
+            npm ci
+          else
+            echo "::notice::sin lockfile — npm install"
+            npm install
+          fi
 
-      - name: Integridad de la instalación (manifiesto vs árbol)
+      # Los dos scripts se invocan con node, no con `pnpm audit:sdd`: el atajo
+      # del package.json existe para las personas, no para el CI.
+      - name: Integridad de la instalación (manifiesto vs. árbol)
         run: node scripts/sdd-verify.mjs --root .
 
-      - name: Auditar consistencia del modelo SDD
-        run: pnpm audit:sdd
+      - name: Consistencia del modelo SDD
+        run: node scripts/sdd-audit.mjs --root .
 
   secrets:
     runs-on: ubuntu-latest

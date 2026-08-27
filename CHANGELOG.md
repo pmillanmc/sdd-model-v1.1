@@ -8,6 +8,36 @@ a pasar el auditor, era MAJOR.**
 
 ---
 
+## 1.5.0 — 2026-08-27
+
+**MINOR.** El CI del consumidor deja de asumir pnpm. Nada de lo anterior deja de funcionar.
+
+### Cambia
+
+- **`sdd-audit.yml` es agnóstico del gestor de paquetes.** Se materializa en cada repo
+  consumidor y tenía `pnpm/action-setup` y `pnpm install --frozen-lockfile` hardcodeados: en un
+  repo que usara npm o yarn, ese workflow fallaba en el primer PR. Ahora deduce el gestor del
+  lockfile —igual que `sdd init`— y cae a `npm install` si no hay ninguno. Los dos scripts se
+  invocan con `node`, no con `pnpm audit:sdd`: el atajo del `package.json` existe para las
+  personas, no para el CI.
+
+### Agrega (upstream, no se distribuye)
+
+- **Attestation de procedencia en `sdd-release.yml`.** El workflow empaqueta primero, firma ese
+  `.tgz` exacto con `actions/attest-build-provenance` y publica ese mismo archivo. La firma usa
+  la identidad OIDC del workflow vía sigstore: **no hay llave privada que guardar ni rotar**.
+
+  Es la diferencia entre integridad y autenticidad. `MANIFEST.sha256` prueba que los bytes no
+  cambiaron desde que se hashearon, pero viaja adentro de la instalación: quien comprometa el
+  upstream regenera el manifiesto y valida perfecto. La attestation prueba de dónde salió la
+  caja — de este repo, de este commit, de este workflow. Se verifica con:
+
+  ```
+  gh attestation verify <archivo>.tgz --repo pmillanmc/sdd-model-v1.1
+  ```
+
+---
+
 ## 1.4.4 — 2026-08-27
 
 **PATCH.** Menor privilegio en los workflows distribuidos.
