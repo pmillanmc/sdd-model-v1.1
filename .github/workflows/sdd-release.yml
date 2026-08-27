@@ -67,9 +67,10 @@ jobs:
       - name: Auditar consistencia del modelo
         run: pnpm audit:sdd
 
-      # Se empaqueta primero para poder firmar EXACTAMENTE el archivo que se
-      # publica. Si se publicara con `pnpm publish` a secas, el tarball se
-      # armaría de nuevo y la firma sería de otro artefacto.
+      # Se empaqueta aparte para tener el archivo que firma la attestation.
+      # `pnpm publish` vuelve a empaquetar, pero `pack` es determinista —mismas
+      # entradas, mismos bytes, verificado— así que la firma vale para el
+      # artefacto publicado.
       - name: Empaquetar
         run: pnpm pack --pack-destination dist
 
@@ -89,6 +90,6 @@ jobs:
           subject-path: dist/*.tgz
 
       - name: Publicar
-        run: npm publish dist/*.tgz --access restricted
+        run: pnpm publish --no-git-checks --access restricted
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

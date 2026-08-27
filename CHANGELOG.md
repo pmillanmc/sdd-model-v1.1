@@ -8,6 +8,24 @@ a pasar el auditor, era MAJOR.**
 
 ---
 
+## 1.5.1 — 2026-08-27
+
+**PATCH.** Arregla los dos workflows que `1.5.0` rompió. **`1.5.0` nunca se publicó al
+registry** — el tag existe, el paquete no. Usá `1.5.1`.
+
+- **`sdd-audit.yml` fallaba en el paso de instalar dependencias.** El `corepack enable pnpm` que
+  introduje trae la última pnpm, y sin campo `packageManager` en el `package.json` no resuelve
+  una versión contra el lockfile del repo — en no interactivo eso falla seco. Ahora la detección
+  del gestor es un paso propio con `id`, y cuando hay `pnpm-lock.yaml` se usa
+  `pnpm/action-setup@v4` con la versión pineada, que es lo que funcionaba antes. npm, yarn y
+  "sin lockfile" siguen cubiertos.
+- **`sdd-release.yml` fallaba al publicar.** El cambio a `npm publish <tarball>` no funcionó
+  contra GitHub Packages. Vuelve a `pnpm publish`, que tiene cinco releases exitosos. La
+  attestation se conserva: `pnpm pack` es **determinista** —dos corridas dan el mismo SHA-256,
+  verificado— así que el `.tgz` firmado y el publicado son los mismos bytes.
+
+---
+
 ## 1.5.0 — 2026-08-27
 
 **MINOR.** El CI del consumidor deja de asumir pnpm. Nada de lo anterior deja de funcionar.

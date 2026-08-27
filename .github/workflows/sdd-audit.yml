@@ -26,26 +26,38 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Detectar el gestor de paquetes de este repo
+        id: pm
+        shell: bash
+        run: |
+          if   [ -f pnpm-lock.yaml ];    then echo "mgr=pnpm" >> "$GITHUB_OUTPUT"
+          elif [ -f yarn.lock ];         then echo "mgr=yarn" >> "$GITHUB_OUTPUT"
+          elif [ -f package-lock.json ]; then echo "mgr=npm"  >> "$GITHUB_OUTPUT"
+          else                                echo "mgr=none" >> "$GITHUB_OUTPUT"
+          fi
+
+      # pnpm se instala con su action y versión pineada. `corepack enable pnpm`
+      # trae la última, que sin campo `packageManager` en el package.json puede
+      # no leer el lockfile de este repo — y en no interactivo eso falla seco.
+      - if: steps.pm.outputs.mgr == 'pnpm'
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Instalar dependencias con el gestor de este repo
+      - name: Instalar dependencias
         shell: bash
         run: |
           set -euo pipefail
-          if [ -f pnpm-lock.yaml ]; then
-            corepack enable pnpm
-            pnpm install --frozen-lockfile
-          elif [ -f yarn.lock ]; then
-            corepack enable yarn
-            yarn install --immutable || yarn install --frozen-lockfile
-          elif [ -f package-lock.json ]; then
-            npm ci
-          else
-            echo "::notice::sin lockfile — npm install"
-            npm install
-          fi
+          case "${{ steps.pm.outputs.mgr }}" in
+            pnpm) pnpm install --frozen-lockfile ;;
+            yarn) corepack enable yarn && yarn install --frozen-lockfile ;;
+            npm)  npm ci ;;
+            none) echo "::notice::sin lockfile — npm install"; npm install ;;
+          esac
 
       # Los dos scripts se invocan con node, no con `pnpm audit:sdd`: el atajo
       # del package.json existe para las personas, no para el CI.
