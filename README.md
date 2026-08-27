@@ -444,7 +444,22 @@ después se puede probar que la instalación está íntegra.
 
 Repo canónico: **`pmillanmc/sdd-model-v1.1`**. Es el que publica los releases.
 
-#### Vía paquete (recomendada)
+#### Un comando, sin token
+
+El repo del modelo es público, así que esto anda desde cualquier repo sin configurar nada:
+
+```bash
+npx github:pmillanmc/sdd-model-v1.1 init
+```
+
+`sdd init` materializa el framework, corre el gestor de paquetes que use tu repo, verifica la
+integridad contra el manifiesto y audita. Cuatro pasos en una corrida. Pineá una versión con
+`#v1.4.0` al final si querés una en particular.
+
+#### Vía paquete, si vas a actualizar seguido
+
+GitHub Packages pide autenticación aunque el paquete sea público: cada máquina y cada CI
+necesitan un token con `read:packages`.
 
 ```bash
 # .npmrc del proyecto — el token va por variable de entorno, nunca al repo
@@ -452,24 +467,22 @@ Repo canónico: **`pmillanmc/sdd-model-v1.1`**. Es el que publica los releases.
 # //npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
 
 pnpm add -D @pmillanmc/sdd-framework
-pnpm exec sdd-install --root .
-pnpm install                      # el framework aporta `yaml`, que el auditor importa
-pnpm exec sdd-verify --root .
-pnpm audit:sdd
+pnpm exec sdd init
 ```
 
-#### Vía clone (sin registry)
+A cambio del token, actualizar pasa a ser `pnpm update @pmillanmc/sdd-framework && pnpm exec sdd update`.
 
-```bash
-git clone --depth 1 --branch v1.3.2 https://github.com/pmillanmc/sdd-model-v1.1 /tmp/sdd
-node /tmp/sdd/scripts/sdd-install.mjs --root .
-pnpm install
-node scripts/sdd-verify.mjs --root .
-pnpm audit:sdd
-```
+#### Los comandos
 
-El `--branch v1.3.2` no es opcional: sin tag traés lo que haya en `main`, que puede no ser una
-versión publicada. Esa es la diferencia entre copiar archivos e instalar una versión.
+| Comando | Qué hace |
+|---|---|
+| `sdd init` | Materializa, instala dependencias, verifica y audita |
+| `sdd update` | Lo mismo — el nombre existe porque es lo que buscás al cambiar de versión |
+| `sdd check` | Verifica integridad y consistencia, sin escribir nada |
+| `sdd version` | Qué versión corre este repo y cuál es la última publicada |
+
+Los tres scripts que hacen el trabajo (`sdd-install`, `sdd-verify`, `sdd-audit`) siguen siendo
+ejecutables por separado; el CLI solo los orquesta.
 
 #### Qué hace la instalación
 
@@ -491,10 +504,10 @@ Después de instalar, corré `/sdd-setup` para configurar el entorno y los MCPs.
 
 ```bash
 pnpm update @pmillanmc/sdd-framework    # respeta el rango ^: nunca cruza a un MAJOR
-pnpm exec sdd-install --root .
-pnpm exec sdd-verify --root .
-pnpm audit:sdd
+pnpm exec sdd update
 ```
+
+Sin paquete: `npx github:pmillanmc/sdd-model-v1.1 update`.
 
 El árbol materializado **se commitea**; `node_modules/` no. Un dev que clona tu repo tiene el
 modelo funcionando sin instalar nada: el paquete hace falta para *cambiar* de versión, no para
