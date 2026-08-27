@@ -6,6 +6,12 @@ on:
   pull_request:
     branches: [main]
 
+# Menor privilegio explícito: este workflow se materializa en cada repo
+# consumidor, y sin declararlo hereda el default de ESE repo — que puede ser
+# write-all. Ninguno de los dos jobs escribe nada.
+permissions:
+  contents: read
+
 jobs:
   audit:
     runs-on: ubuntu-latest

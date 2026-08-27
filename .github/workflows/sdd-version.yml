@@ -25,6 +25,10 @@ on:
   pull_request:
     branches: [main]
 
+# Menor privilegio explícito: se materializa en cada repo consumidor y solo lee.
+permissions:
+  contents: read
+
 env:
   SDD_UPSTREAM: https://github.com/pmillanmc/sdd-model-v1.1
 

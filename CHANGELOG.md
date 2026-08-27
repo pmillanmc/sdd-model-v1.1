@@ -8,6 +8,17 @@ a pasar el auditor, era MAJOR.**
 
 ---
 
+## 1.4.4 — 2026-08-27
+
+**PATCH.** Menor privilegio en los workflows distribuidos.
+
+- `sdd-audit.yml` y `sdd-version.yml` se materializan en cada repo consumidor y no declaraban
+  `permissions:`, así que heredaban el default de *ese* repo — que en repos viejos puede ser
+  `write-all`. Ahora declaran `contents: read`, que es todo lo que necesitan. `sdd-release.yml`
+  ya declaraba `contents: read` + `packages: write` y no se distribuye.
+
+---
+
 ## 1.4.3 — 2026-08-27
 
 **PATCH.** Endurecimiento del instalador. Sin cambios de contrato.
