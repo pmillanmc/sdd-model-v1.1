@@ -180,4 +180,22 @@ if (!manifestCopied) {
   console.log(`WARN  la fuente no trae .claude/MANIFEST.sha256 — sdd-verify no va a poder`);
   console.log(`      probar integridad. Generalo upstream con: pnpm sdd:manifest`);
 }
-if (!DRY) console.log(`\n      Siguiente: node scripts/sdd-verify.mjs --root "${DEST}"`);
+// Las claves MERGE agregan devDependencies al package.json del destino, pero
+// escribir la clave no instala el paquete: sdd-audit.mjs importa `yaml` y
+// revienta con ERR_MODULE_NOT_FOUND si nadie corre el gestor después.
+const faltan = merges
+  .filter((e) => e.key.startsWith("devDependencies."))
+  .map((e) => e.key.slice("devDependencies.".length))
+  .filter((name) => !existsSync(join(DEST, "node_modules", name)));
+
+if (!DRY) {
+  if (faltan.length) {
+    console.log(`\nWARN  falta instalar lo que el framework aporta: ${faltan.join(", ")}`);
+    console.log(`      Sin eso, pnpm audit:sdd falla con ERR_MODULE_NOT_FOUND.`);
+  }
+  console.log(`\n      Siguiente:`);
+  let n = 1;
+  if (faltan.length) console.log(`      ${n++}. pnpm install`);
+  console.log(`      ${n++}. node scripts/sdd-verify.mjs --root "${DEST}"`);
+  console.log(`      ${n}. pnpm audit:sdd`);
+}

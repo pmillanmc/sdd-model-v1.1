@@ -453,18 +453,22 @@ Repo canónico: **`pmillanmc/sdd-model-v1.1`**. Es el que publica los releases.
 
 pnpm add -D @pmillanmc/sdd-framework
 pnpm exec sdd-install --root .
+pnpm install                      # el framework aporta `yaml`, que el auditor importa
 pnpm exec sdd-verify --root .
+pnpm audit:sdd
 ```
 
 #### Vía clone (sin registry)
 
 ```bash
-git clone --depth 1 --branch v1.3.0 https://github.com/pmillanmc/sdd-model-v1.1 /tmp/sdd
+git clone --depth 1 --branch v1.3.2 https://github.com/pmillanmc/sdd-model-v1.1 /tmp/sdd
 node /tmp/sdd/scripts/sdd-install.mjs --root .
+pnpm install
 node scripts/sdd-verify.mjs --root .
+pnpm audit:sdd
 ```
 
-El `--branch v1.3.0` no es opcional: sin tag traés lo que haya en `main`, que puede no ser una
+El `--branch v1.3.2` no es opcional: sin tag traés lo que haya en `main`, que puede no ser una
 versión publicada. Esa es la diferencia entre copiar archivos e instalar una versión.
 
 #### Qué hace la instalación
@@ -489,6 +493,7 @@ Después de instalar, corré `/sdd-setup` para configurar el entorno y los MCPs.
 pnpm update @pmillanmc/sdd-framework    # respeta el rango ^: nunca cruza a un MAJOR
 pnpm exec sdd-install --root .
 pnpm exec sdd-verify --root .
+pnpm audit:sdd
 ```
 
 El árbol materializado **se commitea**; `node_modules/` no. Un dev que clona tu repo tiene el

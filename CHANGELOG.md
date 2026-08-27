@@ -8,6 +8,18 @@ a pasar el auditor, era MAJOR.**
 
 ---
 
+## 1.3.2 — 2026-08-27
+
+**PATCH.** El instalador avisa lo que faltaba avisar. No cambia ningún contrato.
+
+- `sdd-install` escribía `devDependencies.yaml` en el `package.json` del destino pero nadie
+  instalaba el paquete, así que `pnpm audit:sdd` reventaba con `ERR_MODULE_NOT_FOUND` en toda
+  instalación nueva. Ahora detecta qué dependencias aportadas por el framework faltan en
+  `node_modules/` y pone `pnpm install` como primer paso de la secuencia siguiente.
+  Detectado instalando 1.3.1 en un repo limpio de verdad.
+
+---
+
 ## 1.3.1 — 2026-08-27
 
 **PATCH.** Bugfix del gate de versión. No cambia ningún contrato.
