@@ -30,6 +30,27 @@ export const sha256 = (s) => createHash("sha256").update(norm(s), "utf8").digest
 export const isOptional = (path) => path.startsWith("demo/");
 
 /**
+ * Toda ruta de la lista canónica se resuelve contra la raíz del repo destino.
+ * Una con `..` o absoluta escribiría afuera del árbol. La lista es capa A, así
+ * que explotarla exige ya controlar el framework — pero un `../../` escondido en
+ * una lista de rutas pasa una revisión que el mismo ataque en código no pasaría.
+ * Se rechaza acá, donde los tres scripts la leen.
+ */
+function rutaSegura(path, linea) {
+  const malo =
+    path.startsWith("/") ||
+    path.includes("\\") ||
+    /^[A-Za-z]:/.test(path) ||
+    path.split("/").includes("..");
+  if (malo) {
+    throw new Error(
+      `framework-files.txt:${linea} — ruta rechazada "${path}". ` +
+      `Deben ser relativas a la raíz, con "/", y sin "..".`
+    );
+  }
+}
+
+/**
  * Parsea contracts/framework-files.txt.
  * @returns {Array<{type:'EXACT'|'BLOCK'|'MERGE', path:string, key:string|null, line:number}>}
  */
@@ -43,6 +64,7 @@ export function parseFrameworkFiles(text) {
       throw new Error(`framework-files.txt:${i + 1} — tipo desconocido "${type}"`);
     }
     if (!path) throw new Error(`framework-files.txt:${i + 1} — falta la ruta`);
+    rutaSegura(path, i + 1);
     if (type === "MERGE" && !key) {
       throw new Error(`framework-files.txt:${i + 1} — MERGE requiere una tercera columna (la clave)`);
     }

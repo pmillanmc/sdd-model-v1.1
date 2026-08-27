@@ -43,7 +43,13 @@ if (!existsSync(VERSION_FILE)) {
 }
 
 const version = norm(readFileSync(VERSION_FILE, "utf8")).trim();
-const entries = parseFrameworkFiles(readFileSync(LIST, "utf8"));
+let entries;
+try {
+  entries = parseFrameworkFiles(readFileSync(LIST, "utf8"));
+} catch (err) {
+  console.error(`FAIL  ${err.message}`);
+  process.exit(1);
+}
 
 const hashed = [];
 const problems = [];

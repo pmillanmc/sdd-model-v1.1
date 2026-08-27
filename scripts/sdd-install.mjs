@@ -59,7 +59,13 @@ const version = existsSync(join(SRC, ".claude", "VERSION"))
   : "(sin declarar)";
 console.log(`              versión: ${version}\n`);
 
-let entries = parseFrameworkFiles(readFileSync(LIST, "utf8"));
+let entries;
+try {
+  entries = parseFrameworkFiles(readFileSync(LIST, "utf8"));
+} catch (err) {
+  console.error(`\nFAIL  ${err.message}`);
+  process.exit(1);
+}
 const skippedDemo = PROFILE === "repo" ? entries.filter((e) => e.path.startsWith("demo/")).length : 0;
 if (PROFILE === "repo") entries = entries.filter((e) => !e.path.startsWith("demo/"));
 
@@ -89,7 +95,14 @@ if (existsSync(destManifest) && !FORCE) {
 
 // ---------- ejecución ----------
 const done = { EXACT: 0, BLOCK: 0, MERGE: 0, created: [] };
+
+// Segunda barrera, además de la validación de rutas al parsear la lista: nada se
+// escribe fuera del árbol destino, pase lo que pase aguas arriba.
 const write = (abs, content) => {
+  if (!resolve(abs).startsWith(resolve(DEST))) {
+    console.error(`FAIL  ruta fuera del destino: ${abs}`);
+    process.exit(1);
+  }
   if (DRY) return;
   mkdirSync(dirname(abs), { recursive: true });
   writeFileSync(abs, content, "utf8");

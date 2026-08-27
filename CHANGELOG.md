@@ -8,6 +8,20 @@ a pasar el auditor, era MAJOR.**
 
 ---
 
+## 1.4.3 — 2026-08-27
+
+**PATCH.** Endurecimiento del instalador. Sin cambios de contrato.
+
+- **Path traversal en la lista canónica.** Las rutas de `contracts/framework-files.txt` se
+  resuelven contra la raíz del repo destino: una con `..`, absoluta, o con letra de unidad
+  escribía **fuera** del árbol. Explotarlo exige controlar el framework —y quien lo controla ya
+  controla el instalador— pero un `../../` escondido en una lista de rutas pasa una revisión de
+  código que el mismo ataque escrito en JavaScript no pasaría. Se rechaza al parsear, donde los
+  tres scripts leen la lista, y hay una segunda barrera en el momento de escribir.
+- Una lista canónica inválida ahora imprime `FAIL` con el número de línea en vez de un stack trace.
+
+---
+
 ## 1.4.2 — 2026-08-27
 
 **PATCH.** Cosmético. La salida de `sdd init` daba dos guías contradictorias.
