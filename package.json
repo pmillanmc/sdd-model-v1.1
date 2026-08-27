@@ -1,6 +1,6 @@
 {
   "name": "@pmillanmc/sdd-framework",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "Framework SDD (capa A): comandos, skills, hooks, scripts y contratos del modelo Spec-Driven Development.",
   "type": "module",
   "license": "UNLICENSED",

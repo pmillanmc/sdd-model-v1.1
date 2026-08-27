@@ -8,6 +8,22 @@ a pasar el auditor, era MAJOR.**
 
 ---
 
+## 1.5.2 — 2026-08-27
+
+**PATCH.** El kanban reventaba en toda instalación nueva. Defecto previo, encontrado al revisar
+si los cambios de distribución habían roto las herramientas del modelo.
+
+- `pnpm kanban` leía `specs/_registry/features.yaml` sin verificar que existiera, y moría con un
+  stack trace de `ENOENT`. **Un repo recién instalado está exactamente en ese estado** —el
+  registro lo crea `/sdd-generate` al dar de alta la primera feature—, así que era el día uno de
+  cada consumidor. Ahora dice qué falta, cómo se crea y cómo ver el tablero de ejemplo, y sale
+  con código 0: no tener features todavía no es un error. Es el mismo criterio que ya usaba el
+  auditor (*"modelo sin correr, nada que auditar"*).
+- `pnpm kanban:serve` tenía la misma raíz con un `throw` en vez de un stack trace. Mismo trato.
+- `gen-kanban.mjs` tampoco toleraba que faltara `specs/_registry/sprints/`.
+
+---
+
 ## 1.5.1 — 2026-08-27
 
 **PATCH.** Arregla los dos workflows que `1.5.0` rompió. **`1.5.0` nunca se publicó al

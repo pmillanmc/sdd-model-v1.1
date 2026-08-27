@@ -27,15 +27,27 @@ function readYaml(filePath) {
 }
 
 // ── Features ────────────────────────────────────────────────────────────────
-const { features: rawFeatures = [] } = readYaml(
-  join(ROOT, 'specs/_registry/features.yaml')
-);
+// Un repo recién instalado todavía no tiene registro: es el estado normal, no un
+// error. El auditor lo trata así (sdd-audit.mjs: "modelo sin correr, nada que
+// auditar") y acá tiene que ser igual — reventar con un stack trace de ENOENT el
+// día uno de cada instalación no le dice nada a nadie.
+const featuresPath = join(ROOT, 'specs/_registry/features.yaml');
+if (!existsSync(featuresPath)) {
+  console.log(`kanban · root: ${ROOT}`);
+  console.log(`\nNada que dibujar: no existe specs/_registry/features.yaml.`);
+  console.log(`El registro lo crea /sdd-generate al dar de alta la primera feature.`);
+  console.log(`\nPara ver el tablero con datos de ejemplo:  pnpm kanban:demo`);
+  process.exit(0);
+}
+const { features: rawFeatures = [] } = readYaml(featuresPath);
 
 // ── Sprints ──────────────────────────────────────────────────────────────────
 const sprintsDir = join(ROOT, 'specs/_registry/sprints');
-const sprints = readdirSync(sprintsDir)
-  .filter(f => f.endsWith('.yaml') && !f.startsWith('_'))
-  .map(f => readYaml(join(sprintsDir, f)));
+const sprints = existsSync(sprintsDir)
+  ? readdirSync(sprintsDir)
+      .filter(f => f.endsWith('.yaml') && !f.startsWith('_'))
+      .map(f => readYaml(join(sprintsDir, f)))
+  : [];
 
 // ── Enrich features ──────────────────────────────────────────────────────────
 const features = rawFeatures.map(feature => {

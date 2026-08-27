@@ -56,7 +56,14 @@ if (existsSync(specsDir)) {
 // ── Data loader ───────────────────────────────────────────────────────────────
 function loadData() {
   const featuresPath = join(ROOT, 'specs/_registry/features.yaml');
-  if (!existsSync(featuresPath)) throw new Error(`No encontré ${featuresPath}`);
+  if (!existsSync(featuresPath)) {
+    // Mismo criterio que gen-kanban.mjs y que el auditor: sin registro no hay
+    // error, hay un repo donde el modelo todavía no corrió.
+    console.log(`\nNada que servir: no existe specs/_registry/features.yaml en ${ROOT}.`);
+    console.log(`El registro lo crea /sdd-generate al dar de alta la primera feature.`);
+    console.log(`\nPara levantar el tablero con datos de ejemplo:  pnpm kanban:serve:demo`);
+    process.exit(0);
+  }
   const { features: raw = [] } = parseYaml(readFileSync(featuresPath, 'utf8'));
 
   const sprintsDir = join(ROOT, 'specs/_registry/sprints');
