@@ -123,4 +123,6 @@ if (kind === "MAJOR") {
   console.log(`         un repo instalado se entera de que rompió cuando ya rompió.`);
 }
 console.log(`      2. DECISIONS.md — entrada vía /sdd-log si el bump cambia un contrato`);
-console.log(`      3. git tag -a v${next} -m "framework ${next}" && git push --follow-tags`);
+console.log(`      3. node scripts/sdd-manifest.mjs   ← CHANGELOG.md es entrada EXACT:`);
+console.log(`         si lo editás después de este bump, su hash queda viejo`);
+console.log(`      4. git tag -a v${next} -m "framework ${next}" && git push --follow-tags`);

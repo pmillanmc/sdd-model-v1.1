@@ -8,6 +8,18 @@ a pasar el auditor, era MAJOR.**
 
 ---
 
+## 1.3.1 — 2026-08-27
+
+**PATCH.** Bugfix del gate de versión. No cambia ningún contrato.
+
+- `.github/workflows/sdd-version.yml` no extraía el número de versión del tag: el patrón
+  `s#.*/refs/tags/v##` exigía una barra antes de `refs`, pero `git ls-remote` separa el SHA
+  del ref con un **tab**. El gate comparaba `.claude/VERSION` contra la línea entera
+  (`<sha>	refs/tags/v1.3.0`) y nunca daba igual, así que siempre reportaba desactualización.
+  Detectado al correr el gate a mano contra el primer tag publicado.
+
+---
+
 ## 1.3.0 — 2026-08-27
 
 **MINOR.** Agrega la maquinaria de distribución de la capa A. Ningún repo instalado

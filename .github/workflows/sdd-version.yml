@@ -48,7 +48,7 @@ jobs:
           local=$(tr -d ' \r\n' < .claude/VERSION)
 
           latest=$(git ls-remote --tags --refs --sort=-v:refname "$SDD_UPSTREAM" 'v*' \
-                   | head -1 | sed 's#.*/refs/tags/v##')
+                   | head -1 | sed 's#.*refs/tags/v##')
 
           if [ -z "$latest" ]; then
             echo "::notice::framework $local — upstream todavía no publicó ningún tag"
