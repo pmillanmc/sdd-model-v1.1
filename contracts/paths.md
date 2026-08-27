@@ -1,6 +1,7 @@
 # Contrato de rutas — modelo SDD
 
-**Estado:** propuesto (pendiente de firma del dueño del modelo — ver `DECISIONS.md`).
+**Estado:** vigente desde 2026-08-25 — firmado por Patricio Millán (dueño del modelo) en el gate 0.1.
+Ver la entrada *"El layout es interfaz"* del 2026-08-19 en `DECISIONS.md`.
 **Consumidores mecánicos de este contrato:** `scripts/sdd-audit.mjs`, `scripts/gen-kanban.mjs`,
 `scripts/kanban-server.mjs`, `.claude/hooks/sdd-session-capture.mjs`, `.github/workflows/sdd-audit.yml`.
 

@@ -1,14 +1,15 @@
 # Rollout multi-repo — lista de cambios ordenada por dependencia
 
-**Estado:** propuesto. `DECISIONS.md` tiene **seis** entradas del 2026-08-19, todas en `proposed`,
-y no comparten gate: las **cuatro** de arquitectura se firman juntas en el 0.1 y habilitan las Fases
-1, 2 y 4; la **quinta** (arquitectura por capacidades) se firma aparte en la Fase 5; la **sexta**
-(detección e instalación de Cortex) se firma en el 0.3 y habilita el 2.17 y el 4.8.
+**Estado:** en ejecución. Los gates **0.1 y 0.3 están firmados** (2026-08-25, Patricio Millán, dueño
+del modelo): las **cuatro** entradas de arquitectura habilitan las Fases 1, 2 y 4, y la **sexta**
+(detección e instalación de Cortex) habilita el 2.17 y el 4.8. La **quinta** (arquitectura por
+capacidades) **sigue en `proposed`**: la Fase 5 no está autorizada todavía.
 
-**Nada se ejecuta antes de la firma del gate que le corresponde.**
+**Nada se ejecuta antes de la firma del gate que le corresponde.** Hoy eso significa: Fases 1, 2 y 4
+autorizadas; Fase 5 bloqueada.
 
-> Los ítems marcados **✅ hecho** se ejecutaron antes de la firma, por pedido explícito del dueño
-> del modelo. Quedan como spike reversible hasta que el 0.1 se firme.
+> Los ítems marcados **✅ hecho** se habían ejecutado antes de la firma, por pedido explícito del
+> dueño del modelo. Con el 0.1 firmado dejan de ser spike reversible y pasan a ser vigentes.
 
 Documento transitorio (capa C): se borra cuando el rollout cierra.
 Leyenda de columnas: **Dueño** = quién lo hace · **Bloquea a** = qué no puede empezar sin esto.
@@ -19,9 +20,9 @@ Leyenda de columnas: **Dueño** = quién lo hace · **Bloquea a** = qué no pued
 
 | # | Qué | Dueño | Bloquea a |
 |---|---|---|---|
-| 0.1 | Firmar las 4 entradas de `DECISIONS.md`: esquema de registro, espacio de IDs, capa A + versionado, layout como interfaz | **Dueño del modelo** | Todo |
+| 0.1 | Firmar las 4 entradas de `DECISIONS.md`: esquema de registro, espacio de IDs, capa A + versionado, layout como interfaz | **Dueño del modelo** **✅ firmado 2026-08-25** | Todo |
 | 0.2 | Decidir **cuál copia queda autoritativa** por capa: capa A → este repo (`sdd-model`); capa C → la copia que vive dentro de cada repo de código, **no** la raíz | IA Eng define, DevOps ejecuta | 1.x, 4.x |
-| 0.3 | Firmar la **6ª entrada** (detección e instalación de Cortex). Gate propio: no entra con el 0.1 porque toca `.mcp.json`, un archivo que hoy lleva una ruta de máquina | **Dueño del modelo** | 2.17, 4.8 |
+| 0.3 | Firmar la **6ª entrada** (detección e instalación de Cortex). Gate propio: no entra con el 0.1 porque toca `.mcp.json`, un archivo que hoy lleva una ruta de máquina | **Dueño del modelo** **✅ firmado 2026-08-25** | 2.17, 4.8 |
 
 Sobre 0.2: la raíz autoritativa deja de ser autoritativa **para capa C**. Su capa C actual
 (`specs/`, `metrics/`, `graph/` con datos de features reales) es residuo de haber usado el repo del

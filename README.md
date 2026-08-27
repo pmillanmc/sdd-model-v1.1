@@ -436,43 +436,71 @@ metrics/
 
 ---
 
-### Pasos para llevar el modelo a un proyecto nuevo
+### Instalar el modelo en un proyecto
 
-#### Opción A — Clonar como base
+El framework (capa A) **no se copia a mano**. Se materializa con `sdd-install`, que pone cada
+archivo en la ruta que fija `contracts/paths.md` y deja un manifiesto de hashes con el que
+después se puede probar que la instalación está íntegra.
 
-```bash
-git clone https://github.com/patohed/sdd-model.git mi-proyecto
-cd mi-proyecto
-rm -rf .git                     # desvincularlo del repo del modelo
-git init && git remote add origin <tu-repo>
-pnpm install
-pnpm skills:sync                # instala coding-standards en ~/.claude/skills
-```
+Repo canónico: **`pmillanmc/sdd-model-v1.1`**. Es el que publica los releases.
 
-Una vez clonado, corré `/sdd-setup` para configurar el entorno y los MCPs.
-
-#### Opción B — Copiar solo los archivos del modelo
-
-Copiá las carpetas listadas arriba a la raíz de tu proyecto existente.
-Si el proyecto ya tiene `package.json`, mergeá los scripts y devDependencies manualmente.
+#### Vía paquete (recomendada)
 
 ```bash
-pnpm install
-pnpm skills:sync
+# .npmrc del proyecto — el token va por variable de entorno, nunca al repo
+# @pmillanmc:registry=https://npm.pkg.github.com
+# //npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+
+pnpm add -D @pmillanmc/sdd-framework
+pnpm exec sdd-install --root .
+pnpm exec sdd-verify --root .
 ```
 
-Una vez copiados los archivos, corré `/sdd-setup` para configurar el entorno y los MCPs.
-
-#### Opción C — Agregar como submódulo (equipos grandes)
+#### Vía clone (sin registry)
 
 ```bash
-git submodule add https://github.com/patohed/sdd-model.git .sdd
-# Agregar los scripts a tu package.json raíz apuntando a .sdd/scripts/
+git clone --depth 1 --branch v1.3.0 https://github.com/pmillanmc/sdd-model-v1.1 /tmp/sdd
+node /tmp/sdd/scripts/sdd-install.mjs --root .
+node scripts/sdd-verify.mjs --root .
 ```
 
-Una vez configurado el submódulo, corré `/sdd-setup` para configurar el entorno y los MCPs.
+El `--branch v1.3.0` no es opcional: sin tag traés lo que haya en `main`, que puede no ser una
+versión publicada. Esa es la diferencia entre copiar archivos e instalar una versión.
+
+#### Qué hace la instalación
+
+| Tipo | Qué toca | Regla |
+|---|---|---|
+| `EXACT` | comandos, skills, hooks, scripts, contratos, plantillas | copia el archivo entero |
+| `BLOCK` | `CLAUDE.md` | reemplaza **solo** lo que está entre los marcadores `SDD:FRAMEWORK`; el resto del archivo es tuyo |
+| `MERGE` | `package.json` | escribe **solo** las claves del framework; el resto del archivo es tuyo |
+
+La lista completa está en `contracts/framework-files.txt`, y qué significa cada tipo en
+`contracts/framework.md` §2.
+
+Si el destino ya tiene capa A editada localmente, `sdd-install` **aborta y la lista** en vez de
+pisarla. Eso es drift: los cambios al framework se hacen upstream y se redistribuyen.
+
+Después de instalar, corré `/sdd-setup` para configurar el entorno y los MCPs.
+
+#### Actualizar
+
+```bash
+pnpm update @pmillanmc/sdd-framework    # respeta el rango ^: nunca cruza a un MAJOR
+pnpm exec sdd-install --root .
+pnpm exec sdd-verify --root .
+```
+
+El árbol materializado **se commitea**; `node_modules/` no. Un dev que clona tu repo tiene el
+modelo funcionando sin instalar nada: el paquete hace falta para *cambiar* de versión, no para
+*usar* el modelo.
+
+Qué significa cada bump (MAJOR / MINOR / PATCH) está en `contracts/framework.md` §4.
+El workflow `sdd-version.yml` que viene con la instalación avisa cuando quedaste atrás, y falla
+el build si el que quedó pendiente es un MAJOR.
 
 ---
+
 
 ### Verificar que todo funciona
 

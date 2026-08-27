@@ -1,6 +1,6 @@
 # SDD Model — Contexto del proyecto
 
-<!-- SDD:FRAMEWORK BEGIN v1.2.0-proposed -->
+<!-- SDD:FRAMEWORK BEGIN v1.3.0 -->
 <!-- Todo lo que está entre estos marcadores es capa A (framework): se distribuye igual a
      todos los repos y NO se edita en destino. Ver contracts/framework.md.
      Las reglas propias de este repo van después del marcador de cierre, al final del archivo.

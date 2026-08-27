@@ -59,6 +59,11 @@ EXACT  scripts/sdd-audit.mjs
 EXACT  scripts/gen-kanban.mjs
 EXACT  scripts/kanban-server.mjs
 EXACT  scripts/sync-skills.mjs
+EXACT  scripts/sdd-bump.mjs
+EXACT  scripts/sdd-manifest.mjs
+EXACT  scripts/sdd-install.mjs
+EXACT  scripts/sdd-verify.mjs
+EXACT  scripts/lib/framework.mjs
 
 # ── Contratos ──────────────────────────────────────────────────────────────────
 EXACT  contracts/paths.md
@@ -75,6 +80,7 @@ EXACT  metrics/README.md
 
 # ── CI ─────────────────────────────────────────────────────────────────────────
 EXACT  .github/workflows/sdd-audit.yml
+EXACT  .github/workflows/sdd-version.yml
 
 # ── Híbridos ───────────────────────────────────────────────────────────────────
 BLOCK  CLAUDE.md
@@ -85,6 +91,7 @@ MERGE  package.json  scripts.kanban:serve
 MERGE  package.json  scripts.kanban:serve:demo
 MERGE  package.json  scripts.skills:sync
 MERGE  package.json  scripts.skills:sync:dry
+MERGE  package.json  scripts.sdd:verify
 MERGE  package.json  devDependencies.yaml
 
 # ── Fixture de demo (opcional en repos de codigo; requerido en el repo del modelo) ──
