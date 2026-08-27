@@ -88,7 +88,9 @@ if (cmd === "init" || cmd === "update") {
   if (flags.has("dry-run")) {
     console.log(`\n[1m[1/1] Qué haría en ${ROOT}[0m`);
     const c = run(script("sdd-install.mjs"), ["--root", ROOT, "--dry-run"]);
-    console.log(`\n   Nada de esto se escribió. Para hacerlo: sdd ${cmd}`);
+    console.log(`\n\x1b[1m   NO SE INSTALÓ NADA — esto fue una previsualización.\x1b[0m`);
+    console.log(`   Para instalar de verdad, corré el mismo comando sin --dry-run:`);
+    console.log(`\n       sdd ${cmd}${opts.root ? ` --root ${opts.root}` : ""}\n`);
     process.exit(c);
   }
 

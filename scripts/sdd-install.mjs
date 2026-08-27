@@ -205,7 +205,11 @@ if (existsSync(srcManifest)) {
 console.log(`${DRY ? "DRY " : "PASS"}  EXACT ${done.EXACT} · BLOCK ${done.BLOCK} · MERGE ${done.MERGE} clave(s)`);
 if (skippedDemo) console.log(`      ${skippedDemo} entrada(s) demo/** omitidas (--profile repo)`);
 if (done.created.length) {
-  console.log(`      creados: ${done.created.slice(0, 6).join(", ")}${done.created.length > 6 ? ` y ${done.created.length - 6} más` : ""}`);
+  // En dry-run no se creó nada. Decir "creados" ahí es mentir, y con 50 líneas
+  // de salida que parecen una instalación exitosa cuesta caro: se lee como que
+  // el trabajo ya está hecho.
+  const verbo = DRY ? "se crearían" : "creados";
+  console.log(`      ${verbo}: ${done.created.slice(0, 6).join(", ")}${done.created.length > 6 ? ` y ${done.created.length - 6} más` : ""}`);
 }
 if (!manifestCopied) {
   console.log(`WARN  la fuente no trae .claude/MANIFEST.sha256 — sdd-verify no va a poder`);
