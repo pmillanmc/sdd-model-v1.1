@@ -95,7 +95,7 @@ if (cmd === "init" || cmd === "update") {
   const total = 4;
 
   step(1, total, "Materializando el framework");
-  if (run(script("sdd-install.mjs"), ["--root", ROOT, ...(flags.has("force") ? ["--force"] : [])]) !== 0) {
+  if (run(script("sdd-install.mjs"), ["--root", ROOT, "--no-next", ...(flags.has("force") ? ["--force"] : [])]) !== 0) {
     process.exit(1);
   }
 

@@ -206,7 +206,10 @@ const faltan = merges
   .map((e) => e.key.slice("devDependencies.".length))
   .filter((name) => !existsSync(join(DEST, "node_modules", name)));
 
-if (!DRY) {
+// Corriendo suelto, este script tiene que decir cómo seguir. Corriendo dentro de
+// `sdd init`, el CLI ya numera esos mismos pasos y los ejecuta: repetirlos acá
+// da dos guías que se contradicen. Por eso el CLI pasa --no-next.
+if (!DRY && !flags.has("no-next")) {
   if (faltan.length) {
     console.log(`\nWARN  falta instalar lo que el framework aporta: ${faltan.join(", ")}`);
     console.log(`      Sin eso, pnpm audit:sdd falla con ERR_MODULE_NOT_FOUND.`);

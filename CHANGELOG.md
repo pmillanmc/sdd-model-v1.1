@@ -8,6 +8,17 @@ a pasar el auditor, era MAJOR.**
 
 ---
 
+## 1.4.2 — 2026-08-27
+
+**PATCH.** Cosmético. La salida de `sdd init` daba dos guías contradictorias.
+
+- `sdd-install` imprimía «Siguiente: 1. pnpm install · 2. verify · 3. audit» justo antes de que
+  el CLI ejecutara esos mismos tres pasos numerados como 2/4, 3/4 y 4/4. Corriendo suelto el
+  script tiene que decir cómo seguir; corriendo dentro de `sdd init`, no. El CLI ahora pasa
+  `--no-next`. Detectado en la primera instalación real.
+
+---
+
 ## 1.4.1 — 2026-08-27
 
 **PATCH.** Ver qué va a pasar antes de que pase. Pensado para la primera instalación en un repo
