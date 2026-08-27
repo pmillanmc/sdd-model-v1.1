@@ -8,6 +8,38 @@ a pasar el auditor, era MAJOR.**
 
 ---
 
+## 1.6.0 — 2026-08-27
+
+**MINOR.** El framework pasa a tener tests de su propia distribución. Nada de lo anterior deja de
+funcionar.
+
+### Agrega
+
+- **`scripts/sdd-selftest.mjs`** — 63 casos sobre la maquinaria de distribución: instalación en
+  repos con historia, idempotencia, drift en `EXACT`/`BLOCK`/`MERGE`, la frontera del bloque de
+  `CLAUDE.md`, colisiones de rutas, rechazo de path traversal, el veredicto del gate, `sdd-bump`,
+  el CLI y el contenido del paquete. Instala en repos temporales, los rompe a propósito y
+  verifica que cada mecanismo reaccione como dice el contrato.
+
+  El modelo tenía 25 checkpoints para su ciclo de trabajo (`/sdd-test`) y **cero para su propia
+  distribución** — justo la parte que más se movió. Esto cubre ese hueco.
+
+  Corre en el CI del repo del modelo. **No es capa A**: no se materializa en repos consumidores
+  ni viaja en el paquete, igual que `sdd-release.yml`. Prueba el framework, no una instalación
+  — para eso está `sdd check`.
+
+- **`compararVersiones` y `estadoVersion` en `scripts/lib/framework.mjs`.** El veredicto del gate
+  —al día / adelantado / opcional / MAJOR pendiente— estaba escrito dos veces, en el CLI y en el
+  workflow. Ahora vive en la lib, el CLI la usa, y la suite prueba el código real en vez de una
+  reimplementación.
+
+### Cambia
+
+- `sdd-audit.yml` corre la suite cuando el archivo existe (`hashFiles`), así que en repos
+  consumidores el paso se saltea solo.
+
+---
+
 ## 1.5.2 — 2026-08-27
 
 **PATCH.** El kanban reventaba en toda instalación nueva. Defecto previo, encontrado al revisar

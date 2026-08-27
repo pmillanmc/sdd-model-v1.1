@@ -67,6 +67,12 @@ jobs:
       - name: Consistencia del modelo SDD
         run: node scripts/sdd-audit.mjs --root .
 
+      # Solo upstream: sdd-selftest.mjs no se materializa en repos consumidores,
+      # así que en ellos este paso no encuentra el archivo y se saltea.
+      - name: Suite de distribución (solo en el repo del modelo)
+        if: hashFiles('scripts/sdd-selftest.mjs') != ''
+        run: node scripts/sdd-selftest.mjs --online
+
   secrets:
     runs-on: ubuntu-latest
     steps:

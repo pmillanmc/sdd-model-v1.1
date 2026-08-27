@@ -207,6 +207,33 @@ export function parseManifest(text) {
   return { version, entries };
 }
 
+// ---------- comparación de versiones ----------
+
+/** -1 si a < b, 0 si iguales, 1 si a > b. */
+export function compararVersiones(a, b) {
+  const [A, B] = [a, b].map((v) => v.split(".").map(Number));
+  for (let i = 0; i < 3; i++) {
+    const d = (A[i] ?? 0) - (B[i] ?? 0);
+    if (d !== 0) return d < 0 ? -1 : 1;
+  }
+  return 0;
+}
+
+/**
+ * El veredicto del gate: qué significa que este repo esté en `local` y upstream
+ * en `latest`. Es la única lógica que decide entre avisar y frenar, y por eso
+ * vive acá y no duplicada en el CLI y en el workflow.
+ *
+ * @returns {'al-dia'|'adelantado'|'opcional'|'major-pendiente'}
+ */
+export function estadoVersion(local, latest) {
+  if (local === latest) return "al-dia";
+  if (compararVersiones(local, latest) > 0) return "adelantado";
+  return Number(local.split(".")[0]) < Number(latest.split(".")[0])
+    ? "major-pendiente"
+    : "opcional";
+}
+
 // ---------- utilidades de reporte ----------
 
 export const readIfExists = (p) => (existsSync(p) ? readFileSync(p, "utf8") : null);

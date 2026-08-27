@@ -26,7 +26,7 @@ import { execFileSync, spawnSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { norm, parseArgs } from "./lib/framework.mjs";
+import { estadoVersion, norm, parseArgs } from "./lib/framework.mjs";
 
 const SRC = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const argv = process.argv.slice(2);
@@ -152,21 +152,23 @@ if (cmd === "version") {
     process.exit(0);
   }
   console.log(`upstream   ${latest}`);
-  const cmp = (a, b) => {
-    const [A, B] = [a, b].map((v) => v.split(".").map(Number));
-    for (let i = 0; i < 3; i++) if ((A[i] ?? 0) !== (B[i] ?? 0)) return (A[i] ?? 0) - (B[i] ?? 0);
-    return 0;
-  };
-  if (local === latest) {
-    console.log(`\n[32m✓[0m  al día`);
-  } else if (cmp(local, latest) > 0) {
-    // Pasa mientras se prepara un release: el bump ya ocurrió, el tag todavía no.
-    console.log(`\n[32m✓[0m  adelantado respecto del último tag publicado`);
-  } else if (Number(local.split(".")[0]) < Number(latest.split(".")[0])) {
-    console.log(`\n[31m✗[0m  hay un MAJOR pendiente — leé la nota de migración del CHANGELOG antes de actualizar`);
-    process.exit(1);
-  } else {
-    console.log(`\n   actualización opcional — corré:  sdd update`);
+  switch (estadoVersion(local, latest)) {
+    case "al-dia":
+      console.log(`
+[32m✓[0m  al día`);
+      break;
+    case "adelantado":
+      // Pasa mientras se prepara un release: el bump ya ocurrió, el tag todavía no.
+      console.log(`
+[32m✓[0m  adelantado respecto del último tag publicado`);
+      break;
+    case "major-pendiente":
+      console.log(`
+[31m✗[0m  hay un MAJOR pendiente — leé la nota de migración del CHANGELOG antes de actualizar`);
+      process.exit(1);
+    default:
+      console.log(`
+   actualización opcional — corré:  sdd update`);
   }
   process.exit(0);
 }
