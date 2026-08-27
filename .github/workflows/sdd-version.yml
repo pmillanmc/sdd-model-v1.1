@@ -1,0 +1,76 @@
+name: SDD Version
+
+# Gate de versión del framework.
+#
+# Corre en el CI de CADA repo con el modelo instalado y compara la versión de
+# acá contra el último tag publicado upstream:
+#
+#   igual                  → pasa
+#   atrás por MINOR/PATCH  → warning, no bloquea
+#   atrás por un MAJOR     → falla el build
+#
+# Esa distinción es lo único que hace posible el `if`: ver contracts/framework.md §4.
+# Ningún repo puede quedar peligrosamente atrás sin romper su propio CI, y el que
+# está un MINOR atrás sigue en verde. Quedarse atrás es una opción legítima.
+#
+# Es la única de las tres verificaciones del framework que sale a la red. Las otras
+# dos son offline: `node scripts/sdd-verify.mjs` (integridad) y `pnpm audit:sdd`
+# (consistencia interna).
+#
+# Capa A: no se edita en destino.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  SDD_UPSTREAM: https://github.com/pmillanmc/sdd-model-v1.1
+
+jobs:
+  version:
+    # El repo del modelo ES upstream: compararlo contra sí mismo no dice nada.
+    if: github.repository != 'pmillanmc/sdd-model-v1.1'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: ¿El framework quedó atrás?
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ ! -f .claude/VERSION ]; then
+            echo "::error::no hay .claude/VERSION — el framework no está instalado en este repo"
+            exit 1
+          fi
+          local=$(tr -d ' \r\n' < .claude/VERSION)
+
+          latest=$(git ls-remote --tags --refs --sort=-v:refname "$SDD_UPSTREAM" 'v*' \
+                   | head -1 | sed 's#.*/refs/tags/v##')
+
+          if [ -z "$latest" ]; then
+            echo "::notice::framework $local — upstream todavía no publicó ningún tag"
+            exit 0
+          fi
+
+          if [ "$local" = "$latest" ]; then
+            echo "::notice::framework $local — al día"
+            exit 0
+          fi
+
+          # ¿Estamos adelantados? (bump local sin taggear upstream todavía)
+          newest=$(printf '%s\n%s\n' "$local" "$latest" | sort -V | tail -1)
+          if [ "$newest" = "$local" ]; then
+            echo "::notice::framework $local — adelantado respecto del último tag ($latest)"
+            exit 0
+          fi
+
+          if [ "${local%%.*}" -lt "${latest%%.*}" ]; then
+            echo "::error::framework $local, upstream $latest — cambio MAJOR pendiente."
+            echo "::error::Leé la nota de migración del CHANGELOG antes de actualizar."
+            exit 1
+          fi
+
+          echo "::warning::framework $local, upstream $latest — actualización opcional (MINOR/PATCH)"

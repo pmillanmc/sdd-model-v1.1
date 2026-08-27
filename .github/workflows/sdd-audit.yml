@@ -24,6 +24,9 @@ jobs:
       - name: Instalar dependencias
         run: pnpm install --frozen-lockfile
 
+      - name: Integridad de la instalación (manifiesto vs árbol)
+        run: node scripts/sdd-verify.mjs --root .
+
       - name: Auditar consistencia del modelo SDD
         run: pnpm audit:sdd
 

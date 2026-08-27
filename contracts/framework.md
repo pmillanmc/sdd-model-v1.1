@@ -1,6 +1,7 @@
 # Qué es el framework SDD (capa A) y qué significa una versión
 
-**Estado:** propuesto (pendiente de firma del dueño del modelo — ver `DECISIONS.md`).
+**Estado:** vigente desde 2026-08-25 — firmado por Patricio Millán (dueño del modelo) en el gate 0.1.
+Ver la entrada *"Definición y versionado de la capa A"* del 2026-08-19 en `DECISIONS.md`.
 **Audiencia:** DevOps (construye el manifiesto de integridad y el check de CI) y quien
 mantenga el modelo.
 

@@ -1,0 +1,71 @@
+name: SDD Release
+
+# Publica el framework al registry cuando se pushea un tag vX.Y.Z.
+#
+# NO es capa A: no está en contracts/framework-files.txt y no se materializa en
+# ningún repo consumidor. Un repo de código que taggee su propia app no puede
+# terminar publicando el framework por accidente.
+#
+# El release es mecánico a propósito. Los tres chequeos de abajo son los que
+# convierten "taggear" en un acto seguro: si el manifiesto quedó viejo, si las
+# versiones no coinciden o si el árbol tiene drift, no se publica nada.
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          registry-url: https://npm.pkg.github.com
+
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile
+
+      # Un número, tres sistemas: el tag de git, la fuente única del framework
+      # y la versión del paquete. Si divergen, .claude/VERSION va a decir una
+      # cosa y el gate de los consumidores va a comparar contra otra.
+      - name: Las tres versiones coinciden
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="${GITHUB_REF_NAME#v}"
+          version=$(tr -d ' \r\n' < .claude/VERSION)
+          skills=$(tr -d ' \r\n' < .claude/skills/VERSION)
+          pkg=$(node -p "require('./package.json').version")
+
+          echo "tag=$tag  .claude/VERSION=$version  skills/VERSION=$skills  package.json=$pkg"
+
+          if [ "$tag" != "$version" ] || [ "$version" != "$skills" ] || [ "$version" != "$pkg" ]; then
+            echo "::error::las versiones no coinciden. Corré: node scripts/sdd-bump.mjs $tag"
+            exit 1
+          fi
+
+      - name: El manifiesto está al día
+        run: node scripts/sdd-manifest.mjs --check
+
+      - name: El árbol está íntegro
+        run: node scripts/sdd-verify.mjs --root .
+
+      - name: Auditar consistencia del modelo
+        run: pnpm audit:sdd
+
+      - name: Publicar
+        run: pnpm publish --no-git-checks --access restricted
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

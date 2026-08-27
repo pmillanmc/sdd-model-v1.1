@@ -18,17 +18,85 @@ Cuando se invalida una decisión vieja: editar SOLO el campo `status` de la entr
 
 ---
 
-> **Las seis entradas que siguen están en `status: proposed`.** Son la propuesta de arquitectura
-> multi-repo redactada para la firma del dueño del modelo. Ninguna está implementada. Al firmar:
-> cambiar `status` a `accepted`, completar **Decidido por** con nombre y rol, y recién entonces
-> ejecutar la lista de cambios de `contracts/rollout-multirepo.md`.
+> **Gates 0.1 y 0.3 firmados el 2026-08-25** por Patricio Millán (dueño del modelo). Las entradas 1,
+> 2, 3 y 4 (arquitectura multi-repo) y la 6 (Cortex) están en `accepted` y autorizan la ejecución de
+> `contracts/rollout-multirepo.md`. La entrada **5 (arquitectura por capacidades) sigue en
+> `proposed`**: se firma aparte, y el rollout pide pilotear sus puntos 5.3 y 5.5 en una feature antes
+> de fijarlos.
 >
-> **Enmendadas el 2026-08-19, antes de cualquier firma:** las entradas 1, 2 y 4 se reescribieron
-> después de leer `discovery-model/contracts/handoff.md`, `contracts/ids.md` y
-> `registry/capabilities.yaml`. La versión anterior proponía un catálogo de negocio compartido y un
-> espacio de IDs local; las dos cosas estaban resueltas aguas arriba y de otra forma. Se enmiendan
-> en lugar de marcarse `superseded` porque nunca estuvieron vigentes. Cada entrada afectada declara
-> qué cambió.
+> **Estado de ejecución al momento de la firma.** Las entradas 3 y 4 ya estaban parcialmente
+> ejecutadas como spike, por pedido explícito del dueño del modelo: `--root` y el CHECK 0 en
+> `scripts/sdd-audit.mjs`, `.claude/VERSION` y `.claude/skills/VERSION` en `1.2.0`, los tres
+> contratos de `contracts/` y la sección `1.2.0` del `CHANGELOG.md`. La firma las convierte de spike
+> reversible en decisión vigente. Lo que falta está listado en `contracts/rollout-multirepo.md`; los
+> CHECK 7, 8 y 9 y `.claude/MANIFEST.sha256` todavía no existen.
+>
+> **Enmendadas el 2026-08-19, antes de la firma:** las entradas 1, 2 y 4 se reescribieron después de
+> leer `discovery-model/contracts/handoff.md`, `contracts/ids.md` y `registry/capabilities.yaml`. La
+> versión anterior proponía un catálogo de negocio compartido y un espacio de IDs local; las dos
+> cosas estaban resueltas aguas arriba y de otra forma. Se enmiendan en lugar de marcarse
+> `superseded` porque nunca estuvieron vigentes. **Lo firmado es cada entrada con su enmienda
+> incluida.** Cada entrada afectada declara qué cambió.
+
+---
+
+## 2026-08-27 Mecanismo de distribución de la capa A: materialización verificada por manifiesto
+
+**feature_id:** global
+**command_origin:** ejecución del ítem 4.1 de `contracts/rollout-multirepo.md`
+**status:** accepted
+
+**Gap o motivo:** la capa A estaba definida (`contracts/framework.md`) y listada
+(`contracts/framework-files.txt`) pero no había con qué distribuirla ni con qué probar que una
+instalación fuera íntegra. El ítem 4.2 del rollout advierte que no se puede distribuir a un segundo
+repo antes del 4.1: sin manifiesto, una edición dentro del bloque `SDD:FRAMEWORK` de `CLAUDE.md` no
+la detecta nada. En la práctica el modelo se copiaba con `cp`, que es exactamente el modo de falla
+que el CHECK 8 diagnostica después como "instalación parcial".
+
+**Alternativas consideradas:**
+(a) Materializar la capa A en la raíz del repo destino y verificarla contra un manifiesto de hashes
+que viaja con la distribución.
+(b) Montar el framework en una subcarpeta (`.sdd/`) y apuntar los comandos ahí, sin copiar.
+(c) Symlinks o junctions desde `.claude/` hacia la carpeta del framework.
+(d) Dejar la verificación en manos del auditor (`pnpm audit:sdd`) en lugar de un script aparte.
+
+**Por qué se descartaron:** (b) no funciona: la CLI de Claude lee `.claude/commands/`,
+`.claude/skills/` y `.claude/hooks/` desde la raíz del proyecto, sin punto de configuración, y el
+bloque `SDD:FRAMEWORK` de `CLAUDE.md` tendría que referenciar rutas distintas según dónde esté
+montado el framework — con lo que deja de ser idéntico byte a byte y su hash no cierra en ningún
+lado. (c) falla en Windows, que es el entorno del equipo: git checkoutea symlinks como archivos de
+texto salvo `core.symlinks=true`, y las junctions no las versiona git. (d) rompe la separación de
+`contracts/framework.md` §5: el auditor contesta consistencia interna y está definido como offline
+y sin IA; la integridad es una pregunta distinta, con otro insumo (el manifiesto) y otro dueño
+(DevOps / CI).
+
+**Decisión:** (a). El transporte —submódulo, paquete, clone— deja los bytes en algún lado;
+`sdd-install` los materializa en las rutas que `contracts/paths.md` fija, y `sdd-verify` prueba
+contra `.claude/MANIFEST.sha256` que son los de esa versión. Consecuencias:
+
+- **El transporte deja de ser una decisión de arquitectura.** Cualquiera de los tres produce el
+  mismo árbol y el mismo manifiesto. Se elige por ergonomía.
+- **Los hashes se calculan sobre contenido normalizado** (CRLF→LF, sin BOM), así que `.gitattributes`
+  deja de ser prerequisito del ítem 4.1.
+- **`sdd-install` se niega a pisar drift.** Si el destino tiene capa A editada localmente, aborta y
+  la lista. Pisarlo en silencio borraría la evidencia de que alguien editó capa A en destino, que es
+  justo lo que el modelo prohíbe.
+- **El control de versión entre repos es un gate en el CI de cada consumidor**
+  (`.github/workflows/sdd-version.yml`), no un inventario centralizado: un submódulo o un paquete no
+  le dan a upstream ninguna forma de saber quién lo consume. Atrás por MINOR/PATCH avisa; atrás por
+  un MAJOR rompe el build. Que un repo se quede atrás es una opción legítima; lo que no puede pasar
+  es que se quede atrás sin enterarse.
+- **`pmillanmc/sdd-model-v1.1` queda como repo canónico** — el que publica los releases que el gate
+  consulta. Cierra el ítem 0.2 del rollout para la capa A. El README documenta `patohed/sdd-model` y
+  hay que corregirlo.
+
+**Artefactos modificados:** `scripts/sdd-manifest.mjs`, `scripts/sdd-install.mjs`,
+`scripts/sdd-verify.mjs`, `scripts/lib/framework.mjs` y `.github/workflows/sdd-version.yml` (nuevos);
+`contracts/framework-files.txt`, `package.json`, `.github/workflows/sdd-audit.yml`, `CHANGELOG.md`,
+`.claude/VERSION`, `.claude/skills/VERSION` y el marcador de `CLAUDE.md` (bump a 1.3.0);
+`.claude/MANIFEST.sha256` (generado).
+
+**Decidido por:** Patricio Millán (dueño del modelo).
 
 ---
 
@@ -36,7 +104,7 @@ Cuando se invalida una decisión vieja: editar SOLO el campo `status` de la entr
 
 **feature_id:** global
 **command_origin:** análisis de arquitectura (un producto en N codebases)
-**status:** proposed
+**status:** accepted
 **Enmendada:** 2026-08-19 — se cae el catálogo compartido. Ver **Enmienda** al final de la entrada.
 
 **Gap o motivo:** `specs/_registry/features.yaml` mezcla en una misma entrada identidad de negocio
@@ -115,7 +183,7 @@ segunda copia mutable que causó el incidente original. Efecto neto: un director
 archivos menos, un campo menos en el registro, un transporte menos para DevOps y una rama
 condicional menos en el auditor.
 
-**Decidido por:** _PENDIENTE DE FIRMA — dueño del modelo_
+**Decidido por:** Patricio Millán — dueño del modelo (2026-08-25)
 
 ---
 
@@ -123,7 +191,7 @@ condicional menos en el auditor.
 
 **feature_id:** global
 **command_origin:** análisis de arquitectura (un producto en N codebases)
-**status:** proposed
+**status:** accepted
 **Enmendada:** 2026-08-19 — refutada la premisa. Ver **Enmienda** al final de la entrada.
 
 **Gap o motivo:** hoy `id` es simultáneamente nombre de carpeta (`specs/<id>/`), clave del registro
@@ -196,7 +264,7 @@ existe (`registry/ids.yaml` de Discovery, con reserva atómica), y la regla de d
 `F031` → `031-slug` ya está contratada. Para features de Discovery, el mismo `id` en los dos repos
 es lo correcto y no requiere nada nuevo.
 
-**Decidido por:** _PENDIENTE DE FIRMA — dueño del modelo_
+**Decidido por:** Patricio Millán — dueño del modelo (2026-08-25)
 
 ---
 
@@ -204,7 +272,7 @@ es lo correcto y no requiere nada nuevo.
 
 **feature_id:** global
 **command_origin:** análisis de arquitectura (un producto en N codebases)
-**status:** proposed
+**status:** accepted
 
 **Gap o motivo:** existe `.claude/skills/VERSION` (`1.1.0`), leído solo por
 `scripts/sync-skills.mjs:26-27`, y nada más. No hay lista de qué archivos componen el framework, así
@@ -268,7 +336,7 @@ comando" en un diff visible con su bump correspondiente.
 `.claude/VERSION` (nuevo), `CLAUDE.md` (bloque con marcadores). Auditor: CHECK 8 nuevo (versión +
 integridad de marcadores).
 
-**Decidido por:** _PENDIENTE DE FIRMA — dueño del modelo_
+**Decidido por:** Patricio Millán — dueño del modelo (2026-08-25)
 
 ---
 
@@ -276,7 +344,7 @@ integridad de marcadores).
 
 **feature_id:** global
 **command_origin:** análisis de arquitectura (un producto en N codebases)
-**status:** proposed
+**status:** accepted
 **Enmendada:** 2026-08-19 — cambia el objeto del CHECK 7 (punto 5).
 
 **Gap o motivo:** el modelo no tiene contrato de rutas (el discovery-model hermano sí:
@@ -352,7 +420,7 @@ locales. Se pierde un caso —un `discovery_id` inventado que no existe upstream
 FAIL— y se gana no mantener un archivo compartido que puede quedar viejo y mentir sobre casos
 frecuentes.
 
-**Decidido por:** _PENDIENTE DE FIRMA — dueño del modelo_
+**Decidido por:** Patricio Millán — dueño del modelo (2026-08-25)
 
 ---
 
@@ -486,7 +554,7 @@ bloquea a nadie.
 
 **feature_id:** global
 **command_origin:** análisis de arquitectura (rol de Cortex en el ciclo)
-**status:** proposed
+**status:** accepted
 
 **Gap o motivo:** Cortex se está instalando con el mismo patrón que este trabajo eliminó del modelo:
 copia manual de un binario de ~48 MB a una ruta fija, sin versión, sin manifiesto, con la
@@ -564,4 +632,4 @@ confirmación), `CLAUDE.md` (tabla de estados, prohibición de verificar ejecuta
 explícito). A cargo de DevOps: sacar la entrada `cortex` del `.mcp.json` commiteado y documentar la
 distribución del binario con versión y hash, igual que la capa A.
 
-**Decidido por:** _PENDIENTE DE FIRMA — dueño del modelo_
+**Decidido por:** Patricio Millán — dueño del modelo (2026-08-25)

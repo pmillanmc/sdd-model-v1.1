@@ -8,6 +8,45 @@ a pasar el auditor, era MAJOR.**
 
 ---
 
+## 1.3.0 — 2026-08-27
+
+**MINOR.** Agrega la maquinaria de distribución de la capa A. Ningún repo instalado
+tiene que tocar un artefacto para seguir pasando el auditor.
+
+### Agrega
+
+- **`scripts/sdd-manifest.mjs`** — genera `.claude/MANIFEST.sha256` desde
+  `contracts/framework-files.txt`. Corre upstream, al preparar un release. Los hashes son
+  SHA-256 sobre contenido normalizado (CRLF→LF, sin BOM), así que Windows y el CI de Linux
+  dan lo mismo. Con `--check` no escribe: falla si el manifiesto quedó desactualizado.
+- **`scripts/sdd-install.mjs`** — materializa la capa A en un repo destino, con las tres
+  semánticas de `contracts/framework.md` §2: `EXACT` copia el archivo entero, `BLOCK`
+  reemplaza solo el bloque `SDD:FRAMEWORK` de `CLAUDE.md`, `MERGE` escribe solo las claves
+  declaradas del `package.json` y preserva el resto. Se **niega a pisar drift**: si el destino
+  tiene capa A editada localmente, aborta y la lista (`--force` para descartarla).
+- **`scripts/sdd-verify.mjs`** — verifica el árbol contra el manifiesto instalado. No necesita
+  la fuente ni la red: corre en el CI de cualquier repo consumidor.
+- **`scripts/lib/framework.mjs`** — las primitivas compartidas por los tres.
+- **`.github/workflows/sdd-version.yml`** — gate de versión: compara `.claude/VERSION` contra
+  el último tag upstream. Atrás por MINOR/PATCH avisa; atrás por un MAJOR rompe el build.
+  Es la única verificación del framework que sale a la red.
+
+### Cambia
+
+- `.github/workflows/sdd-audit.yml` corre `sdd-verify` antes del auditor.
+- `package.json` aporta `sdd:manifest` y `sdd:verify`. `sdd:install` **no** es clave de capa A:
+  su comando depende del transporte (`.sdd/scripts/…` o `node_modules/…`), y las rutas que
+  cambian según el transporte están excluidas por `contracts/framework.md` §1.
+- El fixture `demo/**` está declarado como opcional en repos de código: si no está, no falta;
+  si está, se verifica como cualquier otra entrada de capa A.
+
+### Nota
+
+`.gitattributes` deja de ser prerequisito del manifiesto: la normalización de fin de línea
+ocurre dentro del hash. Sigue siendo buena higiene de repo.
+
+---
+
 ## 1.2.0 — 2026-08-25
 
 > **Nota de versionado, pendiente de decisión.** Por la regla de `contracts/framework.md` §4
