@@ -8,6 +8,36 @@ a pasar el auditor, era MAJOR.**
 
 ---
 
+## 1.4.0 — 2026-08-27
+
+**MINOR.** Instalar el modelo pasa de cinco comandos a uno. Nada de lo anterior deja de funcionar.
+
+### Agrega
+
+- **`scripts/sdd-cli.mjs`** — un solo comando para todo el ciclo:
+  - `sdd init` / `sdd update` — materializa, corre el gestor de paquetes que use el repo
+    (deducido del lockfile), verifica integridad y audita. Cuatro pasos numerados en una corrida.
+  - `sdd check` — integridad + consistencia, sin escribir nada.
+  - `sdd version` — qué corre este repo y cuál es la última publicada, con el veredicto
+    (al día / opcional / MAJOR pendiente).
+
+  No agrega capacidad: orquesta `sdd-install`, `sdd-verify` y `sdd-audit`, que siguen siendo
+  ejecutables por separado. Se declara como `bin` con dos nombres —`sdd` y `sdd-framework`—
+  porque `npx` busca el bin que coincide con el nombre del paquete. Eso habilita instalar
+  **sin registry y sin token**, aprovechando que el repo del modelo es público:
+
+  ```
+  npx github:pmillanmc/sdd-model-v1.1#v1.4.0 init
+  ```
+
+### Corrige
+
+- `sdd-verify` reportaba dos veces el problema de marcadores rotos de `CLAUDE.md`: una desde la
+  entrada `BLOCK` del manifiesto y otra desde el chequeo específico. Parecían dos fallas
+  distintas. Detectado por la suite de distribución.
+
+---
+
 ## 1.3.2 — 2026-08-27
 
 **PATCH.** El instalador avisa lo que faltaba avisar. No cambia ningún contrato.

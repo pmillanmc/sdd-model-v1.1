@@ -59,6 +59,7 @@ EXACT  scripts/sdd-audit.mjs
 EXACT  scripts/gen-kanban.mjs
 EXACT  scripts/kanban-server.mjs
 EXACT  scripts/sync-skills.mjs
+EXACT  scripts/sdd-cli.mjs
 EXACT  scripts/sdd-bump.mjs
 EXACT  scripts/sdd-manifest.mjs
 EXACT  scripts/sdd-install.mjs

@@ -91,10 +91,15 @@ if (installed && skillsVersion && installed !== skillsVersion) {
 }
 
 // ---------- 3. marcadores del bloque ----------
+// Solo si el manifiesto no lo cubrió ya como entrada BLOCK: si no, el mismo
+// problema se reporta dos veces y parecen dos fallas distintas.
+const yaReportado = fails.some((f) => f.startsWith("CLAUDE.md"));
 const claudeMd = join(ROOT, "CLAUDE.md");
 if (existsSync(claudeMd)) {
-  const r = extractBlock(readFileSync(claudeMd, "utf8"));
-  if (!r.ok) fails.push(`CLAUDE.md — ${r.reason}`);
+  if (!yaReportado) {
+    const r = extractBlock(readFileSync(claudeMd, "utf8"));
+    if (!r.ok) fails.push(`CLAUDE.md — ${r.reason}`);
+  }
 } else {
   warns.push(`no hay CLAUDE.md en la raíz — el agente no va a cargar las reglas del modelo`);
 }

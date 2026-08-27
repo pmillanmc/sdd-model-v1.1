@@ -1,6 +1,6 @@
 {
   "name": "@pmillanmc/sdd-framework",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "description": "Framework SDD (capa A): comandos, skills, hooks, scripts y contratos del modelo Spec-Driven Development.",
   "type": "module",
   "license": "UNLICENSED",
@@ -12,6 +12,8 @@
     "registry": "https://npm.pkg.github.com"
   },
   "bin": {
+    "sdd": "./scripts/sdd-cli.mjs",
+    "sdd-framework": "./scripts/sdd-cli.mjs",
     "sdd-install": "./scripts/sdd-install.mjs",
     "sdd-verify": "./scripts/sdd-verify.mjs"
   },
