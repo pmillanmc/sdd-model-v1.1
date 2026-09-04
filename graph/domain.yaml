@@ -1,0 +1,18 @@
+meta:
+  updated: 2026-09-04
+  generated_by: sdd-generate
+
+domains:
+  calculadora:
+    description: Calculadora simple de demo (prueba técnica para cliente), solo frontend
+    features:
+      - 901-calculadora-react
+    files:
+      components:
+        - app/src/components/Calculator.tsx
+        - app/src/components/Calculator.css
+      app:
+        - app/src/App.tsx
+        - app/src/main.tsx
+        - app/index.html
+    depends_on: []

@@ -1,0 +1,598 @@
+# SDD Model — Spec-Driven Development
+
+Un workflow estructurado para desarrollo asistido por IA donde el foco no es únicamente generar código, sino construir **contexto consistente**, **trazabilidad** y **gobernanza** durante todo el ciclo de desarrollo.
+
+---
+
+## ¿Qué es?
+
+SDD propone reemplazar workflows basados en prompts aislados por un sistema con fases definidas, artefactos versionables y gates de aprobación humana. El código es la consecuencia de un proceso estructurado, no el punto de partida.
+
+---
+
+## El ciclo
+
+### Fase 0 — Discovery (solo brownfield) `🤖 IA | gate 👤 humano`
+Si el proyecto ya tiene código, `/sdd-scan` recorre el repo y genera `existing-arch.md`:
+un documento descriptivo del stack real, `source_root`, patrones inquebrantables y
+restricciones del codebase. Además genera `graph/domain.yaml`, el **grafo de dominio**
+que mapea dominios → entidades, servicios, componentes y rutas exactas de archivos.
+Doble confirmación humana antes de guardarlos. Todos los comandos posteriores detectan
+su presencia y entran en modo brownfield automáticamente.
+
+### Fase 1 — Brief `👤 humano`
+El equipo (PO + Tech Lead + Devs) genera borradores funcionales y técnicos en `drafts/`: notas, wireframes, restricciones, contexto de negocio.
+
+### Fase 2 — Clarificación `👤↔️🤖`
+`/sdd-refine` detecta gaps, aclara restricciones y consolida un `input.md` como **fuente única de verdad** del proyecto. Requiere doble confirmación humana antes de cerrar.
+
+Antes del grilling, detecta automáticamente el tipo de feature (dashboard/reporte, formulario, lista, permisos, integración externa) y agrega preguntas específicas de dominio a su análisis — aunque el borrador no las mencione. Ejemplo: si la feature es un dashboard, pregunta sobre dimensión temporal, granularidad y si el estado debe persistir en la URL. Esto evita que decisiones críticas queden sin definir hasta que aparecen durante la implementación.
+
+### Fase 3 — Especificación `🤖 IA | gate 👤 humano`
+Desde `input.md`, los agentes generan cuatro artefactos operativos:
+
+| Artefacto | Qué es | Límite |
+|---|---|---|
+| `constitution.md` | Principios inmutables del proyecto (MUST / PROHIBITED) | ≤ 60 líneas |
+| `spec.md` | User stories con criterios Given/When/Then verificables + sección obligatoria `## Fuera de scope (v1)` con los ítems rechazados durante el grilling y la razón de rechazo. Es el **contrato negativo** de la feature: lo que el equipo se comprometió a NO construir en v1. `/sdd-implement` no puede implementar nada listado ahí aunque aparezca en drafts o en el contexto. | ≤ 80 líneas |
+| `plan.md` | Stack, arquitectura y estructura de archivos concreta | ≤ 50 líneas |
+| `tasks.md` | Lista TDD con IDs únicos. Tres reglas de calidad: **(1) slicing vertical** — cada tarea entrega una slice completa y testeable de un user story (backend + UI + integración), no capas tecnológicas separadas; **(2) sin nombres de funciones** — las tareas describen QUÉ construir, no CÓMO, para no volverse stale si la implementación previa cambia; **(3) trazabilidad** — cada tarea referencia el `US-N` de `spec.md` que implementa. | ≤ 40 activas |
+
+`/sdd-validate` verifica que los artefactos cubran el brief. Si hay gaps, **avisa y para** — no modifica nada solo. Cada decisión que desvía el brief queda registrada en `DECISIONS.md` vía `/sdd-log`.
+
+### Fase 4 — Código `🤖 IA | gate 👤 humano`
+`/sdd-implement` ejecuta las tareas en orden con un **loop TDD explícito por tarea**: Red → Green → Refactor. El paso de refactor verifica duplicación, nombres que no reflejan su intención y abstracciones prematuras antes de pasar a la siguiente tarea. `/sdd-e2e` deriva casos de prueba E2E desde la fuente de verdad disponible (spec.md, documentación, ticket de Jira o contrato de API) —o re-ejecuta una suite de regresión existente— y los corre contra la app viva con ProGuide (Playwright + LLM vía el MCP `proguide-test`), produciendo evidencia funcional real. `/sdd-checklist` genera los criterios no automatizables (UX, accesibilidad, seguridad, negocio) que el equipo humano completa. `/sdd-review` hace el gate final en cuatro pasadas: lógica (spec + tests), evidencia E2E (ProGuide), UI (input.md → spec → código) y **calidad estructural** (duplicación, nombres engañosos, abstracciones prematuras acumuladas en toda la feature).
+
+### Mantenimiento — cada sprint `👤 Tech Lead`
+`/sdd-health` audita todos los artefactos activos: detecta archivos sobredimensionados, principios contradictorios, tasks completadas no archivadas y user stories sin código. Solo reporta — nunca modifica solo.
+
+---
+
+## Artefactos globales
+
+| Archivo | Rol |
+|---|---|
+| `existing-arch.md` | (solo brownfield) Estado descriptivo del codebase — raíz |
+| `graph/domain.yaml` | Grafo de dominio: routing de contexto para ahorrar tokens — generado por `/sdd-scan` |
+| `specs/_registry/features.yaml` | Registro maestro: status, dominio, owner, sprint y archivos que toca cada feature |
+| `specs/_registry/sprints/` | Un archivo por sprint: scope, owners y gate de cierre |
+| `constitution.md` | Principios del proyecto — global, vive en la raíz |
+| `DECISIONS.md` | Registro tipo ADR de cada desvío del brief — global, versionado |
+| `specs/[feature_id]/` | Una carpeta por feature con sus 4 artefactos + checklist |
+| `specs/[feature_id]/e2e/cases.md` | Casos de prueba E2E derivados de los `Given/When/Then` — generado por `/sdd-e2e` |
+| `specs/[feature_id]/feature.status.md` | Estado del ciclo de vida: `OPEN` (en progreso) o `CLOSED` (aprobada) |
+| `specs/[feature_id]/jira-map.yaml` | Mapa de trazabilidad task ↔ ticket Jira — generado por `/sdd-generate` Paso 5 |
+| `metrics/[feature_id]-metrics.md` | Métricas de esfuerzo y calidad por feature — generado automáticamente |
+| `handoffs/` | Snapshots de gate entre fases — versionados, referenciados en `DECISIONS.md` |
+
+---
+
+## Comandos
+
+| Comando | Fase | Qué hace |
+|---|---|---|
+| `/sdd-setup` | Setup | Configura entorno, MCPs y credenciales — guiado paso a paso para cualquier perfil de dev |
+| `/sdd-explain` | Onboarding | Explica el modelo completo y cómo conecta cada parte |
+| `/sdd-scan` | 0 (brownfield) | Lee el código existente y genera `existing-arch.md` + `graph/domain.yaml` |
+| `/sdd-refine` | 2 | Grilling dinámico → `input.md` |
+| `/sdd-generate` | 3 | `input.md` → 4 artefactos + crea tickets en Jira + genera `jira-map.yaml` |
+| `/sdd-validate` | 3 | Quality gate: brief vs artefactos |
+| `/sdd-log` | 3/4 | Registra decisiones en `DECISIONS.md` |
+| `/sdd-handoff` | Transversal | Comprime el estado de sesión para continuar en otra sesión o agente. Requiere DECISIONS.md al día. |
+| `/sdd-fix` | Transversal | Ruta corta para bugs/hotfixes: ≤3 archivos, test reproductor obligatorio, chequeo de colisiones |
+| `/sdd-implement` | 4 | Artefactos → código con TDD (gate: requiere validación previa) |
+| `/sdd-task` | 4 | Implementa una task puntual: `/sdd-task [feature_id] [task_id]`. Cierre automático al completar la última task |
+| `/sdd-e2e` | 4 (QA) · transversal | Deriva casos E2E desde la fuente que haya (spec, doc, Jira, API) o re-ejecuta una suite de regresión, contra la app corriendo con ProGuide |
+| `/sdd-checklist` | 4 | Genera criterios de verificación manual |
+| `/sdd-review` | 4 | Gate final: lógica + evidencia E2E + UI + calidad estructural. Cierra la feature en el registro |
+| `/sdd-health` | Mant. | Auditoría por sprint: drift de `existing-arch.md` y del grafo, consistencia del registro, colisiones entre features OPEN |
+| `/sdd-metrics` | Mant. | Reporte de esfuerzo, tokens y rework de la sesión actual |
+| `/sdd-metrics-summary` | Mant. | Tabla agregada de métricas de todas las features del proyecto |
+| `/sdd-test` | QA | Smoke test del modelo sobre un fixture sintético (32 checkpoints) |
+| `/sdd-jira-start` | Jira | Conecta un ticket de Jira con una feature SDD y lo mueve a IN PROGRESS |
+| `/sdd-jira-sync` | Jira | Reconcilia `jira-map.yaml` con el estado real de Jira en ambas direcciones |
+| `/sdd-jira-close` | Jira | Cierra la feature en SDD y mueve el ticket principal a FINALIZADO |
+
+---
+
+## Integración con Jira
+
+Los comandos `/sdd-jira-*` conectan el modelo SDD con Jira para mantener trazabilidad completa entre tasks y tickets. Requieren el **Atlassian MCP** activo.
+
+### Ciclo de vida de la integración
+
+```
+/sdd-jira-start [TICKET-KEY]   → vincula ticket de Jira con feature SDD (vínculo grueso: 1 ticket ↔ 1 feature)
+/sdd-generate                  → genera tasks + crea tickets en Jira + genera jira-map.yaml (vínculo fino: 1 ticket ↔ 1 task)
+/sdd-jira-sync                 → reconcilia ambos lados durante el desarrollo (bidireccional, gate humano)
+/sdd-jira-close                → cierra feature en SDD y mueve ticket principal a FINALIZADO
+```
+
+### Diseño de trazabilidad
+
+- `jira-map.yaml` es el único archivo que vincula tasks con tickets — `tasks.md` y `features.yaml` no se modifican.
+- Los tickets creados por el modelo llevan `label: sdd-generated` — distinguibles de tickets de PO en el board.
+- El campo `source` en el mapa indica el origen: `sdd` (creado por el modelo), `po` (creado por el PO), `merged` (unificados).
+- El campo `user_story` en el mapa mantiene trazabilidad `US-N → task → ticket`.
+
+### Configuración del Atlassian MCP
+
+> Si es tu primera vez, corré `/sdd-setup` — te guía por todo esto automáticamente.
+
+**Cursor** — `.vscode/mcp.json` ya incluye ambos servidores. Cursor los levanta automáticamente. La primera vez pedirá autenticar tu cuenta de Atlassian vía OAuth.
+
+**Claude Code** — `.claude/settings.json` ya incluye ambos servidores. Las credenciales van en `.env` en la raíz del proyecto (nunca en el repo):
+```bash
+ATLASSIAN_SITE_URL=https://tu-org.atlassian.net
+ATLASSIAN_USER_EMAIL=tu@email.com
+ATLASSIAN_API_TOKEN=tu-api-token
+```
+Generás el API token en: https://id.atlassian.com/manage-profile/security/api-tokens
+
+**Claude.ai** — conectar manualmente desde la UI: Atlassian desde el conector oficial, mcp-proguide como servidor MCP remoto.
+
+---
+
+## Telemetría DX
+
+El modelo captura automáticamente métricas de esfuerzo y calidad en cada fase:
+
+| Fase | Qué se registra |
+|---|---|
+| `/sdd-refine` | Rondas de grilling, categorías faltantes y ambiguas al inicio |
+| `/sdd-validate` | Cobertura inicial del brief, gaps encontrados |
+| `/sdd-implement` | Ciclos de autocorrección, consultas de clarificación, tokens estimados |
+| `/sdd-e2e` | Casos totales, passed / needs_calibration / failed, US con cobertura E2E, run_url |
+| `/sdd-review` | Resultado final, criterios sin test, gaps de UI, hallazgos E2E, issues de calidad estructural (`structural_issues`) |
+| `/sdd-jira-*` | Tickets creados, sincronizados, estados actualizados, duplicados resueltos |
+
+Todos los datos se acumulan en `metrics/[feature_id]-metrics.md` con `iteration_number` para detectar retrabajo entre sesiones.
+
+**Rework Ratio** por feature:
+$$\text{Rework Ratio} = \frac{\text{autocorrecciones} + \text{entradas DECISIONS.md}}{\text{tareas totales}}$$
+
+### ¿Cuándo usar cada comando?
+
+| Comando | Nivel | Cuándo usarlo | Output esperado |
+|---|---|---|---|
+| `/sdd-metrics` | Feature / sesión | Al terminar una implementación o una iteración puntual | Detalle completo de la feature actual (DX_MET_001..006, tokens estimados, rework ratio) |
+| `/sdd-metrics-summary` | Proyecto | En sync de equipo, cierre de sprint o reporte para PM/Lead | Tabla agregada de todas las features + totales + señales de alerta |
+
+Regla rápida: si querés entender **qué pasó en una feature**, usá `/sdd-metrics`; si querés entender **cómo va el proyecto completo**, usá `/sdd-metrics-summary`.
+
+Para ver el estado del proyecto de un vistazo: `/sdd-metrics-summary`.
+
+---
+
+## Principio de gobernanza
+
+Los agentes no reemplazan decisiones técnicas ni de negocio. En cada gate, la IA avisa, para y espera aprobación humana explícita antes de continuar.
+
+---
+
+## Trabajo en equipo
+
+El modelo está diseñado para equipos con múltiples personas (y agentes) trabajando en paralelo:
+
+- **Registro maestro** (`specs/_registry/features.yaml`): toda feature y fix queda indexado con status, owner, sprint y archivos que toca (`touches`).
+- **Detección de colisiones**: antes de planificar (`/sdd-generate`), implementar (`/sdd-implement`) o fixear (`/sdd-fix`), se intersectan los `touches` con toda otra feature `OPEN` de otro owner. Si hay solapamiento, la IA reporta y espera decisión humana — nunca pisa trabajo ajeno en silencio.
+- **Gates de prerequisitos**: cada comando verifica que el paso anterior ocurrió (artefactos existen, validación corrió) antes de ejecutar. Saltarse un gate requiere confirmación explícita + entrada en `DECISIONS.md`.
+- **Audit determinista en CI**: `pnpm audit:sdd` verifica con código (sin IA) la consistencia del modelo: registro↔specs, colisiones entre features OPEN, gates de cierre, archivos del grafo y sprints vencidos. Corre como GitHub Action en cada PR — si falla, no se mergea. Es el linter del proceso: el cumplimiento no depende de buena voluntad.
+- **Ruta de escape controlada**: los bugs chicos van por `/sdd-fix` (registro + test reproductor + colisiones), no por fuera del modelo. Si un fix crece, se promueve a feature.
+
+---
+
+## Routing de contexto (ahorro de tokens)
+
+Ante cualquier tarea, los agentes consultan PRIMERO `graph/domain.yaml` para identificar
+el dominio afectado y leen SOLO los archivos listados — no escanean el codebase completo.
+El grafo lo genera `/sdd-scan` y `/sdd-health` detecta su drift.
+
+---
+
+## Compatibilidad con otras herramientas
+
+La metodología y los artefactos son agnósticos al IDE. Lo que varía es cómo se invocan los comandos:
+
+| Herramienta | Cómo usar los comandos |
+|---|---|
+| **Claude Code** | `/sdd-refine` — invocación directa (uso nativo) |
+| **Cursor** | `@.claude/commands/sdd-refine.md` como contexto del chat |
+| **Copilot (VS Code)** | Pegar el contenido del `.md` como prompt en el chat |
+| **Windsurf / cualquier agente** | El contenido de cada `.md` es el prompt — copiar y pegar |
+
+Los archivos en `.claude/commands/` son instrucciones en texto plano. Funcionan en cualquier herramienta que acepte un prompt en markdown.
+
+---
+
+## QA funcional E2E con ProGuide
+
+El modelo integra **ProGuide Test** como motor de QA E2E: la capa que verifica los flujos
+reales de la feature **contra la app corriendo**, cerrando el hueco entre los tests unitarios
+y el juicio humano.
+
+### Las tres capas de verificación
+
+| Capa | Herramienta | Verifica | Comando |
+|---|---|---|---|
+| Unit / integración (TDD) | `pnpm test` | lógica interna, contratos de módulo | `/sdd-implement` |
+| **Funcional E2E** | **ProGuide (`proguide-test` MCP + skill `qa-test-cases`)** | **flujos de UI/API contra la app corriendo** | **`/sdd-e2e`** |
+| Manual / juicio humano | checklist | UX, accesibilidad, negocio subjetivo | `/sdd-checklist` |
+
+### La fuente de verdad no es solo la spec
+
+QA rara vez tiene una única fuente. `/sdd-e2e` es **fuente-agnóstico**: deriva casos desde lo
+que haya, y cada caso referencia su origen para trazabilidad.
+
+| Fuente | Referencia en el caso | Cuándo |
+|---|---|---|
+| `spec.md` (SDD, `Given/When/Then`) | `US: US-N` | Feature SDD-managed |
+| Documentación funcional / historia | `Ref: doc §x` | Sin spec, o QA transversal |
+| Ticket de Jira / issue | `Ref: JIRA-1234` | La info vive en el ticket |
+| Contrato de API (OpenAPI/colección) | `Ref: <endpoint>` | Casos REST |
+| **Suite de regresión existente** | la propia suite | **Regresión**: re-ejecutar, no redactar |
+
+### Cómo cierra la trazabilidad (feature SDD)
+
+```
+fuente (spec / doc / Jira / API)
+   ↓  /sdd-e2e  (deriva casos, uno por criterio, con su referencia de origen)
+casos E2E (specs/[feature_id]/e2e/ en SDD, o proguide_tests/ en apps sin SDD)
+   ↓  ProGuide: dry-run → execute → iterar
+metrics/[feature_id]-metrics.md  (bloque ## E2E: passed / needs_calibration / failed, run_url)
+   ↓  lee en su Parte 1b (solo si la fuente es la spec SDD)
+/sdd-review  (gate: requisito con caso passed = cubierto; un failed = hallazgo bloqueante)
+```
+
+En **regresión** el flujo es más corto: no hay fuente nueva ni redacción — se re-ejecuta la
+suite congelada (`proguide regress <módulo>`) y solo se recalibran los casos que el drift de UI
+haya roto.
+
+`/sdd-e2e` **delega la mecánica** (explorar la app, redactar, dry-run, ejecutar, calibrar) a la
+skill `qa-test-cases` de ProGuide y solo aporta el encuadre (qué derivar, dónde guardarlo, cómo
+reportar). Distingue siempre: `needs_calibration` **no es bug** (selector que no resolvió);
+`failed` **sí es hallazgo** (aserción no cumplida) y nunca se resuelve aflojando el assert.
+
+> No confundir con `/sdd-test`, que es el smoke test del **propio modelo SDD** sobre un
+> fixture sintético. `/sdd-e2e` prueba el **producto** de la feature.
+
+### Requisitos de la integración
+
+El QA solo invoca **`/sdd-e2e`**, que hace el bootstrap (Paso 0 del comando). El agente:
+
+1. **Detecta la CLI** con `proguide --version`. Si falta, **no la instala solo**: le pide al
+   usuario que la instale a mano desde el repositorio y espera. Todavía no está en npm; se baja
+   el **último release** de GitHub (usando [GitHub CLI](https://cli.github.com/)):
+
+   > Repo: https://github.com/molivera-proguide/proguide-test
+
+   ```bash
+   gh release download --repo molivera-proguide/proguide-test --pattern "*.tgz"
+   npm install -g ./proguide-test-*.tgz
+   ```
+
+   (Alternativa sin `gh`: descargar el `.tgz` desde
+   https://github.com/molivera-proguide/proguide-test/releases/latest e instalarlo con
+   `npm install -g <archivo>.tgz`.) Luego confirma el entorno con `proguide doctor --json`
+   (Node ≥ 20, `ANTHROPIC_API_KEY`).
+2. **Confirma el MCP** `proguide-test`. El modelo trae los templates:
+   - Claude Code: `.mcp.json`
+   - Cursor: `.cursor/mcp.json`
+
+   Ambos toman la key vía `${ANTHROPIC_API_KEY}` del entorno — no se commitea ningún secreto.
+   Si tu cliente MCP tiene secret store, usalo en lugar de la variable de entorno.
+3. **Carga la skill** de QA en Claude Code con `proguide update skills` — paso obligatorio
+   **después de toda instalación/actualización nueva** de la CLI. Instala en el scope **global**
+   de usuario (`~/.claude/skills`), visible en cualquier workspace. Es idempotente.
+4. **Pide el contexto** de la feature (feature_id, base_url, credenciales, criterios a cubrir)
+   y recién ahí arma los casos.
+
+Para rutas protegidas, configurá el bloque `auth` en `proguide_tests/config.yaml` (ver README
+de ProGuide) y pasá credenciales por MCP/CLI, nunca literales en los casos.
+
+La suite de regresión congelada vive en `proguide_tests/suite/[feature_id]/` y se versiona con
+la app; se re-ejecuta determinista con `proguide regress [feature_id]` (sin LLM ni pre-pass).
+
+---
+
+## Skills
+
+### ¿Qué es un skill?
+
+Un skill es un archivo `SKILL.md` (o carpeta con ese archivo) que el agente carga **bajo demanda**, solo cuando la tarea lo requiere. A diferencia de `CLAUDE.md` que se carga en cada turno, un skill no infla el contexto a menos que sea relevante.
+
+Estructura de un skill en este repo:
+
+```
+.claude/skills/
+  VERSION                          ← versión del pack
+  coding-standards/
+    SKILL.md                       ← punto de entrada: descripción (routing) + índice
+    references/
+      sdd-lifecycle.md             ← flujo y comandos SDD
+      team-governance.md           ← registro, colisiones, trabajo en equipo
+      implementation-review.md     ← reglas de implementación y review
+      deterministic-audit.md       ← contrato con el auditor
+  context-frugality/
+    SKILL.md                       ← frugalidad de contexto en loops de implementación
+```
+
+El campo `description` del frontmatter de `SKILL.md` es lo que el agente usa para decidir **cuándo activarlo automáticamente**. Las referencias se cargan solo si la tarea las necesita (progressive disclosure).
+
+---
+
+### Skill incluido: `coding-standards`
+
+**Para qué sirve:** steering del agente cuando implementa, revisa o toma decisiones de proceso. Orienta al LLM hacia las convenciones y restricciones del modelo SDD sin duplicar lo que ya valida el auditor.
+
+**Cuándo se activa:** al implementar código, hacer code review, resolver colisiones o dudas de convenciones.
+
+**Qué hace y qué NO hace:**
+
+| Hace | No hace |
+|---|---|
+| Guía contexto con progressive disclosure | Reemplazar comandos SDD |
+| Apuntar a la fuente de verdad correcta | Inventar reglas nuevas |
+| Recordar qué es determinista vs. qué requiere juicio | Ejecutar checks del auditor |
+
+**Cómo encaja en el modelo completo:**
+
+```
+CLAUDE.md         → políticas globales mínimas (siempre en contexto)
+     ↓ apunta a
+coding-standards  → steering de convenciones (carga bajo demanda)
+     ↓ apunta a
+references/       → detalle específico por área (progressive disclosure)
+
+comandos SDD      → orquestación del flujo (refine, generate, implement...)
+pnpm audit:sdd    → enforcement determinista (CI, sin IA)
+```
+
+---
+
+### Skill incluido: `context-frugality`
+
+**Para qué sirve:** reduce el consumo de contexto durante loops de implementación
+(`/sdd-implement`, `/sdd-task`, `/sdd-fix`) — lecturas dirigidas en vez de archivos completos,
+no releer artefactos estables, filtrar output ruidoso de tests/build/`ccusage` — **sin bajar la
+correctitud, cobertura de requisitos, arquitectura, seguridad ni mantenibilidad**. Regla central:
+"el token más barato es el que nunca cargás", pero solo entre dos alternativas igualmente
+correctas — nunca a costa de calidad.
+
+**Cuándo se activa:** al implementar código en cualquiera de los tres comandos de implementación,
+al leer artefactos SDD grandes, o al ejecutar comandos cuyo output puede ser extenso.
+
+**Qué hace y qué NO hace:**
+
+| Hace | No hace |
+|---|---|
+| Prioriza lecturas dirigidas y output compacto cuando son igualmente suficientes | Sacrificar tests, criterios de aceptación o cobertura para ahorrar tokens |
+| Evita releer artefactos que no cambiaron desde la última lectura | Decidir qué archivos son del dominio (eso lo hace `graph/domain.yaml`) |
+| Releer la sección afectada después de una edición, nunca el archivo entero por reflejo | Automatizar cuándo cambiar de sesión (`/sdd-handoff`) o compactar (`/compact`) |
+
+**Por qué existe en este modelo puntualmente:** `/sdd-metrics` (DX_MET_006, Variante A) ya mide
+`cache_read_input_tokens` como el componente dominante del costo de una feature — típicamente
+>90%. Esta skill es la contraparte de implementación de esa métrica: cada lectura evitada es
+contexto que no entra a cache y que `/sdd-review` no suma al fijar `feature_total: true` al
+cerrar. Comparar el efecto es directo — dos corridas de la misma feature, con y sin la skill
+activa, son dos bloques `### 📊 Reporte de Esfuerzo SDD` para comparar.
+
+---
+
+### Distribución al equipo
+
+El pack está versionado en `.claude/skills/VERSION`. Para instalar o actualizar en la máquina local:
+
+```bash
+pnpm skills:sync        # instala/actualiza en ~/.claude/skills
+pnpm skills:sync:dry    # previsualiza sin aplicar cambios
+```
+
+Esto copia `.claude/skills/*` a `~/.claude/skills/` (Windows: `%USERPROFILE%\.claude\skills`), donde Claude y otros agentes los encuentran automáticamente.
+
+**Flujo de rollout para equipo:**
+1. Se actualiza el skill en el repo (commit + bump de `VERSION`)
+2. Cada dev ejecuta `pnpm skills:sync` desde el repo del modelo
+3. Todos quedan homogéneos en la misma versión
+
+Regla de diseño:
+- El skill **guía** (contexto, convenciones)
+- Los comandos SDD **orquestan** (flujo, gates)
+- `pnpm audit:sdd` + CI **verifican** (enforcement determinista)
+
+---
+
+### Kanban del proyecto
+
+El modelo incluye un tablero Kanban que visualiza el estado de todas las features leyendo directamente `specs/_registry/features.yaml`. Requiere que al menos una feature haya sido creada con `/sdd-generate`.
+
+```bash
+# Generar el HTML estático del tablero
+pnpm kanban               # genera kanban.html en la raíz del proyecto
+
+# Levantar el servidor local (recomendado)
+pnpm kanban:serve         # abre en http://127.0.0.1:<PORT> (el puerto se muestra en consola)
+```
+
+El servidor escucha solo en `127.0.0.1` (no expone la LAN). El HTML se regenera en cada recarga.
+
+---
+
+## Cómo adoptar el modelo en tu proyecto
+
+### Qué archivos conforman el modelo
+
+Este repo es la **fuente** del modelo. Lo que llega a cada proyecto es la capa A materializada
+—con `sdd init`, desde el paquete `@pmillanmc/sdd-framework` o desde un tag—, y es esto:
+
+```
+.claude/
+  commands/         ← los comandos /sdd-* (el workflow completo, incluye /sdd-e2e)
+  skills/
+    VERSION
+    coding-standards/
+      SKILL.md
+      references/   ← guías de implementación, gobernanza, auditoría y QA E2E
+  hooks/
+    sdd-session-capture.mjs  ← telemetría de sesión (lo engancha /sdd-setup)
+  VERSION           ← versión del framework instalado (fuente única)
+  MANIFEST.sha256   ← hashes de la capa A — lo verifica `sdd check`
+  settings.json
+.mcp.json           ← registro del MCP proguide-test (Claude Code) — QA E2E
+.cursor/
+  mcp.json          ← registro del MCP proguide-test (Cursor) — QA E2E
+CLAUDE.md           ← contexto global que el agente carga en cada turno
+.vscode/
+  mcp.json          ← configuración de MCPs para Cursor
+scripts/
+  sdd-cli.mjs       ← `sdd init/update/check/version` — un comando para todo
+  sdd-install.mjs   ← materializa el framework en un repo
+  sdd-verify.mjs    ← integridad: árbol vs. manifiesto (offline)
+  sdd-manifest.mjs  ← genera .claude/MANIFEST.sha256 (upstream)
+  sdd-bump.mjs      ← sube la versión en sus 4 superficies (upstream)
+  sdd-audit.mjs     ← auditor determinista (CI, sin IA)
+  sync-skills.mjs   ← instalador de skills en ~/.claude/skills/
+  gen-kanban.mjs    ← generador del tablero kanban
+  kanban-server.mjs ← servidor local del kanban (127.0.0.1)
+  lib/framework.mjs ← primitivas compartidas de la capa A
+package.json        ← scripts: audit:sdd, sdd:verify, skills:sync, kanban
+.gitleaks.toml      ← config de escaneo de secretos (allowlist de placeholders)
+.github/
+  workflows/
+    sdd-audit.yml   ← integridad + auditor + secretos, en cada PR
+    sdd-version.yml ← gate: avisa si el framework quedó atrás, frena si hay un MAJOR
+graph/
+  domain.template.yaml          ← plantilla del grafo de dominio
+specs/
+  _registry/
+    features.template.yaml      ← plantilla del registro maestro
+    sprints/_template.yaml      ← plantilla de sprint
+drafts/
+  README.md         ← instrucciones para el equipo (dónde poner los borradores)
+metrics/
+  README.md         ← guía de telemetría DX
+```
+
+> Los archivos como `input.md`, `constitution.md`, `spec.md`, `plan.md`, `tasks.md`,
+> `jira-map.yaml` y carpetas como `specs/001-*/`, `metrics/001-*` son **artefactos generados**
+> por el modelo durante el ciclo de una feature — no pertenecen al modelo en sí.
+
+---
+
+### Instalar el modelo en un proyecto
+
+El framework (capa A) **no se copia a mano**. Se materializa con `sdd-install`, que pone cada
+archivo en la ruta que fija `contracts/paths.md` y deja un manifiesto de hashes con el que
+después se puede probar que la instalación está íntegra.
+
+Repo canónico: **`pmillanmc/sdd-model-v1.1`**. Es el que publica los releases.
+
+#### Un comando, sin token
+
+El repo del modelo es público, así que esto anda desde cualquier repo sin configurar nada:
+
+```bash
+npx github:pmillanmc/sdd-model-v1.1 init
+```
+
+`sdd init` materializa el framework, corre el gestor de paquetes que use tu repo, verifica la
+integridad contra el manifiesto y audita. Cuatro pasos en una corrida. Pineá una versión con
+`#v1.6.0` al final si querés una en particular.
+
+#### Vía paquete, si vas a actualizar seguido
+
+GitHub Packages pide autenticación aunque el paquete sea público: cada máquina y cada CI
+necesitan un token con `read:packages`.
+
+```bash
+# .npmrc del proyecto — el token va por variable de entorno, nunca al repo
+# @pmillanmc:registry=https://npm.pkg.github.com
+# //npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+
+pnpm add -D @pmillanmc/sdd-framework
+pnpm exec sdd init
+```
+
+A cambio del token, actualizar pasa a ser `pnpm update @pmillanmc/sdd-framework && pnpm exec sdd update`.
+
+#### Los comandos
+
+| Comando | Qué hace |
+|---|---|
+| `sdd init` | Materializa, instala dependencias, verifica y audita |
+| `sdd update` | Lo mismo — el nombre existe porque es lo que buscás al cambiar de versión |
+| `sdd check` | Verifica integridad y consistencia, sin escribir nada |
+| `sdd version` | Qué versión corre este repo y cuál es la última publicada |
+
+Los tres scripts que hacen el trabajo (`sdd-install`, `sdd-verify`, `sdd-audit`) siguen siendo
+ejecutables por separado; el CLI solo los orquesta.
+
+#### Qué hace la instalación
+
+| Tipo | Qué toca | Regla |
+|---|---|---|
+| `EXACT` | comandos, skills, hooks, scripts, contratos, plantillas | copia el archivo entero |
+| `BLOCK` | `CLAUDE.md` | reemplaza **solo** lo que está entre los marcadores `SDD:FRAMEWORK`; el resto del archivo es tuyo |
+| `MERGE` | `package.json` | escribe **solo** las claves del framework; el resto del archivo es tuyo |
+
+La lista completa está en `contracts/framework-files.txt`, y qué significa cada tipo en
+`contracts/framework.md` §2. **El mecanismo completo —transporte, instalación, verificación y
+control— está en [`contracts/distribucion.md`](contracts/distribucion.md).**
+
+Si el destino ya tiene capa A editada localmente, `sdd-install` **aborta y la lista** en vez de
+pisarla. Eso es drift: los cambios al framework se hacen upstream y se redistribuyen.
+
+Después de instalar, corré `/sdd-setup` para configurar el entorno y los MCPs.
+
+#### Actualizar
+
+```bash
+pnpm update @pmillanmc/sdd-framework    # respeta el rango ^: nunca cruza a un MAJOR
+pnpm exec sdd update
+```
+
+Sin paquete: `npx github:pmillanmc/sdd-model-v1.1 update`.
+
+El árbol materializado **se commitea**; `node_modules/` no. Un dev que clona tu repo tiene el
+modelo funcionando sin instalar nada: el paquete hace falta para *cambiar* de versión, no para
+*usar* el modelo.
+
+Qué significa cada bump (MAJOR / MINOR / PATCH) está en `contracts/framework.md` §4.
+El workflow `sdd-version.yml` que viene con la instalación avisa cuando quedaste atrás, y falla
+el build si el que quedó pendiente es un MAJOR.
+
+---
+
+
+### Verificar que todo funciona
+
+```bash
+pnpm audit:sdd          # debe terminar sin FAILs (solo WARNs en repo vacío)
+pnpm skills:sync:dry    # previsualizá qué skills se instalan sin aplicar
+```
+
+En Claude Code, escribí `/sdd-setup` para configurar el entorno completo, o `/sdd-explain` para ver el modelo en contexto.
+
+---
+
+### Estructura esperada al arrancar una feature nueva
+
+```
+/sdd-jira-start [TICKET-KEY]  ← (opcional) vinculá un ticket de Jira antes de arrancar
+drafts/          ← el equipo pone acá sus notas y borradores
+/sdd-refine      ← primer comando: genera input.md desde los drafts
+/sdd-generate    ← genera constitution.md, spec.md, plan.md, tasks.md + jira-map.yaml
+/sdd-validate    ← quality gate antes de implementar
+/sdd-implement   ← implementación TDD
+/sdd-e2e         ← QA funcional E2E contra la app corriendo (ProGuide)
+/sdd-jira-sync   ← (opcional) reconciliá tasks con Jira durante el desarrollo
+/sdd-jira-close  ← (opcional) cerrá el ticket en Jira al finalizar
+```
+
+---
+
+## Requisitos
+
+- [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code)
+- `pnpm` ≥ 9.x (`npm install -g pnpm`)
+- Node.js 18+

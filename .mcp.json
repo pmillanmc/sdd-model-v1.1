@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "proguide-test": {
+      "command": "proguide",
+      "args": ["mcp"],
+      "env": {
+        "ANTHROPIC_API_KEY": "${ANTHROPIC_API_KEY}"
+      }
+    }
+  }
+}

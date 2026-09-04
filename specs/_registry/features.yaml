@@ -1,0 +1,22 @@
+meta:
+  repo: pruebaslow1
+
+features:
+  - id: 901-calculadora-react
+    status: CLOSED
+    closed: 2026-09-04T13:47:59Z
+    domain: calculadora
+    owner: kbelmonte
+    sprint: null
+    created: 2026-09-04
+    touches:
+      - app/src/components/Calculator.tsx
+      - app/src/components/Calculator.css
+      - app/src/App.tsx
+      - app/src/main.tsx
+      - app/index.html
+    decisions: []
+    discovery_id: null
+    epic: null
+    release: null
+    size: null

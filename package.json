@@ -1,0 +1,55 @@
+{
+  "name": "@pmillanmc/sdd-framework",
+  "version": "1.9.0",
+  "description": "Framework SDD (capa A): comandos, skills, hooks, scripts y contratos del modelo Spec-Driven Development.",
+  "type": "module",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pmillanmc/sdd-model-v1.1.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "bin": {
+    "sdd": "./scripts/sdd-cli.mjs",
+    "sdd-framework": "./scripts/sdd-cli.mjs",
+    "sdd-install": "./scripts/sdd-install.mjs",
+    "sdd-verify": "./scripts/sdd-verify.mjs"
+  },
+  "files": [
+    ".claude/",
+    "!.claude/settings.json",
+    "!.claude/settings.local.json",
+    "!.claude/scheduled_tasks.lock",
+    "scripts/",
+    "!scripts/sdd-selftest.mjs",
+    "contracts/",
+    ".github/workflows/sdd-audit.yml",
+    ".github/workflows/sdd-version.yml",
+    "CLAUDE.md",
+    "CHANGELOG.md",
+    "graph/domain.template.yaml",
+    "specs/_registry/features.template.yaml",
+    "specs/_registry/sprints/_template.yaml",
+    "drafts/README.md",
+    "metrics/README.md",
+    "demo/specs/"
+  ],
+  "scripts": {
+    "audit:sdd": "node scripts/sdd-audit.mjs",
+    "kanban": "node scripts/gen-kanban.mjs",
+    "kanban:demo": "node scripts/gen-kanban.mjs --root demo --out kanban-demo.html",
+    "kanban:serve": "node scripts/kanban-server.mjs",
+    "kanban:serve:demo": "node scripts/kanban-server.mjs --root demo",
+    "skills:sync": "node scripts/sync-skills.mjs",
+    "skills:sync:dry": "node scripts/sync-skills.mjs --dry-run",
+    "sdd:manifest": "node scripts/sdd-manifest.mjs",
+    "sdd:verify": "node scripts/sdd-verify.mjs --root .",
+    "sdd:bump": "node scripts/sdd-bump.mjs",
+    "sdd:selftest": "node scripts/sdd-selftest.mjs"
+  },
+  "devDependencies": {
+    "yaml": "^2.9.0"
+  }
+}
