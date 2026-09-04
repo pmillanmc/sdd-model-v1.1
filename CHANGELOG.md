@@ -12,6 +12,15 @@ a pasar el auditor, era MAJOR.**
 
 **MINOR.** Documenta el mecanismo de distribución como contrato.
 
+### Corrige
+
+- **`CLAUDE.md` mandaba a configurar los MCP en el archivo equivocado.** Decía que
+  `.claude/settings.json` «ya incluye ambos servidores»: ese archivo solo lleva permisos y hooks, y
+  ni `mcp-proguide` ni Atlassian están registrados en ningún config del repo. Los MCP de Claude Code
+  van en `.mcp.json` —que es donde escribe `/sdd-setup`—, y lo único que el repo trae hoy es
+  `proguide-test`. Quien seguía la instrucción abría un archivo sin MCPs y no podía saber si el
+  error era suyo o del archivo.
+
 ### Agrega
 
 - **`contracts/distribucion.md`** — cómo viaja el framework de upstream a cada repo: las cuatro

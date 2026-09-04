@@ -325,8 +325,12 @@ Recomendado: en la sección "Authentication", activá "Wait for MCP Authenticati
 para que el popup de OAuth no se cierre solo a los 30 segundos.
 
 ### Claude Code
-El archivo `.claude/settings.json` ya incluye ambos servidores. Las credenciales
-van en `.env` en la raíz del proyecto (nunca en el repo):
+Los servidores MCP van en `.mcp.json` en la raíz del proyecto, **no** en
+`.claude/settings.json` (ese archivo lleva permisos y hooks, nada de MCPs).
+El repo trae solo `proguide-test` (QA E2E); `mcp-proguide` y Atlassian los
+registra `/sdd-setup`, que detecta el IDE y escribe en el archivo correcto.
+
+Las credenciales van en `.env` en la raíz del proyecto (nunca en el repo):
 ```
 ATLASSIAN_SITE_URL=https://tu-org.atlassian.net
 ATLASSIAN_USER_EMAIL=tu@email.com
