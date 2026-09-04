@@ -21,6 +21,23 @@ a pasar el auditor, era MAJOR.**
   `proguide-test`. Quien seguía la instrucción abría un archivo sin MCPs y no podía saber si el
   error era suyo o del archivo.
 
+- **Los contratos describían tres checks del auditor que no existen.** `CLAUDE.md` le atribuía a
+  `pnpm audit:sdd` la trazabilidad de Discovery, la consistencia de versión del framework y los
+  imports a rutas `internal:`. El auditor termina en el CHECK 6: `discovery` e `internal` no
+  aparecen ni una vez en todo `scripts/`. Los tres están **especificados** —ítems 2.3, 2.4 y 5.2 de
+  `rollout-multirepo.md`— y sin implementar, y la documentación los daba por hechos en presente.
+
+  Importaba porque la línea siguiente de `CLAUDE.md` dice que los agentes no recalculan lo que el
+  script ya verifica: la afirmación falsa no describía mal una salvaguarda, creaba el agujero.
+  Corregidos `CLAUDE.md`, `contracts/paths.md` (tres filas y §5), `contracts/framework.md` §2.2
+  —los marcadores los verifica `sdd-verify`, no el auditor— y la tabla de `contracts/distribucion.md`.
+
+- **La forma del `discovery_id` contradecía al discovery-model.** `CLAUDE.md` y `paths.md` escribían
+  la derivación como `F031-sso-login` → `031-sso-login`, como si el ID cargara el slug.
+  `discovery-model/contracts/ids.md` regla 4 dice lo contrario: el ID es `F031` y el slug pertenece
+  al nombre de archivo. El brief manda `discovery_id` y `feature_id` como campos separados, así que
+  SDD no deriva nada: lee el `feature_id` y lo verificable es que el `id` arranque con el número.
+
 ### Agrega
 
 - **`contracts/distribucion.md`** — cómo viaja el framework de upstream a cada repo: las cuatro

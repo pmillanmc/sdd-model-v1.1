@@ -90,17 +90,17 @@ del código. Ver §6.
 | `specs/<id>/constitution.md` | C | `/sdd-generate` | No | Local (principios del codebase) |
 | `specs/<id>/plan.md` | C | `/sdd-generate` | No | Local (stack real de este repo) |
 | `specs/<id>/tasks.md` | C | `/sdd-generate`, `/sdd-implement` (marca `[x]`) | **Sí** — CHECK 3 (conteo `T\d{3}`), CHECK 6 (`US-N`) | Local |
-| `specs/<id>/feature.status.md` | C | `/sdd-generate`, `/sdd-review` | **Sí** — CHECK 1 (status vs registro), CHECK 7 (trazabilidad) | Local. **Único registro durable por feature** de `discovery_id` y `contract_version`: `drafts/brief.md` e `input.md` tienen nombre fijo y se sobreescriben |
+| `specs/<id>/feature.status.md` | C | `/sdd-generate`, `/sdd-review` | **Sí** — CHECK 1 (status vs registro). CHECK 7 (trazabilidad) está especificado y **no implementado** (rollout 2.3) | Local. **Único registro durable por feature** de `discovery_id` y `contract_version`: `drafts/brief.md` e `input.md` tienen nombre fijo y se sobreescriben |
 | `specs/<id>/checklist.md` | C | `/sdd-checklist` + humano | No | Local |
 | `specs/<id>/e2e/cases.md` | C | `/sdd-e2e` | No | Local (corre contra *esta* app) |
 | `specs/<id>/jira-map.yaml` | C | `/sdd-generate` Paso 5, `/sdd-jira-sync` | No | Local |
 | `metrics/<id>-metrics.md` | C | `/sdd-validate`, `/sdd-implement`, `/sdd-e2e`, `/sdd-review`, `/sdd-metrics` | **Sí** — CHECK 3 (gates) | Local. Es evidencia de *esta* ejecución |
 | `metrics/sessions.jsonl` | C | `.claude/hooks/sdd-session-capture.mjs` (append) | No | Local. Nunca se copia (append-only por máquina) |
 | `metrics/README.md` | A | framework | No | Idéntica |
-| `graph/domain.yaml` | C | `/sdd-scan`, `/sdd-generate` | **Sí** — CHECK 4 (cada `files:` debe existir), CHECK 9 (`internal:` no importado desde afuera) | **Local, no negociable.** Ver §6. Declara además `capability`, `module`, `public`, `internal`, `depends_on` (permisos) y `meta.aliases` |
+| `graph/domain.yaml` | C | `/sdd-scan`, `/sdd-generate` | **Sí** — CHECK 4 (cada `files:` debe existir). CHECK 9 (`internal:` no importado desde afuera) está especificado y **no implementado** (rollout 5.2) | **Local, no negociable.** Ver §6. Declara además `capability`, `module`, `public`, `internal`, `depends_on` (permisos) y `meta.aliases` |
 | `graph/domain.template.yaml` | A | framework | No | Idéntica |
 | `drafts/**` | C | humano | No | Local |
-| `drafts/brief.md` | **B** (payload) | `/dsc-handoff` del discovery-model, con `--target` a este repo | **Sí** — CHECK 7, si está presente | Llega por handoff, no se copia entre repos de código. **Nombre fijo: la feature siguiente lo sobreescribe** |
+| `drafts/brief.md` | **B** (payload) | `/dsc-handoff` del discovery-model, con `--target` a este repo | **No hoy.** CHECK 7 lo cubriría si estuviera presente — especificado y **no implementado** (rollout 2.3) | Llega por handoff, no se copia entre repos de código. **Nombre fijo: la feature siguiente lo sobreescribe** |
 | `drafts/README.md` | A | framework | No | Idéntica |
 | `handoffs/*.md` | C | `/sdd-handoff` | No | Local |
 | `CONTRACT.md` | C | `scm_generate` / `scm_update` de cortex (opcional) | No | Superficie pública de **este** repo hacia otros. Se commitea; lo que se revisa entre repos es su `scm_diff` |
@@ -172,9 +172,11 @@ completo.
 `id` es a la vez nombre de carpeta (`specs/<id>/`), clave del registro y prefijo del archivo de
 métricas (`metrics/<id>-metrics.md`). Hay **dos regímenes**, según de dónde vino la feature.
 
-**Feature originada en Discovery — el `id` se deriva y es idéntico en todos los repos.**
-`F031-sso-login` → `031-sso-login`: quitar el prefijo `F`, conservar el slug
-(`discovery-model/contracts/ids.md`). El número sale del contador atómico de
+**Feature originada en Discovery — el `id` es idéntico en todos los repos.**
+El brief manda `discovery_id: F031` y `feature_id: 031-sso-login` como **campos separados**: el
+slug pertenece al nombre de archivo, no al ID (`discovery-model/contracts/ids.md` §4, regla 4).
+SDD no deriva el slug, lo lee del frontmatter; lo verificable es que el `id` arranque con el
+número del `discovery_id`. El número sale del contador atómico de
 `registry/ids.yaml` de Discovery, que solo sube y nunca se reutiliza. No hace falta ningún
 asignador nuevo: la misma feature de negocio lleva el mismo `id` en cada codebase que la
 implemente, con
@@ -183,10 +185,11 @@ implemente, con
 **Feature nacida en el repo — `id` local, rango reservado `9nn-`.**
 `901-refactor-cache`, `902-migrar-orm`. Parte el espacio de numeración para que una feature local
 no bloquee la llegada futura de la feature de Discovery con el mismo número: el gate #5 del handoff
-rechaza si el `feature_id` ya existe en el destino, y Discovery no renumera jamás. **El CHECK 7 lo
-verifica** (WARN cuando un `id` del rango `9nn` declara `discovery_id`, o cuando un `discovery_id`
-declarado no deriva en el `id`). Límite aceptado: un proyecto con más de 900 features de Discovery
-volvería a colisionar.
+rechaza si el `feature_id` ya existe en el destino, y Discovery no renumera jamás. **El CHECK 7
+está especificado para verificarlo** (WARN cuando un `id` del rango `9nn` declara `discovery_id`,
+o cuando un `discovery_id` declarado no deriva en el `id`) — ítem 2.3 de `rollout-multirepo.md`,
+**todavía no implementado**: hoy no lo verifica nada. Límite aceptado: un proyecto con más de 900
+features de Discovery volvería a colisionar.
 
 **Claves de join entre codebases** — las dos son referencias, nunca copias:
 

@@ -61,8 +61,13 @@ que esté afuera es del repo y no se toca. Sin los marcadores presentes, el chec
 **Cada marcador debe aparecer exactamente una vez.** Una segunda aparición literal de la cadena
 —incluso dentro de un comentario que la menciona— parte el bloque y hace que el manifiesto hashee
 un fragmento. Es un modo de falla silencioso: el hash da distinto y el diagnóstico apunta al lugar
-equivocado. El auditor lo verifica (CHECK 8): `0` marcadores → WARN, más de uno de cada tipo o el
-cierre antes de la apertura → FAIL.
+equivocado.
+
+Hoy lo detecta **`sdd-verify`**, no el auditor: `extractBlock` en `scripts/lib/framework.mjs`
+devuelve error en los tres casos —ninguno, repetidos, cierre antes de apertura— y `sdd-verify` los
+reporta como **FAIL**. El CHECK 8 del auditor, que además compararía `.claude/VERSION` con
+`.claude/skills/VERSION` y degradaría "ningún marcador" a WARN, está especificado en el ítem 2.4 de
+`rollout-multirepo.md` y **no está implementado**: el auditor termina en el CHECK 6.
 
 ### 2.3 `MERGE` — se aporta, no se reemplaza
 

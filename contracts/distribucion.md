@@ -110,7 +110,8 @@ en verde.
 | Pregunta | Qué compara | Quién | ¿Red? |
 |---|---|---|---|
 | ¿La instalación está íntegra? | `MANIFEST.sha256` ↔ árbol materializado | `sdd-verify`, CI del consumidor | No |
-| ¿Es internamente consistente? | `.claude/VERSION` ↔ `skills/VERSION`, marcadores | `sdd-audit`, CHECK 8 | No |
+| ¿Es internamente consistente? | marcadores `SDD:FRAMEWORK` de `CLAUDE.md` | `sdd-verify` (`extractBlock`) | No |
+| ¿`.claude/VERSION` ↔ `skills/VERSION`? | **hoy no lo compara nadie** — CHECK 8, ítem 2.4 del rollout, sin implementar. `sdd-bump` las mueve juntas, pero nada verifica que lo sigan estando | — | No |
 | ¿Este repo quedó atrás? | `.claude/VERSION` ↔ último tag upstream | `sdd-version.yml` | **Sí** |
 
 La tercera no la hace el auditor porque el auditor está definido como offline y sin IA; meterle una

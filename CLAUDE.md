@@ -170,10 +170,12 @@ propios que veas en documentos de rollout son instancias, no definiciones.
 - **Un registro por `DATA_ROOT`.** `specs/_registry/features.yaml` es local y puede declarar
   `meta.repo` con la identidad **autodeclarada** del codebase. No se deduce del nombre del repo.
 - **`id`: dos regímenes según el origen de la feature.**
-  - Vino de **Discovery** → el `id` **se deriva y es el mismo en todos los codebases** que la
-    implementen: `F031-sso-login` → `031-sso-login` (quitar la `F`, conservar el slug). El número
-    sale del contador de Discovery, no de contar carpetas. Mismo `id`, `spec.md`/`plan.md`/`tasks.md`
-    y métricas distintos en cada uno.
+  - Vino de **Discovery** → el `id` **es el mismo en todos los codebases** que la implementen. El
+    brief manda `discovery_id` y `feature_id` como **campos separados** (`F031` y `031-sso-login`):
+    el slug pertenece al nombre de archivo, no al ID (`discovery-model/contracts/ids.md` §4). SDD
+    no deriva el slug, lo lee. Lo verificable es que el `id` arranque con el número del
+    `discovery_id`. El número sale del contador de Discovery, no de contar carpetas. Mismo `id`,
+    `spec.md`/`plan.md`/`tasks.md` y métricas distintos en cada uno.
   - **Nació en el codebase** (deuda técnica, un fix que creció) → `id` local en el rango **`9nn-`**
     (`901-refactor-cache`). Evita chocar con la numeración de Discovery, que no se renumera nunca.
 - **Dos claves de join, las dos por referencia:** `discovery_id` une **features**; `domain` (el
@@ -279,11 +281,15 @@ Reglas de frontera:
   Saltarse un gate requiere confirmación humana explícita + entrada en
   `DECISIONS.md` vía /sdd-log.
 - **Audit determinista**: `pnpm audit:sdd` (script `scripts/sdd-audit.mjs`)
-  verifica consistencia del modelo sin IA: registro↔specs, colisiones,
-  gates de cierre, grafo, sprints, trazabilidad de Discovery (derivación
-  `discovery_id` → `id`), consistencia de versión del framework e imports a
-  rutas `internal:` declaradas. Corre en CI en cada PR.
+  verifica consistencia del modelo sin IA. Hoy corren **siete checks**: layout
+  del `DATA_ROOT` (0), registro↔specs (1), colisiones (2), gates de cierre (3),
+  grafo vs filesystem (4), sprints (5) y schema de artefactos (6, solo WARN).
+  Corre en CI en cada PR.
   Lo que el script ya verifica, los agentes NO lo recalculan — leen su salida.
+  **Lo que no está en esa lista, sí:** la trazabilidad de Discovery (CHECK 7),
+  la consistencia de versión y los marcadores (CHECK 8) y los imports a rutas
+  `internal:` (CHECK 9) están **especificados y no implementados** — ítems 2.3,
+  2.4 y 5.2 de `contracts/rollout-multirepo.md`. Ningún script los verifica.
 - **El auditor audita un `--root`**: por defecto `process.cwd()`, es decir el
   repo desde el que se lo invoca — nunca la carpeta donde está instalado el
   script. Siempre imprime el root resuelto y la versión del framework en la
